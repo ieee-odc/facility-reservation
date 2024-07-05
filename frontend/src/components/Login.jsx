@@ -1,6 +1,7 @@
 import React from "react";
 import { MdLockOutline } from "react-icons/md";
 import { IoMail } from "react-icons/io5";
+import { Link } from 'react-router-dom';
 import "./styles.css";
 
 const Login = () => {
@@ -32,7 +33,8 @@ const Login = () => {
             </div>
           </div>
         <div className="forgot-password-link">
-          <a href="#">Forgot password?</a>
+        <Link to="/reset-password">Forgot password?</Link>
+          
         </div>
           <button className="login-submit-button login-buttons" type="submit">
             Sign in
