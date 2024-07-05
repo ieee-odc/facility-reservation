@@ -12,6 +12,8 @@ app.use(
   })
 );
 
+app.use('/api/reservationInitiators', riRoutes);
+
 const PORT = process.env.PORT;
 const mongoDBURL = process.env.MONGODB_URL;
 
