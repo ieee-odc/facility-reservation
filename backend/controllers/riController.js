@@ -2,7 +2,7 @@ import { ReservationInitiator } from '../models/reservationInitiatorModel.js';
 import bcrypt from 'bcryptjs';
 
 export const createReservationInitiator = async (req, res) => {
-  const { name, email, password } = req.body;
+  const { name, email, password, phoneNumber } = req.body;
 
   try {
     const existingInitiator = await ReservationInitiator.findOne({ email });
@@ -12,11 +12,11 @@ export const createReservationInitiator = async (req, res) => {
 
     const hashedPassword = await bcrypt.hash(password, 10);
 
-
     const newInitiator = new ReservationInitiator({
       name,
       email,
       password: hashedPassword,
+      phoneNumber,
     });
 
     const savedInitiator = await newInitiator.save();
@@ -27,7 +27,6 @@ export const createReservationInitiator = async (req, res) => {
   }
 };
 
-
 export const getAllReservationInitiators = async (req, res) => {
   try {
     const initiators = await ReservationInitiator.find().select('-password');
@@ -36,7 +35,6 @@ export const getAllReservationInitiators = async (req, res) => {
     res.status(500).json({ message: 'Error fetching users', error });
   }
 };
-
 
 export const getReservationInitiatorById = async (req, res) => {
   const { id } = req.params;
@@ -54,7 +52,7 @@ export const getReservationInitiatorById = async (req, res) => {
 
 export const updateReservationInitiator = async (req, res) => {
   const { id } = req.params;
-  const { name, email, password } = req.body;
+  const { name, email, password, phoneNumber } = req.body;
 
   try {
     const initiator = await ReservationInitiator.findById(id);
@@ -64,6 +62,7 @@ export const updateReservationInitiator = async (req, res) => {
 
     if (name) initiator.name = name;
     if (email) initiator.email = email;
+    if (phoneNumber) initiator.phoneNumber = phoneNumber;
     if (password) initiator.password = await bcrypt.hash(password, 10);
 
     const updatedInitiator = await initiator.save();

@@ -191,16 +191,11 @@ button.social-login.microsoft {
 }
 
 
-@media (min-width: 1280px) and (max-width: 2000px) {
+@media (min-width: 1280px) and (max-width: 1600px) {
   .inputs-container {
     width: 130%;
   }
   
 }
 
-@media (width: 1024px) {
-  .inputs-container {
-    width: 130%;
-  }
-  
-}
+

@@ -6,8 +6,10 @@ import {
   updateReservationInitiator,
   deleteReservationInitiator,
 } from '../controllers/reservationInitiatorController.js';
+import authUser from '../controllers/authController.js';
 
 const router = express.Router();
+router.post('/login', authUser);
 
 router.post('/', createReservationInitiator);
 

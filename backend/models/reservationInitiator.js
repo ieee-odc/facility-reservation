@@ -10,6 +10,11 @@ const reservationInitiatorSchema = mongoose.Schema(
       required: true,
       unique: true,
     },
+    phoneNumber:{
+      type:String,
+      unique:true,
+
+    },
     password: {
       type: String,
       required: true,
@@ -20,6 +25,20 @@ const reservationInitiatorSchema = mongoose.Schema(
     timestamps: true,
   }
 );
+
+reservationInitiatorSchema.methods.matchPassword = async function (enteredPassword) {
+  return await bcrypt.compare(enteredPassword, this.password);
+};
+
+reservationInitiatorSchema.pre('save', async function (next) {
+  if (!this.isModified('password')) {
+    next();
+  }
+  const salt = await bcrypt.genSalt(10);
+  this.password = await bcrypt.hash(this.password, salt);
+  next();
+});
+
 
 export const ReservationInitiator = mongoose.model(
   "ReservationInitiator",
