@@ -1,9 +1,9 @@
 import { ReservationInitiator } from '../models/reservationInitiatorModel.js';
-import bcrypt from 'bcrypt';
+import bcrypt from "bcrypt";
 
 export const createReservationInitiator = async (req, res) => {
   const { name, email, password, phoneNumber } = req.body;
-
+  
   try {
     const existingInitiator = await ReservationInitiator.findOne({ email });
     if (existingInitiator) {
@@ -12,17 +12,18 @@ export const createReservationInitiator = async (req, res) => {
 
     const hashedPassword = await bcrypt.hash(password, 10);
 
-    const newInitiator = new ReservationInitiator({
+    const newInitiator = await ReservationInitiator.create({
       name,
       email,
       password: hashedPassword,
       phoneNumber,
     });
 
-    const savedInitiator = await newInitiator.save();
+    //const savedInitiator = await newInitiator.save();
 
-    res.status(201).json(savedInitiator);
+    return res.status(201).json(newInitiator);
   } catch (error) {
+    console.log(error);
     res.status(500).json({ message: 'Error creating user', error });
   }
 };

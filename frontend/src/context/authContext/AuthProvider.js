@@ -1,16 +1,25 @@
 import React, { createContext, useContext, useEffect, useState } from "react";
 import { onAuthStateChanged } from "firebase/auth";
 import { auth } from "../../config/firebase-config.js";
+import axios from "axios";
 const AuthContext = createContext();
 
 export const useAuth = () => {
   return useContext(AuthContext);
 };
 
-export const verifyAuth = async () => {
-  const res = await axios.get('http://localhost:5000/verify-user');
-  console.log(res);
-}
+export const verifyAuth = async (email) => {
+  try {
+    const res = await axios.post("http://localhost:5000/verify-user", {
+      email,
+    });
+    console.log("res auth provider", res);
+    //return res.data.isValid;
+  } catch (error) {
+    console.error("Error verifying user:", error);
+    return false;
+  }
+};
 
 const AuthProvider = () => {
   const [currentUser, setCurrentUser] = useState(null);
@@ -25,7 +34,8 @@ const AuthProvider = () => {
   }, []);
 
   async function initializeUser(user) {
-    if (user) {
+    const isValid = await verifyAuth(user.email);
+    if (isValid) {
       setCurrentUser({ ...user });
       setUserLoggedIn(true);
     } else {
@@ -41,9 +51,7 @@ const AuthProvider = () => {
     loading,
   };
 
-  return (
-    value
-  );
+  return value;
 };
 
 export default AuthProvider;

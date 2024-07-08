@@ -15,7 +15,7 @@ const App = () => {
         <Routes>
           <Route path="/login" element={<Login />} />
           
-          {(userLoggedIn)?(<Route path="/reset-password" element={<ResetPassword />} />):(<Route path="/*" element={<Login />} />)}
+          <Route path="/reset-password" element={<ResetPassword />} />
         </Routes>
       </BrowserRouter>
     </>

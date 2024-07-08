@@ -1,4 +1,6 @@
 import mongoose from "mongoose";
+import bcrypt from "bcrypt";
+
 const reservationInitiatorSchema = mongoose.Schema(
   {
     name: {

@@ -3,6 +3,7 @@ import mongoose from "mongoose";
 import cors from "cors";
 
 import riRoutes from './routes/riRoutes.js'
+import { verifyUser } from "./controllers/authController.js";
 
 const app = express();
 app.use(express.json());
@@ -15,6 +16,9 @@ app.use(
 );
 
 app.use('/api/reservationInitiators', riRoutes);
+
+app.use('/verify-user', verifyUser)
+
 
 const PORT = process.env.PORT;
 const mongoDBURL = process.env.MONGODB_URL;
