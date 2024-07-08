@@ -13,7 +13,7 @@ const ResetPassword = () => {
     e.preventDefault();
     try {
       await sendPasswordResetEmail(auth, contact);
-      alert('Password reset email sent! Check your email for further instructions.');
+
       navigate('/login', { state: { myProp: 'Password reset request processed. Please check your email for instructions.' } });
     } catch (error) {
       console.error(error);
