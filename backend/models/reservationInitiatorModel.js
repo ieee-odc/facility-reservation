@@ -12,6 +12,11 @@ const reservationInitiatorSchema = mongoose.Schema(
       required: true,
       unique: true,
     },
+    backupEmail: {
+      type: String,
+      required: false,
+      unique: true,
+    },
     phoneNumber:{
       type:String,
       unique:true,

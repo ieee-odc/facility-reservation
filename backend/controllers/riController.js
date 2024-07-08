@@ -2,7 +2,7 @@ import { ReservationInitiator } from '../models/reservationInitiatorModel.js';
 import bcrypt from "bcrypt";
 
 export const createReservationInitiator = async (req, res) => {
-  const { name, email, password, phoneNumber } = req.body;
+  const { name, email, password, phoneNumber , backupEmail} = req.body;
   
   try {
     const existingInitiator = await ReservationInitiator.findOne({ email });
@@ -15,6 +15,7 @@ export const createReservationInitiator = async (req, res) => {
     const newInitiator = await ReservationInitiator.create({
       name,
       email,
+      backupEmail,
       password: hashedPassword,
       phoneNumber,
     });
@@ -53,7 +54,7 @@ export const getReservationInitiatorById = async (req, res) => {
 
 export const updateReservationInitiator = async (req, res) => {
   const { id } = req.params;
-  const { name, email, password, phoneNumber } = req.body;
+  const { name, email, password, phoneNumber,backupEmail } = req.body;
 
   try {
     const initiator = await ReservationInitiator.findById(id);
@@ -63,6 +64,7 @@ export const updateReservationInitiator = async (req, res) => {
 
     if (name) initiator.name = name;
     if (email) initiator.email = email;
+    if (backupEmail) initiator.backupEmail = backupEmail;
     if (phoneNumber) initiator.phoneNumber = phoneNumber;
     if (password) initiator.password = await bcrypt.hash(password, 10);
 

@@ -3,8 +3,8 @@ import { MdLockOutline, MdEmail, MdPhone } from "react-icons/md";
 import "./styles.css";
 
 const ResetPassword = () => {
-  const [step, setStep] = useState(1); // Step 1: Choose method, Step 2: Enter contact, Step 3: Enter code, Step 4: Reset password
-  const [method, setMethod] = useState(""); // "email" or "phone"
+  const [step, setStep] = useState(1); 
+  const [method, setMethod] = useState(""); 
   const [contact, setContact] = useState("");
   const [code, setCode] = useState("");
 
