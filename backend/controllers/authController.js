@@ -31,9 +31,10 @@ export const verifyUser = async (req, res) => {
     const user = await ReservationInitiator.findOne({ email });
     console.log("user", (user && true) || false);
 
-    return res.statud(201).json({isValid : (user && true) || false})
+    return res.status(201).json({isValid : (user && true) || false})
     
   } catch (error) {
+    console.log(error);
     res.status(500).json({ message: "Server error", error });
   }
 };
