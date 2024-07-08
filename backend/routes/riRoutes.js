@@ -6,12 +6,13 @@ import {
   updateReservationInitiator,
   deleteReservationInitiator} from './../controllers/riController.js'
 
-import authUser from '../controllers/authController.js';
+import authUser, { verifyUser } from '../controllers/authController.js';
 
 const router = express.Router();
 router.post('/login', authUser);
 
 router.post('/', createReservationInitiator);
+router.post('/verify-user', verifyUser)
 
 router.get('/', getAllReservationInitiators);
 

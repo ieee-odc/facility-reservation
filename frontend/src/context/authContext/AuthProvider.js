@@ -10,11 +10,14 @@ export const useAuth = () => {
 
 export const verifyAuth = async (email) => {
   try {
-    const res = await axios.post("http://localhost:5000/verify-user", {
-      email,
-    });
-    console.log("res auth provider", res);
-    //return res.data.isValid;
+    const res = await axios.post(
+      "http://localhost:5000/api/reservationInitiators/verify-user",
+      {
+        email,
+      }
+    );
+    console.log("res auth provider", res.data);
+    return res.data.isValid;
   } catch (error) {
     console.error("Error verifying user:", error);
     return false;
@@ -34,7 +37,8 @@ const AuthProvider = () => {
   }, []);
 
   async function initializeUser(user) {
-    const isValid = await verifyAuth(user.email);
+    let isValid = await verifyAuth(user.email);
+    isValid = false;
     if (isValid) {
       setCurrentUser({ ...user });
       setUserLoggedIn(true);
