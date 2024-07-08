@@ -1,8 +1,8 @@
-import React, { useState } from "react";
+import React, { useState ,useEffect} from "react";
 import axios from "axios";
-import { MdLockOutline } from "react-icons/md";
+import { MdLockOutline,MdInfoOutline , MdClose } from "react-icons/md";
 import { IoMail } from "react-icons/io5";
-import { Link } from "react-router-dom";
+import { Link,useLocation } from "react-router-dom";
 import "./styles.css";
 import { doSignInWithEmailAndPassword, doSignInWithGoogle, doSignOut } from "../config/auth";
 //import { useAuth } from "../context/authContext/AuthProvider"; 
@@ -10,11 +10,49 @@ const Login = () => {
   //const {userLoggedIn} = useAuth();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const location = useLocation();
+  const myProp = location.state?.myProp;
   const [isAuthenticated, setIsAuthenticated] = useState(false)
+  const [showInfoMessage, setShowInfoMessage] = useState(true);
+
+  const handleCloseInfoMessage = (e) => {
+    e.preventDefault();
+    setShowInfoMessage(false);
+  };
+
+  useEffect(() => {
+    if (myProp ) {
+      console.log('Password reset successful!');
+    }
+  }, [myProp]);
+
+  useEffect(() => {
+    const handlePageRefresh = () => {
+      window.history.replaceState(null, null, window.location.pathname);
+    };
+
+    window.addEventListener('beforeunload', handlePageRefresh);
+
+    return () => {
+      window.removeEventListener('beforeunload', handlePageRefresh);
+    };
+  }, []);
 
   
   return (
     <div className="login-container">
+        {((myProp)  && (showInfoMessage===true))&&(
+        <div className="info-message">
+          <MdInfoOutline className="info-icon" /> 
+          <span>{myProp}</span>
+          
+          <button className="info-close-button" onClick={handleCloseInfoMessage}>
+            <MdClose />
+          </button>
+
+        
+        </div>
+      )}
       <h2>Member login</h2>
       <form className="form-container">
         <div className="inputs-container">

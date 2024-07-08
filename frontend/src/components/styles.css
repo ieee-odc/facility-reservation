@@ -154,6 +154,50 @@ button.social-login.microsoft {
   font-weight: 400;
   color: #666;
 }
+.info-message {
+
+  display: flex; 
+  align-items: center; 
+  background-color: #e7f3fe;
+  border-left: 6px solid #2196F3;
+  color: #31708f;
+  padding: 10px 15px;
+  margin-bottom: 20px;
+  margin-top: 20px;
+  border-radius: 4px;
+  font-size: 0.925em;
+  font-weight: bold;
+}
+.info-icon{
+  margin-right: 10px;
+  margin-left: 10px;
+  width: 50px;
+  height: 50px;
+
+
+}
+.info-close-button {
+  background: none;
+  color: #31708f;
+
+  border: none;
+  cursor: pointer;
+  margin-left: auto; 
+  display: flex;
+  align-self: self-start;
+  
+}
+
+.info-close-button > svg {
+  width: 20px;
+  height: 20px;
+
+}
+
+
+.info-close-button:focus {
+  outline: none;
+}
 
 @media (min-width: 344px) and (max-width: 389px) {
   .inputs-container {
