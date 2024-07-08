@@ -1,5 +1,5 @@
 import { ReservationInitiator } from '../models/reservationInitiatorModel.js';
-import bcrypt from 'bcryptjs';
+import bcrypt from 'bcrypt';
 
 export const createReservationInitiator = async (req, res) => {
   const { name, email, password, phoneNumber } = req.body;

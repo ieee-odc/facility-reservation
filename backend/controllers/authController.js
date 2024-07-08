@@ -1,6 +1,6 @@
-import ReservationInitiator from "../models/reservationInitiator.js";
+import {ReservationInitiator} from "../models/reservationInitiatorModel.js";
 import generateToken from "../utils/generateToken.js"; 
-import bcrypt from 'bcryptjs';
+import bcrypt from 'bcrypt';
 
 const authUser = async (req, res) => {
   const { email, password } = req.body;

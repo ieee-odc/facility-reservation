@@ -2,6 +2,8 @@ import express from "express";
 import mongoose from "mongoose";
 import cors from "cors";
 
+import riRoutes from './routes/riRoutes.js'
+
 const app = express();
 app.use(express.json());
 

@@ -8,4 +8,4 @@ function generateToken(payload) {
 
 
 
-export default { generateToken, verifyToken };
+export default { generateToken };

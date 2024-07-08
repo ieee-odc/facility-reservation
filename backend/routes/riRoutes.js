@@ -4,8 +4,8 @@ import {
   getAllReservationInitiators,
   getReservationInitiatorById,
   updateReservationInitiator,
-  deleteReservationInitiator,
-} from '../controllers/reservationInitiatorController.js';
+  deleteReservationInitiator} from './../controllers/riController.js'
+
 import authUser from '../controllers/authController.js';
 
 const router = express.Router();
