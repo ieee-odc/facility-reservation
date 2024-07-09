@@ -26,11 +26,12 @@ const authUser = async (req, res) => {
 
 export const verifyUser = async (req, res) => {
   const { email } = req.body;
-  
+  console.log("email", email);
   try {
     const user = await ReservationInitiator.findOne({ email });
     console.log("user", (user && true) || false);
-
+    const users = await ReservationInitiator.find();
+    console.log(users);
     return res.status(201).json({isValid : (user && true) || false})
     
   } catch (error) {
