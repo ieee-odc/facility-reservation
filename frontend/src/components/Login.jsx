@@ -59,7 +59,7 @@ const Login = () => {
     const signedIn = await doSignInWithGoogle();
     console.log("hello google");
     if (signedIn) {
-      navigate("/reset-password");
+      navigate("/navbar");
     }
   };
 
