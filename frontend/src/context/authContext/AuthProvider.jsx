@@ -2,6 +2,7 @@ import React, { createContext, useContext, useEffect, useState } from "react";
 import { onAuthStateChanged } from "firebase/auth";
 import { auth } from "../../config/firebase-config.js";
 import axios from "axios";
+
 const AuthContext = createContext();
 
 export const useAuth = () => {
@@ -12,9 +13,7 @@ export const verifyAuth = async (email) => {
   try {
     const res = await axios.post(
       "http://localhost:5000/api/reservationInitiators/verify-user",
-      {
-        email,
-      }
+      { email }
     );
     console.log("res auth provider", res.data);
     return res.data.isValid;
@@ -24,30 +23,30 @@ export const verifyAuth = async (email) => {
   }
 };
 
-const AuthProvider = () => {
+const AuthProvider = ({ children }) => {
   const [currentUser, setCurrentUser] = useState(null);
   const [userLoggedIn, setUserLoggedIn] = useState(false);
-  const [isEmailUser, setIsEmailUser] = useState(false);
-  const [isGoogleUser, setIsGoogleUser] = useState(false);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, initializeUser);
+    const unsubscribe = onAuthStateChanged(auth, async (user) => {
+      if (user) {
+        const isValid = await verifyAuth(user.email);
+        if (isValid) {
+          setCurrentUser(user);
+          setUserLoggedIn(true);
+        } else {
+          setCurrentUser(null);
+          setUserLoggedIn(false);
+        }
+      } else {
+        setCurrentUser(null);
+        setUserLoggedIn(false);
+      }
+      setLoading(false);
+    });
     return unsubscribe;
   }, []);
-
-  async function initializeUser(user) {
-    let isValid = await verifyAuth(user.email);
-    isValid = false;
-    if (isValid) {
-      setCurrentUser({ ...user });
-      setUserLoggedIn(true);
-    } else {
-      setCurrentUser(null);
-      setUserLoggedIn(false);
-    }
-    setLoading(false);
-  }
 
   const value = {
     currentUser,
@@ -55,7 +54,11 @@ const AuthProvider = () => {
     loading,
   };
 
-  return value;
+  return (
+    <AuthContext.Provider value={value}>
+      {!loading && children}
+    </AuthContext.Provider>
+  );
 };
 
 export default AuthProvider;

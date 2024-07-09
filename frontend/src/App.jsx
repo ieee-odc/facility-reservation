@@ -1,26 +1,43 @@
-import React from "react";
+import React, { useEffect } from "react";
+import { BrowserRouter, Route, Routes, Navigate } from "react-router-dom";
+import AuthProvider, { useAuth } from "./context/authContext/AuthProvider";
 import Login from "./components/Login";
-import { BrowserRouter, Route, Routes } from "react-router-dom";
 import ResetPassword from "./components/ResetPassword";
-import AuthProvider from "./context/authContext/AuthProvider.js";
-import Navbar from "./components/navbar.jsx";
 import "./App.css";
 
-const App = () => {
-  const { currentUser, userLoggedIn, loading } = AuthProvider();
-  console.log(currentUser, userLoggedIn, loading);
+const AuthStatus = () => {
+  const { currentUser, userLoggedIn, loading } = useAuth();
+
+  useEffect(() => {
+    console.log(currentUser, userLoggedIn, loading);
+  }, [currentUser, userLoggedIn, loading]);
+
+  return null;
+};
+
+const AppRoutes = () => {
+  const { userLoggedIn } = useAuth();
 
   return (
-    <>
+    <Routes>
+      <Route path="/login" element={<Login />} />
+      {userLoggedIn ? (
+        <Route path="/reset-password" element={<ResetPassword />} />
+      ) : (
+        <Route path="*" element={<Navigate to="/login" />} />
+      )}
+    </Routes>
+  );
+};
+
+const App = () => {
+  return (
+    <AuthProvider>
+      <AuthStatus />
       <BrowserRouter>
-        <Routes>
-          <Route path="/login" element={<Login />} />
-          
-          <Route path="/reset-password" element={<ResetPassword />} />
-          <Route path="/navbar" element={<Navbar />} />
-        </Routes>
+        <AppRoutes />
       </BrowserRouter>
-    </>
+    </AuthProvider>
   );
 };
 
