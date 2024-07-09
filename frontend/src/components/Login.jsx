@@ -1,19 +1,24 @@
-import React, { useState ,useEffect} from "react";
+import React, { useState, useEffect } from "react";
 import axios from "axios";
-import { MdLockOutline,MdInfoOutline , MdClose } from "react-icons/md";
+import { MdLockOutline, MdInfoOutline, MdClose } from "react-icons/md";
 import { IoMail } from "react-icons/io5";
-import { Link,useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import "./styles.css";
-import { doSignInWithEmailAndPassword, doSignInWithGoogle, doSignOut } from "../config/auth";
-//import { useAuth } from "../context/authContext/AuthProvider"; 
+import {
+  doSignInWithEmailAndPassword,
+  doSignInWithGoogle,
+  doSignOut,
+} from "../config/auth";
+//import { useAuth } from "../context/authContext/AuthProvider";
 const Login = () => {
   //const {userLoggedIn} = useAuth();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const location = useLocation();
   const myProp = location.state?.myProp;
-  const [isAuthenticated, setIsAuthenticated] = useState(false)
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [showInfoMessage, setShowInfoMessage] = useState(true);
+  const navigate = useNavigate();
 
   const handleCloseInfoMessage = (e) => {
     e.preventDefault();
@@ -21,8 +26,8 @@ const Login = () => {
   };
 
   useEffect(() => {
-    if (myProp ) {
-      console.log('Password reset successful!');
+    if (myProp) {
+      console.log("Password reset successful!");
     }
   }, [myProp]);
 
@@ -31,30 +36,50 @@ const Login = () => {
       window.history.replaceState(null, null, window.location.pathname);
     };
 
-    window.addEventListener('beforeunload', handlePageRefresh);
+    window.addEventListener("beforeunload", handlePageRefresh);
 
     return () => {
-      window.removeEventListener('beforeunload', handlePageRefresh);
+      window.removeEventListener("beforeunload", handlePageRefresh);
     };
   }, []);
 
-  
+  const signInWithEmail = async () => {
+    //e.preventDefault();
+    const signedIn = await doSignInWithEmailAndPassword(email, password);
+    if (signedIn) {
+      console.log("signed in ", signedIn);
+      navigate("/reset-password");
+    }else{
+      console.log("not signed");
+    }
+  };
+
+
+  const signInWithGoogle = async () => {
+    const signedIn = await doSignInWithGoogle();
+    console.log("hello google");
+    if (signedIn) {
+      navigate("/reset-password");
+    }
+  };
+
   return (
     <div className="login-container">
-        {((myProp)  && (showInfoMessage===true))&&(
+      {myProp && showInfoMessage === true && (
         <div className="info-message">
-          <MdInfoOutline className="info-icon" /> 
+          <MdInfoOutline className="info-icon" />
           <span>{myProp}</span>
-          
-          <button className="info-close-button" onClick={handleCloseInfoMessage}>
+
+          <button
+            className="info-close-button"
+            onClick={handleCloseInfoMessage}
+          >
             <MdClose />
           </button>
-
-        
         </div>
       )}
-      <h2>Member login</h2>
-      <form className="form-container">
+      <h2>Login to EASY</h2>
+      <div className="form-container">
         <div className="inputs-container">
           <div className="input-container">
             <div className="icon-box">
@@ -83,7 +108,10 @@ const Login = () => {
           <div className="forgot-password-link">
             <Link to="/reset-password">Forgot password?</Link>
           </div>
-          <button className="login-submit-button login-buttons" onClick={doSignOut}>
+          <button
+            className="login-submit-button login-buttons"
+            onClick={signInWithEmail}
+          >
             Sign in
           </button>
           <div className="or">
@@ -91,19 +119,17 @@ const Login = () => {
             <span>OR</span>
             <hr />
           </div>
-          <button 
+          <button
             className="social-login google login-buttons"
-            onClick={doSignInWithGoogle}
-            >
+            onClick={signInWithGoogle}
+          >
             Continue with Google
           </button>
-          <button 
-            className="social-login microsoft login-buttons"
-            >
+          <button className="social-login microsoft login-buttons">
             Continue with Microsoft
           </button>
         </div>
-      </form>
+      </div>
     </div>
   );
 };
