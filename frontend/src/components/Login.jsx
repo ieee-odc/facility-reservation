@@ -44,16 +44,17 @@ const Login = () => {
   }, []);
 
   const signInWithEmail = async () => {
-    //e.preventDefault();
-    const signedIn = await doSignInWithEmailAndPassword(email, password);
-    if (signedIn) {
+    doSignInWithEmailAndPassword(email, password)
+    .then((signedIn)=>{
       console.log("signed in ", signedIn);
-      navigate("/reset-password");
-    }else{
-      console.log("not signed");
-    }
-  };
+      navigate("/navbar");
+    })
+    .catch((error)=>{
+      console.log(error);
+    })
 
+
+  };
 
   const signInWithGoogle = async () => {
     const signedIn = await doSignInWithGoogle();

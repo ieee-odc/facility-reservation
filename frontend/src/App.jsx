@@ -16,6 +16,8 @@ const AuthStatus = () => {
   return null;
 };
 
+console.log("afwan"+process.env.REACT_APP_FIREBASE_APP_ID);
+
 const AppRoutes = () => {
   const { userLoggedIn } = useAuth();
 

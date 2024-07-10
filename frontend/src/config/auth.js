@@ -1,4 +1,7 @@
-import { verifyAuth } from "../context/authContext/AuthProvider";
+import {
+  verifyAuth,
+  clearFirebaseLocalStorageDb,
+} from "../context/authContext/AuthProvider";
 import { auth } from "./firebase-config.js";
 
 import {
@@ -6,7 +9,6 @@ import {
   GoogleAuthProvider,
   signInWithPopup,
   signOut,
-  createUserWithEmailAndPassword,
 } from "firebase/auth";
 
 export const doSignInWithGoogle = async () => {
@@ -15,36 +17,69 @@ export const doSignInWithGoogle = async () => {
     const userCred = await signInWithPopup(auth, provider);
     console.log("userCred", userCred);
 
-    const isValid = await verifyAuth(userCred.user.email);
+    const isValid = await verifyAuth(userCred.user.email, "", "google");
     if (!isValid) {
       await signOut(auth);
+      clearFirebaseLocalStorageDb();
       console.log("User email is not verified. Signed out.");
     } else {
       console.log("User email is verified.");
     }
     return isValid;
   } catch (error) {
+    clearFirebaseLocalStorageDb();
     console.log(error);
   }
 };
 
 export const doSignInWithEmailAndPassword = async (email, password) => {
+  /*try {
+    let userCred;
+    signInWithEmailAndPassword(auth, email, password)
+      .then(async (user) => {
+        userCred = user;
+        console.log("user cred1", userCred);
+        if (userCred) {
+          const isValid = await verifyAuth(
+            userCred.user.email,
+            password,
+            "emailPassword"
+          );
+          if (!isValid) {
+            await signOut(auth);
+            clearFirebaseLocalStorageDb();
+            console.log("User email is not verified. Signed out.");
+          } else {
+            console.log("User email is verified.");
+          }
+          return isValid;
+        }
+      })
+      .catch((error) => {
+        console.log("error here", error);
+      });
+
+    return false;
+  } catch (error) {
+    clearFirebaseLocalStorageDb();
+    console.log("global error", error);
+  }*/
+
   try {
     const userCred = await signInWithEmailAndPassword(auth, email, password);
-    console.log('user cred1', userCred);
-    return userCred;
+    console.log("userCred 1 ",userCred);
+    const isValid = await verifyAuth(userCred.user.email, password, 'emailPassword');
+    if (!isValid) {
+      await signOut(auth);
+      clearFirebaseLocalStorageDb();
+      console.log("User email is not verified. Signed out.");
+    } else {
+      console.log("User email is verified.");
+    }
+    return isValid;
   } catch (error) {
-    console.log(error);
+    
   }
-  /*.then((userCred)=>{
-    console.log("userCred 1",userCred);
-    return userCred;
-  })
-  .catch((error)=>{
-    console.log(error);
-    const errorMessage = JSON.stringify(error);
-    localStorage.setItem('errorMessage', errorMessage)
-  })*/
 };
 
 export const doSignOut = async () => {

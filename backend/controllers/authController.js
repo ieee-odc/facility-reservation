@@ -25,15 +25,24 @@ const authUser = async (req, res) => {
 };
 
 export const verifyUser = async (req, res) => {
-  const { email } = req.body;
-  console.log("email", email);
+  const { email, password, method } = req.body;
+  // any google emailPassword
+  console.log("email", email, password, method);
   try {
-    const user = await ReservationInitiator.findOne({ email });
+    const user = await ReservationInitiator.findOne({ email }).select(
+      "+password"
+    );
     console.log("user", (user && true) || false);
-    const users = await ReservationInitiator.find();
-    console.log(users);
-    return res.status(201).json({isValid : (user && true) || false})
-    
+
+    if (password !== "") {
+      const validPassword = await bcrypt.compare(password, user.password);
+      console.log(user.password);
+      if (!validPassword) {
+        return res.status(401).send({ message: "Invalid creds" });
+      }
+    }
+
+    return res.status(201).json({ isValid: (user && true) || false });
   } catch (error) {
     console.log(error);
     res.status(500).json({ message: "Server error", error });
