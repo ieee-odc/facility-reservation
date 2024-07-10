@@ -96,6 +96,8 @@ const Navbar = () => {
 
             {/* Mobile Menu */}
             <div className={nav ? "navbar-drawer" : "navbar-drawer navbar-drawer-hidden"}>
+
+            
                 <AiOutlineClose onClick={() => setNav(!nav)} size={30} className="navbar-close-icon" />
                 <div className="top">
                     <h2 className="navbar-header">
