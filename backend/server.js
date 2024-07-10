@@ -1,7 +1,7 @@
 import express from "express";
 import mongoose from "mongoose";
 import cors from "cors";
-
+import responsibleRoutes from "./routes/respRoutes.js";
 import riRoutes from "./routes/riRoutes.js";
 
 const app = express();
@@ -15,6 +15,7 @@ app.use(
 );
 
 app.use("/api/reservationInitiators", riRoutes);
+app.use('/api/responsibles', responsibleRoutes);
 
 const PORT = process.env.PORT;
 const mongoDBURL = process.env.MONGODB_URL;
