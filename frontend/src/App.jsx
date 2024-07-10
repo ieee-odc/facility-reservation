@@ -3,6 +3,7 @@ import { BrowserRouter, Route, Routes, Navigate } from "react-router-dom";
 import AuthProvider, { useAuth } from "./context/authContext/AuthProvider";
 import Login from "./components/Login";
 import ResetPassword from "./components/ResetPassword";
+import Navbar from "./components/navbar";
 import "./App.css";
 
 const AuthStatus = () => {
@@ -21,8 +22,11 @@ const AppRoutes = () => {
   return (
     <Routes>
       <Route path="/login" element={<Login />} />
+      <Route path="/navbar" element={<Navbar/>} />
+
       {userLoggedIn ? (
         <Route path="/reset-password" element={<ResetPassword />} />
+
       ) : (
         <Route path="*" element={<Navigate to="/login" />} />
       )}
