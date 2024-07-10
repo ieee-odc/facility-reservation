@@ -27,7 +27,6 @@ const authUser = async (req, res) => {
 export const verifyUser = async (req, res) => {
   const { email, password ,method } = req.body;
   // any google emailPassword
-  const { email } = req.body;
   console.log("email", email);
   try {
     const user = await ReservationInitiator.findOne({ email }).select(
