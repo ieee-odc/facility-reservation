@@ -10,7 +10,6 @@ cache:
     - backend/node_modules/
 
 before_script:
-  - npm install
   - cd $CI_PROJECT_DIR
   
 
@@ -32,3 +31,39 @@ build_backend:
   artifacts:
     paths:
       - backend/
+
+test_frontend:
+  stage: test
+  script:
+    - cd frontend
+    - npm install
+    - npm test
+
+test_backend:
+  stage: test
+  script:
+    - cd backend
+    - npm install
+    - npm test
+
+  deploy_frontend:
+  stage: deploy
+  script:
+    - cd frontend
+    - npm run deploy
+  environment:
+    name: production
+    url:
+  only:
+    - feature/login-P3-6
+
+deploy_backend:
+  stage: deploy
+  script:
+    - cd backend
+    - npm run deploy
+  environment:
+    name: production
+    url: 
+  only:
+    - feature/login-P3-6
