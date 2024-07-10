@@ -7,8 +7,9 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 2rem;
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    height: 70px;
+    padding: 1rem;
+    box-shadow: 0 0px 3px rgba(0, 0, 0, 0.1);
   }
   
   .navbar-left {
@@ -117,7 +118,7 @@
   }
   
   .navbar-menu-item {
-    font-size: 1.25rem;
+    font-size: 1rem;
     display: flex;
     cursor: pointer;
     width: 80%;
@@ -139,6 +140,7 @@ margin-right: 20px;
     color: #0950b4;
    margin-right: 50px;
    font-family: "Libre Baskerville", serif;
+   font-size: smaller;
    
   }
   .font-fine{
@@ -146,7 +148,7 @@ margin-right: 20px;
 
    margin-right: 50px;
    font-weight: 350;
-   font-size: small;
+   font-size: 13px;
    
   }
  
