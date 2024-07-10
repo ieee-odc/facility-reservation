@@ -9,11 +9,28 @@ export const useAuth = () => {
   return useContext(AuthContext);
 };
 
-export const verifyAuth = async (email) => {
+export const clearFirebaseLocalStorageDb = () => {
+  const dbName = "firebaseLocalStorageDb";
+  const request = indexedDB.deleteDatabase(dbName);
+
+  request.onsuccess = () => {
+    console.log(`${dbName} successfully deleted`);
+  };
+
+  request.onerror = (event) => {
+    console.error(`Failed to delete ${dbName}:`, event);
+  };
+
+  request.onblocked = () => {
+    console.warn(`Deletion of ${dbName} is blocked`);
+  };
+};
+
+export const verifyAuth = async (email,password, method) => {
   try {
     const res = await axios.post(
       "http://localhost:5000/api/reservationInitiators/verify-user",
-      { email }
+      { email, password,method }
     );
     console.log("res auth provider", res.data);
     return res.data.isValid;
@@ -31,7 +48,7 @@ const AuthProvider = ({ children }) => {
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, async (user) => {
       if (user) {
-        const isValid = await verifyAuth(user.email);
+        const isValid = await verifyAuth(user.email,'' ,'any');
         if (isValid) {
           setCurrentUser(user);
           setUserLoggedIn(true);

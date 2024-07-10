@@ -12,6 +12,7 @@
   "dependencies": {
     "@fortawesome/fontawesome-free": "^6.5.2",
     "axios": "^1.7.2",
+    "dotenv": "^16.4.5",
     "firebase": "^10.12.3",
     "primereact": "^10.7.0",
     "react": "^18.3.1",

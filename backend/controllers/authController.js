@@ -25,14 +25,19 @@ const authUser = async (req, res) => {
 };
 
 export const verifyUser = async (req, res) => {
-  const { email } = req.body;
-  
+  const { email, password ,method } = req.body;
+  // any google emailPassword
   try {
-    const user = await ReservationInitiator.findOne({ email });
+    const user = await ReservationInitiator.findOne({ email }).select(
+      "+password"
+    );
     console.log("user", (user && true) || false);
 
-    return res.status(201).json({isValid : (user && true) || false})
-    
+    if(method === 'emailPassword'){
+      
+    }
+
+    return res.status(201).json({ isValid: (user && true) || false });
   } catch (error) {
     console.log(error);
     res.status(500).json({ message: "Server error", error });

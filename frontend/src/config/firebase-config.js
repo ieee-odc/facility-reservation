@@ -1,17 +1,25 @@
-import { initializeApp } from "firebase/app";
-import {getAuth} from "firebase/auth"
+// firebase.js
+import { initializeApp } from 'firebase/app';
+import { getAuth } from 'firebase/auth';
+
+import dotenv from 'dotenv';
+
+//require('dotenv').config()
+
+dotenv.config()
+
+const apiK = process.env.REACT_APP_FIREBASE_API_KEY
 
 const firebaseConfig = {
-  apiKey: "AIzaSyAR_CLzhaKvBc_T9zB39mJteTXvWY7iqec",
-  authDomain: "easy-a7462.firebaseapp.com",
-  projectId: "easy-a7462",
-  storageBucket: "easy-a7462.appspot.com",
-  messagingSenderId: "165690934319",
-  appId: "1:165690934319:web:62520a60fdeade6e6372da",
-  measurementId: "G-33HP0H6T84"
+  apiKey: apiK,
+  /*authDomain: process.env.REACT_APP_FIREBASE_AUTH_DOMAIN,
+  projectId: process.env.REACT_APP_FIREBASE_PROJECT_ID,
+  storageBucket: process.env.REACT_APP_FIREBASE_STORAGE_BUCKET,
+  messagingSenderId: process.env.REACT_APP_FIREBASE_MESSAGING_SENDER_ID,
+  appId: process.env.REACT_APP_FIREBASE_APP_ID,*/
 };
 
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 
-export {app, auth}
+export {app, auth };
