@@ -1,4 +1,5 @@
 image: node:20
+
 stages:          
   - build
   - test
@@ -11,7 +12,6 @@ cache:
 
 before_script:
   - cd $CI_PROJECT_DIR
-  
 
 build_frontend:
   stage: build
@@ -46,14 +46,13 @@ test_backend:
     - npm install
     - npm test
 
-  deploy_frontend:
+deploy_frontend:
   stage: deploy
   script:
     - cd frontend
     - npm run deploy
   environment:
     name: production
-    url:
   only:
     - feature/login-P3-6
 
@@ -64,6 +63,5 @@ deploy_backend:
     - npm run deploy
   environment:
     name: production
-    url: 
   only:
     - feature/login-P3-6
