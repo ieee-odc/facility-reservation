@@ -9,7 +9,7 @@ import {
   LineChart,
   Line,
 } from "recharts";
-import logo from "./../assets/ieee.webp";
+import logo from "./../assets/acm.png";
 import banner from "./../assets/transparent.png";
 import "./Profile.css";
 
