@@ -5,7 +5,7 @@ import {
   getResponsibleById,
   updateResponsible,
   deleteResponsible,
-} from '../controllers/responsibleController.js';
+} from '../controllers/RespController.js';
 
 const router = express.Router();
 
