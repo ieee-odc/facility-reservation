@@ -47,7 +47,7 @@ const Login = () => {
     doSignInWithEmailAndPassword(email, password)
     .then((signedIn)=>{
       console.log("signed in ", signedIn);
-      navigate("/reset-password");
+      navigate("/navbar");
     })
     .catch((error)=>{
       console.log(error);
