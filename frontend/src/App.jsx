@@ -5,6 +5,7 @@ import Login from "./components/Login";
 import ResetPassword from "./components/ResetPassword";
 import Navbar from "./components/navbar";
 import "./App.css";
+import Profile from "./components/Profile";
 
 const AuthStatus = () => {
   const { currentUser, userLoggedIn, loading } = useAuth();
@@ -16,7 +17,7 @@ const AuthStatus = () => {
   return null;
 };
 
-console.log("afwan"+process.env.REACT_APP_FIREBASE_APP_ID);
+console.log("afwan" + process.env.REACT_APP_FIREBASE_APP_ID);
 
 const AppRoutes = () => {
   const { userLoggedIn } = useAuth();
@@ -24,11 +25,13 @@ const AppRoutes = () => {
   return (
     <Routes>
       <Route path="/login" element={<Login />} />
-      <Route path="/navbar" element={<Navbar/>} />
+      <Route path="/profile" element={<Profile />} />
 
       {userLoggedIn ? (
-        <Route path="/reset-password" element={<ResetPassword />} />
-
+        <>
+          <Route path="/reset-password" element={<ResetPassword />} />
+          <Route path="/navbar" element={<Navbar />} />
+        </>
       ) : (
         <Route path="*" element={<Navigate to="/login" />} />
       )}
