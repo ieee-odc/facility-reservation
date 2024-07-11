@@ -41,7 +41,7 @@
 .profile-img {
   position: absolute;
   display: flex;
-  top: 20%;
+  top: 150px;
   left: 10%;
   transform: translateX(-10%);
   width: 120px;
@@ -50,7 +50,7 @@
   border: 1px solid #626f86;
   background-color: white;
   justify-content: center;
-  z-index: 200;
+  z-index: 0;
 }
 
 .profile-img > img {
