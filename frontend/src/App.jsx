@@ -6,6 +6,7 @@ import ResetPassword from "./components/ResetPassword";
 import Navbar from "./components/navbar";
 import "./App.css";
 import Profile from "./components/Profile";
+import GiveFeedback from "./components/feedback";
 
 const AuthStatus = () => {
   const { currentUser, userLoggedIn, loading } = useAuth();
@@ -25,6 +26,9 @@ const AppRoutes = () => {
   return (
     <Routes>
       <Route path="/login" element={<Login />} />
+      <Route path="/feedback" element={<GiveFeedback />} />
+
+      
       <Route path="/profile" element={<Profile />} />
 
       {userLoggedIn ? (

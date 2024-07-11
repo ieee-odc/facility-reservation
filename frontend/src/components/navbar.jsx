@@ -37,7 +37,7 @@ const Navbar = () => {
         { icon: <FaHome size={25} className="mr-4" />, text: "Dashboard" },
         { icon: <FaCalendarAlt size={25} className="mr-4" />, text: "Calendar" },
         { icon: <SlNote size={25} className="mr-4" />, text: "Reservation" },
-        { icon: <FaUserEdit size={25} className="mr-4" />, text: "Profile" },
+        { icon: <FaUserEdit size={25} className="mr-4" />, text: "Profile"  },
         { icon: <CiLogout size={25} className="mr-4" />, text: "Logout" , handleClick: Logout },
         { icon: <IoMdSettings size={25} className="mr-4" />, text: "Settings" },
     ];
