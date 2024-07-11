@@ -12,6 +12,7 @@ import { doSignOut } from "../config/auth";
 import { FaRegUserCircle, FaCalendarAlt, FaUserEdit, FaHome } from "react-icons/fa";
 import "./navbar.css";
 import axios from 'axios';
+import Profile from "./Profile";
 
 const Navbar = () => {
   const [nav, setNav] = useState(false);
@@ -45,12 +46,16 @@ const Navbar = () => {
    
     navigate("/feedback");
   };
+  const profile= async () => {
+   
+    navigate("/profile");
+  };
 
   const menuItems = [
     { icon: <FaHome size={25} className="mr-4" />, text: "Dashboard" },
     { icon: <FaCalendarAlt size={25} className="mr-4" />, text: "Calendar" },
     { icon: <SlNote size={25} className="mr-4" />, text: "Reservation" },
-    { icon: <FaUserEdit size={25} className="mr-4" />, text: "Profile" },
+    { icon: <FaUserEdit size={25} className="mr-4" />, text: "Profile" ,handleClick : profile},
     { icon: <CiLogout size={25} className="mr-4" />, text: "Logout", handleClick: Logout },
     { icon: <IoMdSettings size={25} className="mr-4" />, text: "Settings" },
   ];
@@ -84,7 +89,7 @@ const Navbar = () => {
               <p className="email">{email}</p>
             </div>
             <div className="profile-card-body">
-              <button className="profile-card-button">
+              <button className="profile-card-button" onClick={profile}>
                 <FaUserEdit className="button-icon" size={15} /> Your Profile
               </button>
 

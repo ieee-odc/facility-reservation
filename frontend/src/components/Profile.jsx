@@ -59,9 +59,7 @@ const Profile = () => {
         </div>
       </div>
       <div className="profile-main">
-        <div className="profile-img">
-          <img src={logo} alt="Profile" />
-        </div>
+    
         <div className="main-content">
           <div className="sidebar">
             <button className="manage-account">Manage your account</button>
