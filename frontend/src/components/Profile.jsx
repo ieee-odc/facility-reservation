@@ -20,6 +20,12 @@ import iphone from "./../assets/icons/iphone.png";
 import organisation from "./../assets/icons/organisation.png";
 import utilisateur from "./../assets/icons/utilisateur.png";
 import batiment from "./../assets/icons/batiment.png";
+import pen from "./../assets/icons/pen.png";
+import trash from "./../assets/icons/trash.png";
+import plus from "./../assets/icons/plus.png";
+
+import manager1 from "./../assets/manager/manager1.png";
+import manager2 from "./../assets/manager/manager2.png";
 
 const dataFacilities = [
   { name: "ODC", count: 10 },
@@ -107,12 +113,12 @@ const Profile = () => {
               >
                 Vis-à-vis
               </button>
-              <button
+              {/*<button
                 className={`tab ${activeTab === "Bio" ? "active" : ""}`}
                 onClick={() => setActiveTab("Bio")}
               >
                 Bio
-              </button>
+              </button>*/}
             </div>
             {activeTab === "Overview" && (
               <div>
@@ -165,18 +171,52 @@ const Profile = () => {
             )}
             {activeTab === "Vis-à-vis" && (
               <div className="vis-a-vis">
-                {/* Add content for Vis-à-vis tab here */}
-                <h3>Vis-à-vis Content</h3>
-                <p>hello from vis a vis</p>
+                <h3>Our representents</h3>
+                <div className="vav-content">
+                  <img
+                    src={plus}
+                    alt="Nature"
+                    className="add-person-icon"
+                  />
+                  <div className="vav-person">
+                    <img src={manager1} alt="manager1" className="person-picture"/>
+                    <div className="basic-info">
+                      <p className="info-names">FirstName LastName</p>
+                      <p className="info-position">Position</p>
+                    </div>
+                    <div className="more-info">
+                      <p className="info-email">firstname.lastname@gmail.com</p>
+                      <p className="info-phone">Phone Number</p>
+                    </div>
+                    <div className="person-interaction">
+                      <img src={pen} alt="Nature" className="edit-person-icon" />
+                      <img src={trash} alt="Nature" className="delete-person-icon" />
+                    </div>
+                  </div>
+                  <div className="vav-person">
+                    <img src={manager2} alt="manager2" className="person-picture"/>
+                    <div className="basic-info">
+                      <p className="info-names">FirstName LastName</p>
+                      <p className="info-position">Position</p>
+                    </div>
+                    <div className="more-info">
+                      <p className="info-email">firstname.lastname@gmail.com</p>
+                      <p className="info-phone">Phone Number</p>
+                    </div>
+                    <div className="person-interaction">
+                      <img src={pen} alt="Nature" className="edit-person-icon" />
+                      <img src={trash} alt="Nature" className="delete-person-icon" />
+                    </div>
+                  </div>
+                </div>
               </div>
             )}
-            {activeTab === "Bio" && (
+            {/*activeTab === "Bio" && (
               <div className="bio">
-                {/* Add content for Bio tab here */}
                 <h3>Bio Content</h3>
                 <p>hello from the bio</p>
               </div>
-            )}
+            )*/}
           </div>
         </div>
       </div>
