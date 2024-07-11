@@ -5,79 +5,112 @@ import pen from "./../assets/icons/pen.png";
 import manager1 from "./../assets/manager/manager1.png";
 import manager2 from "./../assets/manager/manager2.png";
 import Modal from "./Modal";
+import DeleteModal from "./DeleteModal";
+import "./Modal.css";
+
 const Vav = () => {
+  const [showModal, setShowModal] = useState(false);
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
+  const [selectedRep, setSelectedRep] = useState(null);
   const [representatives, setRepresentatives] = useState([
     {
       id: 1,
-      firstName: "FirstName1",
-      lastName: "LastName1",
-      position: "Position1",
-      email: "firstname.lastname@gmail.com",
-      phone: "Phone Number",
+      firstName: "John",
+      lastName: "Doe",
+      position: "Manager",
+      email: "john.doe@gmail.com",
+      phone: "1234567890",
       picture: manager1,
     },
     {
       id: 2,
-      firstName: "FirstName2",
-      lastName: "LastName2",
-      position: "Position2",
-      email: "firstname.lastname@gmail.com",
-      phone: "Phone Number",
+      firstName: "Jane",
+      lastName: "Smith",
+      position: "Assistant Manager",
+      email: "jane.smith@gmail.com",
+      phone: "0987654321",
       picture: manager2,
     },
   ]);
-  const [modalOpen, setModalOpen] = useState(false);
-  const [currentRep, setCurrentRep] = useState(null);
 
-  const handleAdd = () => {
-    setCurrentRep(null);
-    setModalOpen(true);
+  const handleDeleteClick = (rep) => {
+    setSelectedRep(rep);
+    setShowDeleteModal(true);
   };
 
-  const handleEdit = (rep) => {
-    setCurrentRep(rep);
-    setModalOpen(true);
+  const handleDeleteConfirm = () => {
+    setRepresentatives(
+      representatives.filter((rep) => rep.id !== selectedRep.id)
+    );
+    setShowDeleteModal(false);
   };
 
-  const handleDelete = (id) => {
-    setRepresentatives((reps) => reps.filter((rep) => rep.id !== id));
-  };
-
-  const handleSave = (rep) => {
-    if (currentRep) {
-      setRepresentatives((reps) =>
-        reps.map((r) => (r.id === rep.id ? rep : r))
-      );
-    } else {
-      setRepresentatives((reps) => [...reps, { ...rep, id: reps.length + 1 }]);
-    }
-    setModalOpen(false);
-  };
   return (
     <div className="vis-a-vis">
-    <h3>Our Representatives</h3>
-    <div className="vav-content">
-      <img src={plus} alt="Add" className="add-person-icon" onClick={handleAdd} />
-      {representatives.map(rep => (
-        <div key={rep.id} className="vav-person">
-          <img src={rep.picture} alt={rep.firstName} className="person-picture" />
-          <div className="basic-info">
-            <p className="info-names">{rep.firstName} {rep.lastName}</p>
-            <p className="info-position">{rep.position}</p>
+      <h3>Our Representatives</h3>
+      <div className="vav-content">
+        <img
+          src={plus}
+          alt="Add"
+          className="add-person-icon"
+          onClick={() => setShowModal(true)}
+        />
+        {representatives.map((rep) => (
+          <div className="vav-person" key={rep.id}>
+            <img
+              src={rep.picture}
+              alt={rep.firstName}
+              className="person-picture"
+            />
+            <div className="basic-info">
+              <p className="info-names">
+                {rep.firstName} {rep.lastName}
+              </p>
+              <p className="info-position">{rep.position}</p>
+            </div>
+            <div className="more-info">
+              <p className="info-email">{rep.email}</p>
+              <p className="info-phone">{rep.phone}</p>
+            </div>
+            <div className="person-interaction">
+              <img
+                src={pen}
+                alt="Edit"
+                className="edit-person-icon"
+                onClick={() => {
+                  setSelectedRep(rep);
+                  setShowModal(true);
+                }}
+              />
+              <img
+                src={trash}
+                alt="Delete"
+                className="delete-person-icon"
+                onClick={() => handleDeleteClick(rep)}
+              />
+            </div>
           </div>
-          <div className="more-info">
-            <p className="info-email">{rep.email}</p>
-            <p className="info-phone">{rep.phone}</p>
-          </div>
-          <div className="person-interaction">
-            <img src={pen} alt="Edit" className="edit-person-icon" onClick={() => handleEdit(rep)} />
-            <img src={trash} alt="Delete" className="delete-person-icon" onClick={() => handleDelete(rep.id)} />
-          </div>
-        </div>
-      ))}
+        ))}
+      </div>
+
+      {showModal && (
+        <Modal
+          rep={selectedRep}
+          onSave={(data) => {
+            console.log("Saved:", data);
+            setShowModal(false);
+          }}
+          onClose={() => setShowModal(false)}
+        />
+      )}
+
+      {showDeleteModal && (
+        <DeleteModal
+          onConfirm={handleDeleteConfirm}
+          onCancel={() => setShowDeleteModal(false)}
+        />
+      )}
     </div>
-    {modalOpen && <Modal rep={currentRep} onSave={handleSave} onClose={() => setModalOpen(false)} />}
-  </div>
   );
 };
 
