@@ -52,12 +52,12 @@ const Profile = () => {
   //added
   const [editingField, setEditingField] = useState(null);
   const [fieldValues, setFieldValues] = useState({
-    nature: "Club",
-    service: "Service",
-    organisation: "Organisation",
-    email: "email@example.com",
-    phoneNumber: "123-456-7890",
-    manager: "Manager Name",
+    nature: "",
+    service: "",
+    organisation: "",
+    email: "",
+    phoneNumber: "",
+    manager: "",
   });
 
   const handleEdit = (field) => {
@@ -92,9 +92,9 @@ const Profile = () => {
           </div>
         </div>
         <div className="profile-main">
-            <div className="profile-img">
-              <img src={logo} alt="Profile" />
-            </div>
+          <div className="profile-img">
+            <img src={logo} alt="Profile" />
+          </div>
           <div className="main-content">
             <div className="sidebar">
               <button className="manage-account">Manage your account</button>
@@ -107,9 +107,11 @@ const Profile = () => {
                       {editingField === "nature" ? (
                         <div className="edited-input">
                           <input
+                            placeholder="Nature"
                             name="nature"
                             value={fieldValues["nature"]}
                             onChange={handleFieldChange}
+                            className="input"
                           />
                           <div className="interaction-buttons">
                             <button onClick={handleApprove}>
@@ -122,17 +124,61 @@ const Profile = () => {
                         </div>
                       ) : (
                         <p onClick={() => handleEdit("nature")}>
-                          {fieldValues["nature"]}
+                          {fieldValues["nature"] || "Nature"}
                         </p>
                       )}
                     </div>
                     <div>
-                      <img src={organisation} alt="Nature" className="icon" />
-                      <p>Service</p>
+                      <img src={organisation} alt="Service" className="icon" />
+                      {editingField === "service" ? (
+                        <div className="edited-input">
+                          <input
+                            placeholder="Service"
+                            name="service"
+                            value={fieldValues["service"]}
+                            onChange={handleFieldChange}
+                            className="input"
+                          />
+                          <div className="interaction-buttons">
+                            <button onClick={handleApprove}>
+                              <FontAwesomeIcon icon={faCheck} />
+                            </button>
+                            <button onClick={handleCancel}>
+                              <FontAwesomeIcon icon={faX} />
+                            </button>
+                          </div>
+                        </div>
+                      ) : (
+                        <p onClick={() => handleEdit("service")}>
+                          {fieldValues["service"] || "Service"}
+                        </p>
+                      )}
                     </div>
                     <div>
-                      <img src={batiment} alt="Nature" className="icon" />
-                      <p>Organisation</p>
+                      <img src={batiment} alt="Organisation" className="icon" />
+                      {editingField === "organisation" ? (
+                        <div className="edited-input">
+                          <input
+                            placeholder="Organisation"
+                            name="organisation"
+                            value={fieldValues["organisation"]}
+                            onChange={handleFieldChange}
+                            className="input"
+                          />
+                          <div className="interaction-buttons">
+                            <button onClick={handleApprove}>
+                              <FontAwesomeIcon icon={faCheck} />
+                            </button>
+                            <button onClick={handleCancel}>
+                              <FontAwesomeIcon icon={faX} />
+                            </button>
+                          </div>
+                        </div>
+                      ) : (
+                        <p onClick={() => handleEdit("organisation")}>
+                          {fieldValues["organisation"] || "Organisation"}
+                        </p>
+                      )}
                     </div>
                   </div>
                 </div>
@@ -141,15 +187,81 @@ const Profile = () => {
                   <div className="contact-content">
                     <div>
                       <img src={email} alt="Nature" className="icon" />
-                      <p>Email</p>
+                      {editingField === "email" ? (
+                        <div className="edited-input">
+                          <input
+                            placeholder="email@example.com"
+                            name="email"
+                            value={fieldValues["email"]}
+                            onChange={handleFieldChange}
+                            className="input"
+                          />
+                          <div className="interaction-buttons">
+                            <button onClick={handleApprove}>
+                              <FontAwesomeIcon icon={faCheck} />
+                            </button>
+                            <button onClick={handleCancel}>
+                              <FontAwesomeIcon icon={faX} />
+                            </button>
+                          </div>
+                        </div>
+                      ) : (
+                        <p onClick={() => handleEdit("email")}>
+                          {fieldValues["email"] || "email@example.com"}
+                        </p>
+                      )}
                     </div>
                     <div>
                       <img src={iphone} alt="Nature" className="icon" />
-                      <p>Phone number</p>
+                      {editingField === "phoneNumber" ? (
+                        <div className="edited-input">
+                          <input
+                            placeholder="123-456-7890"
+                            name="phoneNumber"
+                            value={fieldValues["phoneNumber"]}
+                            onChange={handleFieldChange}
+                            className="input"
+                          />
+                          <div className="interaction-buttons">
+                            <button onClick={handleApprove}>
+                              <FontAwesomeIcon icon={faCheck} />
+                            </button>
+                            <button onClick={handleCancel}>
+                              <FontAwesomeIcon icon={faX} />
+                            </button>
+                          </div>
+                        </div>
+                      ) : (
+                        <p onClick={() => handleEdit("phoneNumber")}>
+                          {fieldValues["phoneNumber"] || "123-456-7890"}
+                        </p>
+                      )}
                     </div>
                     <div>
                       <img src={utilisateur} alt="Nature" className="icon" />
-                      <p>Manager</p>
+                      {editingField === "manager" ? (
+                        <div className="edited-input">
+                          <input
+                            placeholder="Manager Name"
+                            name="manager"
+                            value={fieldValues["manager"]}
+                            onChange={handleFieldChange}
+                            className="input"
+                          />
+                          <div className="interaction-buttons">
+                            <button onClick={handleApprove}>
+                              <FontAwesomeIcon icon={faCheck} />
+                            </button>
+                            <button onClick={handleCancel}>
+                              <FontAwesomeIcon icon={faX} />
+                            </button>
+                          </div>
+                        </div>
+                      ) : (
+                        <p onClick={() => handleEdit("manager")}>
+                          {fieldValues["manager"] || "Manager Name"}
+                        </p>
+                      )}
                     </div>
                   </div>
                 </div>
