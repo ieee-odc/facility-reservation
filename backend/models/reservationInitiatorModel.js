@@ -51,3 +51,4 @@ export const ReservationInitiator = mongoose.model(
   "ReservationInitiator",
   reservationInitiatorSchema
 );
+export default ReservationInitiator;
