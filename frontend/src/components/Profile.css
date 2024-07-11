@@ -114,6 +114,14 @@
   gap: 20px;
 }
 
+.overview {
+  margin-bottom: 20px;
+}
+
+.line-chart {
+  width: 400px;
+}
+
 .event-list,
 .most-requested-facilities,
 .attendance-per-event {
@@ -126,6 +134,33 @@
 .most-requested-facilities h3,
 .attendance-per-event h3 {
   margin-bottom: 20px;
+}
+
+.event-list {
+  overflow-y: auto;
+  max-height: 300px;
+}
+
+.event-list::-webkit-scrollbar {
+  width: 12px;
+}
+
+/* Track */
+.event-list::-webkit-scrollbar-track {
+  box-shadow: inset 0 0 5px rgb(199, 199, 199);
+  border-radius: 10px;
+  background: #f1f1f1;
+}
+
+/* Handle */
+.event-list::-webkit-scrollbar-thumb {
+  background: #bebebe;
+  border-radius: 10px;
+}
+
+/* Handle on hover */
+.event-list::-webkit-scrollbar-thumb:hover {
+  background: #7b7b7b;
 }
 
 .chart {
@@ -149,8 +184,17 @@
   margin-bottom: 20px;
 }
 
-@media (max-width: 1239px) {
+@media (min-width: 100%) {
   .overview {
-    grid-template-columns: 1fr;
+    display: flex;
+  }
+  .event-list {
+    min-width: 30%;
+  }
+}
+@media (max-width: 1021px) {
+  .overview {
+    display: flex;
+    flex-direction: column;
   }
 }

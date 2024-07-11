@@ -8,6 +8,7 @@ import {
   Tooltip,
   LineChart,
   Line,
+  ResponsiveContainer,
 } from "recharts";
 import logo from "./../assets/acm.png";
 import banner from "./../assets/transparent.png";
@@ -83,11 +84,23 @@ const Profile = () => {
             </button>
           </div>
           {activeTab === "Overview" && (
+            <>
             <div className="overview">
               <div className="event-list">
                 <h3>Event List</h3>
                 <div className="event-items">
                   <ul>
+                    <li></li>
+                    <li></li>
+                    <li></li>
+                    <li></li>
+                    <li></li>
+                    <li></li>
+                    <li></li>
+                    <li></li>
+                    <li></li>
+                    <li></li>
+                    <li></li>
                     <li></li>
                     <li></li>
                     <li></li>
@@ -99,19 +112,23 @@ const Profile = () => {
               <div className="most-requested-facilities">
                 <h3>Most Requested Facilities</h3>
                 <div className="chart">
-                  <BarChart width={400} height={200} data={dataFacilities}>
+                <ResponsiveContainer width="95%" height={200} >
+                  <BarChart data={dataFacilities}>
                     <CartesianGrid strokeDasharray="3 3" />
                     <XAxis dataKey="name" />
                     <YAxis />
                     <Tooltip />
                     <Bar dataKey="count" fill="#8884d8" />
                   </BarChart>
+                  </ResponsiveContainer>
                 </div>
               </div>
+            </div>
               <div className="attendance-per-event">
                 <h3>Attendance per event</h3>
                 <div className="chart">
-                  <LineChart width={400} height={200} data={dataAttendance}>
+                <ResponsiveContainer width="95%" height={200} >
+                  <LineChart className="line-chart"  data={dataAttendance}>
                     <CartesianGrid strokeDasharray="3 3" /> {/* i may get rid of this */}
                     <XAxis dataKey="name" />
                     <YAxis />
@@ -122,9 +139,10 @@ const Profile = () => {
                       stroke="#8884d8"
                     />
                   </LineChart>
+                  </ResponsiveContainer>
                 </div>
               </div>
-            </div>
+            </>
           )}
           {activeTab === "Vis-à-vis" && (
             <div className="vis-a-vis">
