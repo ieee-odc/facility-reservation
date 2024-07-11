@@ -90,3 +90,17 @@ export const deleteReservationInitiator = async (req, res) => {
     res.status(500).json({ message: 'Error deleting user', error });
   }
 };
+
+export const getReservationInitiatorByEmail = async (req, res) => {
+  const { email } = req.query;
+
+  try {
+    const initiator = await ReservationInitiator.findOne({ email }).select('-password');
+    if (!initiator) {
+      return res.status(404).json({ message: 'User not found' });
+    }
+    res.status(200).json(initiator);
+  } catch (error) {
+    res.status(500).json({ message: 'Error fetching user', error });
+  }
+};

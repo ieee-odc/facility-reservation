@@ -15,7 +15,7 @@ import {
 import logo from "./../assets/acm.png";
 import banner from "./../assets/transparent.png";
 import "./Profile.css";
-
+import Navbar from "./navbar";
 import mallette from "./../assets/icons/mallette.png";
 import email from "./../assets/icons/email.png";
 import iphone from "./../assets/icons/iphone.png";
@@ -82,6 +82,9 @@ const Profile = () => {
   };
 
   return (
+    <div>
+     <Navbar/>
+    
     <div className="profile-container">
       <div className="profile-banner">
         <div className="banner-img">
@@ -89,9 +92,7 @@ const Profile = () => {
         </div>
       </div>
       <div className="profile-main">
-        <div className="profile-img">
-          <img src={logo} alt="Profile" />
-        </div>
+    
         <div className="main-content">
           <div className="sidebar">
             <button className="manage-account">Manage your account</button>
@@ -217,6 +218,7 @@ const Profile = () => {
                   </div>
                 </div>
               </div>
+              
             )}
             {activeTab === "Vis-à-vis" && (
               <div className="vis-a-vis">
@@ -289,6 +291,7 @@ const Profile = () => {
           </div>
         </div>
       </div>
+    </div>
     </div>
   );
 };

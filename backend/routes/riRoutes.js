@@ -4,7 +4,8 @@ import {
   getAllReservationInitiators,
   getReservationInitiatorById,
   updateReservationInitiator,
-  deleteReservationInitiator} from './../controllers/riController.js'
+  deleteReservationInitiator,
+  getReservationInitiatorByEmail} from './../controllers/riController.js'
 
 import authUser, { verifyUser } from '../controllers/authController.js';
 
@@ -21,5 +22,6 @@ router.get('/:id', getReservationInitiatorById);
 router.put('/:id', updateReservationInitiator);
 
 router.delete('/:id', deleteReservationInitiator);
+router.get('/by-email', getReservationInitiatorByEmail);
 
 export default router;

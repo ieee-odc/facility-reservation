@@ -1,6 +1,6 @@
 import React, { useState } from "react";
-//import { FaBug, FaEnvelopeOpenText, FaRoom } from "react-icons/fa";
 import "./feedback.css";
+import Navbar from "./navbar";
 
 const GiveFeedback = () => {
   const [feedbackType, setFeedbackType] = useState("");
@@ -14,13 +14,50 @@ const GiveFeedback = () => {
     setMessage(e.target.value);
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    // Handle the submission logic here, such as sending the feedback to the server
-    console.log("Feedback submitted:", { feedbackType, message });
+
+    const feedbackData = { feedbackType, message };
+
+    try {
+      if (feedbackType === "bug") {
+        // Send feedback to developers via email
+        const response = await fetch('/api/feedback/send-email', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(feedbackData),
+        });
+        if (response.ok) {
+          alert("Bug report sent to developers.");
+        } else {
+          alert("Failed to send bug report.");
+        }
+      } else {
+        // Store feedback in the database
+        const response = await fetch('/api/feedback/store-feedback', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(feedbackData),
+        });
+        if (response.ok) {
+          alert("Thank you for your feedback.");
+        } else {
+          alert("Failed to store feedback.");
+        }
+      }
+    } catch (error) {
+      console.error("Error submitting feedback:", error);
+      alert("An error occurred while submitting your feedback.");
+    }
   };
 
   return (
+    <div>
+    <Navbar/>
     <div className="feedback-container">
       <h2>Give Feedback</h2>
       <form onSubmit={handleSubmit} className="feedback-form">
@@ -36,8 +73,7 @@ const GiveFeedback = () => {
             <option value="bug">Report a Bug</option>
             <option value="management">Management Issue</option>
             <option value="room">Room Problem</option>
-            <option value="room">Other</option>
-
+            <option value="other">Other</option>
           </select>
         </div>
         <div className="form-group">
@@ -55,6 +91,7 @@ const GiveFeedback = () => {
           Submit Feedback
         </button>
       </form>
+    </div>
     </div>
   );
 };

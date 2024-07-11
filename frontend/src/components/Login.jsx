@@ -47,6 +47,7 @@ const Login = () => {
     doSignInWithEmailAndPassword(email, password)
     .then((signedIn)=>{
       console.log("signed in ", signedIn);
+      localStorage.setItem("userEmail", email);
       navigate("/navbar");
     })
     .catch((error)=>{
@@ -59,6 +60,7 @@ const Login = () => {
   const signInWithGoogle = async () => {
     const signedIn = await doSignInWithGoogle();
     console.log("hello google");
+    localStorage.setItem("userEmail", email);
     if (signedIn) {
       navigate("/navbar");
     }

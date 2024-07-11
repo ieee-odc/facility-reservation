@@ -2,7 +2,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Fjalla+One&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=Noto+Serif:ital,wght@0,100..900;1,100..900&display=swap');
 .navbar-container {
     z-index: 1;
-    max-width: 1640px;
+    max-width: 2000px;
     margin: 0 auto;
     display: flex;
     justify-content: space-between;
