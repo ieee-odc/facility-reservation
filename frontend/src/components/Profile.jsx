@@ -1,6 +1,6 @@
 import React, { useState } from "react";
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faCheck, faX} from '@fortawesome/free-solid-svg-icons'
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faCheck, faX } from "@fortawesome/free-solid-svg-icons";
 import {
   BarChart,
   Bar,
@@ -83,215 +83,224 @@ const Profile = () => {
 
   return (
     <div>
-     <Navbar/>
-    
-    <div className="profile-container">
-      <div className="profile-banner">
-        <div className="banner-img">
-          <img src={banner} alt="Profile Banner" />
+      <Navbar />
+
+      <div className="profile-container">
+        <div className="profile-banner">
+          <div className="banner-img">
+            <img src={banner} alt="Profile Banner" />
+          </div>
         </div>
-      </div>
-      <div className="profile-main">
-    
-        <div className="main-content">
-          <div className="sidebar">
-            <button className="manage-account">Manage your account</button>
-            <div className="sidebar-content">
-              <div className="about">
-                <h3>About</h3>
-                <div className="about-content">
-                  <div>
-                    <img src={mallette} alt="Nature" className="icon" />
-                    {editingField === "nature" ? (
-                      <div className="edited-input">
-                        <input
-                          name="nature"
-                          value={fieldValues["nature"]}
-                          onChange={handleFieldChange}
-                        />
-                        <div className="interaction-buttons">
-                          <button onClick={handleApprove}><FontAwesomeIcon icon={faCheck} /></button>
-                          <button onClick={handleCancel}><FontAwesomeIcon icon={faX} /></button>
+        <div className="profile-main">
+            <div className="profile-img">
+              <img src={logo} alt="Profile" />
+            </div>
+          <div className="main-content">
+            <div className="sidebar">
+              <button className="manage-account">Manage your account</button>
+              <div className="sidebar-content">
+                <div className="about">
+                  <h3>About</h3>
+                  <div className="about-content">
+                    <div>
+                      <img src={mallette} alt="Nature" className="icon" />
+                      {editingField === "nature" ? (
+                        <div className="edited-input">
+                          <input
+                            name="nature"
+                            value={fieldValues["nature"]}
+                            onChange={handleFieldChange}
+                          />
+                          <div className="interaction-buttons">
+                            <button onClick={handleApprove}>
+                              <FontAwesomeIcon icon={faCheck} />
+                            </button>
+                            <button onClick={handleCancel}>
+                              <FontAwesomeIcon icon={faX} />
+                            </button>
+                          </div>
                         </div>
-                      </div>
-                    ) : (
-                      <p onClick={() => handleEdit("nature")}>
-                        {fieldValues["nature"]}
-                      </p>
-                    )}
-                  </div>
-                  <div>
-                    <img src={organisation} alt="Nature" className="icon" />
-                    <p>Service</p>
-                  </div>
-                  <div>
-                    <img src={batiment} alt="Nature" className="icon" />
-                    <p>Organisation</p>
+                      ) : (
+                        <p onClick={() => handleEdit("nature")}>
+                          {fieldValues["nature"]}
+                        </p>
+                      )}
+                    </div>
+                    <div>
+                      <img src={organisation} alt="Nature" className="icon" />
+                      <p>Service</p>
+                    </div>
+                    <div>
+                      <img src={batiment} alt="Nature" className="icon" />
+                      <p>Organisation</p>
+                    </div>
                   </div>
                 </div>
-              </div>
-              <div className="contact">
-                <h3>Contact</h3>
-                <div className="contact-content">
-                  <div>
-                    <img src={email} alt="Nature" className="icon" />
-                    <p>Email</p>
-                  </div>
-                  <div>
-                    <img src={iphone} alt="Nature" className="icon" />
-                    <p>Phone number</p>
-                  </div>
-                  <div>
-                    <img src={utilisateur} alt="Nature" className="icon" />
-                    <p>Manager</p>
+                <div className="contact">
+                  <h3>Contact</h3>
+                  <div className="contact-content">
+                    <div>
+                      <img src={email} alt="Nature" className="icon" />
+                      <p>Email</p>
+                    </div>
+                    <div>
+                      <img src={iphone} alt="Nature" className="icon" />
+                      <p>Phone number</p>
+                    </div>
+                    <div>
+                      <img src={utilisateur} alt="Nature" className="icon" />
+                      <p>Manager</p>
+                    </div>
                   </div>
                 </div>
               </div>
             </div>
-          </div>
-          <div className="content">
-            <div className="tabs">
-              <button
-                className={`tab ${activeTab === "Overview" ? "active" : ""}`}
-                onClick={() => setActiveTab("Overview")}
-              >
-                Overview
-              </button>
-              <button
-                className={`tab ${activeTab === "Vis-à-vis" ? "active" : ""}`}
-                onClick={() => setActiveTab("Vis-à-vis")}
-              >
-                Vis-à-vis
-              </button>
-              {/*<button
+            <div className="content">
+              <div className="tabs">
+                <button
+                  className={`tab ${activeTab === "Overview" ? "active" : ""}`}
+                  onClick={() => setActiveTab("Overview")}
+                >
+                  Overview
+                </button>
+                <button
+                  className={`tab ${activeTab === "Vis-à-vis" ? "active" : ""}`}
+                  onClick={() => setActiveTab("Vis-à-vis")}
+                >
+                  Vis-à-vis
+                </button>
+                {/*<button
                 className={`tab ${activeTab === "Bio" ? "active" : ""}`}
                 onClick={() => setActiveTab("Bio")}
               >
                 Bio
               </button>*/}
-            </div>
-            {activeTab === "Overview" && (
-              <div>
-                <div className="overview">
-                  <div className="event-list">
-                    <h3>Event List</h3>
-                    <div className="event-items">
-                      <ul>
-                        {dataAttendance.map((data) => (
-                          <li key={data.name}>{data.name}</li>
-                        ))}
-                      </ul>
+              </div>
+              {activeTab === "Overview" && (
+                <div>
+                  <div className="overview">
+                    <div className="event-list">
+                      <h3>Event List</h3>
+                      <div className="event-items">
+                        <ul>
+                          {dataAttendance.map((data) => (
+                            <li key={data.name}>{data.name}</li>
+                          ))}
+                        </ul>
+                      </div>
+                    </div>
+                    <div className="most-requested-facilities">
+                      <h3>Most Requested Facilities</h3>
+                      <div className="chart">
+                        <ResponsiveContainer width="95%" height={200}>
+                          <BarChart data={dataFacilities}>
+                            {/*<CartesianGrid strokeDasharray="3 3" /> */}
+                            <XAxis dataKey="name" />
+                            <YAxis />
+                            <Tooltip />
+                            <Bar dataKey="count" fill="#346beb" />
+                          </BarChart>
+                        </ResponsiveContainer>
+                      </div>
                     </div>
                   </div>
-                  <div className="most-requested-facilities">
-                    <h3>Most Requested Facilities</h3>
+                  <div className="attendance-per-event">
+                    <h3>Attendance per event</h3>
                     <div className="chart">
                       <ResponsiveContainer width="95%" height={200}>
-                        <BarChart data={dataFacilities}>
-                          {/*<CartesianGrid strokeDasharray="3 3" /> */}
+                        <LineChart className="line-chart" data={dataAttendance}>
+                          {/*<CartesianGrid strokeDasharray="3 3" />{" "}
+                       i may get rid of this */}
                           <XAxis dataKey="name" />
                           <YAxis />
                           <Tooltip />
-                          <Bar dataKey="count" fill="#346beb" />
-                        </BarChart>
+                          <Line
+                            type="monotone"
+                            dataKey="attendees"
+                            stroke="#346beb"
+                          />
+                        </LineChart>
                       </ResponsiveContainer>
                     </div>
                   </div>
                 </div>
-                <div className="attendance-per-event">
-                  <h3>Attendance per event</h3>
-                  <div className="chart">
-                    <ResponsiveContainer width="95%" height={200}>
-                      <LineChart className="line-chart" data={dataAttendance}>
-                        {/*<CartesianGrid strokeDasharray="3 3" />{" "}
-                       i may get rid of this */}
-                        <XAxis dataKey="name" />
-                        <YAxis />
-                        <Tooltip />
-                        <Line
-                          type="monotone"
-                          dataKey="attendees"
-                          stroke="#346beb"
+              )}
+              {activeTab === "Vis-à-vis" && (
+                <div className="vis-a-vis">
+                  <h3>Our representents</h3>
+                  <div className="vav-content">
+                    <img src={plus} alt="Nature" className="add-person-icon" />
+                    <div className="vav-person">
+                      <img
+                        src={manager1}
+                        alt="manager1"
+                        className="person-picture"
+                      />
+                      <div className="basic-info">
+                        <p className="info-names">FirstName LastName</p>
+                        <p className="info-position">Position</p>
+                      </div>
+                      <div className="more-info">
+                        <p className="info-email">
+                          firstname.lastname@gmail.com
+                        </p>
+                        <p className="info-phone">Phone Number</p>
+                      </div>
+                      <div className="person-interaction">
+                        <img
+                          src={pen}
+                          alt="Nature"
+                          className="edit-person-icon"
                         />
-                      </LineChart>
-                    </ResponsiveContainer>
-                  </div>
-                </div>
-              </div>
-              
-            )}
-            {activeTab === "Vis-à-vis" && (
-              <div className="vis-a-vis">
-                <h3>Our representents</h3>
-                <div className="vav-content">
-                  <img src={plus} alt="Nature" className="add-person-icon" />
-                  <div className="vav-person">
-                    <img
-                      src={manager1}
-                      alt="manager1"
-                      className="person-picture"
-                    />
-                    <div className="basic-info">
-                      <p className="info-names">FirstName LastName</p>
-                      <p className="info-position">Position</p>
+                        <img
+                          src={trash}
+                          alt="Nature"
+                          className="delete-person-icon"
+                        />
+                      </div>
                     </div>
-                    <div className="more-info">
-                      <p className="info-email">firstname.lastname@gmail.com</p>
-                      <p className="info-phone">Phone Number</p>
-                    </div>
-                    <div className="person-interaction">
+                    <div className="vav-person">
                       <img
-                        src={pen}
-                        alt="Nature"
-                        className="edit-person-icon"
+                        src={manager2}
+                        alt="manager2"
+                        className="person-picture"
                       />
-                      <img
-                        src={trash}
-                        alt="Nature"
-                        className="delete-person-icon"
-                      />
-                    </div>
-                  </div>
-                  <div className="vav-person">
-                    <img
-                      src={manager2}
-                      alt="manager2"
-                      className="person-picture"
-                    />
-                    <div className="basic-info">
-                      <p className="info-names">FirstName LastName</p>
-                      <p className="info-position">Position</p>
-                    </div>
-                    <div className="more-info">
-                      <p className="info-email">firstname.lastname@gmail.com</p>
-                      <p className="info-phone">Phone Number</p>
-                    </div>
-                    <div className="person-interaction">
-                      <img
-                        src={pen}
-                        alt="Nature"
-                        className="edit-person-icon"
-                      />
-                      <img
-                        src={trash}
-                        alt="Nature"
-                        className="delete-person-icon"
-                      />
+                      <div className="basic-info">
+                        <p className="info-names">FirstName LastName</p>
+                        <p className="info-position">Position</p>
+                      </div>
+                      <div className="more-info">
+                        <p className="info-email">
+                          firstname.lastname@gmail.com
+                        </p>
+                        <p className="info-phone">Phone Number</p>
+                      </div>
+                      <div className="person-interaction">
+                        <img
+                          src={pen}
+                          alt="Nature"
+                          className="edit-person-icon"
+                        />
+                        <img
+                          src={trash}
+                          alt="Nature"
+                          className="delete-person-icon"
+                        />
+                      </div>
                     </div>
                   </div>
                 </div>
-              </div>
-            )}
-            {/*activeTab === "Bio" && (
+              )}
+              {/*activeTab === "Bio" && (
               <div className="bio">
                 <h3>Bio Content</h3>
                 <p>hello from the bio</p>
               </div>
             )*/}
+            </div>
           </div>
         </div>
       </div>
-    </div>
     </div>
   );
 };
