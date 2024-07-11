@@ -197,20 +197,32 @@ margin-right: 20px;
     position: relative;
     display: flex;
     align-items: center;
-    gap: 15px; /* Adjust the gap as needed */
+    gap: 15px;
 }
 
 .profile-card {
     position: absolute;
-    top: 40px; /* Adjust to place the card under the icons */
+    top: 40px; 
     right: 0;
     background-color: white;
     border: 1px solid #ddd;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    width: auto;
+    width:300px ;
     padding: 10px;
     z-index: 1000;
     border-radius: 5px;
+}
+.settings-card {
+  position: absolute;
+  top: 40px; 
+  right: 0;
+  background-color: white;
+  border: 1px solid #ddd;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  width:300px ;
+  padding: 10px;
+  z-index: 1000;
+  border-radius: 5px;
 }
 
 .profile-card-header {

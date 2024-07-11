@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { AiOutlineMenu, AiOutlineClose } from "react-icons/ai";
 import { BsFillCartFill } from "react-icons/bs";
-import { IoMdSettings, IoMdNotifications } from "react-icons/io";
+import { IoMdSettings, IoMdNotifications, IoMdLock, IoMdMoon, IoMdGlobe } from "react-icons/io";
 import { SlNote } from "react-icons/sl";
 import logo from '../assets/logo_c.png';
 import { CiLogout } from "react-icons/ci";
@@ -17,10 +17,10 @@ import Profile from "./Profile";
 const Navbar = () => {
   const [nav, setNav] = useState(false);
   const [showProfileCard, setShowProfileCard] = useState(false);
+  const [showSettingsCard, setShowSettingsCard] = useState(false);
   const [userDetails, setUserDetails] = useState({});
   const navigate = useNavigate();
   const email = localStorage.getItem('userEmail');
-
 
   useEffect(() => {
     const fetchUserDetails = async () => {
@@ -42,28 +42,33 @@ const Navbar = () => {
     console.log("signed out");
     navigate("/login");
   };
+
   const feedback = async () => {
-   
     navigate("/feedback");
   };
-  const profile= async () => {
-   
+
+  const profile = async () => {
     navigate("/profile");
   };
+  const toggleSettingsCard = () => {
+    setShowSettingsCard(!showSettingsCard);
+  };
+
 
   const menuItems = [
     { icon: <FaHome size={25} className="mr-4" />, text: "Dashboard" },
     { icon: <FaCalendarAlt size={25} className="mr-4" />, text: "Calendar" },
     { icon: <SlNote size={25} className="mr-4" />, text: "Reservation" },
-    { icon: <FaUserEdit size={25} className="mr-4" />, text: "Profile" ,handleClick : profile},
+    { icon: <FaUserEdit size={25} className="mr-4" />, text: "Profile", handleClick: profile },
     { icon: <CiLogout size={25} className="mr-4" />, text: "Logout", handleClick: Logout },
-    { icon: <IoMdSettings size={25} className="mr-4" />, text: "Settings" },
+    { icon: <IoMdSettings size={25} className="mr-4" />, text: "Settings", handleClick: toggleSettingsCard },
   ];
 
   const toggleProfileCard = () => {
     setShowProfileCard(!showProfileCard);
   };
 
+ 
   return (
     <div className="navbar-container">
       {/* Left side */}
@@ -78,7 +83,7 @@ const Navbar = () => {
       </div>
 
       <div className="profile-icons">
-        <IoMdSettings size={30} />
+        <IoMdSettings size={30} onClick={toggleSettingsCard} />
         <IoMdNotifications size={30} />
         <FaRegUserCircle size={30} onClick={toggleProfileCard} />
         {showProfileCard && (
@@ -99,6 +104,27 @@ const Navbar = () => {
 
               <button className="profile-card-button" onClick={Logout}>
                 <BiSolidLogOut className="button-icon" size={15} /> Logout
+              </button>
+            </div>
+          </div>
+        )}
+        {showSettingsCard && (
+          <div className="settings-card">
+            <div className="profile-card-header">
+              <IoMdSettings size={50} />
+              <h3>Settings</h3>
+            </div>
+            <div className="profile-card-body">
+              <button className="profile-card-button">
+                <IoMdLock className="button-icon" size={15} /> Change Password
+              </button>
+
+              <button className="profile-card-button">
+                <IoMdMoon className="button-icon" size={15} /> Switch Mode
+              </button>
+
+              <button className="profile-card-button">
+                <IoMdGlobe className="button-icon" size={15} /> Language
               </button>
             </div>
           </div>
