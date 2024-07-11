@@ -1,4 +1,6 @@
 import React, { useState } from "react";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faCheck, faX} from '@fortawesome/free-solid-svg-icons'
 import {
   BarChart,
   Bar,
@@ -47,6 +49,37 @@ const dataAttendance = [
 
 const Profile = () => {
   const [activeTab, setActiveTab] = useState("Overview");
+  //added
+  const [editingField, setEditingField] = useState(null);
+  const [fieldValues, setFieldValues] = useState({
+    nature: "Club",
+    service: "Service",
+    organisation: "Organisation",
+    email: "email@example.com",
+    phoneNumber: "123-456-7890",
+    manager: "Manager Name",
+  });
+
+  const handleEdit = (field) => {
+    setEditingField(field);
+  };
+
+  const handleFieldChange = (e) => {
+    const { name, value } = e.target;
+    setFieldValues({
+      ...fieldValues,
+      [name]: value,
+    });
+  };
+
+  const handleCancel = () => {
+    setEditingField(null);
+  };
+
+  const handleApprove = () => {
+    // Add your save logic here
+    setEditingField(null);
+  };
 
   return (
     <div className="profile-container">
@@ -68,7 +101,23 @@ const Profile = () => {
                 <div className="about-content">
                   <div>
                     <img src={mallette} alt="Nature" className="icon" />
-                    <p>Nature (eg. Club)</p>
+                    {editingField === "nature" ? (
+                      <div className="edited-input">
+                        <input
+                          name="nature"
+                          value={fieldValues["nature"]}
+                          onChange={handleFieldChange}
+                        />
+                        <div className="interaction-buttons">
+                          <button onClick={handleApprove}><FontAwesomeIcon icon={faCheck} /></button>
+                          <button onClick={handleCancel}><FontAwesomeIcon icon={faX} /></button>
+                        </div>
+                      </div>
+                    ) : (
+                      <p onClick={() => handleEdit("nature")}>
+                        {fieldValues["nature"]}
+                      </p>
+                    )}
                   </div>
                   <div>
                     <img src={organisation} alt="Nature" className="icon" />
@@ -173,13 +222,13 @@ const Profile = () => {
               <div className="vis-a-vis">
                 <h3>Our representents</h3>
                 <div className="vav-content">
-                  <img
-                    src={plus}
-                    alt="Nature"
-                    className="add-person-icon"
-                  />
+                  <img src={plus} alt="Nature" className="add-person-icon" />
                   <div className="vav-person">
-                    <img src={manager1} alt="manager1" className="person-picture"/>
+                    <img
+                      src={manager1}
+                      alt="manager1"
+                      className="person-picture"
+                    />
                     <div className="basic-info">
                       <p className="info-names">FirstName LastName</p>
                       <p className="info-position">Position</p>
@@ -189,12 +238,24 @@ const Profile = () => {
                       <p className="info-phone">Phone Number</p>
                     </div>
                     <div className="person-interaction">
-                      <img src={pen} alt="Nature" className="edit-person-icon" />
-                      <img src={trash} alt="Nature" className="delete-person-icon" />
+                      <img
+                        src={pen}
+                        alt="Nature"
+                        className="edit-person-icon"
+                      />
+                      <img
+                        src={trash}
+                        alt="Nature"
+                        className="delete-person-icon"
+                      />
                     </div>
                   </div>
                   <div className="vav-person">
-                    <img src={manager2} alt="manager2" className="person-picture"/>
+                    <img
+                      src={manager2}
+                      alt="manager2"
+                      className="person-picture"
+                    />
                     <div className="basic-info">
                       <p className="info-names">FirstName LastName</p>
                       <p className="info-position">Position</p>
@@ -204,8 +265,16 @@ const Profile = () => {
                       <p className="info-phone">Phone Number</p>
                     </div>
                     <div className="person-interaction">
-                      <img src={pen} alt="Nature" className="edit-person-icon" />
-                      <img src={trash} alt="Nature" className="delete-person-icon" />
+                      <img
+                        src={pen}
+                        alt="Nature"
+                        className="edit-person-icon"
+                      />
+                      <img
+                        src={trash}
+                        alt="Nature"
+                        className="delete-person-icon"
+                      />
                     </div>
                   </div>
                 </div>
