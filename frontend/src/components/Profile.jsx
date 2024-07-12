@@ -12,7 +12,7 @@ import {
   Line,
   ResponsiveContainer,
 } from "recharts";
-import logo from "./../assets/acm.png";
+import logo from "./../assets/ieee.webp";
 import banner from "./../assets/transparent.png";
 import "./Profile.css";
 import Navbar from "./navbar";

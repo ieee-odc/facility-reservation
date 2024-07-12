@@ -1,7 +1,7 @@
-import Responsible from "../models/ResponsibleModel.js";
+import Responsible from "../models/responsibleModel.js";
 
 export const createResponsible = async (req, res) => {
-  const { fullname, contactEmail, contactPhoneNumber } = req.body;
+  const { fullname, contactEmail, contactPhoneNumber, role } = req.body;
 
   try {
     const existingResponsible = await Responsible.findOne({ contactEmail });
@@ -9,14 +9,15 @@ export const createResponsible = async (req, res) => {
       return res.status(400).json({ message: 'Responsible already exists' });
     }
 
-    const newResponsible = new Responsible({
+    const newResponsible = await Responsible.create({
       fullname,
       contactEmail,
       contactPhoneNumber,
+      role
     });
 
-    const savedResponsible = await newResponsible.save();
-    return res.status(201).json(savedResponsible);
+    //const savedResponsible = await newResponsible.save();
+    return res.status(201).json(newResponsible);
   } catch (error) {
     res.status(500).json({ message: 'Error creating responsible', error });
   }
