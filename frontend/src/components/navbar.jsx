@@ -9,6 +9,10 @@ import { MdFeedback } from "react-icons/md";
 import { BiSolidLogOut } from "react-icons/bi";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { doSignOut } from "../config/auth";
+import { FiBell } from "react-icons/fi";
+import { LuSettings } from "react-icons/lu";
+
+
 import { FaRegUserCircle, FaCalendarAlt, FaUserEdit, FaHome } from "react-icons/fa";
 import "./navbar.css";
 import axios from 'axios';
@@ -74,24 +78,23 @@ const Navbar = () => {
       {/* Left side */}
       <div className="navbar-left">
         <div onClick={() => setNav(!nav)} className="navbar-toggle">
-          <AiOutlineMenu size={25} />
+          <AiOutlineMenu size={30} />
         </div>
 
-        <h1 className="navbar-logo text-2xl sm:navbar-logo-sm lg:navbar-logo-lg">
-          <span className="font-bold">EASY</span>
-        </h1>
+       
       </div>
 
       <div className="profile-icons">
-        <IoMdSettings size={30} onClick={toggleSettingsCard} />
-        <IoMdNotifications size={30} />
-        <FaRegUserCircle size={30} onClick={toggleProfileCard} />
+      <LuSettings 
+      size={35} onClick={toggleSettingsCard} />
+        <FiBell size={35} />
+        <FaRegUserCircle size={35} onClick={toggleProfileCard} />
         {showProfileCard && (
           <div className="profile-card">
             <div className="profile-card-header">
               <FaRegUserCircle size={50} />
               <h3>{userDetails.name}</h3>
-              <p className="email">{email}</p>
+              <p  className="email card-title">{email}</p>
             </div>
             <div className="profile-card-body">
               <button className="profile-card-button" onClick={profile}>
@@ -111,8 +114,8 @@ const Navbar = () => {
         {showSettingsCard && (
           <div className="settings-card">
             <div className="profile-card-header">
-              <IoMdSettings size={50} />
-              <h3>Settings</h3>
+              <LuSettings  size={50} />
+              <h3 className="card-title">Settings</h3>
             </div>
             <div className="profile-card-body">
               <button className="profile-card-button">
