@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { AiOutlineMenu, AiOutlineClose } from "react-icons/ai";
 import { BsFillCartFill } from "react-icons/bs";
 import { IoMdSettings, IoMdNotifications, IoMdLock, IoMdMoon, IoMdGlobe } from "react-icons/io";
@@ -11,12 +11,24 @@ import { Link, useLocation, useNavigate } from "react-router-dom";
 import { doSignOut } from "../config/auth";
 import { FiBell } from "react-icons/fi";
 import { LuSettings } from "react-icons/lu";
-
-
 import { FaRegUserCircle, FaCalendarAlt, FaUserEdit, FaHome } from "react-icons/fa";
 import "./navbar.css";
 import axios from 'axios';
-import Profile from "./Profile";
+import logoutIcon from '../assets/signout.png';
+
+import settings from '../assets/settings.png';
+import profileIcon from '../assets/profile.png';
+import reservationIcon from '../assets/reservation.png';
+import calendarIcon from '../assets/calendar.png';
+import homeIcon from '../assets/home.png';
+import bellIcon from '../assets/notifications.png';
+
+
+
+
+
+
+
 
 const Navbar = () => {
   const [nav, setNav] = useState(false);
@@ -25,12 +37,15 @@ const Navbar = () => {
   const [userDetails, setUserDetails] = useState({});
   const navigate = useNavigate();
   const email = localStorage.getItem('userEmail');
+  
+  const profileCardRef = useRef(null);
+  const settingsCardRef = useRef(null);
 
   useEffect(() => {
     const fetchUserDetails = async () => {
       if (email) {
         try {
-          const response = await axios.get(`/api/reservationInitiators/by-email`, { params: { email } });
+          const response = await axios.get('/api/reservationInitiators/by-email', { params: { email } });
           setUserDetails(response.data);
         } catch (error) {
           console.error('Error fetching user details:', error);
@@ -39,6 +54,22 @@ const Navbar = () => {
     };
 
     fetchUserDetails();
+  }, [email]);
+
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (profileCardRef.current && !profileCardRef.current.contains(event.target)) {
+        setShowProfileCard(false);
+      }
+      if (settingsCardRef.current && !settingsCardRef.current.contains(event.target)) {
+        setShowSettingsCard(false);
+      }
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
   }, []);
 
   const Logout = async () => {
@@ -54,25 +85,24 @@ const Navbar = () => {
   const profile = async () => {
     navigate("/profile");
   };
+
   const toggleSettingsCard = () => {
     setShowSettingsCard(!showSettingsCard);
   };
-
-
-  const menuItems = [
-    { icon: <FaHome size={25} className="mr-4" />, text: "Dashboard" },
-    { icon: <FaCalendarAlt size={25} className="mr-4" />, text: "Calendar" },
-    { icon: <SlNote size={25} className="mr-4" />, text: "Reservation" },
-    { icon: <FaUserEdit size={25} className="mr-4" />, text: "Profile", handleClick: profile },
-    { icon: <CiLogout size={25} className="mr-4" />, text: "Logout", handleClick: Logout },
-    { icon: <IoMdSettings size={25} className="mr-4" />, text: "Settings", handleClick: toggleSettingsCard },
-  ];
 
   const toggleProfileCard = () => {
     setShowProfileCard(!showProfileCard);
   };
 
- 
+  const menuItems = [
+    { icon: <img src={homeIcon} alt="home Icon" style={{ width: '30px', height: '30px'  }} />, text: "Dashboard"},
+    { icon: <img src={calendarIcon} alt="calendar Icon" style={{ width: '30px', height: '30px' }} />, text: "Calendar"},
+    { icon: <img src={reservationIcon} alt="reservation Icon" style={{ width: '30px', height: '30px' }} />, text: "Reservation"},
+    { icon: <img src={profileIcon} alt="Profile Icon" style={{ width: '30px', height: '30px' }} />, text: "Profile", handleClick: profile },
+    { icon: <img src={logoutIcon} alt="Logout Icon" style={{ width: '30px', height: '30px' }} />, text: "Logout", handleClick: Logout },
+    { icon: <img src={settings} alt="settings Icon" style={{ width: '30px', height: '30px' }} />, text: "Settings"},
+  ];
+
   return (
     <div className="navbar-container">
       {/* Left side */}
@@ -80,21 +110,18 @@ const Navbar = () => {
         <div onClick={() => setNav(!nav)} className="navbar-toggle">
           <AiOutlineMenu size={30} />
         </div>
-
-       
       </div>
 
       <div className="profile-icons">
-      <LuSettings 
-      size={35} onClick={toggleSettingsCard} />
-        <FiBell size={35} />
-        <FaRegUserCircle size={35} onClick={toggleProfileCard} />
+  <img src={settings} alt="settings" style={{ width: '34px', height: '34px' }} onClick={toggleSettingsCard} />
+      <img src={bellIcon} alt="notifications" style={{ width: '34px', height: '34px' }}  />
+        <img src={profileIcon} alt="User" style={{ width: '34px', height: '34px' }} onClick={toggleProfileCard} />
         {showProfileCard && (
-          <div className="profile-card">
+          <div ref={profileCardRef} className="profile-card">
             <div className="profile-card-header">
               <FaRegUserCircle size={50} />
               <h3>{userDetails.name}</h3>
-              <p  className="email card-title">{email}</p>
+              <p className="email card-title">{email}</p>
             </div>
             <div className="profile-card-body">
               <button className="profile-card-button" onClick={profile}>
@@ -106,15 +133,15 @@ const Navbar = () => {
               </button>
 
               <button className="profile-card-button" onClick={Logout}>
-                <BiSolidLogOut className="button-icon" size={15} /> Logout
+                <img src={logoutIcon} alt="Logout Icon" className="button-icon" style={{ width: '20px', height: '20px' }} /> Logout
               </button>
             </div>
           </div>
         )}
         {showSettingsCard && (
-          <div className="settings-card">
+          <div ref={settingsCardRef} className="settings-card">
             <div className="profile-card-header">
-              <LuSettings  size={50} />
+              <LuSettings size={50} />
               <h3 className="card-title">Settings</h3>
             </div>
             <div className="profile-card-body">
