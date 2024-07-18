@@ -22,12 +22,24 @@ import reservationIcon from '../assets/reservation.png';
 import calendarIcon from '../assets/calendar.png';
 import homeIcon from '../assets/home.png';
 import bellIcon from '../assets/notifications.png';
+import feedbackIcon from '../assets/feedback.png';
+import lockIcon from '../assets/lock.png';
+import languageIcon from '../assets/language.png';
+import modeIcon from '../assets/mode.png';
 
 
 
 
 
 
+window.addEventListener('scroll', function() {
+  var navbar = document.querySelector('.navbar-container');
+  if (window.scrollY > 0) {
+    navbar.classList.add('sticky');
+  } else {
+    navbar.classList.remove('sticky');
+  }
+});
 
 
 const Navbar = () => {
@@ -121,40 +133,42 @@ const Navbar = () => {
             <div className="profile-card-header">
               <FaRegUserCircle size={50} />
               <h3>{userDetails.name}</h3>
-              <p className="email card-title">{email}</p>
+              <p className="email-card-title">{email}</p>
             </div>
             <div className="profile-card-body">
               <button className="profile-card-button" onClick={profile}>
-                <FaUserEdit className="button-icon" size={15} /> Your Profile
+              <img src={profileIcon} alt="profile Icon" className="button-icon" /> Your profile
               </button>
 
               <button className="profile-card-button" onClick={feedback}>
-                <MdFeedback className="button-icon" size={15} /> Give feedback
+              <img src={feedbackIcon} alt="feedback Icon" className="button-icon" /> Give feedback
               </button>
 
               <button className="profile-card-button" onClick={Logout}>
-                <img src={logoutIcon} alt="Logout Icon" className="button-icon" style={{ width: '20px', height: '20px' }} /> Logout
+                <img src={logoutIcon} alt="Logout Icon" className="button-icon"  /> Logout
               </button>
             </div>
           </div>
         )}
         {showSettingsCard && (
-          <div ref={settingsCardRef} className="settings-card">
+          <div ref={settingsCardRef} className="profile-card">
             <div className="profile-card-header">
-              <LuSettings size={50} />
-              <h3 className="card-title">Settings</h3>
+            <img src={settings} alt="settings Icon" className="button-icon" style={{ width: '70px', height: '70px' }} /> 
+            <h3 className="card-title">Settings</h3>
             </div>
             <div className="profile-card-body">
               <button className="profile-card-button">
-                <IoMdLock className="button-icon" size={15} /> Change Password
+              <img src={lockIcon} alt="lock Icon" className="button-icon"  /> Change password
               </button>
 
               <button className="profile-card-button">
-                <IoMdMoon className="button-icon" size={15} /> Switch Mode
+              <img src={modeIcon} alt="mode Icon" className="button-icon"/> 
+              Switch Mode
               </button>
 
               <button className="profile-card-button">
-                <IoMdGlobe className="button-icon" size={15} /> Language
+              <img src={languageIcon} alt="language Icon" className="button-icon" /> 
+                Language
               </button>
             </div>
           </div>
