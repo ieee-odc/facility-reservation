@@ -1,12 +1,12 @@
 import React, { useState } from "react";
-import trash from "./../assets/icons/trash.png";
 import plus from "./../assets/icons/plus.png";
-import pen from "./../assets/icons/pen.png";
+import edit from "./../assets/edit.png";
 import manager1 from "./../assets/manager/manager1.png";
 import manager2 from "./../assets/manager/manager2.png";
 import Modal from "./Modal";
 import DeleteModal from "./DeleteModal";
 import "./Modal.css";
+import deleteIcon from "./../assets/delete.png";
 
 const Vav = () => {
   const [showModal, setShowModal] = useState(false);
@@ -74,7 +74,7 @@ const Vav = () => {
             </div>
             <div className="person-interaction">
               <img
-                src={pen}
+                src={edit}
                 alt="Edit"
                 className="edit-person-icon"
                 onClick={() => {
@@ -83,7 +83,7 @@ const Vav = () => {
                 }}
               />
               <img
-                src={trash}
+                src={deleteIcon}
                 alt="Delete"
                 className="delete-person-icon"
                 onClick={() => handleDeleteClick(rep)}
