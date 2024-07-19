@@ -140,16 +140,52 @@ const Login = () => {
         </div>
       </div>
       <div className="login-right-side">
-        <h3>Welcome to EASY</h3>
-        <p>
-          Our mission is to simplify your life with our innovative solutions.
-        </p>
-        <blockquote>
-          "EASY has transformed the way we handle our daily tasks. It's truly a
-          game-changer!"
-          <footer>— Happy Customer</footer>
-        </blockquote>
-      </div>
+  <h3>Welcome to EASY</h3>
+  <p>Discover the benefits of using our innovative facility reservation system:</p>
+  <ul className="benefits-list">
+    <li>
+      <span className="checkmark">
+        <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24">
+          <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m15 10l-4 4l-2-2m3 9a9 9 0 1 1 0-18a9 9 0 0 1 0 18"></path>
+        </svg>
+      </span>
+      Easy online reservations
+    </li>
+    <li>
+      <span className="checkmark">
+        <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24">
+          <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m15 10l-4 4l-2-2m3 9a9 9 0 1 1 0-18a9 9 0 0 1 0 18"></path>
+        </svg>
+      </span>
+      Real-time availability updates
+    </li>
+    <li>
+      <span className="checkmark">
+        <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24">
+          <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m15 10l-4 4l-2-2m3 9a9 9 0 1 1 0-18a9 9 0 0 1 0 18"></path>
+        </svg>
+      </span>
+      User-friendly interface
+    </li>
+    <li>
+      <span className="checkmark">
+        <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24">
+          <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m15 10l-4 4l-2-2m3 9a9 9 0 1 1 0-18a9 9 0 0 1 0 18"></path>
+        </svg>
+      </span>
+      Notifications for upcoming reservations
+    </li>
+    <li>
+      <span className="checkmark">
+        <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24">
+          <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m15 10l-4 4l-2-2m3 9a9 9 0 1 1 0-18a9 9 0 0 1 0 18"></path>
+        </svg>
+      </span>
+      Secure and reliable
+    </li>
+  </ul>
+</div>
+
     </div>
   );
 };

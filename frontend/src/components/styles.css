@@ -224,8 +224,8 @@ button.social-login.microsoft {
 
 
 
- /* background: linear-gradient(to bottom, #ff7e5f, #feb47b);*/
- background: linear-gradient(to bottom,#95d7e4, #10c1df 48.39%, #174fb0);
+  background: linear-gradient(to bottom,#95d7e4, #10c1df 48.39%, #1b5bc9);
+  /* background: linear-gradient(to bottom, #ff7e5f, #feb47b);*/
   color: white; /* Text color */
   text-align: center; /* Center align text */
   display: flex;
@@ -258,6 +258,47 @@ button.social-login.microsoft {
   margin-top: 10px;
   font-size: 14px;
   color: rgba(255, 255, 255, 0.7); /* Lighter text color for footer */
+}
+
+
+/* here 2*/
+/* Styling for the right-side content */
+
+
+.login-right-side h3 {
+  font-size: 24px;
+  margin-bottom: 10px;
+}
+
+.login-right-side p {
+  font-size: 16px;
+  margin-bottom: 20px;
+}
+
+.benefits-list {
+  list-style: none;
+  padding: 0;
+  text-align: left; /* Align text to the left */
+}
+
+.benefits-list li {
+  font-size: 16px;
+  margin-bottom: 10px;
+  display: flex;
+  align-items: center;
+}
+
+.benefits-list .checkmark {
+  margin-right: 10px;
+  color: #f0f1f0; 
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.benefits-list svg {
+  width: 24px;
+  height: 24px;
 }
 
 
