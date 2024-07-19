@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
+import trash from "./../assets/icons/trash.png";
 import plus from "./../assets/icons/plus.png";
 import edit from "./../assets/edit.png";
 import manager1 from "./../assets/manager/manager1.png";
@@ -6,6 +7,7 @@ import manager2 from "./../assets/manager/manager2.png";
 import Modal from "./Modal";
 import DeleteModal from "./DeleteModal";
 import "./Modal.css";
+import axios from "axios";
 import deleteIcon from "./../assets/delete.png";
 
 const Vav = () => {
@@ -32,6 +34,20 @@ const Vav = () => {
       picture: manager2,
     },
   ]);
+
+  //const [representatives, setRepresentatives] = useState([]);
+
+  useEffect(() => {
+    axios
+      .get("http://localhost:5000/api/responsibles")
+      .then((response) => {
+        console.log("reponse", response.data);
+        //setemployees(response.data.data);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }, []);
 
   const handleDeleteClick = (rep) => {
     setSelectedRep(rep);

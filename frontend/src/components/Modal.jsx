@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import "./Modal.css"; // Ensure this is the correct path to your CSS file
+import axios from "axios";
 
 const Modal = ({ rep, onSave, onClose }) => {
   const [formData, setFormData] = useState({
@@ -23,9 +24,26 @@ const Modal = ({ rep, onSave, onClose }) => {
     setFormData({ ...formData, [name]: value });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async(e) => {
     e.preventDefault();
     onSave(formData);
+    const data = {
+      firstName: formData.firstName,
+      lastName: formData.lastName,
+      contactEmail: formData.email,
+      contactPhoneNumber: formData.phone,
+      position: formData.position,
+      picture: formData.picture || ''
+    }
+    if (!rep){
+      axios.post("http://localhost:5000/api/responsibles", data)
+      .then((resp)=>{
+        console.log(resp);
+      })
+      .catch((error)=>{
+        console.log(error);
+      })
+    }
   };
 
   return (

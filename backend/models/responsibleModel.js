@@ -1,7 +1,11 @@
 import mongoose from 'mongoose';
 
 const responsibleSchema = new mongoose.Schema({
-  fullname: {
+  firstName: {
+    type: String,
+    required: true,
+  },
+  lastName: {
     type: String,
     required: true,
   },
@@ -14,9 +18,8 @@ const responsibleSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-  role: {
-    type: String,
-    required: true,
+  position: {
+    type: String
   }
 },
 {

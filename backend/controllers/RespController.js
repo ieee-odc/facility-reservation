@@ -1,8 +1,8 @@
 import Responsible from "../models/responsibleModel.js";
 
 export const createResponsible = async (req, res) => {
-  const { fullname, contactEmail, contactPhoneNumber, role } = req.body;
-
+  const { firstName, lastName, contactEmail, contactPhoneNumber, position } = req.body;
+console.log(req.body);
   try {
     const existingResponsible = await Responsible.findOne({ contactEmail });
     if (existingResponsible) {
@@ -10,10 +10,11 @@ export const createResponsible = async (req, res) => {
     }
 
     const newResponsible = await Responsible.create({
-      fullname,
+      firstName,
+      lastName,
       contactEmail,
       contactPhoneNumber,
-      role
+      position
     });
 
     //const savedResponsible = await newResponsible.save();
