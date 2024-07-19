@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { AiOutlineMenu, AiOutlineClose } from "react-icons/ai";
 import { BsFillCartFill } from "react-icons/bs";
 import { IoMdSettings, IoMdNotifications, IoMdLock, IoMdMoon, IoMdGlobe } from "react-icons/io";
@@ -9,10 +9,38 @@ import { MdFeedback } from "react-icons/md";
 import { BiSolidLogOut } from "react-icons/bi";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { doSignOut } from "../config/auth";
+import { FiBell } from "react-icons/fi";
+import { LuSettings } from "react-icons/lu";
 import { FaRegUserCircle, FaCalendarAlt, FaUserEdit, FaHome } from "react-icons/fa";
 import "./navbar.css";
 import axios from 'axios';
-import Profile from "./Profile";
+import logoutIcon from '../assets/signout.png';
+
+import settings from '../assets/settings.png';
+import profileIcon from '../assets/profile.png';
+import reservationIcon from '../assets/reservation.png';
+import calendarIcon from '../assets/calendar.png';
+import homeIcon from '../assets/home.png';
+import bellIcon from '../assets/notifications.png';
+import feedbackIcon from '../assets/feedback.png';
+import lockIcon from '../assets/lock.png';
+import languageIcon from '../assets/language.png';
+import modeIcon from '../assets/mode.png';
+
+
+
+
+
+
+window.addEventListener('scroll', function() {
+  var navbar = document.querySelector('.navbar-container');
+  if (window.scrollY > 0) {
+    navbar.classList.add('sticky');
+  } else {
+    navbar.classList.remove('sticky');
+  }
+});
+
 
 const Navbar = () => {
   const [nav, setNav] = useState(false);
@@ -21,12 +49,15 @@ const Navbar = () => {
   const [userDetails, setUserDetails] = useState({});
   const navigate = useNavigate();
   const email = localStorage.getItem('userEmail');
+  
+  const profileCardRef = useRef(null);
+  const settingsCardRef = useRef(null);
 
   useEffect(() => {
     const fetchUserDetails = async () => {
       if (email) {
         try {
-          const response = await axios.get(`/api/reservationInitiators/by-email`, { params: { email } });
+          const response = await axios.get('/api/reservationInitiators/by-email', { params: { email } });
           setUserDetails(response.data);
         } catch (error) {
           console.error('Error fetching user details:', error);
@@ -35,6 +66,22 @@ const Navbar = () => {
     };
 
     fetchUserDetails();
+  }, [email]);
+
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (profileCardRef.current && !profileCardRef.current.contains(event.target)) {
+        setShowProfileCard(false);
+      }
+      if (settingsCardRef.current && !settingsCardRef.current.contains(event.target)) {
+        setShowSettingsCard(false);
+      }
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
   }, []);
 
   const Logout = async () => {
@@ -50,81 +97,78 @@ const Navbar = () => {
   const profile = async () => {
     navigate("/profile");
   };
+
   const toggleSettingsCard = () => {
     setShowSettingsCard(!showSettingsCard);
   };
-
-
-  const menuItems = [
-    { icon: <FaHome size={25} className="mr-4" />, text: "Dashboard" },
-    { icon: <FaCalendarAlt size={25} className="mr-4" />, text: "Calendar" },
-    { icon: <SlNote size={25} className="mr-4" />, text: "Reservation" },
-    { icon: <FaUserEdit size={25} className="mr-4" />, text: "Profile", handleClick: profile },
-    { icon: <CiLogout size={25} className="mr-4" />, text: "Logout", handleClick: Logout },
-    { icon: <IoMdSettings size={25} className="mr-4" />, text: "Settings", handleClick: toggleSettingsCard },
-  ];
 
   const toggleProfileCard = () => {
     setShowProfileCard(!showProfileCard);
   };
 
- 
+  const menuItems = [
+    { icon: <img src={homeIcon} alt="home Icon" style={{ width: '30px', height: '30px'  }} />, text: "Dashboard"},
+    { icon: <img src={calendarIcon} alt="calendar Icon" style={{ width: '30px', height: '30px' }} />, text: "Calendar"},
+    { icon: <img src={reservationIcon} alt="reservation Icon" style={{ width: '30px', height: '30px' }} />, text: "Reservation"},
+    { icon: <img src={profileIcon} alt="Profile Icon" style={{ width: '30px', height: '30px' }} />, text: "Profile", handleClick: profile },
+    { icon: <img src={logoutIcon} alt="Logout Icon" style={{ width: '30px', height: '30px' }} />, text: "Logout", handleClick: Logout },
+    { icon: <img src={settings} alt="settings Icon" style={{ width: '30px', height: '30px' }} />, text: "Settings"},
+  ];
+
   return (
     <div className="navbar-container">
       {/* Left side */}
       <div className="navbar-left">
         <div onClick={() => setNav(!nav)} className="navbar-toggle">
-          <AiOutlineMenu size={25} />
+          <AiOutlineMenu size={30} />
         </div>
-
-        <h1 className="navbar-logo text-2xl sm:navbar-logo-sm lg:navbar-logo-lg">
-          <span className="font-bold">EASY</span>
-        </h1>
       </div>
 
       <div className="profile-icons">
-        <IoMdSettings size={30} onClick={toggleSettingsCard} />
-        <IoMdNotifications size={30} />
-        <FaRegUserCircle size={30} onClick={toggleProfileCard} />
+  <img src={settings} alt="settings" style={{ width: '34px', height: '34px' }} onClick={toggleSettingsCard} />
+      <img src={bellIcon} alt="notifications" style={{ width: '34px', height: '34px' }}  />
+        <img src={profileIcon} alt="User" style={{ width: '34px', height: '34px' }} onClick={toggleProfileCard} />
         {showProfileCard && (
-          <div className="profile-card">
+          <div ref={profileCardRef} className="profile-card">
             <div className="profile-card-header">
               <FaRegUserCircle size={50} />
               <h3>{userDetails.name}</h3>
-              <p className="email">{email}</p>
+              <p className="email-card-title">{email}</p>
             </div>
             <div className="profile-card-body">
               <button className="profile-card-button" onClick={profile}>
-                <FaUserEdit className="button-icon" size={15} /> Your Profile
+              <img src={profileIcon} alt="profile Icon" className="button-icon" /> Your profile
               </button>
 
               <button className="profile-card-button" onClick={feedback}>
-                <MdFeedback className="button-icon" size={15} /> Give feedback
+              <img src={feedbackIcon} alt="feedback Icon" className="button-icon" /> Give feedback
               </button>
 
               <button className="profile-card-button" onClick={Logout}>
-                <BiSolidLogOut className="button-icon" size={15} /> Logout
+                <img src={logoutIcon} alt="Logout Icon" className="button-icon"  /> Logout
               </button>
             </div>
           </div>
         )}
         {showSettingsCard && (
-          <div className="settings-card">
+          <div ref={settingsCardRef} className="profile-card">
             <div className="profile-card-header">
-              <IoMdSettings size={50} />
-              <h3>Settings</h3>
+            <img src={settings} alt="settings Icon" className="button-icon" style={{ width: '70px', height: '70px' }} /> 
+            <h3 className="card-title">Settings</h3>
             </div>
             <div className="profile-card-body">
               <button className="profile-card-button">
-                <IoMdLock className="button-icon" size={15} /> Change Password
+              <img src={lockIcon} alt="lock Icon" className="button-icon"  /> Change password
               </button>
 
               <button className="profile-card-button">
-                <IoMdMoon className="button-icon" size={15} /> Switch Mode
+              <img src={modeIcon} alt="mode Icon" className="button-icon"/> 
+              Switch Mode
               </button>
 
               <button className="profile-card-button">
-                <IoMdGlobe className="button-icon" size={15} /> Language
+              <img src={languageIcon} alt="language Icon" className="button-icon" /> 
+                Language
               </button>
             </div>
           </div>
