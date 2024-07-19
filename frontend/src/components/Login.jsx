@@ -85,7 +85,7 @@ const Login = () => {
               </button>
             </div>
           )}
-          <h2>Login to EASY</h2>
+          <h2>Welcome to FlexiSpace</h2>
           <div className="form-container">
             <div className="inputs-container">
               <div className="input-container">
