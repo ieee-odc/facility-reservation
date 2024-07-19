@@ -15,7 +15,6 @@ import { FaRegUserCircle, FaCalendarAlt, FaUserEdit, FaHome } from "react-icons/
 import "./navbar.css";
 import axios from 'axios';
 import logoutIcon from '../assets/signout.png';
-
 import settings from '../assets/settings.png';
 import profileIcon from '../assets/profile.png';
 import reservationIcon from '../assets/reservation.png';
@@ -26,11 +25,7 @@ import feedbackIcon from '../assets/feedback.png';
 import lockIcon from '../assets/lock.png';
 import languageIcon from '../assets/language.png';
 import modeIcon from '../assets/mode.png';
-
-
-
-
-
+import ChangePasswordModal from './ChangePasswordModal'; // Import the ChangePasswordModal component
 
 window.addEventListener('scroll', function() {
   var navbar = document.querySelector('.navbar-container');
@@ -41,11 +36,11 @@ window.addEventListener('scroll', function() {
   }
 });
 
-
 const Navbar = () => {
   const [nav, setNav] = useState(false);
   const [showProfileCard, setShowProfileCard] = useState(false);
   const [showSettingsCard, setShowSettingsCard] = useState(false);
+  const [showChangePasswordModal, setShowChangePasswordModal] = useState(false); // State for modal
   const [userDetails, setUserDetails] = useState({});
   const navigate = useNavigate();
   const email = localStorage.getItem('userEmail');
@@ -98,8 +93,15 @@ const Navbar = () => {
     navigate("/profile");
   };
 
+  const handleChangePassword = () => {
+    setShowChangePasswordModal(true);
+  };
+
   const toggleSettingsCard = () => {
     setShowSettingsCard(!showSettingsCard);
+    if (showSettingsCard) {
+      setShowChangePasswordModal(false); // Hide modal if settings card is closed
+    }
   };
 
   const toggleProfileCard = () => {
@@ -125,8 +127,8 @@ const Navbar = () => {
       </div>
 
       <div className="profile-icons">
-  <img src={settings} alt="settings" style={{ width: '34px', height: '34px' }} onClick={toggleSettingsCard} />
-      <img src={bellIcon} alt="notifications" style={{ width: '34px', height: '34px' }}  />
+        <img src={settings} alt="settings" style={{ width: '34px', height: '34px' }} onClick={toggleSettingsCard} />
+        <img src={bellIcon} alt="notifications" style={{ width: '34px', height: '34px' }}  />
         <img src={profileIcon} alt="User" style={{ width: '34px', height: '34px' }} onClick={toggleProfileCard} />
         {showProfileCard && (
           <div ref={profileCardRef} className="profile-card">
@@ -137,15 +139,13 @@ const Navbar = () => {
             </div>
             <div className="profile-card-body">
               <button className="profile-card-button" onClick={profile}>
-              <img src={profileIcon} alt="profile Icon" className="button-icon" /> Your profile
+                <img src={profileIcon} alt="profile Icon" className="button-icon" /> Your profile
               </button>
-
               <button className="profile-card-button" onClick={feedback}>
-              <img src={feedbackIcon} alt="feedback Icon" className="button-icon" /> Give feedback
+                <img src={feedbackIcon} alt="feedback Icon" className="button-icon" /> Give feedback
               </button>
-
               <button className="profile-card-button" onClick={Logout}>
-                <img src={logoutIcon} alt="Logout Icon" className="button-icon"  /> Logout
+                <img src={logoutIcon} alt="Logout Icon" className="button-icon" /> Logout
               </button>
             </div>
           </div>
@@ -153,21 +153,19 @@ const Navbar = () => {
         {showSettingsCard && (
           <div ref={settingsCardRef} className="profile-card">
             <div className="profile-card-header">
-            <img src={settings} alt="settings Icon" className="button-icon" style={{ width: '70px', height: '70px' }} /> 
-            <h3 className="card-title">Settings</h3>
+              <img src={settings} alt="settings Icon" className="button-icon" style={{ width: '70px', height: '70px' }} /> 
+              <h3 className="card-title">Settings</h3>
             </div>
             <div className="profile-card-body">
-              <button className="profile-card-button">
-              <img src={lockIcon} alt="lock Icon" className="button-icon"  /> Change password
+              <button className="profile-card-button" onClick={handleChangePassword}>
+                <img src={lockIcon} alt="lock Icon" className="button-icon" /> Change password
               </button>
-
               <button className="profile-card-button">
-              <img src={modeIcon} alt="mode Icon" className="button-icon"/> 
-              Switch Mode
+                <img src={modeIcon} alt="mode Icon" className="button-icon"/> 
+                Switch Mode
               </button>
-
               <button className="profile-card-button">
-              <img src={languageIcon} alt="language Icon" className="button-icon" /> 
+                <img src={languageIcon} alt="language Icon" className="button-icon" /> 
                 Language
               </button>
             </div>
@@ -205,6 +203,12 @@ const Navbar = () => {
           </ul>
         </nav>
       </div>
+
+      {/* Change Password Modal */}
+      <ChangePasswordModal 
+        isOpen={showChangePasswordModal} 
+        onClose={() => setShowChangePasswordModal(false)} 
+      />
     </div>
   );
 };
