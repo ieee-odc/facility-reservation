@@ -199,6 +199,68 @@ button.social-login.microsoft {
   outline: none;
 }
 
+
+.login-logo > img{
+  width: 160px;
+  margin: 20px 0px 0px 20px;
+}
+
+.login-main{
+  display: flex;
+  flex-direction: row;
+  position: relative;
+  
+}
+
+.login-left-side{
+  flex: 2.5;
+}
+
+/*here*/
+.login-right-side {
+  flex: 2;
+  /*background: linear-gradient(to top, #5f84ff, #7beffe);*/
+  background-image: linear-gradient(238.61deg, #95e4b7, #10c1df 48.39%, #1c88d6);
+
+
+
+ /* background: linear-gradient(to bottom, #ff7e5f, #feb47b);*/
+ background: linear-gradient(to bottom,#95d7e4, #10c1df 48.39%, #174fb0);
+  color: white; /* Text color */
+  text-align: center; /* Center align text */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  height: 100vh; /* Full height */
+}
+
+.login-right-side h3 {
+  font-size: 24px;
+  margin-bottom: 10px;
+}
+
+.login-right-side p {
+  font-size: 16px;
+  margin-bottom: 20px;
+}
+
+.login-right-side blockquote {
+  font-style: italic;
+  margin: 0;
+  padding: 10px 20px;
+  border-left: 5px solid rgba(255, 255, 255, 0.7); /* Light border */
+  background: rgba(255, 255, 255, 0.1); /* Semi-transparent background */
+}
+
+.login-right-side blockquote footer {
+  margin-top: 10px;
+  font-size: 14px;
+  color: rgba(255, 255, 255, 0.7); /* Lighter text color for footer */
+}
+
+
 @media (min-width: 344px) and (max-width: 389px) {
   .inputs-container {
     width: 90%;
@@ -243,3 +305,20 @@ button.social-login.microsoft {
 }
 
 
+@media(max-width: 768px){
+  .login-main{
+    flex-direction: column;
+    position: relative;
+    mask-position: 0%;        
+  }
+
+  
+.login-left-side{
+  flex: 2;
+}
+.login-right-side{
+  flex: 3;
+  min-height: 300px;
+}
+
+}

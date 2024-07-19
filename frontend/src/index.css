@@ -1,6 +1,8 @@
 :root {
-    --button-blue-color: #0C66E4;
-    --primary-grey-color: #737373;
-    --secondary-grey-color: #e6e6e6;
-  }
-  
+  --button-blue-color: #0c66e4;
+  --primary-grey-color: #737373;
+  --secondary-grey-color: #e6e6e6;
+}
+body {
+  margin: 0;
+}
