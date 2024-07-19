@@ -9,19 +9,14 @@ import {
 
 const router = express.Router();
 
-// Get all notifications
-router.get('/delete', getAllNotifications);
+router.get('/', getAllNotifications);
 
-// Get a single notification by ID
-router.get('/delete/:id', getNotificationById);
+router.get('/:id', getNotificationById);
 
-// Create a new notification
-router.post('/delete', createNotification);
+router.post('/', createNotification);
 
-// Update a notification
-router.put('/delete/:id', updateNotification);
+router.put('/:id', updateNotification);
 
-// Delete a notification
-router.delete('/delete/:id', deleteNotification);
+router.delete('/:id', deleteNotification);
 
 export default router;
