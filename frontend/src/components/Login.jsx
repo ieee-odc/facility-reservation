@@ -45,16 +45,14 @@ const Login = () => {
 
   const signInWithEmail = async () => {
     doSignInWithEmailAndPassword(email, password)
-    .then((signedIn)=>{
-      console.log("signed in ", signedIn);
-      localStorage.setItem("userEmail", email);
-      navigate("/navbar");
-    })
-    .catch((error)=>{
-      console.log(error);
-    })
-
-
+      .then((signedIn) => {
+        console.log("signed in ", signedIn);
+        localStorage.setItem("userEmail", email);
+        navigate("/navbar");
+      })
+      .catch((error) => {
+        console.log(error);
+      });
   };
 
   const signInWithGoogle = async () => {
@@ -67,73 +65,76 @@ const Login = () => {
   };
 
   return (
-    <div className="login-container">
-      {myProp && showInfoMessage === true && (
-        <div className="info-message">
-          <MdInfoOutline className="info-icon" />
-          <span>{myProp}</span>
+    <>
+    <div className="logo"></div>
+      <div className="login-container">
+        {myProp && showInfoMessage === true && (
+          <div className="info-message">
+            <MdInfoOutline className="info-icon" />
+            <span>{myProp}</span>
 
-          <button
-            className="info-close-button"
-            onClick={handleCloseInfoMessage}
-          >
-            <MdClose />
-          </button>
-        </div>
-      )}
-      <h2>Login to EASY</h2>
-      <div className="form-container">
-        <div className="inputs-container">
-          <div className="input-container">
-            <div className="icon-box">
-              <IoMail className="input-icon" />
-              <input
-                type="email"
-                placeholder="Email"
-                required
-                className="input-with-icon"
-                onChange={(e) => setEmail(e.target.value)}
-              />
+            <button
+              className="info-close-button"
+              onClick={handleCloseInfoMessage}
+            >
+              <MdClose />
+            </button>
+          </div>
+        )}
+        <h2>Login to EASY</h2>
+        <div className="form-container">
+          <div className="inputs-container">
+            <div className="input-container">
+              <div className="icon-box">
+                <IoMail className="input-icon" />
+                <input
+                  type="email"
+                  placeholder="Email"
+                  required
+                  className="input-with-icon"
+                  onChange={(e) => setEmail(e.target.value)}
+                />
+              </div>
             </div>
-          </div>
-          <div className="input-container">
-            <div className="icon-box">
-              <MdLockOutline className="input-icon" />
-              <input
-                type="password"
-                placeholder="Password"
-                required
-                className="input-with-icon"
-                onChange={(e) => setPassword(e.target.value)}
-              />
+            <div className="input-container">
+              <div className="icon-box">
+                <MdLockOutline className="input-icon" />
+                <input
+                  type="password"
+                  placeholder="Password"
+                  required
+                  className="input-with-icon"
+                  onChange={(e) => setPassword(e.target.value)}
+                />
+              </div>
             </div>
+            <div className="forgot-password-link">
+              <Link to="/reset-password">Forgot password?</Link>
+            </div>
+            <button
+              className="login-submit-button login-buttons"
+              onClick={signInWithEmail}
+            >
+              Sign in
+            </button>
+            <div className="or">
+              <hr />
+              <span>OR</span>
+              <hr />
+            </div>
+            <button
+              className="social-login google login-buttons"
+              onClick={signInWithGoogle}
+            >
+              Continue with Google
+            </button>
+            <button className="social-login microsoft login-buttons">
+              Continue with Microsoft
+            </button>
           </div>
-          <div className="forgot-password-link">
-            <Link to="/reset-password">Forgot password?</Link>
-          </div>
-          <button
-            className="login-submit-button login-buttons"
-            onClick={signInWithEmail}
-          >
-            Sign in
-          </button>
-          <div className="or">
-            <hr />
-            <span>OR</span>
-            <hr />
-          </div>
-          <button
-            className="social-login google login-buttons"
-            onClick={signInWithGoogle}
-          >
-            Continue with Google
-          </button>
-          <button className="social-login microsoft login-buttons">
-            Continue with Microsoft
-          </button>
         </div>
       </div>
-    </div>
+    </>
   );
 };
 
