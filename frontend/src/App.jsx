@@ -25,15 +25,15 @@ const AppRoutes = () => {
 
   return (
     <Routes>
+
       <Route path="/login" element={<Login />} />
-      <Route path="/feedback" element={<GiveFeedback />} />
-
-      
-      <Route path="/profile" element={<Profile />} />
-
+      <Route path="/reset-password" element={<ResetPassword />} />
       {userLoggedIn ? (
         <>
-          <Route path="/reset-password" element={<ResetPassword />} />
+        <Route path="/feedback" element={<GiveFeedback />} />
+  
+        
+        <Route path="/profile" element={<Profile />} />
           <Route path="/navbar" element={<Navbar />} />
         </>
       ) : (
