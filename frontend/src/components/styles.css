@@ -1,6 +1,5 @@
 @import url("https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300..800;1,300..800&display=swap");
 
-
 .login-container {
   max-width: 400px;
   margin: 0 auto;
@@ -75,6 +74,7 @@
   display: flex;
   justify-content: flex-end;
   width: 100%;
+  
 }
 
 .forgot-password-link > a {
@@ -83,6 +83,7 @@
   font-weight: 500;
   cursor: pointer;
   text-decoration: none;
+  transition: color 0.3s ease-in-out, text-decoration 2s ease-in-out; 
 }
 
 .forgot-password-link > a:hover {
@@ -94,7 +95,6 @@
   padding: 10px;
   border: none;
   border-radius: 18px;
-  background-color: var(--button-blue-color);
   color: white;
   cursor: pointer;
   width: 100%;
@@ -117,6 +117,20 @@ button.social-login {
 }
 .login-submit-button{
   font-weight: bold;
+  background-color: var(--button-blue-color);
+  transition: background-color 0.3s ease, filter 0.3s ease; 
+}
+.login-submit-button:hover:not(:disabled) {
+  filter: brightness(1.1);
+}
+
+.login-submit-button:active:not(:disabled) {
+  filter: brightness(0.9);
+}
+
+.login-submit-button:disabled {
+  background-image: linear-gradient(238.61deg, #85d3d8, #90dfee 48.39%, #acd2ee);
+  cursor: not-allowed;
 }
 
 button.social-login.google {
@@ -228,9 +242,6 @@ button.social-login.microsoft {
   flex: 2;
   /*background: linear-gradient(to top, #5f84ff, #7beffe);*/
   background-image: linear-gradient(238.61deg, #95e4b7, #10c1df 48.39%, #1c88d6);
-
-
-
   background: linear-gradient(to bottom,#95d7e4, #10c1df 48.39%, #174fb0);
   /* background: linear-gradient(to bottom, #ff7e5f, #feb47b);*/
   color: white; /* Text color */
@@ -240,7 +251,7 @@ button.social-login.microsoft {
   align-items: center;
   justify-content: center;
   padding: 20px;
-  height: 100vh; /* Full height */
+  height: 94.5vh;
 }
 
 .login-right-side h3 {
@@ -264,9 +275,8 @@ button.social-login.microsoft {
 .login-right-side blockquote footer {
   margin-top: 10px;
   font-size: 14px;
-  color: rgba(255, 255, 255, 0.7); /* Lighter text color for footer */
+  color: rgba(255, 255, 255, 0.7); 
 }
-
 
 @media (min-width: 344px) and (max-width: 389px) {
   .inputs-container {

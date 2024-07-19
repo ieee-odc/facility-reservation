@@ -19,6 +19,7 @@ const Login = () => {
   const myProp = location.state?.myProp;
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [showInfoMessage, setShowInfoMessage] = useState(true);
+  const [isEmailValid, setIsEmailValid] = useState(false);
   const navigate = useNavigate();
 
   const handleCloseInfoMessage = (e) => {
@@ -65,6 +66,17 @@ const Login = () => {
     }
   };
 
+  const handleEmailChange = (e) => {
+    const value = e.target.value;
+    setEmail(value);
+    setIsEmailValid(validateEmail(value));
+  };
+
+  const validateEmail = (email) => {
+    const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return re.test(email);
+  };
+
   return (
     <div className="login-main">
       <div className="login-left-side">
@@ -96,7 +108,7 @@ const Login = () => {
                     placeholder="Email"
                     required
                     className="input-with-icon"
-                    onChange={(e) => setEmail(e.target.value)}
+                    onChange={handleEmailChange}
                   />
                 </div>
               </div>
@@ -118,6 +130,7 @@ const Login = () => {
               <button
                 className="login-submit-button login-buttons"
                 onClick={signInWithEmail}
+                disabled={!email || !password || !isEmailValid}
               >
                 Sign in
               </button>
