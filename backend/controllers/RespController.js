@@ -1,5 +1,4 @@
-import Responsible from "../models/responsibleModel.js";
-
+import Responsible from "../models/ResponsibleModel";
 export const createResponsible = async (req, res) => {
   const { firstName, lastName, contactEmail, contactPhoneNumber, position } = req.body;
 console.log(req.body);

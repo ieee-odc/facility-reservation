@@ -4,6 +4,8 @@ import cors from "cors";
 import responsibleRoutes from "./routes/respRoutes.js";
 import riRoutes from "./routes/riRoutes.js";
 import feedbackRoutes from "./routes/feedbackRoutes.js";
+import notificationRoutes from './routes/notificationRoutes.js';
+
 
 const app = express();
 app.use(express.json());
@@ -18,6 +20,8 @@ app.use(
 app.use("/api/reservationInitiators", riRoutes);
 app.use('/api/responsibles', responsibleRoutes);
 app.use('/api/feedback', feedbackRoutes);
+app.use('/api/notifications', notificationRoutes);
+
 
 
 const PORT = process.env.PORT;
