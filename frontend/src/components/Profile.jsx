@@ -10,7 +10,7 @@ import {
   ResponsiveContainer,
 } from "recharts";
 import logo from "./../assets/logo/Group8.svg";
-import banner from "./../assets/banner2.jpg";
+import banner from "./../assets/banner1.jpg";
 import "./Profile.css";
 import Navbar from "./navbar";
 import mallette from "./../assets/icons/mallette.png";
@@ -99,9 +99,7 @@ const Profile = () => {
       <Navbar />
       <div className="profile-container">
         <div className="profile-banner">
-          <div className="banner-img">
-            <img src={bannerImage} alt="Profile Banner" />
-          </div>
+          <img src={bannerImage} alt="Profile Banner" />
           <div className="overlay">
             <label htmlFor="banner-upload">
               <FontAwesomeIcon icon={faCamera} className="icon" />
@@ -243,35 +241,35 @@ const Profile = () => {
                     </div>
                     <div className="most-requested-facilities main-profile-card">
                       <h3>Most Requested Facilities</h3>
-                      <div className="chart">
+                  <div className="chart">
                         <ResponsiveContainer width="95%" height={200}>
-                          <BarChart data={dataFacilities}>
-                            <XAxis dataKey="name" />
-                            <YAxis />
-                            <Tooltip />
+                      <BarChart data={dataFacilities}>
+                        <XAxis dataKey="name" />
+                        <YAxis />
+                        <Tooltip />
                             <Bar dataKey="count" fill="#346beb" />
-                          </BarChart>
-                        </ResponsiveContainer>
-                      </div>
+                      </BarChart>
+                    </ResponsiveContainer>
+                  </div>
                     </div>
                   </div>
                   <div className="attendance-per-event main-profile-card">
                     <h3>Attendance per event</h3>
-                    <div className="chart">
+                  <div className="chart">
                       <ResponsiveContainer width="95%" height={200}>
                         <LineChart className="line-chart" data={dataAttendance}>
-                          <XAxis dataKey="name" />
-                          <YAxis />
-                          <Tooltip />
+                        <XAxis dataKey="name" />
+                        <YAxis />
+                        <Tooltip />
                           <Line
                             type="monotone"
                             dataKey="attendees"
                             stroke="#346beb"
                           />
-                        </LineChart>
-                      </ResponsiveContainer>
-                    </div>
+                      </LineChart>
+                    </ResponsiveContainer>
                   </div>
+                </div>
                 </div>
               )}
               {activeTab === "Vis-à-vis" && <Vav />}
