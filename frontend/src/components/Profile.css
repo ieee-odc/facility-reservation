@@ -85,10 +85,10 @@
 
 .sidebar-content {
   /*box-shadow: 0px 1px 3px 0px gray;*/
-  padding: 10px;
+  padding: 15px;
   display: flex;
   flex-direction: column;
- /* border: 1px solid #ddd;*/
+  /* border: 1px solid #ddd;*/
 }
 
 .about > h3,
@@ -98,19 +98,48 @@
 
 .about-content,
 .contact-content {
-  position: relative;
-  left: 13px;
+  margin-left: 13px;
   display: flex;
   flex-direction: column;
-  row-gap: 25px;
+  row-gap: 10px;
 }
 
-.about-content > div > p,
+/*.about-content > div > p,
 .contact-content > div > p {
   display: inline;
   font-size: 14px;
   font-weight: 500;
   color: #172b4d;
+}
+*/
+
+.contact-content-element,
+.about-content-element {
+  display: flex;
+  flex-direction: row;
+  align-items: baseline;
+}
+
+.contact-content-element-two,
+.about-content-element-two {
+  flex: 4;
+  width: 80%;
+}
+
+p.contact-content-element-two,
+p.about-content-element-two {
+  margin: 0;
+  padding: 11px 5px;
+  color: #969696;
+  font-size: 14px;
+  transition: background-color 0.2s ease-in-out;
+  border-radius: 8px;
+}
+
+p.contact-content-element-two:hover,
+p.about-content-element-two:hover {
+  margin: 0;
+  background-color: #6d6d6d13;
 }
 
 .icon {
@@ -142,7 +171,7 @@
 
 .about,
 .contact {
-  margin-bottom: 20px;
+  margin-bottom: 10px;
 }
 
 .about h3,
@@ -398,12 +427,7 @@
 }
 
 .interaction-buttons {
-  position: absolute;
-  display: flex;
-  column-gap: 5px;
-  right: 10%;
-  /*top: 37px;*/
-  align-self: end;
+  position: relative;
 }
 
 .interaction-buttons button {
@@ -416,9 +440,18 @@
   border: none;
   border-radius: 5px;
   cursor: pointer;
+  right: 0;
 }
 
-.add-button{
+.buttons {
+  position: absolute;
+  right: 0;
+  top: -2px;
+  display: flex;
+  column-gap: 5px;
+}
+
+.add-button {
   display: flex;
   align-items: flex-end;
 }

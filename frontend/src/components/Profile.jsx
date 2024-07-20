@@ -1,12 +1,9 @@
 import React, { useState } from "react";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faCheck, faX } from "@fortawesome/free-solid-svg-icons";
 import {
   BarChart,
   Bar,
   XAxis,
   YAxis,
-  CartesianGrid,
   Tooltip,
   LineChart,
   Line,
@@ -23,6 +20,7 @@ import organisation from "./../assets/icons/organisation.png";
 import utilisateur from "./../assets/icons/utilisateur.png";
 import batiment from "./../assets/icons/batiment.png";
 import Vav from "./Vav";
+import EditableField from "./EditableField";
 
 const dataFacilities = [
   { name: "ODC", count: 10 },
@@ -44,7 +42,6 @@ const dataAttendance = [
 
 const Profile = () => {
   const [activeTab, setActiveTab] = useState("Overview");
-  //added
   const [editingField, setEditingField] = useState(null);
   const [fieldValues, setFieldValues] = useState({
     nature: "",
@@ -79,7 +76,6 @@ const Profile = () => {
   return (
     <div>
       <Navbar />
-
       <div className="profile-container">
         <div className="profile-banner">
           <div className="banner-img">
@@ -92,174 +88,81 @@ const Profile = () => {
           </div>
           <div className="main-content">
             <div className="sidebar">
-              {
-                //<button className="manage-account">Manage your account</button>
-              }
               <div className="sidebar-content main-profile-card">
                 <div className="about">
                   <h3>About</h3>
                   <div className="about-content">
-                    <div>
-                      <img src={mallette} alt="Nature" className="icon" />
-                      {editingField === "nature" ? (
-                        <div className="edited-input">
-                          <input
-                            placeholder="Nature"
-                            name="nature"
-                            value={fieldValues["nature"]}
-                            onChange={handleFieldChange}
-                            className="input"
-                          />
-                          <div className="interaction-buttons">
-                            <button onClick={handleApprove}>
-                              <FontAwesomeIcon icon={faCheck} />
-                            </button>
-                            <button onClick={handleCancel}>
-                              <FontAwesomeIcon icon={faX} />
-                            </button>
-                          </div>
-                        </div>
-                      ) : (
-                        <p onClick={() => handleEdit("nature")}>
-                          {fieldValues["nature"] || "Nature"}
-                        </p>
-                      )}
-                    </div>
-                    <div>
-                      <img src={organisation} alt="Service" className="icon" />
-                      {editingField === "service" ? (
-                        <div className="edited-input">
-                          <input
-                            placeholder="Service"
-                            name="service"
-                            value={fieldValues["service"]}
-                            onChange={handleFieldChange}
-                            className="input"
-                          />
-                          <div className="interaction-buttons">
-                            <button onClick={handleApprove}>
-                              <FontAwesomeIcon icon={faCheck} />
-                            </button>
-                            <button onClick={handleCancel}>
-                              <FontAwesomeIcon icon={faX} />
-                            </button>
-                          </div>
-                        </div>
-                      ) : (
-                        <p onClick={() => handleEdit("service")}>
-                          {fieldValues["service"] || "Service"}
-                        </p>
-                      )}
-                    </div>
-                    <div>
-                      <img src={batiment} alt="Organisation" className="icon" />
-                      {editingField === "organisation" ? (
-                        <div className="edited-input">
-                          <input
-                            placeholder="Organisation"
-                            name="organisation"
-                            value={fieldValues["organisation"]}
-                            onChange={handleFieldChange}
-                            className="input"
-                          />
-                          <div className="interaction-buttons">
-                            <button onClick={handleApprove}>
-                              <FontAwesomeIcon icon={faCheck} />
-                            </button>
-                            <button onClick={handleCancel}>
-                              <FontAwesomeIcon icon={faX} />
-                            </button>
-                          </div>
-                        </div>
-                      ) : (
-                        <p onClick={() => handleEdit("organisation")}>
-                          {fieldValues["organisation"] || "Organisation"}
-                        </p>
-                      )}
-                    </div>
+                    <EditableField
+                      iconSrc={mallette}
+                      placeholder="Nature"
+                      name="nature"
+                      value={fieldValues.nature}
+                      editingField={editingField}
+                      handleEdit={handleEdit}
+                      handleFieldChange={handleFieldChange}
+                      handleCancel={handleCancel}
+                      handleApprove={handleApprove}
+                    />
+                    <EditableField
+                      iconSrc={organisation}
+                      placeholder="Service"
+                      name="service"
+                      value={fieldValues.service}
+                      editingField={editingField}
+                      handleEdit={handleEdit}
+                      handleFieldChange={handleFieldChange}
+                      handleCancel={handleCancel}
+                      handleApprove={handleApprove}
+                    />
+                    <EditableField
+                      iconSrc={batiment}
+                      placeholder="Organisation"
+                      name="organisation"
+                      value={fieldValues.organisation}
+                      editingField={editingField}
+                      handleEdit={handleEdit}
+                      handleFieldChange={handleFieldChange}
+                      handleCancel={handleCancel}
+                      handleApprove={handleApprove}
+                    />
                   </div>
                 </div>
                 <div className="contact">
                   <h3>Contact</h3>
                   <div className="contact-content">
-                    <div>
-                      <img src={email} alt="Nature" className="icon" />
-                      {editingField === "email" ? (
-                        <div className="edited-input">
-                          <input
-                            placeholder="email@example.com"
-                            name="email"
-                            value={fieldValues["email"]}
-                            onChange={handleFieldChange}
-                            className="input"
-                          />
-                          <div className="interaction-buttons">
-                            <button onClick={handleApprove}>
-                              <FontAwesomeIcon icon={faCheck} />
-                            </button>
-                            <button onClick={handleCancel}>
-                              <FontAwesomeIcon icon={faX} />
-                            </button>
-                          </div>
-                        </div>
-                      ) : (
-                        <p onClick={() => handleEdit("email")}>
-                          {fieldValues["email"] || "email@example.com"}
-                        </p>
-                      )}
-                    </div>
-                    <div>
-                      <img src={iphone} alt="Nature" className="icon" />
-                      {editingField === "phoneNumber" ? (
-                        <div className="edited-input">
-                          <input
-                            placeholder="123-456-7890"
-                            name="phoneNumber"
-                            value={fieldValues["phoneNumber"]}
-                            onChange={handleFieldChange}
-                            className="input"
-                          />
-                          <div className="interaction-buttons">
-                            <button onClick={handleApprove}>
-                              <FontAwesomeIcon icon={faCheck} />
-                            </button>
-                            <button onClick={handleCancel}>
-                              <FontAwesomeIcon icon={faX} />
-                            </button>
-                          </div>
-                        </div>
-                      ) : (
-                        <p onClick={() => handleEdit("phoneNumber")}>
-                          {fieldValues["phoneNumber"] || "123-456-7890"}
-                        </p>
-                      )}
-                    </div>
-                    <div>
-                      <img src={utilisateur} alt="Nature" className="icon" />
-                      {editingField === "manager" ? (
-                        <div className="edited-input">
-                          <input
-                            placeholder="Manager Name"
-                            name="manager"
-                            value={fieldValues["manager"]}
-                            onChange={handleFieldChange}
-                            className="input"
-                          />
-                          <div className="interaction-buttons">
-                            <button onClick={handleApprove}>
-                              <FontAwesomeIcon icon={faCheck} />
-                            </button>
-                            <button onClick={handleCancel}>
-                              <FontAwesomeIcon icon={faX} />
-                            </button>
-                          </div>
-                        </div>
-                      ) : (
-                        <p onClick={() => handleEdit("manager")}>
-                          {fieldValues["manager"] || "Manager Name"}
-                        </p>
-                      )}
-                    </div>
+                    <EditableField
+                      iconSrc={email}
+                      placeholder="email@example.com"
+                      name="email"
+                      value={fieldValues.email}
+                      editingField={editingField}
+                      handleEdit={handleEdit}
+                      handleFieldChange={handleFieldChange}
+                      handleCancel={handleCancel}
+                      handleApprove={handleApprove}
+                    />
+                    <EditableField
+                      iconSrc={iphone}
+                      placeholder="123-456-7890"
+                      name="phoneNumber"
+                      value={fieldValues.phoneNumber}
+                      editingField={editingField}
+                      handleEdit={handleEdit}
+                      handleFieldChange={handleFieldChange}
+                      handleCancel={handleCancel}
+                      handleApprove={handleApprove}
+                    />
+                    <EditableField
+                      iconSrc={utilisateur}
+                      placeholder="Manager Name"
+                      name="manager"
+                      value={fieldValues.manager}
+                      editingField={editingField}
+                      handleEdit={handleEdit}
+                      handleFieldChange={handleFieldChange}
+                      handleCancel={handleCancel}
+                      handleApprove={handleApprove}
+                    />
                   </div>
                 </div>
               </div>
@@ -278,12 +181,6 @@ const Profile = () => {
                 >
                   Vis-à-vis
                 </button>
-                {/*<button
-                className={`tab ${activeTab === "Bio" ? "active" : ""}`}
-                onClick={() => setActiveTab("Bio")}
-              >
-                Bio
-              </button>*/}
               </div>
               {activeTab === "Overview" && (
                 <div>
@@ -303,7 +200,6 @@ const Profile = () => {
                       <div className="chart">
                         <ResponsiveContainer width="95%" height={200}>
                           <BarChart data={dataFacilities}>
-                            {/*<CartesianGrid strokeDasharray="3 3" /> */}
                             <XAxis dataKey="name" />
                             <YAxis />
                             <Tooltip />
@@ -318,8 +214,6 @@ const Profile = () => {
                     <div className="chart">
                       <ResponsiveContainer width="95%" height={200}>
                         <LineChart className="line-chart" data={dataAttendance}>
-                          {/*<CartesianGrid strokeDasharray="3 3" />{" "}
-                       i may get rid of this */}
                           <XAxis dataKey="name" />
                           <YAxis />
                           <Tooltip />
@@ -334,15 +228,7 @@ const Profile = () => {
                   </div>
                 </div>
               )}
-              {activeTab === "Vis-à-vis" && (
-                <Vav/>
-              )}
-              {/*activeTab === "Bio" && (
-              <div className="bio">
-                <h3>Bio Content</h3>
-                <p>hello from the bio</p>
-              </div>
-            )*/}
+              {activeTab === "Vis-à-vis" && <Vav />}
             </div>
           </div>
         </div>
