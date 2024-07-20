@@ -158,7 +158,7 @@ const Login = () => {
           Our mission is to simplify your life with our innovative solutions.
         </p>
         <blockquote>
-          "EASY has transformed the way we handle our daily tasks. It's truly a
+          "FlexiSpace has transformed the way we handle our daily tasks. It's truly a
           game-changer!"
           <footer>— Happy Customer</footer>
         </blockquote>

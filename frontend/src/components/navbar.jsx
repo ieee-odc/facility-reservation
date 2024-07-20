@@ -26,6 +26,7 @@ import lockIcon from '../assets/lock.png';
 import languageIcon from '../assets/language.png';
 import modeIcon from '../assets/mode.png';
 import ChangePasswordModal from './ChangePasswordModal'; // Import the ChangePasswordModal component
+import webLogo from "./../assets/logo/Group3.svg";
 
 window.addEventListener('scroll', function() {
   var navbar = document.querySelector('.navbar-container');
@@ -183,9 +184,10 @@ const Navbar = () => {
         <AiOutlineClose onClick={() => setNav(!nav)} size={30} className="navbar-close-icon" />
         <div className="top">
           <h2 className="navbar-header">
-            <div>
-              <span className="navbar-name font-bold">EASY</span>
-              <span className="navbar-name font-fine">Escapce Accessible et Système de Réservation</span>
+            <div className="login-logo" >
+              {/*<span className="navbar-name font-bold">EASY</span>
+              <span className="navbar-name font-fine">Escapce Accessible et Système de Réservation</span>*/}
+              <img src={webLogo} alt="Logo"/>
             </div>
             <div className="navbar-separator"></div>
             <img src={logo} alt="Logo" className="navbar-logo-image" />

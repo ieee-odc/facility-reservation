@@ -1,5 +1,10 @@
 @import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600&display=swap');
 
+.login-logo > img{
+  width: 160px;
+  margin:0px;
+}
+
 .navbar-container {
   
   z-index: 1000;
@@ -124,7 +129,7 @@
 }
 
 .navbar-menu {
-  padding: 1rem;
+  padding-left: 1rem;
   color: #4b5563;
 }
 
@@ -166,7 +171,7 @@
 .top {
   display: flex;
   align-items: center;
-  padding: 5%;
+  /*padding: 5%;*/
 }
 
 .navbar-header {
@@ -174,6 +179,8 @@
   align-items: center;
   padding: 1rem;
   font-size: 2rem;
+  position: relative;
+  top: 20px;
 }
 
 .navbar-name {
@@ -184,16 +191,17 @@
 
 .navbar-separator {
   width: 2px;
-  height: 40px;
+  height: 50px;
   background-color: #000;
   margin: 0 10px;
   background-color: #0c66e4;
+  background-color: #007bff;
 }
 
 .navbar-logo-image {
   height: 70px;
   width: 70px;
-  margin-left: 20px;
+  margin-left: 0px;
 }
 
 .profile-icons {
