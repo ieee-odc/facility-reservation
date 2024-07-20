@@ -547,7 +547,7 @@ p.about-content-element-two:hover {
 }
 
 .about-content-element {
-  position: relative; 
+  position: relative;
 }
 
 .about-content-element:hover .tooltip {
@@ -570,7 +570,7 @@ p.about-content-element-two:hover {
   border: none;
   border-radius: 3px;
   padding: 7px 15px;
-  outline: none; 
+  outline: none;
   width: 65%;
   margin-bottom: 7px;
 }
@@ -628,18 +628,8 @@ p.about-content-element-two:hover {
   color: #1f4fa3;
 }
 
-
-
-
-
-
-
-
-
-
-
-
-.profile-banner .overlay, .profile-img .overlay {
+.profile-banner .overlay,
+.profile-img .overlay {
   position: absolute;
   top: 0;
   left: 0;
@@ -653,20 +643,22 @@ p.about-content-element-two:hover {
   transition: opacity 0.3s;
 }
 
-
 .profile-img .overlay {
   border-radius: 50%;
 }
 
-.profile-banner:hover .overlay, .profile-img:hover .overlay {
+.profile-banner:hover .overlay,
+.profile-img:hover .overlay {
   opacity: 1;
 }
 
 .overlay .icon {
   color: white;
   font-size: 2rem;
+  align-self: center;
+  margin-right: 0;
+  cursor: pointer;
 }
-
 
 .profile-img {
   position: absolute;

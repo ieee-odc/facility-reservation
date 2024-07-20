@@ -10,7 +10,7 @@ import {
   ResponsiveContainer,
 } from "recharts";
 import logo from "./../assets/ieee.webp";
-import banner from "./../assets/transparent.png";
+import banner from "./../assets/banner3.jpg";
 import "./Profile.css";
 import Navbar from "./navbar";
 import mallette from "./../assets/icons/mallette.png";
