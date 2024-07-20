@@ -1,12 +1,12 @@
 @import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600&display=swap');
 
-.login-logo > img{
+.web-logo > img{
   width: 160px;
   margin:0px;
 }
 
 .navbar-container {
-  
+  background-color: #fff;
   z-index: 1000;
   max-width: 2000px;
   margin: 0 auto;

@@ -95,7 +95,7 @@ const Profile = () => {
               {
                 //<button className="manage-account">Manage your account</button>
               }
-              <div className="sidebar-content">
+              <div className="sidebar-content main-profile-card">
                 <div className="about">
                   <h3>About</h3>
                   <div className="about-content">
@@ -288,7 +288,7 @@ const Profile = () => {
               {activeTab === "Overview" && (
                 <div>
                   <div className="overview">
-                    <div className="event-list">
+                    <div className="event-list main-profile-card">
                       <h3>Event List</h3>
                       <div className="event-items">
                         <ul>
@@ -298,7 +298,7 @@ const Profile = () => {
                         </ul>
                       </div>
                     </div>
-                    <div className="most-requested-facilities">
+                    <div className="most-requested-facilities main-profile-card">
                       <h3>Most Requested Facilities</h3>
                       <div className="chart">
                         <ResponsiveContainer width="95%" height={200}>
@@ -313,7 +313,7 @@ const Profile = () => {
                       </div>
                     </div>
                   </div>
-                  <div className="attendance-per-event">
+                  <div className="attendance-per-event main-profile-card">
                     <h3>Attendance per event</h3>
                     <div className="chart">
                       <ResponsiveContainer width="95%" height={200}>

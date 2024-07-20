@@ -184,7 +184,7 @@ const Navbar = () => {
         <AiOutlineClose onClick={() => setNav(!nav)} size={30} className="navbar-close-icon" />
         <div className="top">
           <h2 className="navbar-header">
-            <div className="login-logo" >
+            <div className="web-logo" >
               {/*<span className="navbar-name font-bold">EASY</span>
               <span className="navbar-name font-fine">Escapce Accessible et Système de Réservation</span>*/}
               <img src={webLogo} alt="Logo"/>

@@ -62,15 +62,13 @@ const Vav = () => {
 
   return (
     <div className="vis-a-vis">
-      <h3>Our Representatives</h3>  
-      <div className="add-button" >
-        <button onClick={() => setShowModal(true)}>
-          + Add representative
-        </button>
-        </div>    
-        <div className="vav-content">
+      <h3>Our Representatives</h3>
+      <div className="add-button">
+        <button onClick={() => setShowModal(true)}>Add a representative</button>
+      </div>
+      <div className="vav-content">
         {representatives.map((rep) => (
-          <div className="vav-person" key={rep.id}>
+          <div className="vav-person main-profile-card" key={rep.id}>
             <img
               src={rep.picture}
               alt={rep.firstName}

@@ -7,6 +7,15 @@
   min-width: 344px;
 }
 
+.main-profile-card {
+  background-color: #fff;
+  box-shadow: 0px 1px 3px 0px rgb(209, 209, 209);
+  box-shadow: 0px 1px 3px 0px rgb(198, 198, 198);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+
+  border-radius: 8px;
+}
+
 .profile-main {
   display: flex;
   justify-content: space-around;
@@ -79,7 +88,7 @@
   padding: 10px;
   display: flex;
   flex-direction: column;
-  border: 1px solid #ddd;
+ /* border: 1px solid #ddd;*/
 }
 
 .about > h3,
@@ -188,8 +197,8 @@
 .event-list,
 .most-requested-facilities,
 .attendance-per-event {
-  border: 1px solid #ddd;
-  border-radius: 2px;
+  /*border: 1px solid #ddd;*/
+  /*border-radius: 2px;*/
   padding: 20px;
 }
 .event-list h3,
@@ -274,7 +283,7 @@
 .vav-content {
   display: flex;
   flex-direction: column;
-  row-gap: 50px;
+  row-gap: 30px;
 }
 .edit-person-icon,
 .delete-person-icon,
@@ -373,9 +382,6 @@
   margin-bottom: 5px;
 }
 
-
-
-
 .edited-input {
   display: inline;
 }
@@ -411,25 +417,36 @@
   border-radius: 5px;
   cursor: pointer;
 }
-.add-button > button{
-  color: #367BF5;
-  background-color: #E5EFFF;
+
+.add-button{
+  display: flex;
+  align-items: flex-end;
+}
+
+.add-button button {
+  position: relative;
+  right: 0;
+  color: #367bf5;
+  background-color: #e5efff;
   border: none;
   border-radius: 4px;
   padding: 8px 16px;
   cursor: pointer;
   font-size: 16px;
   display: flex;
-margin-left: 800px; gap: 8px}
+  gap: 8px;
+  margin-left: auto;
+}
+
 .add-button button:hover {
-  background-color: #d8defa; 
-  color: #2657d4; 
+  background-color: #d8defa;
+  color: #2657d4;
 }
 
 .add-button button:active {
-  background-color: #d8defa; 
-  color: #1f4fa3; }
-
+  background-color: #d8defa;
+  color: #1f4fa3;
+}
 
 @media (min-width: 100%) {
   .overview {

@@ -235,6 +235,8 @@ button.social-login.microsoft {
 
 .login-left-side{
   flex: 2.5;
+  background-color: #fff;
+
 }
 
 /*here*/
