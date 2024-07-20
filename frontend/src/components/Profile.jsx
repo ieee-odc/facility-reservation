@@ -241,35 +241,61 @@ const Profile = () => {
                     </div>
                     <div className="most-requested-facilities main-profile-card">
                       <h3>Most Requested Facilities</h3>
-                  <div className="chart">
+                      <div className="chart">
                         <ResponsiveContainer width="95%" height={200}>
-                      <BarChart data={dataFacilities}>
-                        <XAxis dataKey="name" />
-                        <YAxis />
-                        <Tooltip />
-                            <Bar dataKey="count" fill="#346beb" />
-                      </BarChart>
-                    </ResponsiveContainer>
-                  </div>
+                          <BarChart data={dataFacilities}>
+                            <defs>
+                              <linearGradient
+                                id="gradient1"
+                                x1="0"
+                                y1="0"
+                                x2="1"
+                                y2="1"
+                              >
+                                <stop offset="0%" stopColor="#22c1c3" />
+                                <stop offset="43%" stopColor="#30caad" />
+                                <stop offset="100%" stopColor="#4f2dfd" />
+                              </linearGradient>
+                            </defs>
+                            <XAxis dataKey="name" />
+                            <YAxis />
+                            <Tooltip />
+                            <Bar dataKey="count" fill="url(#gradient1)" />
+                          </BarChart>
+                        </ResponsiveContainer>
+                      </div>
                     </div>
                   </div>
                   <div className="attendance-per-event main-profile-card">
                     <h3>Attendance per event</h3>
-                  <div className="chart">
+                    <div className="chart">
                       <ResponsiveContainer width="95%" height={200}>
                         <LineChart className="line-chart" data={dataAttendance}>
-                        <XAxis dataKey="name" />
-                        <YAxis />
-                        <Tooltip />
+                        <defs>
+                              <linearGradient
+                                id="gradient1"
+                                x1="0"
+                                y1="0"
+                                x2="1"
+                                y2="1"
+                              >
+                                <stop offset="0%" stopColor="#22c1c3" />
+                                <stop offset="43%" stopColor="#30caad" />
+                                <stop offset="100%" stopColor="#4f2dfd" />
+                              </linearGradient>
+                            </defs>
+                          <XAxis dataKey="name" />
+                          <YAxis />
+                          <Tooltip />
                           <Line
                             type="monotone"
                             dataKey="attendees"
-                            stroke="#346beb"
+                            stroke="#89f5e5"
                           />
-                      </LineChart>
-                    </ResponsiveContainer>
+                        </LineChart>
+                      </ResponsiveContainer>
+                    </div>
                   </div>
-                </div>
                 </div>
               )}
               {activeTab === "Vis-à-vis" && <Vav />}
