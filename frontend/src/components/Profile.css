@@ -627,3 +627,47 @@ p.about-content-element-two:hover {
   background-color: #d8defa;
   color: #1f4fa3;
 }
+
+
+
+
+
+
+
+
+
+
+
+
+.profile-banner .overlay, .profile-img .overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+
+
+.profile-img .overlay {
+  border-radius: 50%;
+}
+
+.profile-banner:hover .overlay, .profile-img:hover .overlay {
+  opacity: 1;
+}
+
+.overlay .icon {
+  color: white;
+  font-size: 2rem;
+}
+
+
+.profile-picture{
+  
+}

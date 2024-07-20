@@ -21,6 +21,8 @@ import utilisateur from "./../assets/icons/utilisateur.png";
 import batiment from "./../assets/icons/batiment.png";
 import Vav from "./Vav";
 import EditableField from "./EditableField";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faCamera } from "@fortawesome/free-solid-svg-icons";
 
 const dataFacilities = [
   { name: "ODC", count: 10 },
@@ -52,6 +54,9 @@ const Profile = () => {
     manager: "",
   });
 
+  const [profileImage, setProfileImage] = useState(logo);
+  const [bannerImage, setBannerImage] = useState(banner);
+
   const handleEdit = (field) => {
     setEditingField(field);
   };
@@ -73,18 +78,58 @@ const Profile = () => {
     setEditingField(null);
   };
 
+  const handleProfileImageChange = (e) => {
+    if (e.target.files && e.target.files[0]) {
+      const reader = new FileReader();
+      reader.onload = (e) => setProfileImage(e.target.result);
+      reader.readAsDataURL(e.target.files[0]);
+    }
+  };
+
+  const handleBannerImageChange = (e) => {
+    if (e.target.files && e.target.files[0]) {
+      const reader = new FileReader();
+      reader.onload = (e) => setBannerImage(e.target.result);
+      reader.readAsDataURL(e.target.files[0]);
+    }
+  };
+
   return (
     <div>
       <Navbar />
       <div className="profile-container">
         <div className="profile-banner">
           <div className="banner-img">
-            <img src={banner} alt="Profile Banner" />
+            <img src={bannerImage} alt="Profile Banner" />
+          </div>
+          <div className="overlay">
+            <label htmlFor="banner-upload">
+              <FontAwesomeIcon icon={faCamera} className="icon" />
+            </label>
+            <input
+              id="banner-upload"
+              type="file"
+              accept="image/*"
+              style={{ display: "none" }}
+              onChange={handleBannerImageChange}
+            />
           </div>
         </div>
         <div className="profile-main">
           <div className="profile-img">
-            <img src={logo} alt="Profile" />
+            <img src={profileImage} alt="Profile" className="profile-picture"/>
+            <div className="overlay">
+              <label htmlFor="profile-upload">
+                <FontAwesomeIcon icon={faCamera} className="icon" />
+              </label>
+              <input
+                id="profile-upload"
+                type="file"
+                accept="image/*"
+                style={{ display: "none" }}
+                onChange={handleProfileImageChange}
+              />
+            </div>
           </div>
           <div className="main-content">
             <div className="sidebar">
