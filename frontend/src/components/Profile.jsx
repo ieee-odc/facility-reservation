@@ -117,7 +117,7 @@ const Profile = () => {
         </div>
         <div className="profile-main">
           <div className="profile-img">
-            <img src={profileImage} alt="Profile" className="profile-picture"/>
+            <img src={profileImage} alt="Profile" className="profile-picture" />
             <div className="overlay">
               <label htmlFor="profile-upload">
                 <FontAwesomeIcon icon={faCamera} className="icon" />
@@ -131,6 +131,7 @@ const Profile = () => {
               />
             </div>
           </div>
+
           <div className="main-content">
             <div className="sidebar">
               <div className="sidebar-content main-profile-card">
