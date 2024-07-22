@@ -140,7 +140,7 @@
   width: 80%;
   border-radius: 5px;
   margin: 0.5 0rem;
-  padding: 1.5rem;
+  padding: 1rem;
   transition: background 0.3s, color 0.3s;
 }
 
@@ -242,7 +242,7 @@
   font-size: 15px;
   background-color: #f5f5f5;
   border: none;
-  padding: 1rem 1rem;
+  padding: 6px;
   text-align: center;
   border-radius: 5px;
   cursor: pointer;
@@ -252,8 +252,8 @@
 
 .button-icon {
   margin-right: 8px;
-  height: 23px;
-  width: 23px;
+  height: 18px;
+  width: 18px;
 }
 
 .profile-card-button:hover {

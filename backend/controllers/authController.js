@@ -1,6 +1,6 @@
 import { ReservationInitiator } from "../models/reservationInitiatorModel.js";
 import generateToken from "../utils/generateToken.js";
-import bcrypt from "bcrypt";
+import bcrypt from "bcryptjs";
 
 const authUser = async (req, res) => {
   const { email, password } = req.body;
@@ -14,12 +14,13 @@ const authUser = async (req, res) => {
       res.json({
         _id: user._id,
         email: user.email,
-        token: generateToken(user._id),
+        //token: generateToken(user._id),
       });
     } else {
       res.status(401).json({ message: "Invalid email or password" });
     }
   } catch (error) {
+    console.log(error);
     res.status(500).json({ message: "Server error", error });
   }
 };

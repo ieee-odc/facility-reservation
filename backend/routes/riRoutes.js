@@ -5,7 +5,9 @@ import {
   getReservationInitiatorById,
   updateReservationInitiator,
   deleteReservationInitiator,
-  getReservationInitiatorByEmail} from './../controllers/riController.js'
+  getReservationInitiatorByEmail,
+  updateReservationInitiatorPwd,
+  getUserIdbyEmail} from './../controllers/riController.js'
 
 import authUser, { verifyUser } from '../controllers/authController.js';
 
@@ -20,6 +22,9 @@ router.get('/', getAllReservationInitiators);
 router.get('/:id', getReservationInitiatorById);
 
 router.put('/:id', updateReservationInitiator);
+router.patch('/:id', updateReservationInitiatorPwd);
+
+router.get('/get-user-id/:email', getUserIdbyEmail);-
 
 router.delete('/:id', deleteReservationInitiator);
 router.get('/by-email', getReservationInitiatorByEmail);

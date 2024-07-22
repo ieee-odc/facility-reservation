@@ -50,6 +50,7 @@ const Login = () => {
       .then((signedIn) => {
         console.log("signed in ", signedIn);
         localStorage.setItem("userEmail", email);
+
         navigate("/navbar");
       })
       .catch((error) => {

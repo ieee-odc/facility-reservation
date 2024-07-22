@@ -1,5 +1,5 @@
 import { ReservationInitiator } from '../models/reservationInitiatorModel.js';
-import bcrypt from "bcrypt";
+import bcrypt from "bcryptjs";
 
 export const createReservationInitiator = async (req, res) => {
   const { name, email, password, phoneNumber , backupEmail} = req.body;
@@ -102,5 +102,40 @@ export const getReservationInitiatorByEmail = async (req, res) => {
     res.status(200).json(initiator);
   } catch (error) {
     res.status(500).json({ message: 'Error fetching user', error });
+  }
+};
+export const updateReservationInitiatorPwd= async (req, res) => {
+  const { id } = req.params;
+  const {password } = req.body;
+
+  try {
+    const initiator = await ReservationInitiator.findById(id);
+    if (!initiator) {
+      return res.status(404).json({ message: 'User not found' });
+    }
+
+
+    if (password) initiator.password = password;
+    const pwd = await bcrypt.hash(password, 10);
+    console.log(initiator.password);
+
+    const updatedInitiator = await initiator.save();
+    res.status(200).json(updatedInitiator);
+  } catch (error) {
+    res.status(500).json({ message: 'Error updating password', error });
+  }
+};
+
+export const getUserIdbyEmail= async (req, res) => {
+  const { email } = req.params;
+
+  try {
+    const initiator = await ReservationInitiator.findOne({ email });
+    if (!initiator) {
+      return res.status(404).json({ message: 'User not found' });
+    }
+    res.status(200).json({ id: initiator._id });
+  } catch (error) {
+    res.status(500).json({ message: 'Error fetching user ID', error });
   }
 };

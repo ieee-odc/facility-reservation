@@ -10,26 +10,46 @@ const ChangePasswordModal = ({ isOpen, onClose }) => {
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
 
+  
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-  
+    
     if (newPassword !== confirmPassword) {
       setError('Passwords do not match');
       return;
     }
-  
+
     try {
       const user = auth.currentUser;
-      /*console.log('User:', user);
-      console.log('Email:', user.email);
-      console.log('Old Password:', oldPassword);*/
-
       const credential = EmailAuthProvider.credential(user.email, oldPassword);
 
-  
       await reauthenticateWithCredential(user, credential);
       await updatePassword(user, newPassword);
+      const email = localStorage.getItem('email');
+      if (!email) {
+        throw new Error('Email not found in local storage');
+      }
+
+      
+      const userIdResponse = await fetch(`/api/get-user-id/${email}`);
+      if (!userIdResponse.ok) {
+        throw new Error('Failed to fetch user ID from MongoDB');
+      }
+      const { id: userId } = await userIdResponse.json();
+      
+      const response = await fetch(`http://localhost:5000/api/reservationInitiators/${userId}`, {
+        method: 'PATCH',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({newPassword }),
+      });
+
+      if (!response.ok) {
+        throw new Error('Failed to update password in MongoDB');
+      }
+
       setSuccess('Password changed successfully');
       setError('');
       onClose(); 

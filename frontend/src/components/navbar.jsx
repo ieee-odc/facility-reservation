@@ -25,7 +25,9 @@ import feedbackIcon from '../assets/feedback.png';
 import lockIcon from '../assets/lock.png';
 import languageIcon from '../assets/language.png';
 import modeIcon from '../assets/mode.png';
-import ChangePasswordModal from './ChangePasswordModal'; // Import the ChangePasswordModal component
+import historyIcon from '../assets/history.png';
+
+import ChangePasswordModal from './ChangePasswordModal'; 
 import webLogo from "./../assets/logo/Group3.svg";
 
 window.addEventListener('scroll', function() {
@@ -41,7 +43,7 @@ const Navbar = () => {
   const [nav, setNav] = useState(false);
   const [showProfileCard, setShowProfileCard] = useState(false);
   const [showSettingsCard, setShowSettingsCard] = useState(false);
-  const [showChangePasswordModal, setShowChangePasswordModal] = useState(false); // State for modal
+  const [showChangePasswordModal, setShowChangePasswordModal] = useState(false); 
   const [userDetails, setUserDetails] = useState({});
   const navigate = useNavigate();
   const email = localStorage.getItem('userEmail');
@@ -101,7 +103,7 @@ const Navbar = () => {
   const toggleSettingsCard = () => {
     setShowSettingsCard(!showSettingsCard);
     if (showSettingsCard) {
-      setShowChangePasswordModal(false); // Hide modal if settings card is closed
+      setShowChangePasswordModal(false); 
     }
   };
 
@@ -113,6 +115,8 @@ const Navbar = () => {
     { icon: <img src={homeIcon} alt="home Icon" style={{ width: '30px', height: '30px'  }} />, text: "Dashboard"},
     { icon: <img src={calendarIcon} alt="calendar Icon" style={{ width: '30px', height: '30px' }} />, text: "Calendar"},
     { icon: <img src={reservationIcon} alt="reservation Icon" style={{ width: '30px', height: '30px' }} />, text: "Reservation"},
+    { icon: <img src={historyIcon} alt="history Icon" style={{ width: '30px', height: '30px' }} />, text: "History"},
+
     { icon: <img src={profileIcon} alt="Profile Icon" style={{ width: '30px', height: '30px' }} />, text: "Profile", handleClick: profile },
     { icon: <img src={logoutIcon} alt="Logout Icon" style={{ width: '30px', height: '30px' }} />, text: "Logout", handleClick: Logout },
     { icon: <img src={settings} alt="settings Icon" style={{ width: '30px', height: '30px' }} />, text: "Settings"},
@@ -123,14 +127,14 @@ const Navbar = () => {
       {/* Left side */}
       <div className="navbar-left">
         <div onClick={() => setNav(!nav)} className="navbar-toggle">
-          <AiOutlineMenu size={24} />
+          <AiOutlineMenu size={26} />
         </div>
       </div>
 
       <div className="profile-icons">
-        <img src={settings} alt="settings" style={{ width: '24px', height: '24px' }} onClick={toggleSettingsCard} />
-        <img src={bellIcon} alt="notifications" style={{ width: '24px', height: '24px' }}  />
-        <img src={profileIcon} alt="User" style={{ width: '24px', height: '24px' }} onClick={toggleProfileCard} />
+        <img src={settings} alt="settings" style={{ width: '26px', height: '26px' }} onClick={toggleSettingsCard} />
+        <img src={bellIcon} alt="notifications" style={{ width: '26px', height: '26px' }}  />
+        <img src={profileIcon} alt="User" style={{ width: '26px', height: '26px' }} onClick={toggleProfileCard} />
         {showProfileCard && (
           <div ref={profileCardRef} className="profile-card">
             <div className="profile-card-header">
