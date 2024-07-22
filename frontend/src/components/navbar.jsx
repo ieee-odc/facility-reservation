@@ -123,14 +123,14 @@ const Navbar = () => {
       {/* Left side */}
       <div className="navbar-left">
         <div onClick={() => setNav(!nav)} className="navbar-toggle">
-          <AiOutlineMenu size={30} />
+          <AiOutlineMenu size={24} />
         </div>
       </div>
 
       <div className="profile-icons">
-        <img src={settings} alt="settings" style={{ width: '34px', height: '34px' }} onClick={toggleSettingsCard} />
-        <img src={bellIcon} alt="notifications" style={{ width: '34px', height: '34px' }}  />
-        <img src={profileIcon} alt="User" style={{ width: '34px', height: '34px' }} onClick={toggleProfileCard} />
+        <img src={settings} alt="settings" style={{ width: '24px', height: '24px' }} onClick={toggleSettingsCard} />
+        <img src={bellIcon} alt="notifications" style={{ width: '24px', height: '24px' }}  />
+        <img src={profileIcon} alt="User" style={{ width: '24px', height: '24px' }} onClick={toggleProfileCard} />
         {showProfileCard && (
           <div ref={profileCardRef} className="profile-card">
             <div className="profile-card-header">

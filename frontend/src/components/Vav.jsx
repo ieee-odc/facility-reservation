@@ -64,7 +64,7 @@ const Vav = () => {
     <div className="vis-a-vis">
       <h3>Our Representatives</h3>
       <div className="add-button">
-        <button onClick={() => setShowModal(true)}>Add a representative</button>
+        <button onClick={() => setShowModal(true)}>+ Add a representative</button>
       </div>
       <div className="vav-content">
         {representatives.map((rep) => (
