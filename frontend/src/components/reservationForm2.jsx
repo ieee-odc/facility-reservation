@@ -101,7 +101,6 @@ const ReserverSalleform = ({ onSubmit, onBack, date, time }) => {
         <form className="form" onSubmit={handleFormSubmit}>
           <div className="button-group">
             <IoArrowBackOutline className="back" size={24} onClick={onBack} />
-            <IoMdClose className="close" size={24} onClick={handleQuitClick} />
           </div>
           <div className="form-title-container">
             <h4 className="form-title">Reservation</h4>
