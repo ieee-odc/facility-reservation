@@ -27,6 +27,18 @@ const reservationInitiatorSchema = mongoose.Schema(
       required: true,
       select: false,
     },
+    nature: {
+      type: String,
+      default: ""
+    },
+    service: {
+      type: String,
+      default: ""
+    },
+    organisation: {
+      type: String,
+      default: ""
+    },
   },
   {
     timestamps: true,
