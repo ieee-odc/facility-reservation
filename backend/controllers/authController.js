@@ -33,15 +33,15 @@ export const verifyUser = async (req, res) => {
     const user = await ReservationInitiator.findOne({ email }).select(
       "+password"
     );
-    console.log("user", (user && true) || false);
+    console.log("user", user);
 
-    if (password !== "") {
+    /*if (password !== "") {
       const validPassword = await bcrypt.compare(password, user.password);
       console.log(user.password);
       if (!validPassword) {
         return res.status(401).send({ message: "Invalid creds" });
       }
-    }
+    }*/
 
     return res.status(201).json({ isValid: (user && true) || false });
   } catch (error) {
