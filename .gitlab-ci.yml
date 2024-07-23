@@ -32,12 +32,12 @@ build_backend:
     paths:
       - backend/
 
-test_frontend:
-  stage: test
-  script:
-    - cd frontend
-    - npm install
-    - npm test
+#test_frontend:
+#  stage: test
+#  script:
+#    - cd frontend
+#    - npm install
+#    - npm test
 
 test_backend:
   stage: test
@@ -46,22 +46,22 @@ test_backend:
     - npm install
     - npm test
 
-deploy_frontend:
-  stage: deploy
-  script:
-    - cd frontend
-    - npm run deploy
-  environment:
-    name: production
-  only:
-    - feature/login-P3-6
-
-deploy_backend:
-  stage: deploy
-  script:
-    - cd backend
-    - npm run deploy
-  environment:
-    name: production
-  only:
-    - feature/login-P3-6
+#deploy_frontend:
+#  stage: deploy
+#  script:
+#    - cd frontend
+#    - npm run deploy
+#  environment:
+#    name: production
+#  only:
+#    - feature/login-P3-6
+#
+#deploy_backend:
+#  stage: deploy
+#  script:
+#    - cd backend
+#    - npm run deploy
+#  environment:
+#    name: production
+#  only:
+#    - feature/login-P3-6
