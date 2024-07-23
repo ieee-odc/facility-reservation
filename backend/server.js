@@ -5,6 +5,7 @@ import responsibleRoutes from "./routes/respRoutes.js";
 import riRoutes from "./routes/riRoutes.js";
 import feedbackRoutes from "./routes/feedbackRoutes.js";
 import notificationRoutes from './routes/notificationRoutes.js';
+import reservationRoutes from './routes/reservationRoutes.js';
 
 
 const app = express();
@@ -21,6 +22,7 @@ app.use("/api/reservationInitiators", riRoutes);
 app.use('/api/responsibles', responsibleRoutes);
 app.use('/api/feedback', feedbackRoutes);
 app.use('/api/notifications', notificationRoutes);
+app.use('/api/reservations', reservationRoutes);
 
 
 
