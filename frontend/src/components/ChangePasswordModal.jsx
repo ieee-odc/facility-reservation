@@ -26,7 +26,7 @@ const ChangePasswordModal = ({ isOpen, onClose }) => {
 
       await reauthenticateWithCredential(user, credential);
       await updatePassword(user, newPassword);
-      const email = localStorage.getItem('email');
+      const email = localStorage.getItem('userEmail');
       if (!email) {
         throw new Error('Email not found in local storage');
       }
@@ -38,7 +38,7 @@ const ChangePasswordModal = ({ isOpen, onClose }) => {
       }
       const { id: userId } = await userIdResponse.json();
       
-      const response = await fetch(`http://localhost:5000/api/reservationInitiators/${userId}`, {
+     /* const response = await fetch(`http://localhost:5000/api/reservationInitiators/${userId}`, {
         method: 'PATCH',
         headers: {
           'Content-Type': 'application/json',
@@ -48,13 +48,13 @@ const ChangePasswordModal = ({ isOpen, onClose }) => {
 
       if (!response.ok) {
         throw new Error('Failed to update password in MongoDB');
-      }
+      }*/
 
       setSuccess('Password changed successfully');
       setError('');
       onClose(); 
     } catch (err) {
-      setError(err.message);
+      setError('Unable to update password');
       setSuccess('');
     }
   };
