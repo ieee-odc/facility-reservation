@@ -42,6 +42,11 @@ const reservationSchema = mongoose.Schema(
       required: false,
       default: null,
     },
+    state: {
+      type: String,
+      enum: ["Pending", "Approuved", "Rejected", "Canceled"],
+      default: "Pending",
+    },
   },
   { timestamps: true }
 );
