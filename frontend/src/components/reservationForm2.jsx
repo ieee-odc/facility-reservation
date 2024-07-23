@@ -46,7 +46,7 @@ const ReserverSalleform = ({ onSubmit, onBack, date, time }) => {
     setFacility(selectedFacility);
     setFormData({ ...formData, facility: selectedFacility });
     if (pendingFacilities.includes(selectedFacility)) {
-      setWarningMessage('Warning: This room is likely already reserved for this time slot.');
+      setWarningMessage('Warning : This room is likely already reserved for this time slot.');
     } else {
       setWarningMessage('');
     }
