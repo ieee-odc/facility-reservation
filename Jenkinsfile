@@ -36,7 +36,7 @@ pipeline {
                 }
             }
         }
-        // Uncomment and adjust the following stages if needed
+        
         /*
         stage('Build Frontend') {
             steps {
