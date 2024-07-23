@@ -1,17 +1,10 @@
 import React, { useState, useEffect, useRef } from "react";
 import { AiOutlineMenu, AiOutlineClose } from "react-icons/ai";
 import { BsFillCartFill } from "react-icons/bs";
-import { IoMdSettings, IoMdNotifications, IoMdLock, IoMdMoon, IoMdGlobe } from "react-icons/io";
-import { SlNote } from "react-icons/sl";
 import logo from '../assets/logo_c.png';
-import { CiLogout } from "react-icons/ci";
-import { MdFeedback } from "react-icons/md";
-import { BiSolidLogOut } from "react-icons/bi";
-import { Link, useLocation, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { doSignOut } from "../config/auth";
-import { FiBell } from "react-icons/fi";
-import { LuSettings } from "react-icons/lu";
-import { FaRegUserCircle, FaCalendarAlt, FaUserEdit, FaHome } from "react-icons/fa";
+import { FaRegUserCircle } from "react-icons/fa";
 import "./navbar.css";
 import axios from 'axios';
 import logoutIcon from '../assets/signout.png';
@@ -26,6 +19,7 @@ import lockIcon from '../assets/lock.png';
 import languageIcon from '../assets/language.png';
 import modeIcon from '../assets/mode.png';
 import historyIcon from '../assets/history.png';
+
 
 import ChangePasswordModal from './ChangePasswordModal'; 
 import webLogo from "./../assets/logo/Group3.svg";
@@ -95,6 +89,9 @@ const Navbar = () => {
   const profile = async () => {
     navigate("/profile");
   };
+  const reservation = async () => {
+    navigate("/reserver");
+  };
 
   const handleChangePassword = () => {
     setShowChangePasswordModal(true);
@@ -114,7 +111,7 @@ const Navbar = () => {
   const menuItems = [
     { icon: <img src={homeIcon} alt="home Icon" style={{ width: '30px', height: '30px'  }} />, text: "Dashboard"},
     { icon: <img src={calendarIcon} alt="calendar Icon" style={{ width: '30px', height: '30px' }} />, text: "Calendar"},
-    { icon: <img src={reservationIcon} alt="reservation Icon" style={{ width: '30px', height: '30px' }} />, text: "Reservation"},
+    { icon: <img src={reservationIcon} alt="reservation Icon" style={{ width: '30px', height: '30px' }} />, text: "Reservation" , handleClick: reservation},
     { icon: <img src={historyIcon} alt="history Icon" style={{ width: '30px', height: '30px' }} />, text: "History"},
 
     { icon: <img src={profileIcon} alt="Profile Icon" style={{ width: '30px', height: '30px' }} />, text: "Profile", handleClick: profile },

@@ -74,7 +74,6 @@ const Profile = () => {
   };
 
   const handleApprove = () => {
-    // Add your save logic here
     setEditingField(null);
   };
 

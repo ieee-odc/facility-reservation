@@ -1,0 +1,97 @@
+.container1 {
+    margin-top: 1%;
+    max-width: 600px;
+    margin-left: auto;
+    margin-right: auto;
+    padding: 50px;
+    align-items: center;
+    background-color: #fff;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+  }
+  
+  .form-title-container {
+    text-align: center;
+    margin-bottom: 20px;
+  }
+  
+  .form-title {
+    color: #333;
+  }
+  
+  .form {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .form-group {
+    margin-bottom: 20px;
+  }
+  
+  .form-group label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+    color: #555;
+  }
+  
+  .input-container {
+    position: relative;
+  }
+  
+  .input {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 16px;
+  }
+  
+  .input:focus {
+    border-color: #007bff;
+    outline: none;
+  }
+  
+  .button {
+    padding: 10px;
+    border: none;
+    border-radius: 18px;
+    background-color: #007bff;
+    color: white;
+    cursor: pointer;
+    width: 100%;
+    font-size: 16px;
+    margin-top: 10px;
+  }
+  
+  .button:hover {
+    background-color: #0056b3;
+  }
+  
+  .error-message {
+    color: red;
+    font-size: 14px;
+    margin-top: 5px;
+  }
+  
+  .info-message {
+    color: #555;
+    font-size: 14px;
+    margin-top: 10px;
+  }
+  .warning-message {
+    background-color: #fef3e7; /* Change background color to indicate warning */
+    border-left: 6px solid #f39c12; /* Change border color to a warning color */
+    color: #9c6612; /* Change text color to a darker shade */
+    padding: 10px 15px;
+    margin-bottom: 20px;
+    margin-top: 20px;
+    border-radius: 4px;
+    font-size: 0.875em;
+  }
+  .close{
+    margin-left: 550px;
+  }
+.attach{
+    color:#555
+}
