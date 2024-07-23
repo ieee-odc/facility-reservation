@@ -68,7 +68,7 @@ export const doSignInWithEmailAndPassword = async (email, password) => {
   try {
     const userCred = await signInWithEmailAndPassword(auth, email, password);
     console.log("userCred 1 ",userCred);
-    const isValid = await verifyAuth(userCred.user.email, password, 'emailPassword');
+    const isValid = await verifyAuth(userCred.user.email, "", 'emailPassword');
     if (!isValid) {
       await signOut(auth);
       clearFirebaseLocalStorageDb();
