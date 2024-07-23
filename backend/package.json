@@ -4,13 +4,15 @@
   "main": "server.js",
   "type": "module",
   "scripts": {
-    "start": "nodemon --env-file=.env server.js"
+    "start": "nodemon --env-file=.env server.js",
+    "test" : "ava"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "description": "",
   "dependencies": {
+    "ava": "^6.1.3",
     "bcrypt": "^5.1.1",
     "bcryptjs": "^2.4.3",
     "cors": "^2.8.5",

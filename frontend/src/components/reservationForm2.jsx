@@ -21,6 +21,7 @@ const ReserverSalleform = ({ onSubmit, onBack, date, time }) => {
   const [availableFacilities, setAvailableFacilities] = useState([]);
   const [pendingFacilities, setPendingFacilities] = useState([]);
   const [warningMessage, setWarningMessage] = useState('');
+  const [fileErrors, setFileErrors] = useState('');
   const fileInputRef = useRef(null);
 
   useEffect(() => {
@@ -72,6 +73,15 @@ const ReserverSalleform = ({ onSubmit, onBack, date, time }) => {
 
   const handleFileChange = (event) => {
     const selectedFiles = Array.from(event.target.files);
+    const allowedTypes = ['application/pdf', 'text/csv'];
+    const invalidFiles = selectedFiles.filter(file => !allowedTypes.includes(file.type));
+
+    if (invalidFiles.length > 0) {
+      setFileErrors('Please upload only PDF or CSV files.');
+      return;
+    }
+
+    setFileErrors('');
     setFiles(selectedFiles);
     setFormData({ ...formData, files: selectedFiles });
   };
@@ -91,6 +101,7 @@ const ReserverSalleform = ({ onSubmit, onBack, date, time }) => {
         <form className="form" onSubmit={handleFormSubmit}>
           <div className="button-group">
             <IoArrowBackOutline className="back" size={24} onClick={onBack} />
+            <IoMdClose className="close" size={24} onClick={handleQuitClick} />
           </div>
           <div className="form-title-container">
             <h4 className="form-title">Reservation</h4>
@@ -161,7 +172,9 @@ const ReserverSalleform = ({ onSubmit, onBack, date, time }) => {
               onChange={handleFileChange}
               style={{ display: 'none' }}
               multiple
+              accept=".csv, .pdf" // Restrict to CSV and PDF files
             />
+            {fileErrors && <p className="error-message">{fileErrors}</p>}
             {files.length > 0 && (
               <div>
                 <p>Selected files:</p>
