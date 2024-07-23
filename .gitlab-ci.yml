@@ -13,15 +13,15 @@ cache:
 before_script:
   - cd $CI_PROJECT_DIR
 
-build_frontend:
-  stage: build
-  script:
-    - cd frontend
-    - npm install
-    - npm run build
-  artifacts:
-    paths:
-      - frontend/build/
+#build_frontend:
+#  stage: build
+#  script:
+#    - cd frontend
+#    - npm install
+#    - npm run build
+#  artifacts:
+#    paths:
+#      - frontend/build/
 
 build_backend:
   stage: build
