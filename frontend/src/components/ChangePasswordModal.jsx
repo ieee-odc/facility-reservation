@@ -16,7 +16,7 @@ const ChangePasswordModal = ({ isOpen, onClose }) => {
     if (newPassword !== confirmPassword) {
       setError('Passwords do  not match ');
       return;
-    }      
+    }        
 
     try {
       const user = auth.currentUser;
