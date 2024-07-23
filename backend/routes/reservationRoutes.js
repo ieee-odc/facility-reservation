@@ -11,9 +11,10 @@ import {
 const router = express.Router();
 
 router.get('/', findAllReservations);
+
 router.get('/:id', findReservationById);
 router.post('/', addReservation);
-router.patch('/', updateReservation);
-router.delete('/', deleteReservation);
+router.patch('/:id', updateReservation);
+router.delete('/:id', deleteReservation);
 
 export default router;
