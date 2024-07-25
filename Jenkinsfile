@@ -1,15 +1,19 @@
 pipeline {
-    agent none
+    agent any
     stages {
-        stage('Back-end') {
-            agent {
-                docker {
-                    image 'node:20-alpine'
-                    args '-u root' // Run as root user
-                }
-            }
+        stage('build') {
             steps {
-                sh 'node --version'
+                echo 'building'
+            }
+        }
+        stage('test') {
+            steps {
+                echo ' testing the app '
+            }
+        }
+        stage('deploy') {
+            steps {
+                echo ' deploying the app'
             }
         }
     }
