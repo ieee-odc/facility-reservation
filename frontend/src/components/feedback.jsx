@@ -4,11 +4,10 @@ import 'react-toastify/dist/ReactToastify.css';
 import "./feedback.css";
 import Navbar from "./navbar";
 
-const GiveFeedback = () => {
+const GiveFeedback = ({ isOpen, onClose }) => {
   const [feedbackType, setFeedbackType] = useState("");
   const [message, setMessage] = useState("");
   const email = localStorage.getItem('userEmail');
-  console.log("hello email",email);
 
   const handleFeedbackTypeChange = (e) => {
     setFeedbackType(e.target.value);
@@ -37,30 +36,27 @@ const GiveFeedback = () => {
         body: JSON.stringify(feedbackData),
       });
 
-      console.log('Response status:', response.status);
-
       if (response.ok) {
-        if (feedbackType === "bug") {
-          toast.success("Bug report sent to developers.");
-        } else {
-          toast.success("Thank you for your feedback.");
-        }
+        toast.success(feedbackType === "bug" ? "Bug report sent to developers." : "Thank you for your feedback.");
+        onClose();  // Close the modal after successful submission
       } else {
         const errorData = await response.json();
-        console.error("Failed to submit feedback:", errorData);
         toast.error("Failed to submit feedback: " + (errorData.message || 'Unknown error.'));
       }
     } catch (error) {
-      console.error("Error submitting feedback:", error);
       toast.error("An error occurred while submitting your feedback.");
     }
   };
 
+  if (!isOpen) return null;
+
   return (
-    <div>
-      <Navbar />
-      <div className="feedback-container">
-        <h2>Give Feedback</h2>
+    <div className="modal-overlay">
+      <div className="modal-content">
+        <div className="modal-header">
+          <h2>Give Feedback</h2>
+          <button onClick={onClose} className="close-button">&times;</button>
+        </div>
         <form onSubmit={handleSubmit} className="feedback-form">
           <div className="form-group">
             <label htmlFor="feedbackType">Feedback Type</label>

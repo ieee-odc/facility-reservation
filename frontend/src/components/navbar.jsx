@@ -20,7 +20,7 @@ import languageIcon from '../assets/language.png';
 import modeIcon from '../assets/mode.png';
 import historyIcon from '../assets/history.png';
 
-
+import GiveFeedback from "./feedback";
 import ChangePasswordModal from './ChangePasswordModal'; 
 import webLogo from "./../assets/logo/Group3.svg";
 
@@ -39,6 +39,8 @@ const Navbar = () => {
   const [showSettingsCard, setShowSettingsCard] = useState(false);
   const [showChangePasswordModal, setShowChangePasswordModal] = useState(false); 
   const [userDetails, setUserDetails] = useState({});
+  const [showFeedbackModal, setShowFeedbackModal] = useState(false);
+
   const navigate = useNavigate();
   const email = localStorage.getItem('userEmail');
   
@@ -143,9 +145,11 @@ const Navbar = () => {
               <button className="profile-card-button" onClick={profile}>
                 <img src={profileIcon} alt="profile Icon" className="button-icon" /> Your profile
               </button>
-              <button className="profile-card-button" onClick={feedback}>
+              <button className="profile-card-button" onClick={() => setShowFeedbackModal(true)}>
                 <img src={feedbackIcon} alt="feedback Icon" className="button-icon" /> Give feedback
               </button>
+  
+
               <button className="profile-card-button" onClick={Logout}>
                 <img src={logoutIcon} alt="Logout Icon" className="button-icon" /> Logout
               </button>
@@ -212,7 +216,13 @@ const Navbar = () => {
         isOpen={showChangePasswordModal} 
         onClose={() => setShowChangePasswordModal(false)} 
       />
+      <GiveFeedback 
+  isOpen={showFeedbackModal} 
+  onClose={() => setShowFeedbackModal(false)} 
+/>
+
     </div>
+
   );
 };
 

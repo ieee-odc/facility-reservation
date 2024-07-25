@@ -111,6 +111,7 @@ const ReserverSalleform = ({ onSubmit, onBack, date, time }) => {
             </label>
             <select
               id="facility"
+              className="input"
               value={facility}
               onChange={handleFacilityChange}
             >
@@ -118,6 +119,7 @@ const ReserverSalleform = ({ onSubmit, onBack, date, time }) => {
               {availableFacilities.map((fac, index) => (
                 <option key={index} value={fac}>{fac}</option>
               ))}
+              
             </select>
           </div>
           <div className="form-group">
@@ -151,7 +153,7 @@ const ReserverSalleform = ({ onSubmit, onBack, date, time }) => {
             </label>
             <textarea
               id="otherMotif"
-              className="textarea"
+              className="input"
               value={otherMotif}
               onChange={(e) => {
                 setOtherMotif(e.target.value);

@@ -1,90 +1,22 @@
-.feedback-container {
-    margin-top: 10%;
-    max-width: 600px;
-    margin-left: 30%;
-    padding: 30px;
-    align-items: center;
-    background-color: #fff;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    border-radius: 8px;
-  }
-  
-  .feedback-container h2 {
-    text-align: center;
-    margin-bottom: 20px;
-    color: #333;
-  }
-  
-  .feedback-form {
-    display: flex;
-    flex-direction: column;
-  }
-  
-  .form-group {
-    margin-bottom: 20px;
-  }
-  
-  .form-group label {
-    display: block;
-    margin-bottom: 5px;
-    font-weight: bold;
-    color: #555;
-  }
-  
-  .form-group select,
-  .form-group textarea {
-    width: 100%;
-    padding: 10px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    font-size: 16px;
-  }
-  
-  .form-group select:focus,
-  .form-group textarea:focus {
-    border-color: #007bff;
-    outline: none;
-  }
-  
-  .submit-button {
-    padding: 10px;
-    border: none;
-    border-radius: 18px;
-    background-color: var(--button-blue-color);
-    color: white;
-    cursor: pointer;
-    width: 100%;
-    font-size: 16px;
-    margin-top: 10px;
-  }
-  
-  .submit-button:hover {
-    background-color: #0056b3;
-  }
-  
-  .feedback-form .form-group textarea {
-    resize: vertical;
-  }
-  /* FeedbackModal.css */
 .modal-overlay {
   position: fixed;
   top: 0;
   left: 0;
-  width: 100%;
-  height: 100%;
-  background: rgba(0, 0, 0, 0.5);
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
   display: flex;
   justify-content: center;
   align-items: center;
-  z-index: 1000;
 }
 
 .modal-content {
-  background: #fff;
+  background-color: white;
   padding: 20px;
   border-radius: 8px;
-  width: 80%;
-  max-width: 600px;
+  width: 90%;
+  max-width: 500px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
   position: relative;
 }
 
@@ -92,7 +24,6 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 15px;
 }
 
 .close-button {
@@ -107,20 +38,32 @@
   flex-direction: column;
 }
 
-.form-group {
+.feedback-form .form-group {
   margin-bottom: 15px;
 }
 
-.submit-button {
-  align-self: flex-start;
-  padding: 10px 20px;
+.feedback-form label {
+  margin-bottom: 5px;
+  font-weight: bold;
+}
+
+.feedback-form select,
+.feedback-form textarea {
+  width: 100%;
+  padding: 10px;
+  border-radius: 4px;
+  border: 1px solid #ccc;
+}
+
+.feedback-form .submit-button {
   background-color: #007bff;
   color: white;
+  padding: 10px;
   border: none;
-  border-radius: 5px;
+  border-radius: 4px;
   cursor: pointer;
 }
 
-.submit-button:hover {
+.feedback-form .submit-button:hover {
   background-color: #0056b3;
 }
