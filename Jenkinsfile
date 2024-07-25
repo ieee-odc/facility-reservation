@@ -6,7 +6,7 @@ pipeline {
         docker { image 'node:20-alpine' }
       }
       steps {
-        sh 'node --version'
+        bash 'node --version'
       }
     }
   }
