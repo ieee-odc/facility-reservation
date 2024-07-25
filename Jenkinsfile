@@ -10,7 +10,6 @@ pipeline {
             }
             steps {
                 sh 'node --version'
-                sh 'docker --version'
             }
         }
     }
