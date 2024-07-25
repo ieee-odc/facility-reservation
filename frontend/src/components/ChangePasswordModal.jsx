@@ -97,8 +97,8 @@ const ChangePasswordModal = ({ isOpen, onClose }) => {
             />
           </div>
           <div className="modal-buttons">
-            <button type="submit">Change Password</button>
-            <button type="button" onClick={onClose}>Cancel</button>
+            <button type="submit" className="modal-buttons-submit">Change Password</button>
+            <button type="button" className="modal-buttons-cancel" onClick={onClose}>Cancel</button>
           </div>
         </form>
       </div>

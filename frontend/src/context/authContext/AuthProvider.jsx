@@ -29,7 +29,7 @@ export const clearFirebaseLocalStorageDb = () => {
 export const verifyAuth = async (email,password, method) => {
   try {
     const res = await axios.post(
-      "http://localhost:5000/api/reservationInitiators/verify-user",
+      "http://localhost:3000/api/reservationInitiators/verify-user",
       { email, password,method }
     );
     console.log("res auth provider", res.data);

@@ -28,7 +28,7 @@ const GiveFeedback = ({ isOpen, onClose }) => {
     const feedbackData = { email, feedbackType, message };
 
     try {
-      const response = await fetch('http://localhost:5000/api/feedback/submit', {
+      const response = await fetch('http://localhost:3000/api/feedback/submit', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -38,7 +38,7 @@ const GiveFeedback = ({ isOpen, onClose }) => {
 
       if (response.ok) {
         toast.success(feedbackType === "bug" ? "Bug report sent to developers." : "Thank you for your feedback.");
-        onClose();  // Close the modal after successful submission
+        onClose();  
       } else {
         const errorData = await response.json();
         toast.error("Failed to submit feedback: " + (errorData.message || 'Unknown error.'));
@@ -87,6 +87,7 @@ const GiveFeedback = ({ isOpen, onClose }) => {
           <button type="submit" className="submit-button">
             Submit Feedback
           </button>
+       
         </form>
       </div>
       <ToastContainer />

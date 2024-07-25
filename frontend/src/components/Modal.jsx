@@ -36,7 +36,7 @@ const Modal = ({ rep, onSave, onClose }) => {
       picture: formData.picture || ''
     }
     if (!rep){
-      axios.post("http://localhost:5000/api/responsibles", data)
+      axios.post("http://localhost:3000/api/responsibles", data)
       .then((resp)=>{
         console.log(resp);
       })

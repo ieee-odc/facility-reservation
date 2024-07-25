@@ -24,7 +24,7 @@ const ReserverSalleform = ({ onSubmit, onBack, date, time }) => {
   const [fileErrors, setFileErrors] = useState('');
   const fileInputRef = useRef(null);
 
-  useEffect(() => {
+  /*useEffect(() => {
     const fetchAvailableFacilities = async () => {
       try {
         const response = await axios.get('http://localhost:5000/reservations/available-facilities', {
@@ -39,7 +39,7 @@ const ReserverSalleform = ({ onSubmit, onBack, date, time }) => {
     };
 
     fetchAvailableFacilities();
-  }, [date, time]);
+  }, [date, time]);*/
 
   const handleFacilityChange = (e) => {
     const selectedFacility = e.target.value;
@@ -163,30 +163,31 @@ const ReserverSalleform = ({ onSubmit, onBack, date, time }) => {
             ></textarea>
           </div>
           <div className="form-group">
-            <label htmlFor="file" className="label">
-              Attach a file
-            </label>
-            <GrAttachment className='attach' onClick={handleUploadButtonClick} />
-            <input
-              type="file"
-              ref={fileInputRef}
-              onChange={handleFileChange}
-              style={{ display: 'none' }}
-              multiple
-              accept=".csv, .pdf" // Restrict to CSV and PDF files
-            />
-            {fileErrors && <p className="error-message">{fileErrors}</p>}
-            {files.length > 0 && (
-              <div>
-                <p>Selected files:</p>
-                <ul>
-                  {files.map((file, index) => (
-                    <li key={index}>{file.name}</li>
-                  ))}
-                </ul>
-              </div>
-            )}
-          </div>
+
+  <button className="add-button" onClick={handleUploadButtonClick}>
+    <GrAttachment className="attach" />
+    Attach a file
+  </button>
+  <input
+    type="file"
+    ref={fileInputRef}
+    onChange={handleFileChange}
+    style={{ display: 'none' }}
+    multiple
+    accept=".csv, .pdf" // Restrict to CSV and PDF files
+  />
+  {fileErrors && <p className="error-message">{fileErrors}</p>}
+  {files.length > 0 && (
+    <div>
+      <p>Selected files:</p>
+      <ul>
+        {files.map((file, index) => (
+          <li key={index}>{file.name}</li>
+        ))}
+      </ul>
+    </div>
+  )}
+</div>
           <div className="warning-message">
             Warning! The CVs of the trainers and the list of participants are mandatory to attach for workshops.
           </div>
