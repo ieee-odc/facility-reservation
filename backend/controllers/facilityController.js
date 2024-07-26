@@ -79,7 +79,7 @@ export const updateFacility = async (req, res) => {
   }
 };
 
-export const deleteReservation = async (req, res) => {
+export const deleteFacility = async (req, res) => {
   try {
     const { id } = req.params;
 

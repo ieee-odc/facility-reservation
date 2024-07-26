@@ -7,6 +7,7 @@ import riRoutes from "./routes/riRoutes.js";
 import feedbackRoutes from "./routes/feedbackRoutes.js";
 import notificationRoutes from './routes/notificationRoutes.js';
 import reservationRoutes from './routes/reservationRoutes.js';
+import facilityRoutes from './routes/facilityRoutes.js';
 
 const app = express();
 app.use(express.json());
@@ -23,6 +24,7 @@ app.use('/api/responsibles', responsibleRoutes);
 app.use('/api/feedback', feedbackRoutes);
 app.use('/api/notifications', notificationRoutes);
 app.use('/api/reservations', reservationRoutes);
+app.use('/api/facility', facilityRoutes);
 
 const PORT = process.env.PORT || 3000;
 const mongoDBURL = process.env.MONGODB_URL;
