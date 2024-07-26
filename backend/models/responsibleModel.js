@@ -27,6 +27,4 @@ const responsibleSchema = new mongoose.Schema({
 }
 );
 
-const Responsible = mongoose.model('Responsible', responsibleSchema);
-
-export default Responsible;
+export const Responsible = mongoose.model('Responsible', responsibleSchema);
