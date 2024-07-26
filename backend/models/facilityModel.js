@@ -5,6 +5,7 @@ const salleSchema = mongoose.Schema(
    
     label : {
       type: String,
+      unique: true,
       required: true, 
     },
     capacity: {
