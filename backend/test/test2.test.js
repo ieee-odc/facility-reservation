@@ -22,16 +22,7 @@ const invalidData = {
   state: 'InvalidState'
 };
 
-test.before(async t => {
-  // Establish database connection before running tests
-  if (mongoose.connection.readyState === 0) {
-    await mongoose.connect(process.env.MONGODB_URL);
-  }
-});
 
-test.before(async t => {
-  await Reservation.deleteMany({});
-});
 
 test.after.always(async t => {
   await mongoose.disconnect();
