@@ -22,22 +22,6 @@ const invalidData = {
   state: 'InvalidState'
 };
 
-test.before(async t => {
-  // Establish database connection before running tests
-  if (mongoose.connection.readyState === 0) {
-    await mongoose.connect('mongodb://localhost:27017/your-db', { useNewUrlParser: true, useUnifiedTopology: true });
-  }
-});
-
-test.afterEach.always(async t => {
-  // Clean up data after each test
-  await Reservation.deleteMany({});
-});
-
-test.after.always(async t => {
-  // Disconnect database after all tests
-  await mongoose.disconnect();
-});
 
 test('POST /api/reservations should create a reservation', async t => {
   const response = await request(app)
