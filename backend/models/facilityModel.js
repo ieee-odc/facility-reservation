@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
 
-const salleSchema = mongoose.Schema(
+const facilitySchema = mongoose.Schema(
   {
    
     label : {
@@ -26,4 +26,4 @@ const salleSchema = mongoose.Schema(
 
 
 
-export const Salle = mongoose.model("facilities", salleSchema);
+export const Facility = mongoose.model("facilities", facilitySchema);

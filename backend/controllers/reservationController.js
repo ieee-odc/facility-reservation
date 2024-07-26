@@ -71,11 +71,10 @@ export const addReservation = async (req, res) => {
       files,
     });
 
-    if(reservation) return res.status(201).json(reservation);
-    return res.status(201).json({message: "an error occured when creating the reservation"});
+    return res.status(201).json(reservation);
   } catch (error) {
 
-    return res.status(409).json({ message: error.message });
+    return res.status(409).json({ message: "an error occured when creating the reservation" });
   }
 };
 
