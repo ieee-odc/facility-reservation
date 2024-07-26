@@ -4,9 +4,10 @@ import app from '../server.js';
 import mongoose from 'mongoose';
 import { Reservation } from '../models/reservationModel.js';
 
+// Dummy data
 const validData = {
   facility: '507f1f77bcf86cd799439011',
-  motive: 'Meeting',
+  motive: 'Workshop',
   date: '2024-07-25T00:00:00.000Z',
   time: '10:00',
   state: 'Pending',
@@ -22,7 +23,25 @@ const invalidData = {
   state: 'InvalidState'
 };
 
+// Connect to the database before running tests
+test.before(async t => {
+  await mongoose.connect(process.env.MONGODB_URL, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true
+  });
+});
 
+// Clean up the database after each test
+/*test.afterEach(async t => {
+  await Reservation.deleteMany({});
+});*/
+
+// Close the database connection after all tests
+test.after.always(async t => {
+  await mongoose.connection.close();
+});
+
+// Tests
 test('POST /api/reservations should create a reservation', async t => {
   const response = await request(app)
     .post('/api/reservations')
