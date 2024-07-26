@@ -29,6 +29,11 @@ test.before(async t => {
   }
 });
 
+test.beforeEach(async () => {
+    // Clear all data before each test
+    await Reservation.deleteMany({});
+  });
+
 /*test.afterEach.always(async t => {
   // Clean up data after each test
   await Reservation.deleteMany({});
