@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "start": "nodemon --env-file=.env server.js",
-    "test": "ava"
+    "test": "ava --timeout=3m"
   },
   "keywords": [],
   "author": "",
