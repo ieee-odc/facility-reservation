@@ -45,7 +45,7 @@ jobs:
         run: npm install      
         
       - name: Launch test
-        run: npm test
+        run: npx ava
         env: 
           MONGODB_URL: ${{secrets.MONGODB_URL}}
                   
