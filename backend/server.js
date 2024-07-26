@@ -24,7 +24,7 @@ app.use('/api/responsibles', responsibleRoutes);
 app.use('/api/feedback', feedbackRoutes);
 app.use('/api/notifications', notificationRoutes);
 app.use('/api/reservations', reservationRoutes);
-app.use('/api/facility', facilityRoutes);
+app.use('/api/facilities', facilityRoutes);
 
 const PORT = process.env.PORT || 3000;
 const mongoDBURL = process.env.MONGODB_URL;

@@ -15,7 +15,7 @@ facilityRouter.get("/", findAllFacilities);
 
 facilityRouter.get("/:id", findOneFacility);
 
-facilityRouter.put("/:id", updateFacility);
+facilityRouter.patch("/:id", updateFacility);
 
 facilityRouter.delete("/:id", deleteFacility);
 

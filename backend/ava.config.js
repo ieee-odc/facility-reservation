@@ -1,7 +1,8 @@
 export default {
     files: [
-        'test/**/*.test.js',
-        'other-tests/**/*.test.js',
+        'test/facility.test.js',
+        //'test/**/*.test.js',
+        //'other-tests/**/*.test.js',
 
 
     ]

@@ -5,29 +5,18 @@ export const addFacility = async (req, res) => {
     const { label, capacity, state } = req.body;
 
     if (!label || !capacity || !state) {
-      return res
-        .status(400)
-        .json({ message: "Please provide all the required fields." });
+      return res.status(400).json({ message: "Please provide all the required fields." });
     }
 
     const existingFacility = await Facility.findOne({ label });
     if (existingFacility) {
-      return res.status(400).json({
-        message: "A facility with this label does already exist",
-      });
+      return res.status(409).json({ message: "A facility with this label already exists." });
     }
 
-    const newFacility = await Facility.create({
-      label,
-      capacity,
-      state,
-    });
-
+    const newFacility = await Facility.create({ label, capacity, state });
     return res.status(201).json(newFacility);
   } catch (error) {
-    return res.status(500).json({
-      message: "an error occured when creating the facility",
-    });
+    return res.status(500).json({ message: "An error occurred when creating the facility." });
   }
 };
 
@@ -44,28 +33,46 @@ export const findAllFacilities = async (req, res) => {
     });
   }
 };
-
+/*
 export const findOneFacility = async (req, res) => {
   try {
-    const { label } = req.params;
-    const facility = await Facility.findById(label);
-    return res.status(200).json(facility);
+    const { id } = req.params;
+    const facility = await Facility.findById(id);
+    return (facility) ? res.status(200).json(facility) : res.status(404).json({message: 'Facility not found'});
   } catch (error) {
     res.status(500).send({ message: error.message });
   }
-};
+};*/
+
+export const findOneFacility = async (req, res) => {
+    try {
+      const { id } = req.params;  // Use 'id' for retrieving by ID
+      const facility = await Facility.findById(id);
+  
+      if (!facility) {
+        // Return 404 if the facility is not found
+        return res.status(404).json({ message: "Facility not found" });
+      }
+  
+      // Return the facility if found
+      return res.status(200).json(facility);
+    } catch (error) {
+      // Handle any unexpected errors
+      return res.status(500).json({ message: error.message });
+    }
+  };
 
 export const updateFacility = async (req, res) => {
   try {
     const { id } = req.params;
     const updateFields = req.body;
 
-    const updatedSalle = await Salle.findByIdAndUpdate(id, updateFields, {
+    const updatedFacility = await Facility.findByIdAndUpdate(id, updateFields, {
       new: true,
       runValidators: true,
     });
 
-    if (!updatedSalle) {
+    if (!updatedFacility) {
       return res.status(404).json({ message: "Facility not found" });
     }
 

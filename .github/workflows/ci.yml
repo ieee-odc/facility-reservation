@@ -47,6 +47,6 @@ jobs:
       - name: Launch test
         run: npm test
         env: 
-          MONGODB_URL: ${{secrets.MONGODB_URL}}
+          MONGODB_URL: ${{secrets.MONGODB_URL_TEST}}
                   
 
