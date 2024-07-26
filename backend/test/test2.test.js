@@ -29,13 +29,11 @@ test.before(async t => {
   }
 });
 
-test.afterEach.always(async t => {
-  // Clean up data after each test
+test.before(async t => {
   await Reservation.deleteMany({});
 });
 
 test.after.always(async t => {
-  // Disconnect database and close server after all tests
   await mongoose.disconnect();
   closeServer();
 });
