@@ -1,4 +1,4 @@
-import Responsible from "../models/ResponsibleModel.js";
+import {Responsible} from './../models/responsibleModel.js' 
 
 
 export const createResponsible = async (req, res) => {
