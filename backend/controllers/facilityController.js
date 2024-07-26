@@ -61,30 +61,29 @@ export const findOneFacility = async (req, res) => {
       return res.status(500).json({ message: error.message });
     }
   };
-
-export const updateFacility = async (req, res) => {
-  try {
-    const { id } = req.params;
-    const updateFields = req.body;
-
-    const updatedFacility = await Facility.findByIdAndUpdate(id, updateFields, {
-      new: true,
-      runValidators: true,
-    });
-
-    if (!updatedFacility) {
-      return res.status(404).json({ message: "Facility not found" });
+  
+  export const updateFacility = async (req, res) => {
+    try {
+      const { id } = req.params;
+      const updateFields = req.body;
+  
+      const updatedFacility = await Facility.findByIdAndUpdate(id, updateFields, {
+        new: true,
+        runValidators: true,
+      });
+  
+      if (!updatedFacility) {
+        return res.status(404).json({ message: "Facility not found" });
+      }
+  
+      return res.status(200).json(updatedFacility);
+    } catch (error) {
+      return res.status(500).json({
+        message: "An error occurred when updating the facility.",
+      });
     }
-
-    return res
-      .status(200)
-      .json({ message: "The facility has been updated successfully." });
-  } catch (error) {
-    return res.status(500).json({
-      message: "An error occured when updating the facility.",
-    });
-  }
-};
+  };
+  
 
 export const deleteFacility = async (req, res) => {
   try {

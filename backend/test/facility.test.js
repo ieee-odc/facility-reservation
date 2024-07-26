@@ -58,20 +58,15 @@ test.serial("POST /api/facilities with invalid data should return 400", async (t
 });
 
 test.serial("GET /api/facilities/:id should retrieve a facility by ID", async (t) => {
-  // First, create a facility to retrieve
   const createResponse = await request(app)
     .post("/api/facilities")
     .send(validFacility)
     .expect(201);
   const id = createResponse.body._id;
 
-  id && console.log(id);
-
-  // Now, retrieve the facility by ID
   const getResponse = await request(app)
     .get(`/api/facilities/${id}`)
     .expect(200);
-  console.log(getResponse);
   t.is(getResponse.status, 200);
   t.is(getResponse.body._id, id);
   t.is(getResponse.body.label, validFacility.label);
@@ -80,8 +75,7 @@ test.serial("GET /api/facilities/:id should retrieve a facility by ID", async (t
 });
 
 test.serial("GET /api/facilities/:id should return 404 for non-existent facility", async (t) => {
-  // Use an ID that is unlikely to exist in your database
-  const id = "605c72efbcf86cd799439011"; // Example of a non-existent ID
+  const id = "605c72efbcf86cd799439011";
 
   const response = await request(app)
     .get(`/api/facilities/${id}`)
@@ -90,3 +84,67 @@ test.serial("GET /api/facilities/:id should return 404 for non-existent facility
   t.is(response.status, 404);
   t.deepEqual(response.body, { message: "Facility not found" });
 });
+
+
+test.serial("PATCH /api/facilities/:id should update a facility", async (t) => {
+    // First, create a facility to update
+    const createResponse = await request(app)
+      .post("/api/facilities")
+      .send(validFacility)
+      .expect(201);
+    const id = createResponse.body._id;
+  
+    // Update the facility
+    const updateData = {
+      label: "Updated Conference Room A",
+      capacity: 75,
+    };
+  
+    const updateResponse = await request(app)
+      .patch(`/api/facilities/${id}`)
+      .send(updateData)
+      .expect(200);
+  
+    t.is(updateResponse.status, 200);
+    t.is(updateResponse.body._id, id);
+    t.is(updateResponse.body.label, updateData.label);
+    t.is(updateResponse.body.capacity, updateData.capacity);
+    t.is(updateResponse.body.state, validFacility.state); // Assuming `state` remains unchanged
+  });
+  
+  test.serial("PATCH /api/facilities/:id with invalid data should return 400", async (t) => {
+    // First, create a facility to update
+    const createResponse = await request(app)
+      .post("/api/facilities")
+      .send(validFacility)
+      .expect(201);
+    const id = createResponse.body._id;
+  
+    // Attempt to update with invalid data
+    const invalidUpdateData = {
+      label: "",
+      capacity: 0,
+    };
+  
+    const updateResponse = await request(app)
+      .patch(`/api/facilities/${id}`)
+      .send(invalidUpdateData)
+      .expect(400);
+  
+    t.is(updateResponse.status, 400);
+    t.truthy(updateResponse.body.message, "Error message should be present");
+  });
+  
+  test.serial("PATCH /api/facilities/:id should return 404 for non-existent facility", async (t) => {
+    // Use an ID that is unlikely to exist in your database
+    const invalidId = "605c72efbcf86cd799439011"; // Example of a non-existent ID
+  
+    const response = await request(app)
+      .patch(`/api/facilities/${invalidId}`)
+      .send({ label: "New Label" })
+      .expect(404);
+  
+    t.is(response.status, 404);
+    t.deepEqual(response.body, { message: "Facility not found" });
+  });
+  
