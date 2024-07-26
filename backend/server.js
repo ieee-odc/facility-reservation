@@ -1,3 +1,4 @@
+import 'dotenv/config'; // Add this line at the top
 import express from "express";
 import mongoose from "mongoose";
 import cors from "cors";
@@ -26,12 +27,14 @@ app.use('/api/reservations', reservationRoutes);
 
 
 
-const PORT = process.env.PORT;
+const PORT = process.env.PORT || 3000;
 const mongoDBURL = process.env.MONGODB_URL;
 
 app.listen(PORT, () => {
   console.log(`App is listening to port: ${PORT}`);
 });
+
+export default app;
 
 mongoose
   .connect(mongoDBURL)

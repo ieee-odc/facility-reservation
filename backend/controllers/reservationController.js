@@ -11,6 +11,19 @@ import { Reservation } from "../models/reservationModel.js";
   event:
   state: 
 */
+export const findAllReservations = async (req, res) => {
+  try {
+    const reservations = await Reservation.find();
+
+    if (reservations.length > 0) {
+      return res.status(200).json(reservations);
+    } else {
+      return res.status(404).json({ message: "No reservations found" });
+    }
+  } catch (error) {
+    return res.status(500).json({ message: error.message });
+  }
+};
 
 export const findReservationById = async (req, res) => {
   try {
@@ -28,21 +41,6 @@ export const findReservationById = async (req, res) => {
   }
 };
 
-export const findAllReservations = async (req, res) => {
-  try {
-    const reservations = await Reservation.find();
-
-    if (reservations.length > 0) {
-      return res.status(200).json(reservations);
-    } else {
-      return res.status(404).json({ message: "No reservations found" });
-    }
-  } catch (error) {
-    return res.status(500).json({ message: error.message });
-  }
-};
-
-
 export const addReservation = async (req, res) => {
   try {
     const {
@@ -57,6 +55,9 @@ export const addReservation = async (req, res) => {
       materials,
       files,
     } = req.body;
+
+    console.log(req.body);
+
     const reservation = await Reservation.create({
       facility,
       motive,
