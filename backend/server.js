@@ -1,13 +1,14 @@
-import 'dotenv/config';
+import "dotenv/config";
 import express from "express";
 import mongoose from "mongoose";
 import cors from "cors";
 import responsibleRoutes from "./routes/respRoutes.js";
 import riRoutes from "./routes/riRoutes.js";
 import feedbackRoutes from "./routes/feedbackRoutes.js";
-import notificationRoutes from './routes/notificationRoutes.js';
-import reservationRoutes from './routes/reservationRoutes.js';
-import facilityRoutes from './routes/facilityRoutes.js';
+import notificationRoutes from "./routes/notificationRoutes.js";
+import reservationRoutes from "./routes/reservationRoutes.js";
+import facilityRoutes from "./routes/facilityRoutes.js";
+import equipmentRouter from "./routes/equipmentRoutes.js";
 
 const app = express();
 app.use(express.json());
@@ -20,11 +21,12 @@ app.use(
 );
 
 app.use("/api/reservationInitiators", riRoutes);
-app.use('/api/responsibles', responsibleRoutes);
-app.use('/api/feedback', feedbackRoutes);
-app.use('/api/notifications', notificationRoutes);
-app.use('/api/reservations', reservationRoutes);
-app.use('/api/facilities', facilityRoutes);
+app.use("/api/responsibles", responsibleRoutes);
+app.use("/api/feedback", feedbackRoutes);
+app.use("/api/notifications", notificationRoutes);
+app.use("/api/reservations", reservationRoutes);
+app.use("/api/facilities", facilityRoutes);
+app.use("/api/equipments", equipmentRouter);
 
 const PORT = process.env.PORT || 3000;
 const mongoDBURL = process.env.MONGODB_URL;
