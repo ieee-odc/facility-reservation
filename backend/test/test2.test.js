@@ -34,8 +34,7 @@ test('POST /api/reservations should create a reservation', async t => {
     .post('/api/reservations')
     .send(validData)
     .expect(201);
-    console.log('Response status:', response.status);
-    console.log('Response body:', response.body);
+    
   t.is(response.status, 201);
   t.truthy(response.body._id, 'Reservation should have an _id');
   t.deepEqual(response.body.facility.toString(), validData.facility);
@@ -55,8 +54,6 @@ test('POST /api/reservations with invalid data should return 409', async t => {
     .post('/api/reservations')
     .send(invalidData)
     .expect(409);
-    console.log('Response status:', response.status);
-    console.log('Response body:', response.body);
   t.is(response.status, 409);
   t.truthy(response.body.message, 'Error message should be present');
 });
