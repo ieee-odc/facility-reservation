@@ -41,6 +41,21 @@ export const findReservationById = async (req, res) => {
   }
 };
 
+
+
+/*
+facility: '507f1f77bcf86cd799439011',
+  motive: 'Meeting',
+  date: '2024-07-25T00:00:00.000Z',
+  time: '10:00',
+  state: 'Pending',
+  entity: '507f1f77bcf86cd799439012',
+  event: null,
+  effective: 10,
+  materials: ['Projector'],
+  files: ['file1.pdf']
+*/
+
 export const addReservation = async (req, res) => {
   try {
     const {
@@ -55,8 +70,6 @@ export const addReservation = async (req, res) => {
       materials,
       files,
     } = req.body;
-
-    console.log(req.body);
 
     const reservation = await Reservation.create({
       facility,
@@ -73,8 +86,7 @@ export const addReservation = async (req, res) => {
 
     return res.status(201).json(reservation);
   } catch (error) {
-
-    return res.status(409).json({ message: "an error occured when creating the reservation" });
+    return res.status(500).json({ message: error.message });
   }
 };
 
@@ -105,7 +117,9 @@ export const deleteReservation = async (req, res) => {
     const reservation = await Reservation.findByIdAndDelete(id);
 
     if (reservation) {
-      return res.status(200).json({ message: "Reservation deleted successfully" });
+      return res
+        .status(200)
+        .json({ message: "Reservation deleted successfully" });
     } else {
       return res.status(404).json({ message: "Reservation not found" });
     }
@@ -113,5 +127,3 @@ export const deleteReservation = async (req, res) => {
     return res.status(500).json({ message: error.message });
   }
 };
-
-

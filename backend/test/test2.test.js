@@ -6,14 +6,14 @@ import { Reservation } from '../models/reservationModel.js';
 
 const validData = {
   facility: '507f1f77bcf86cd799439011',
-  motive: 'Meeting',
+  motive: 'Workshop',
   date: '2024-07-25T00:00:00.000Z',
   time: '10:00',
   state: 'Pending',
   entity: '507f1f77bcf86cd799439012',
   event: null,
   effective: 10,
-  materials: ['Projector'],
+  materials: ['507f1f77bcf86cd299439011'],
   files: ['file1.pdf']
 };
 
@@ -22,7 +22,18 @@ const invalidData = {
   state: 'InvalidState'
 };
 
+test.before(async (t) => {
+  if (mongoose.connection.readyState === 0) {
+    await mongoose.connect(process.env.MONGODB_URL_TEST, {
+      useNewUrlParser: true,
+      useUnifiedTopology: true,
+    });
+  }
+});
 
+test.afterEach.always(async (t) => {
+  await Reservation.deleteMany({});
+});
 
 test.after.always(async t => {
   await mongoose.disconnect();
@@ -49,11 +60,11 @@ test('POST /api/reservations should create a reservation', async t => {
   t.deepEqual(response.body.files, validData.files);
 });
 
-test('POST /api/reservations with invalid data should return 409', async t => {
+test('POST /api/reservations with invalid data should return 500', async t => {
   const response = await request(app)
     .post('/api/reservations')
     .send(invalidData)
-    .expect(409);
-  t.is(response.status, 409);
+    .expect(500);
+  t.is(response.status, 500);
   t.truthy(response.body.message, 'Error message should be present');
 });

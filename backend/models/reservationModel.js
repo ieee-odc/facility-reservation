@@ -14,10 +14,13 @@ const reservationSchema = mongoose.Schema(
       type: String,
       required: true,
     },
-    materials: {
-      type: [mongoose.Schema.Types.ObjectId],
-      ref: "Equipment"
-    },
+    materials: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Equipment",
+        default: [],
+      },
+    ],
     files: {
       type: [String],
       required: true,
@@ -44,7 +47,7 @@ const reservationSchema = mongoose.Schema(
     },
     state: {
       type: String,
-      enum: ["Pending", "Approuved", "Rejected", "Canceled"],
+      enum: ["Pending", "Approved", "Rejected", "Canceled"],
       default: "Pending",
     },
   },
