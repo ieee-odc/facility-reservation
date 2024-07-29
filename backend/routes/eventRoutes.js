@@ -17,7 +17,7 @@ eventRouter.get("/reservations/:id", findEventWithReservations);
 eventRouter.get("/reservations", findAllEventstWithReservations);
 eventRouter.get("/", findAllEvents);
 eventRouter.get("/:id", findEventById);
-eventRouter.put("/:id", updateEvent);
+eventRouter.patch("/:id", updateEvent);
 eventRouter.patch("/state/:id", updateEventState);
 
 export default eventRouter;

@@ -15,11 +15,7 @@ export const findAllReservations = async (req, res) => {
   try {
     const reservations = await Reservation.find();
 
-    if (reservations.length > 0) {
-      return res.status(200).json(reservations);
-    } else {
-      return res.status(404).json({ message: "No reservations found" });
-    }
+    return res.status(200).json(reservations);
   } catch (error) {
     return res.status(500).json({ message: error.message });
   }
@@ -40,8 +36,6 @@ export const findReservationById = async (req, res) => {
     return res.status(500).json({ message: error.message });
   }
 };
-
-
 
 /*
 facility: '507f1f77bcf86cd799439011',

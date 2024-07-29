@@ -15,11 +15,7 @@ export const findAllEvents = async (req, res) => {
   try {
     const events = await Event.find();
 
-    if (events.length > 0) {
-      return res.status(200).json(events);
-    } else {
-      return res.status(404).json({ message: "No events found" });
-    }
+    return res.status(200).json(events);
   } catch (error) {
     return res.status(500).json({ message: error.message });
   }
@@ -34,7 +30,7 @@ export const findEventById = async (req, res) => {
     if (event) {
       return res.status(200).json(event);
     } else {
-      return res.status(404).json({ message: "event not found" });
+      return res.status(404).json({ message: "Event not found" });
     }
   } catch (error) {
     return res.status(500).json({ message: error.message });
@@ -57,7 +53,7 @@ export const deleteEvent = async (req, res) => {
   }
 };
 
-export const createEvent = async (req, res) => {
+/*export const createEvent = async (req, res) => {
   try {
     const {
       name,
@@ -68,7 +64,7 @@ export const createEvent = async (req, res) => {
       totalEffective,
       reservations,
     } = req.body;
-
+console.log("req body", req.body);
     const event = await Event.create({
       name,
       description,
@@ -96,15 +92,63 @@ export const createEvent = async (req, res) => {
       .status(409)
       .json({ message: "an error occured when creating the event" });
   } catch (error) {
+    console.log('error',error.message);
     res.status(500).json({ message: error.message });
+  }
+};*/
+
+export const createEvent = async (req, res) => {
+  try {
+    const {
+      name,
+      description,
+      startDate,
+      endDate,
+      organizer,
+      totalEffective,
+      reservations,
+    } = req.body;
+
+    console.log("req body", req.body);
+
+    Event.create({
+      name,
+      description,
+      startDate,
+      endDate,
+      organizer,
+      totalEffective,
+    })
+      .then(async (event) => {
+        const createdReservations = await Promise.all(
+          reservations.map(async (reservationData) => {
+            const reservation = new Reservation({
+              ...reservationData,
+              event: event._id,
+            });
+            await reservation.save();
+            return reservation._id;
+          })
+        );
+
+        return res
+          .status(201)
+          .json({ event, reservations: createdReservations });
+      })
+      .catch((e) => {
+        return res
+          .status(409)
+          .json({ message: "An error occurred when creating the event" });
+      });
+  } catch (error) {
+    return res.status(500).json({ message: error.message });
   }
 };
 
 export const updateEventState = async (req, res) => {
   try {
-    const { eventId } = req.params;
-    const reservations = await Reservation.find({ event: eventId });
-
+    const { id } = req.params;
+    const reservations = await Reservation.find({ event: id });
     if (!reservations.length) {
       return res.status(404).json({ message: "Event not found" });
     }
@@ -120,6 +164,9 @@ export const updateEventState = async (req, res) => {
     );
     const someApproved = reservations.some(
       (reservation) => reservation.state === "Approved"
+    );
+    const someRejected = reservations.some(
+      (reservation) => reservation.state === "Rejected"
     );
     const somePending = reservations.some(
       (reservation) => reservation.state === "Pending"
@@ -139,7 +186,7 @@ export const updateEventState = async (req, res) => {
     }
 
     const updatedEvent = await Event.findByIdAndUpdate(
-      eventId,
+      id,
       { state: newState },
       { new: true }
     );
@@ -152,36 +199,39 @@ export const updateEventState = async (req, res) => {
 
 export const updateEvent = async (req, res) => {
   try {
-    const { eventId, eventData, reservations } = req.body;
+    const { id } = req.params;
+    const { eventData, reservations } = req.body;
 
-    const event = await Event.findByIdAndUpdate(eventId, eventData, {
+    const event = await Event.findByIdAndUpdate(id, eventData, {
       new: true,
     });
     if (!event) {
       return res.status(404).json({ message: "Event not found" });
     }
+    if (reservations) {
+      const updatedReservations = await Promise.all(
+        reservations.map(async (reservationData) => {
+          const { id, ...updateData } = reservationData;
+          if (id) {
+            return await Reservation.findByIdAndUpdate(id, updateData, {
+              new: true,
+            });
+          } else {
+            const reservation = new Reservation({
+              ...updateData,
+              event: event._id,
+            });
+            await reservation.save();
+            return reservation;
+          }
+        })
+      );
+      await updateEventState(event._id);
+      res.status(200).json({ event, reservations: updatedReservations });
+    }
 
-    const updatedReservations = await Promise.all(
-      reservations.map(async (reservationData) => {
-        const { id, ...updateData } = reservationData;
-        if (id) {
-          return await Reservation.findByIdAndUpdate(id, updateData, {
-            new: true,
-          });
-        } else {
-          const reservation = new Reservation({
-            ...updateData,
-            event: event._id,
-          });
-          await reservation.save();
-          return reservation;
-        }
-      })
-    );
 
-    await updateEventState(event._id);
-
-    res.status(200).json({ event, reservations: updatedReservations });
+    res.status(200).json({event});
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
@@ -219,6 +269,7 @@ export const findAllEventstWithReservations = async (req, res) => {
         const reservations = await Reservation.find({
           event: event._id,
         }).exec();
+        console.log("reservatioooons", reservations);
         return { ...event.toObject(), reservations: reservations };
       })
     );
