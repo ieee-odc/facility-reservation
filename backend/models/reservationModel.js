@@ -15,8 +15,8 @@ const reservationSchema = mongoose.Schema(
       required: true,
     },
     materials: {
-      type: [String],
-      required: true,
+      type: [mongoose.Schema.Types.ObjectId],
+      ref: "Equipment"
     },
     files: {
       type: [String],
