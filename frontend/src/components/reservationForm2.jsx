@@ -41,15 +41,17 @@ const ReserverSalleform = ({ onSubmit, onBack, date, time }) => {
     fetchAvailableFacilities();
   }, [date, time]);*/
 
+  
+
   const handleFacilityChange = (e) => {
     const selectedFacility = e.target.value;
     setFacility(selectedFacility);
     setFormData({ ...formData, facility: selectedFacility });
-    if (pendingFacilities.includes(selectedFacility)) {
+   /* if (pendingFacilities.includes(selectedFacility)) {
       setWarningMessage('Warning : This room is likely already reserved for this time slot.');
     } else {
       setWarningMessage('');
-    }
+    }*/
   };
 
   const handleFormSubmit = (event) => {
@@ -68,6 +70,7 @@ const ReserverSalleform = ({ onSubmit, onBack, date, time }) => {
     if (Object.keys(newErrors).length === 0) {
       const motifToSend = motif ? motif : otherMotif;
       onSubmit(formData.facility, motifToSend);
+      
     }
   };
 
@@ -95,7 +98,7 @@ const ReserverSalleform = ({ onSubmit, onBack, date, time }) => {
   };
 
   return (
-    <div>
+    <body>
       <Navbar />
       <div className="container1 container2">
         <form className="form" onSubmit={handleFormSubmit}>
@@ -116,9 +119,13 @@ const ReserverSalleform = ({ onSubmit, onBack, date, time }) => {
               onChange={handleFacilityChange}
             >
               <option value="">Select a facility</option>
-              {availableFacilities.map((fac, index) => (
-                <option key={index} value={fac}>{fac}</option>
-              ))}
+           
+              <option value="A7">A7</option>
+            <option value="A8">A8</option>
+              <option value="219">219</option>
+              <option value="Salle de conferences">Salle de Conferences</option>
+              <option value="Auditorium">Auditorium</option>
+
               
             </select>
           </div>
@@ -174,7 +181,7 @@ const ReserverSalleform = ({ onSubmit, onBack, date, time }) => {
     onChange={handleFileChange}
     style={{ display: 'none' }}
     multiple
-    accept=".csv, .pdf" // Restrict to CSV and PDF files
+    accept=".csv, .pdf" 
   />
   {fileErrors && <p className="error-message">{fileErrors}</p>}
   {files.length > 0 && (
@@ -196,7 +203,7 @@ const ReserverSalleform = ({ onSubmit, onBack, date, time }) => {
           </button>
         </form>
       </div>
-    </div>
+    </body>
   );
 };
 

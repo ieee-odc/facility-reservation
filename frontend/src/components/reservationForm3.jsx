@@ -3,39 +3,41 @@ import './Reserver.css';
 import axios from 'axios';
 import Navbar from "./navbar";
 import { IoArrowBackOutline } from "react-icons/io5";
-import { IoMdClose } from "react-icons/io";
 
 
-const ReservationDetails = ({ date, time, club, facility, motif, otherMotif, onBack, onQuit }) => {
+const ReservationDetails = ({ date, time, participants, facility, motif, otherMotif, onBack, onQuit }) => {
   const [formVisible, setFormVisible] = useState(true);
-  const [formData, setFormData] = useState({ club: '', facility: '', motif: '', date: '', time: '' });
+  const [formData, setFormData] = useState({ participants: '', facility: '', motif: '', date: '', time: '' });
+  console.log(facility);
   const [submissionStatus, setSubmissionStatus] = useState(null);
 
   useEffect(() => {
-    const userId = localStorage.getItem('userId');
-    console.log(userId);
+    console.log("Props received:", { date, time, participants, facility, motif, otherMotif });
     setFormData(prevState => ({
       ...prevState,
-      club,
+      participants,
       facility,
       date,
       time,
       motif: motif || otherMotif,
     }));
-  }, [date, time, club, facility, motif, otherMotif]);
-
+  }, [date, time, participants, facility, motif, otherMotif]);
+  
+  const handleCancel = async () => {
+Navigate("/navbar");
+  }
   const handleSubmit = async () => {
-    const userId = localStorage.getItem('userId'); // Ensure userId is defined here
+    //const userId = localStorage.getItem('userId'); 
     try {
       console.log('Data to be sent:', { ...formData });
 
-      const response = await axios.post('http://localhost:5500/reservations', {
+      const response = await axios.post('http://localhost:3000/reservations', {
         facility: formData.facility,
         motive: formData.motif,
         date: formData.date,
         time: formData.time,
-        club: formData.club,
-        userId: userId, 
+        participants: formData.participants,
+       // userId: userId, 
       });
 
       console.log('Data sent to MongoDB:', response.data);
@@ -74,44 +76,46 @@ const ReservationDetails = ({ date, time, club, facility, motif, otherMotif, onB
   };
 
   return (
-    <div>
+    <body>
     <Navbar />
     <div className="container1 container2">
 
       <div className="form">
       <div className="button-group">
           <IoArrowBackOutline className="back" size={24}  onClick={onBack}/>
-              <IoMdClose className="close"  size={24}  onClick={handleQuitClick}/>
 
           </div>
       <div className="form-title-container">
-        <h4 className="form-title">Détails de la Réservation</h4>
+        <h4 className="form-title">Reservation details</h4>
       </div>
         <div className="form-group">
-          <label htmlFor="club" className="label">Club</label>
-          <input type="text" id="club" className="input" value={formData.club} readOnly />
+          <label htmlFor="participants" className="label">Participants</label>
+          <input type="text" id="participants" className="input" value={formData.participants} readOnly />
         </div>
         <div className="form-group">
-          <label htmlFor="salle" className="label">Salle n°</label>
+          <label htmlFor="salle" className="label">Facility</label>
           <input type="text" id="salle" className="input" value={formData.facility} readOnly />
         </div>
         <div className="form-group">
-          <label htmlFor="motif" className="label">Motifs de réservation</label>
-          <textarea id="motif" rows="5" cols="20" className="textarea" value={formData.motif} readOnly />
+          <label htmlFor="motif" className="label">Reason</label>
+          <textarea id="motif" rows="3"  className="input" value={formData.motif} readOnly />
         </div>
         <div className="form-group">
           <label htmlFor="date" className="label">Date</label>
           <input type="text" id="date" className="input" value={formatDate(formData.date)} readOnly />
         </div>
         <div className="form-group">
-          <label htmlFor="temps" className="label">Temps</label>
+          <label htmlFor="temps" className="label">Time</label>
           <input type="text" id="time" className="input" value={formData.time} readOnly />
         </div>
         {renderPopup()}
-        <button type="button" className="button" onClick={handleSubmit}>Confirmer</button>
+        <div className="button-group">
+        <button type="button" className="button" onClick={handleSubmit}>Confirm</button>
+        <button type="button" className="button cancel-button" onClick={handleCancel}>Cancel</button>
+        </div>
       </div>
     </div>
-    </div>
+    </body>
   );
 };
 
