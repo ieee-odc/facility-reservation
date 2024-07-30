@@ -1,20 +1,21 @@
 import React, { useState, useEffect } from 'react';
-import './Reserver.css';
+import './ReservationDetails.css';
 import axios from 'axios';
 import Navbar from "./navbar";
 import { IoArrowBackOutline } from "react-icons/io5";
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const ReservationDetails = ({ date, time, participants, facility, motif, equipment, onBack, onQuit }) => {
   const [formVisible, setFormVisible] = useState(true);
-  const [submissionStatus, setSubmissionStatus] = useState(null);
 
   useEffect(() => {
     // Set the form data from props
   }, [date, time, participants, facility, motif, equipment]);
 
   const handleCancel = async () => {
-    onQuit(); // Trigger the quit function
-  }
+    onQuit();
+  };
 
   const handleSubmit = async () => {
     try {
@@ -28,11 +29,11 @@ const ReservationDetails = ({ date, time, participants, facility, motif, equipme
       });
 
       console.log('Data sent to MongoDB:', response.data);
-      setSubmissionStatus('success');
+      toast.success('Reservation successfully submitted!');
       setFormVisible(false);
     } catch (error) {
       console.error('Error sending data:', error);
-      setSubmissionStatus('failed');
+      toast.error('Failed to submit reservation. Please try again.');
     }
   };
 
@@ -42,24 +43,6 @@ const ReservationDetails = ({ date, time, participants, facility, motif, equipme
     const month = d.getMonth() + 1;
     const year = d.getFullYear();
     return `${day}/${month}/${year}`;
-  };
-
-  const renderPopup = () => {
-    if (submissionStatus === 'success') {
-      return (
-        <div className="popup success">
-          <p>La réservation a été envoyée avec succès!</p>
-        </div>
-      );
-    } else if (submissionStatus === 'failed') {
-      return (
-        <div className="popup failed">
-          <p>Échec de la réservation. Veuillez réessayer.</p>
-        </div>
-      );
-    } else {
-      return null;
-    }
   };
 
   return (
@@ -73,26 +56,36 @@ const ReservationDetails = ({ date, time, participants, facility, motif, equipme
           <div className="form-title-container">
             <h4 className="form-title">Reservation details</h4>
           </div>
-          <div className="form-group">
-            <label htmlFor="participants" className="label">Participants</label>
-            <input type="text" id="participants" className="input" value={participants} readOnly />
+
+          {/* Row for Participants and Facility */}
+          <div className="form-row">
+            <div className="form-group">
+              <label htmlFor="participants" className="label">Participants</label>
+              <input type="text" id="participants" className="inputd" value={participants} readOnly />
+            </div>
+            <div className="form-group">
+              <label htmlFor="salle" className="label">Facility</label>
+              <input type="text" id="salle" className="inputd" value={facility} readOnly />
+            </div>
           </div>
-          <div className="form-group">
-            <label htmlFor="salle" className="label">Facility</label>
-            <input type="text" id="salle" className="input" value={facility} readOnly />
+
+          {/* Row for Date and Time */}
+          <div className="form-row">
+            <div className="form-group">
+              <label htmlFor="date" className="label">Date</label>
+              <input type="text" id="date" className="inputd" value={formatDate(date)} readOnly />
+            </div>
+            <div className="form-group">
+              <label htmlFor="time" className="label">Time</label>
+              <input type="text" id="time" className="inputd" value={time} readOnly />
+            </div>
           </div>
+
           <div className="form-group">
             <label htmlFor="motif" className="label">Reason</label>
             <textarea id="motif" rows="3" className="input" value={motif} readOnly />
           </div>
-          <div className="form-group">
-            <label htmlFor="date" className="label">Date</label>
-            <input type="text" id="date" className="input" value={formatDate(date)} readOnly />
-          </div>
-          <div className="form-group">
-            <label htmlFor="time" className="label">Time</label>
-            <input type="text" id="time" className="input" value={time} readOnly />
-          </div>
+
           <div className="form-group">
             <label className="label">Reserved Equipments</label>
             <ul className="equipment-list">
@@ -103,13 +96,14 @@ const ReservationDetails = ({ date, time, participants, facility, motif, equipme
               ))}
             </ul>
           </div>
-          {renderPopup()}
+
           <div className="button-group">
             <button type="button" className="button" onClick={handleSubmit}>Confirm</button>
             <button type="button" className="button cancel-button" onClick={handleCancel}>Cancel</button>
           </div>
         </div>
       </div>
+      <ToastContainer />
     </div>
   );
 };
