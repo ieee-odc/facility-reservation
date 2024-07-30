@@ -6,12 +6,26 @@ import { IoArrowBackOutline } from "react-icons/io5";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
-const ReservationDetails = ({ date, time, participants, facility, motif, equipment, onBack, onQuit }) => {
-  const [formVisible, setFormVisible] = useState(true);
+const ReservationDetails = ({ date, time, participants, facility: facilityLabel, motif, equipment, onBack, onQuit }) => {
+  const [facilities, setFacilities] = useState([]);
+  const [equipments, setEquipments] = useState([]);
 
   useEffect(() => {
-    // Set the form data from props
-  }, [date, time, participants, facility, motif, equipment]);
+    const fetchData = async () => {
+      try {
+        const facilityResponse = await axios.get('http://localhost:3000/api/facilities');
+        setFacilities(facilityResponse.data.data || []); 
+
+        const equipmentResponse = await axios.get('http://localhost:3000/api/equipments');
+        setEquipments(equipmentResponse.data.data || []); 
+      } catch (error) {
+        console.error('Error fetching data:', error);
+        toast.error('Failed to fetch facilities or equipment data.');
+      }
+    };
+
+    fetchData();
+  }, []);
 
   const handleCancel = async () => {
     onQuit();
@@ -19,24 +33,37 @@ const ReservationDetails = ({ date, time, participants, facility, motif, equipme
 
   const handleSubmit = async () => {
     try {
-      const response = await axios.post('http://localhost:3000/reservations', {
-       
-        
+      
+      const facility = facilities.find(f => f.label === facilityLabel);
+      const facilityId = facility ? facility._id : null;
+
+      const equipmentIds = Object.entries(equipment).map(([label, _]) => {
+        const matchedEquipment = equipments.find(e => e.label === label);
+        return matchedEquipment ? matchedEquipment._id : null;
+      }).filter(id => id !== null);
+
+      if (!facilityId) {
+        throw new Error('Invalid facility selected');
+      }
+
+      if (equipmentIds.includes(null)) {
+        throw new Error('Some equipment could not be matched to IDs');
+      }
+
+      const response = await axios.post('http://localhost:3000/api/reservations', {
         date,
         time,
         motive: motif,
-        materials: equipment, 
         effective: participants,
-        facility,
-        
-       
+        materials: equipmentIds,
+        facility: facilityId,
       });
 
       console.log('Data sent to MongoDB:', response.data);
       toast.success('Reservation successfully submitted!');
-      setFormVisible(false);
+      //setFormVisible(false);
     } catch (error) {
-      console.error('Error sending data:', error);
+      console.error('Error sending data:', error.response ? error.response.data : error.message);
       toast.error('Failed to submit reservation. Please try again.');
     }
   };
@@ -61,7 +88,6 @@ const ReservationDetails = ({ date, time, participants, facility, motif, equipme
             <h4 className="form-title">Reservation details</h4>
           </div>
 
-          {/* Row for Participants and Facility */}
           <div className="form-row">
             <div className="form-group">
               <label htmlFor="participants" className="label">Participants</label>
@@ -69,11 +95,10 @@ const ReservationDetails = ({ date, time, participants, facility, motif, equipme
             </div>
             <div className="form-group">
               <label htmlFor="salle" className="label">Facility</label>
-              <input type="text" id="salle" className="inputd" value={facility} readOnly />
+              <input type="text" id="salle" className="inputd" value={facilityLabel} readOnly />
             </div>
           </div>
 
-          {/* Row for Date and Time */}
           <div className="form-row">
             <div className="form-group">
               <label htmlFor="date" className="label">Date</label>

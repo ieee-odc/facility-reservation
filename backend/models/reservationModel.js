@@ -32,7 +32,7 @@ const reservationSchema = mongoose.Schema(
     facility: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "Facility",
-      required: true,
+      required: false,
     },
     entity: {
       type: mongoose.Schema.Types.ObjectId,

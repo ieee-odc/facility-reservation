@@ -43,7 +43,6 @@ const ReserverSalleform = ({ onSubmit, onBack, date, time }) => {
     const fetchAvailableFacilities = async () => {
       try {
         const response = await axios.get('http://localhost:3000/api/facilities');
-        // Access the data array from response.data.data
         setAvailableFacilities(response.data.data || []);
       } catch (error) {
         console.error("Error fetching available facilities:", error);
