@@ -20,12 +20,16 @@ const ReservationDetails = ({ date, time, participants, facility, motif, equipme
   const handleSubmit = async () => {
     try {
       const response = await axios.post('http://localhost:3000/reservations', {
-        facility,
-        motive: motif,
+       
+        
         date,
         time,
-        participants,
-        equipment, // Add equipment data to the payload
+        motive: motif,
+        materials: equipment, 
+        effective: participants,
+        facility,
+        
+       
       });
 
       console.log('Data sent to MongoDB:', response.data);

@@ -23,7 +23,7 @@ const reservationSchema = mongoose.Schema(
     ],
     files: {
       type: [String],
-      required: true,
+      required: false,
     },
     effective: {
       type: Number,
@@ -37,7 +37,7 @@ const reservationSchema = mongoose.Schema(
     entity: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "ReservationInitiator",
-      required: true,
+      required: false,
     },
     event: {
       type: mongoose.Schema.Types.ObjectId,
