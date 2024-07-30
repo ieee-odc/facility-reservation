@@ -9,7 +9,7 @@ const modelSchema = mongoose.Schema(
     },
     availableQuantity: {
       type: Number,
-      required: true,
+      required: false,
     },
   },
 

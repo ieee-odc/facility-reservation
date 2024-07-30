@@ -40,23 +40,24 @@ function ReserverTimeDate({ onSubmit }) {
     schema
       .validate(formData, { abortEarly: false })
       .then(() => {
+        setErrors({});
         onSubmit(formData.date, formData.time, formData.participants);
       })
       .catch((error) => {
         const newErrors = {};
-        error.inner.forEach((err) => {
-          if (err.path === 'date' && formData.date === 'mm/dd/yyyy') {
-            newErrors[err.path] = 'Veuillez sélectionner une date.';
-          } else {
+        if (Array.isArray(error.inner)) {
+          error.inner.forEach((err) => {
             newErrors[err.path] = err.message;
-          }
-        });
+          });
+        } else if (error.errors) {
+          newErrors.general = error.errors.join(', ');
+        }
         setErrors(newErrors);
       });
   };
-
+  
   return (
-    <div>
+    <body>
       <Navbar />
       <div className="container1">
         <form className="form" onSubmit={handleFormSubmit}>
@@ -105,7 +106,7 @@ function ReserverTimeDate({ onSubmit }) {
                 value={formData.participants}
                 onChange={handleInputChange}
                 min="1"
-                max="100"
+                max="1000"
               />
               {errors.participants && <p className="error-message">{errors.participants}</p>}
             </div>
@@ -118,7 +119,7 @@ function ReserverTimeDate({ onSubmit }) {
           <button type="submit" className="button">Next</button>
         </form>
       </div>
-    </div>
+    </body>
   );
 }
 

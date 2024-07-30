@@ -10,7 +10,7 @@ import GiveFeedback from "./components/feedback";
 import ReservationDetails from "./components/reservationForm3";
 import ReserverSalleform from "./components/reservationForm2";
 import ReserverTimeDate from "./components/reservationForm1";
-
+import ParentComponent from "./components/ParentComponent";
 const AuthStatus = () => {
   const { currentUser, userLoggedIn, loading } = useAuth();
 
@@ -38,7 +38,9 @@ const AppRoutes = () => {
         
         <Route path="/profile" element={<Profile />} />
           <Route path="/navbar" element={<Navbar />} />
-          <Route exact path="/reserver" element={<ReserverTimeDate />} />
+          <Route exact path="/reserver" element={<ParentComponent />} />
+
+          <Route exact path="/reserver/ReserverTimeDate" element={<ReserverTimeDate />} />
             <Route exact path="/reserver/ReserverSalleform" element={<ReserverSalleform />} />
             <Route exact path="/reserver/DetailsReservation" element={<ReservationDetails />} />
         </>

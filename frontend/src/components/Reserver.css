@@ -1,3 +1,7 @@
+body {
+  background-color: #F7F7F8; /* Background color for the entire page */
+}
+
 .container1 {
     margin-top: 1%;
     max-width: 600px;
@@ -127,3 +131,18 @@
   color: #555;
   margin-right: 8px;
 }
+.button-group {
+  display: flex;
+  justify-content: space-between; 
+  gap: 10px; 
+}
+
+.button.cancel-button {
+  background-color: #d4d0d0; 
+ 
+}
+
+.button.cancel-button:hover {
+  background-color: #807e7e; /* Darker red on hover */
+}
+

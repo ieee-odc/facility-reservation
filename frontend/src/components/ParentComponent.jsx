@@ -8,7 +8,7 @@ function ParentComponent() {
   const [reserverTimeDateSubmitted, setReserverTimeDateSubmitted] = useState(false);
   const [reserverSalleFormSubmitted, setReserverSalleFormSubmitted] = useState(false);
   const [equipmentFormSubmitted, setEquipmentFormSubmitted] = useState(false); 
-  const [reservationDetails, setReservationDetails] = useState({ date: null, time: null, participants: null, facility: null, motif: null, equipment: null });
+  const [reservationDetails, setReservationDetails] = useState({ date: null, time: null, participants: null, facility: null, motif: null, equipment: {} });
 
   const handleReservationTimeDateSubmit = (date, time, participants) => {
     setReserverTimeDateSubmitted(true);

@@ -1,8 +1,28 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { IoArrowBackOutline } from "react-icons/io5";
 import Navbar from './navbar';
+
 const EquipmentReservationForm = ({ onSubmit, onBack }) => {
-  const [equipment, setEquipment] = useState({ speakers: 0, microphones: 0, projectors: 0 });
+  const [equipment, setEquipment] = useState({});
+  const [fetchedEquipment, setFetchedEquipment] = useState([]);
+
+  useEffect(() => {
+    const fetchEquipment = async () => {
+      try {
+        const response = await fetch('http://localhost:3000/api/equipments'); 
+        const result = await response.json();
+        if (result && Array.isArray(result.data)) {
+          setFetchedEquipment(result.data);
+        } else {
+          console.error('Unexpected data format:', result);
+        }
+      } catch (error) {
+        console.error('Failed to fetch equipment data:', error);
+      }
+    };
+
+    fetchEquipment();
+  }, []);
 
   const handleEquipmentChange = (e) => {
     const { name, value } = e.target;
@@ -18,61 +38,39 @@ const EquipmentReservationForm = ({ onSubmit, onBack }) => {
   };
 
   return (
-    <body>
-        <Navbar/>
- 
-    <div className="container1">
-      <form className="form" onSubmit={handleFormSubmit}>
-        <div className="button-group">
-          <IoArrowBackOutline className="back" size={24} onClick={onBack} />
-        </div>
-        <div className="form-title-container">
-          <h4 className="form-title">Reserve Equipment</h4>
-        </div>
-        <div className="form-group">
-          <label htmlFor="speakers" className="required-label">Speakers</label>
-          <input
-            id="speakers"
-            name="speakers"
-            type="number"
-            className="input"
-            value={equipment.speakers}
-            onChange={handleEquipmentChange}
-            min="0"
-          />
-        </div>
-        <div className="form-group">
-          <label htmlFor="microphones" className="required-label">Microphones</label>
-          <input
-            id="microphones"
-            name="microphones"
-            type="number"
-            className="input"
-            value={equipment.microphones}
-            onChange={handleEquipmentChange}
-            min="0"
-          />
-        </div>
-        <div className="form-group">
-          <label htmlFor="projectors" className="required-label">Projectors</label>
-          <input
-            id="projectors"
-            name="projectors"
-            type="number"
-            className="input"
-            value={equipment.projectors}
-            onChange={handleEquipmentChange}
-            min="0"
-          />
-        </div>
-        <div className="button-group">
-          <button type="submit" className="button">
-            Next
-          </button>
-        </div>
-      </form>
-    </div>
-    </body>
+    <>
+      <Navbar />
+      <div className="container1">
+        <form className="form" onSubmit={handleFormSubmit}>
+          <div className="button-group">
+            <IoArrowBackOutline className="back" size={24} onClick={onBack} />
+          </div>
+          <div className="form-title-container">
+            <h4 className="form-title">Reserve Equipment</h4>
+          </div>
+          {fetchedEquipment.map((item) => (
+            <div className="form-group" key={item._id}>
+              <label htmlFor={item.label} className="required-label">{item.label}</label>
+              <input
+                id={item.label}
+                name={item.label}
+                type="number"
+                className="input"
+                value={equipment[item.label] || 0}
+                onChange={handleEquipmentChange}
+                min="0"
+                max={item.availableQuantity}
+              />
+            </div>
+          ))}
+          <div className="button-group">
+            <button type="submit" className="button">
+              Next
+            </button>
+          </div>
+        </form>
+      </div>
+    </>
   );
 };
 
