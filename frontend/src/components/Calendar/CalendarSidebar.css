@@ -1,4 +1,3 @@
-/* CalendarSidebar.css */
 .calendar-sidebar {
   width: 100%;
   padding: 30px;
@@ -7,13 +6,13 @@
   background: #cecece;
   color: white;
   min-height: 100%;
-  overflow-y: auto; /* Enable vertical scroll */
-  max-height: calc(100vh - 50px); /* Adjust based on your layout */
+  overflow-y: auto; 
+  max-height: calc(100vh - 50px);
 }
 
 .calendar-sidebar__calendar-container {
   width: 100%;
-  max-width: 300px; /* Set a max width for the calendar container */
+  max-width: 300px;
   margin-bottom: 0px;
 }
 
@@ -22,7 +21,7 @@
 .calendar-sidebar__upcoming-holidays {
   margin-bottom: 20px;
   width: 100%;
-  max-width: 300px; /* Ensure other sections align with the calendar width */
+  max-width: 300px; 
 }
 
 .calendar-sidebar__events ul,
@@ -55,70 +54,25 @@
 }
 
 .calendar-sidebar__calendar-container .rs-calendar {
-  font-size: 0.8em; /* Adjust the font size to make the calendar smaller */
+  font-size: 0.8em; 
 }
 
 .calendar-sidebar__calendar-container .rs-calendar-header,
 .calendar-sidebar__calendar-container .rs-calendar-table {
-  width: 100%; /* Maintain full width */
-  margin: 0 auto; /* Center the calendar */
+  width: 100%;
+  margin: 0 auto; 
 }
 
 .calendar-sidebar__calendar-container .rs-calendar-table-cell-content {
-  height: 20px; /* Adjust the height of the calendar cells */
-  line-height: 20px; /* Align text vertically in the center */
+  height: 20px;
+  line-height: 20px; 
 }
 
 .calendar-sidebar__calendar-container .rs-calendar-table-header-cell,
 .calendar-sidebar__calendar-container .rs-calendar-table-row {
-  height: 30px; /* Adjust the height of the header and rows */
+  height: 30px; 
 }
 
-/* style.css */
-.calendar-page {
-  display: flex;
-  height: 100vh; /* Ensure it takes the full viewport height */
-  width: 100%;
-  position: relative;
-  margin: 0 auto;
-}
-
-.calendar-page__content {
-  display: flex;
-  width: 100%;
-  column-gap: 0;
-}
-
-.calendar-page__sidebar {
-  height: 100%;
-  min-width: 300px;
-  overflow-y: auto; /* Enable vertical scroll */
-}
-
-.calendar-page_calendar {
-  height: 100%;
-  width: 100%;
-  overflow-y: auto; /* Enable vertical scroll */
-}
-
-.main-calendar {
-  position: relative;
-  height: 100%;
-  width: 100%;
-}
-
-.big-calendar {
-  position: relative;
-  width: 100%;
-  height: 100%;
-  overflow-y: auto; /* Enable vertical scroll */
-}
-
-.rbc-calendar {
-  position: relative;
-  width: 77vw !important;
-  padding: 50px !important;
-}
 
 .rs-calendar-table-cell-content:hover{
   background-color: rgb(168, 173, 198);
