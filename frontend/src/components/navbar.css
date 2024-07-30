@@ -177,10 +177,10 @@
 .navbar-header {
   display: flex;
   align-items: center;
-  padding: 1rem;
+  margin: 2rem;
   font-size: 2rem;
   position: relative;
-  top: 20px;
+  top: 30px;
 }
 
 .navbar-name {
