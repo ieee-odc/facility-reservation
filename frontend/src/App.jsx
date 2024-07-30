@@ -7,11 +7,13 @@ import Navbar from "./components/navbar";
 import "./App.css";
 import Profile from "./components/Profile";
 import GiveFeedback from "./components/feedback";
-import ReservationDetails from "./components/reservationForm3";
+import ReservationDetails from "./components/reservationDetails";
 import ReserverSalleform from "./components/reservationForm2";
 import ReserverTimeDate from "./components/reservationForm1";
 import ParentComponent from "./components/ParentComponent";
 import MyCalendar from "./components/Calendar/MyCalendar";
+import EventForm from "./components/event/eventForm1";
+
 const AuthStatus = () => {
   const { currentUser, userLoggedIn, loading } = useAuth();
 
@@ -42,6 +44,8 @@ const AppRoutes = () => {
         <Route path="/profile" element={<Profile />} />
           <Route path="/navbar" element={<Navbar />} />
           <Route exact path="/reserver" element={<ParentComponent />} />
+          <Route exact path="/event" element={<EventForm />} />
+
 
           <Route exact path="/reserver/ReserverTimeDate" element={<ReserverTimeDate />} />
             <Route exact path="/reserver/ReserverSalleform" element={<ReserverSalleform />} />

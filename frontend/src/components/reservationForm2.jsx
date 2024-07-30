@@ -27,12 +27,11 @@ const ReserverSalleform = ({ onSubmit, onBack, date, time }) => {
   /*useEffect(() => {
     const fetchAvailableFacilities = async () => {
       try {
-        const response = await axios.get('http://localhost:5000/reservations/available-facilities', {
+        const response = await axios.get('http://localhost:3000/facilities', {
           params: { date, time }
         });
-        setAvailableFacilities(response.data.availableFacilities.map(fac => fac.label)); // Extract labels
+        setAvailableFacilities(response.data.availableFacilities); // Assume response.data.availableFacilities is an array of facility objects
         setPendingFacilities(response.data.pendingFacilities);
-        console.log(response);
       } catch (error) {
         console.error("Error fetching available facilities:", error);
       }
@@ -40,18 +39,31 @@ const ReserverSalleform = ({ onSubmit, onBack, date, time }) => {
 
     fetchAvailableFacilities();
   }, [date, time]);*/
-
+  useEffect(() => {
+    const fetchAvailableFacilities = async () => {
+      try {
+        const response = await axios.get('http://localhost:3000/api/facilities');
+        setAvailableFacilities(response.data.data || []);
+      } catch (error) {
+        console.error("Error fetching available facilities:", error);
+      }
+    };
   
+    fetchAvailableFacilities();
+  }, [date, time]);
+  
+  
+
 
   const handleFacilityChange = (e) => {
     const selectedFacility = e.target.value;
     setFacility(selectedFacility);
     setFormData({ ...formData, facility: selectedFacility });
-   /* if (pendingFacilities.includes(selectedFacility)) {
-      setWarningMessage('Warning : This room is likely already reserved for this time slot.');
+    if (pendingFacilities.includes(selectedFacility)) {
+      setWarningMessage('Warning: This room is likely already reserved for this time slot.');
     } else {
       setWarningMessage('');
-    }*/
+    }
   };
 
   const handleFormSubmit = (event) => {
@@ -70,7 +82,6 @@ const ReserverSalleform = ({ onSubmit, onBack, date, time }) => {
     if (Object.keys(newErrors).length === 0) {
       const motifToSend = motif ? motif : otherMotif;
       onSubmit(formData.facility, motifToSend);
-      
     }
   };
 
@@ -119,12 +130,11 @@ const ReserverSalleform = ({ onSubmit, onBack, date, time }) => {
               onChange={handleFacilityChange}
             >
               <option value="">Select a facility</option>
-           
-              <option value="A7">A7</option>
-            <option value="A8">A8</option>
-              <option value="219">219</option>
-              <option value="Salle de conferences">Salle de Conferences</option>
-              <option value="Auditorium">Auditorium</option>
+              {Array.isArray(availableFacilities) && availableFacilities.map((fac) => (
+  <option key={fac.id} value={fac.id}>
+    {fac.label}
+  </option>
+))}
 
               
             </select>
@@ -170,31 +180,30 @@ const ReserverSalleform = ({ onSubmit, onBack, date, time }) => {
             ></textarea>
           </div>
           <div className="form-group">
-
-  <button className="add-button" onClick={handleUploadButtonClick}>
-    <GrAttachment className="attach" />
-    Attach a file
-  </button>
-  <input
-    type="file"
-    ref={fileInputRef}
-    onChange={handleFileChange}
-    style={{ display: 'none' }}
-    multiple
-    accept=".csv, .pdf" 
-  />
-  {fileErrors && <p className="error-message">{fileErrors}</p>}
-  {files.length > 0 && (
-    <div>
-      <p>Selected files:</p>
-      <ul>
-        {files.map((file, index) => (
-          <li key={index}>{file.name}</li>
-        ))}
-      </ul>
-    </div>
-  )}
-</div>
+            <button className="add-button" onClick={handleUploadButtonClick}>
+              <GrAttachment className="attach" />
+              Attach a file
+            </button>
+            <input
+              type="file"
+              ref={fileInputRef}
+              onChange={handleFileChange}
+              style={{ display: 'none' }}
+              multiple
+              accept=".csv, .pdf" 
+            />
+            {fileErrors && <p className="error-message">{fileErrors}</p>}
+            {files.length > 0 && (
+              <div>
+                <p>Selected files:</p>
+                <ul>
+                  {files.map((file, index) => (
+                    <li key={index}>{file.name}</li>
+                  ))}
+                </ul>
+              </div>
+            )}
+          </div>
           <div className="warning-message">
             Warning! The CVs of the trainers and the list of participants are mandatory to attach for workshops.
           </div>
