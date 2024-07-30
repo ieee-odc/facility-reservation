@@ -13,6 +13,7 @@ import ReserverTimeDate from "./components/reservationForm1";
 import ParentComponent from "./components/ParentComponent";
 import MyCalendar from "./components/Calendar/MyCalendar";
 import EventForm from "./components/event/eventForm1";
+import CalendarPage from "./components/Calendar/CalendarPage";
 
 const AuthStatus = () => {
   const { currentUser, userLoggedIn, loading } = useAuth();
@@ -34,7 +35,7 @@ const AppRoutes = () => {
 
       <Route path="/login" element={<Login />} />
       <Route path="/reset-password" element={<ResetPassword />} />
-      <Route exact path="/calendar" element={<MyCalendar />} />
+      <Route exact path="/calendar" element={<CalendarPage />} />
 
       {userLoggedIn ? (
         <>
