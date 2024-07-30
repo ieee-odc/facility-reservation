@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import Navbar from "../navbar";
 import CalendarSidebar from "./CalendarSidebar";
 import "./style.css";
@@ -24,7 +24,8 @@ const CalendarPage = () => {
       end: new Date("2024-07-31T13:00:00"),
       allDay: false,
     },
-  ];  const holidays = ["New Year's Day", "Independence Day"];
+  ];  
+  const holidays = ["New Year's Day", "Independence Day"];
 
   return (
     <div>

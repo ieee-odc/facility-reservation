@@ -91,6 +91,9 @@ const Navbar = () => {
   const profile = async () => {
     navigate("/profile");
   };
+  const calendar = async () => {
+    navigate("/calendar");
+  };
   const reservation = async () => {
     navigate("/reserver");
   };
@@ -112,7 +115,7 @@ const Navbar = () => {
 
   const menuItems = [
     { icon: <img src={homeIcon} alt="home Icon" style={{ width: '30px', height: '30px'  }} />, text: "Dashboard"},
-    { icon: <img src={calendarIcon} alt="calendar Icon" style={{ width: '30px', height: '30px' }} />, text: "Calendar"},
+    { icon: <img src={calendarIcon} alt="calendar Icon" style={{ width: '30px', height: '30px' }} />, text: "Calendar", handleClick: calendar},
     { icon: <img src={reservationIcon} alt="reservation Icon" style={{ width: '30px', height: '30px' }} />, text: "Reservation" , handleClick: reservation},
     { icon: <img src={historyIcon} alt="history Icon" style={{ width: '30px', height: '30px' }} />, text: "History"},
 
