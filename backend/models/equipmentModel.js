@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
 
-const modelSchema = mongoose.Schema(
+const equipmentSchema = mongoose.Schema(
   {
     label: {
       type: String,
@@ -18,4 +18,4 @@ const modelSchema = mongoose.Schema(
   }
 );
 
-export const Equipment = mongoose.model("equipments", modelSchema);
+export const Equipment = mongoose.model("equipments", equipmentSchema);

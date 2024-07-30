@@ -9,6 +9,7 @@ import notificationRoutes from "./routes/notificationRoutes.js";
 import reservationRoutes from "./routes/reservationRoutes.js";
 import facilityRoutes from "./routes/facilityRoutes.js";
 import equipmentRouter from "./routes/equipmentRoutes.js";
+import eventRouter from "./routes/eventRoutes.js";
 
 const app = express();
 app.use(express.json());
@@ -27,6 +28,7 @@ app.use("/api/notifications", notificationRoutes);
 app.use("/api/reservations", reservationRoutes);
 app.use("/api/facilities", facilityRoutes);
 app.use("/api/equipments", equipmentRouter);
+app.use("/api/events", eventRouter);
 
 const PORT = process.env.PORT || 3000;
 const mongoDBURL = process.env.MONGODB_URL;
