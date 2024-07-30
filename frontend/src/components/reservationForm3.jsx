@@ -1,140 +1,77 @@
 import React, { useState, useEffect } from 'react';
-import './ReservationDetails.css';
-import axios from 'axios';
-import Navbar from "./navbar";
 import { IoArrowBackOutline } from "react-icons/io5";
-import { ToastContainer, toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+import Navbar from './navbar';
 
-const ReservationDetails = ({ date, time, participants, facility: facilityLabel, motif, equipment, onBack, onQuit }) => {
-  const [facilities, setFacilities] = useState([]);
-  const [equipments, setEquipments] = useState([]);
+const EquipmentReservationForm = ({ onSubmit, onBack }) => {
+  const [equipment, setEquipment] = useState({});
+  const [fetchedEquipment, setFetchedEquipment] = useState([]);
 
   useEffect(() => {
-    const fetchData = async () => {
+    const fetchEquipment = async () => {
       try {
-        const facilityResponse = await axios.get('http://localhost:3000/api/facilities');
-        setFacilities(facilityResponse.data.data || []); 
-
-        const equipmentResponse = await axios.get('http://localhost:3000/api/equipments');
-        setEquipments(equipmentResponse.data.data || []); 
+        const response = await fetch('http://localhost:3000/api/equipments'); 
+        const result = await response.json();
+        if (result && Array.isArray(result.data)) {
+          setFetchedEquipment(result.data);
+        } else {
+          console.error('Unexpected data format:', result);
+        }
       } catch (error) {
-        console.error('Error fetching data:', error);
-        toast.error('Failed to fetch facilities or equipment data.');
+        console.error('Failed to fetch equipment data:', error);
       }
     };
 
-    fetchData();
+    fetchEquipment();
   }, []);
 
-  const handleCancel = async () => {
-    onQuit();
+  const handleEquipmentChange = (e) => {
+    const { name, value } = e.target;
+    setEquipment({
+      ...equipment,
+      [name]: parseInt(value, 10),
+    });
   };
 
-  const handleSubmit = async () => {
-    try {
-      
-      const facility = facilities.find(f => f.label === facilityLabel);
-      const facilityId = facility ? facility._id : null;
-
-      const equipmentIds = Object.entries(equipment).map(([label, _]) => {
-        const matchedEquipment = equipments.find(e => e.label === label);
-        return matchedEquipment ? matchedEquipment._id : null;
-      }).filter(id => id !== null);
-
-      if (!facilityId) {
-        throw new Error('Invalid facility selected');
-      }
-
-      if (equipmentIds.includes(null)) {
-        throw new Error('Some equipment could not be matched to IDs');
-      }
-
-      const response = await axios.post('http://localhost:3000/api/reservations', {
-        date,
-        time,
-        motive: motif,
-        effective: participants,
-        materials: equipmentIds,
-        facility: facilityId,
-      });
-
-      console.log('Data sent to MongoDB:', response.data);
-      toast.success('Reservation successfully submitted!');
-      //setFormVisible(false);
-    } catch (error) {
-      console.error('Error sending data:', error.response ? error.response.data : error.message);
-      toast.error('Failed to submit reservation. Please try again.');
-    }
-  };
-
-  const formatDate = (date) => {
-    const d = new Date(date);
-    const day = d.getDate();
-    const month = d.getMonth() + 1;
-    const year = d.getFullYear();
-    return `${day}/${month}/${year}`;
+  const handleFormSubmit = (e) => {
+    e.preventDefault();
+    onSubmit(equipment);
   };
 
   return (
-    <div>
+    <>
       <Navbar />
-      <div className="container1 container2">
-        <div className="form">
+      <div className="container1">
+        <form className="form" onSubmit={handleFormSubmit}>
           <div className="button-group">
             <IoArrowBackOutline className="back" size={24} onClick={onBack} />
           </div>
           <div className="form-title-container">
-            <h4 className="form-title">Reservation details</h4>
+            <h4 className="form-title">Reserve Equipment</h4>
           </div>
-
-          <div className="form-row">
-            <div className="form-group">
-              <label htmlFor="participants" className="label">Participants</label>
-              <input type="text" id="participants" className="inputd" value={participants} readOnly />
+          {fetchedEquipment.map((item) => (
+            <div className="form-group" key={item._id}>
+              <label htmlFor={item.label} className="required-label">{item.label}</label>
+              <input
+                id={item.label}
+                name={item.label}
+                type="number"
+                className="input"
+                value={equipment[item.label] || 0}
+                onChange={handleEquipmentChange}
+                min="0"
+                max={item.availableQuantity}
+              />
             </div>
-            <div className="form-group">
-              <label htmlFor="salle" className="label">Facility</label>
-              <input type="text" id="salle" className="inputd" value={facilityLabel} readOnly />
-            </div>
-          </div>
-
-          <div className="form-row">
-            <div className="form-group">
-              <label htmlFor="date" className="label">Date</label>
-              <input type="text" id="date" className="inputd" value={formatDate(date)} readOnly />
-            </div>
-            <div className="form-group">
-              <label htmlFor="time" className="label">Time</label>
-              <input type="text" id="time" className="inputd" value={time} readOnly />
-            </div>
-          </div>
-
-          <div className="form-group">
-            <label htmlFor="motif" className="label">Reason</label>
-            <textarea id="motif" rows="3" className="input" value={motif} readOnly />
-          </div>
-
-          <div className="form-group">
-            <label className="label">Reserved Equipments</label>
-            <ul className="equipment-list">
-              {equipment && Object.entries(equipment).map(([key, value]) => (
-                <li key={key} className="equipment-item">
-                  {key}: {value}
-                </li>
-              ))}
-            </ul>
-          </div>
-
+          ))}
           <div className="button-group">
-            <button type="button" className="button" onClick={handleSubmit}>Confirm</button>
-            <button type="button" className="button cancel-button" onClick={handleCancel}>Cancel</button>
+            <button type="submit" className="button">
+              Next
+            </button>
           </div>
-        </div>
+        </form>
       </div>
-      <ToastContainer />
-    </div>
+    </>
   );
 };
 
-export default ReservationDetails;
+export default EquipmentReservationForm;
