@@ -1,0 +1,174 @@
+.calendar-container {
+  display: flex !important;
+  flex-direction: column !important;
+  justify-content: center !important;
+  align-items: center !important;
+  height: 100vh !important;
+  background-color: #f5f5f5 !important;
+}
+
+.rbc-calendar {
+  width: 100vw !important;
+  padding: 50px !important;
+
+}
+
+.rbc-time-view {
+  position: relative !important;
+  flex: 1 0 0 !important;
+  width: 100% !important;
+  height: 100% !important;
+}
+
+.reservation-btn {
+
+  background-color: #630000;
+  color: #fff;
+  padding: 10px 20px;
+  border: none;
+  font-size: 16px;
+  border-radius: 25px;
+  cursor: pointer;
+  margin: 25px 0 0 60px;
+  align-self: flex-start;
+
+
+
+}
+
+.reservation-btn:hover {
+  background-color: #f0f0f0;
+  color: black;
+}
+
+.rbc-events-container,
+.rbc-event-label,
+.rbc-event-content {
+  width: 100%;
+}
+
+
+/* 
+.rbc-event-label,.rbc-event-content{
+    display: flex !important;
+    flex-direction: row !important;
+    
+
+}
+.rbc-event-content{
+    line-height: none;
+    padding-left: 5px;
+    margin-left: 5px;
+} */
+.custom-modal .modal-header {
+  background-color: rgba(255, 255, 255, 0.9);
+  padding: 20px;
+  border-bottom: 2px solid #630000;
+  border-radius: 8px 8px 0 0;
+}
+
+.custom-modal .modal-title {
+  color: black;
+  font-family: 'Roboto', sans-serif;
+}
+
+.custom-modal .modal-body {
+  background-color: rgba(255, 255, 255, 0.9);
+  padding: 20px;
+  font-family: 'Roboto', sans-serif;
+}
+
+.custom-modal .modal-detail {
+  margin-bottom: 15px;
+  color: black;
+  font-size: 14px;
+  /* Increased font size */
+  font-family: 'Lato', sans-serif;
+}
+
+.custom-modal .modal-detail-label {
+  display: inline-block;
+  width: 200px;
+  color: black;
+  font-weight: bold;
+  text-align: left;
+  font-size: 18px;
+  /* Larger font size for labels */
+  font-family: 'Lato', sans-serif;
+}
+
+.custom-modal .modal-detail-value {
+  display: inline-block;
+  width: calc(100% - 200px);
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 20px;
+  box-sizing: border-box;
+  background-color: #B4B4B8;
+  color: black;
+  font-family: 'Montserrat', sans-serif;
+  overflow: hidden;
+  /* Prevent text overflow */
+}
+
+.custom-modal .modal-footer {
+  background-color: rgba(255, 255, 255, 0.9);
+  padding: 20px;
+  border-top: 2px solid #630000;
+  border-radius: 0 0 8px 8px;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.custom-modal .button {
+  width: 40%;
+  height: auto;
+  padding: 7px 14px;
+  /* Reduced padding for smaller button size */
+  background-color: #630000;
+  color: #fff;
+  border: none;
+  border-radius: 20px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+  display: block;
+  margin: 0 auto;
+  font-size: 12px;
+  /* Smaller font size */
+  font-family: 'Roboto', sans-serif;
+  margin-top: 20px;
+  /* Adjusted margin for spacing */
+}
+
+.button-2:hover {
+  background-color: #f0f0f0;
+  color: black;
+}
+
+.button-2 {
+  width: 40%;
+  height: auto;
+  padding: 7px 14px;
+  /* Reduced padding for smaller button size */
+  background-color: #630000;
+  color: #fff;
+  border: none;
+  border-radius: 20px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+  display: block;
+  margin: 0 auto;
+  font-size: 12px;
+  /* Smaller font size */
+  font-family: 'Roboto', sans-serif;
+  margin-top: 20px;
+  /* Adjusted margin for spacing */
+}
+
+
+/*
+{                  //className="px-4 py-2 bg-red-900 text-white font-medium rounded-md hover:bg-red-700 transition duration-200 button-2"}                  onClick={handleCancelReservation}
+
+                  className="px-4 py-2 bg-red-700 text-white font-medium rounded-md hover:bg-yellow-700 transition duration-200 button-2"
+
+*/
