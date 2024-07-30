@@ -11,6 +11,7 @@ import ReservationDetails from "./components/reservationForm3";
 import ReserverSalleform from "./components/reservationForm2";
 import ReserverTimeDate from "./components/reservationForm1";
 import ParentComponent from "./components/ParentComponent";
+import MyCalendar from "./components/Calendar/MyCalendar";
 const AuthStatus = () => {
   const { currentUser, userLoggedIn, loading } = useAuth();
 
@@ -31,6 +32,8 @@ const AppRoutes = () => {
 
       <Route path="/login" element={<Login />} />
       <Route path="/reset-password" element={<ResetPassword />} />
+      <Route exact path="/calendar" element={<MyCalendar />} />
+
       {userLoggedIn ? (
         <>
         <Route path="/feedback" element={<GiveFeedback />} />
