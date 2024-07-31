@@ -111,7 +111,7 @@ const ReserverSalleform = ({ onSubmit, onBack, date, time }) => {
   return (
     <body>
       <Navbar />
-      <div className="container1 container2">
+      <div className="container3">
         <form className="form" onSubmit={handleFormSubmit}>
           <div className="button-group">
             <IoArrowBackOutline className="back" size={24} onClick={onBack} />

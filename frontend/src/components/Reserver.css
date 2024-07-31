@@ -13,6 +13,18 @@ body {
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   border-radius: 8px;
 }
+.container3 {
+  margin-top: 1%;
+  max-width: 600px;
+  margin-left: auto;
+  margin-right: auto;
+  padding: 50px;
+  align-items: center;
+  background-color: #fff;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+  min-height:630px;
+}
 
 .form-title-container {
   text-align: center;
