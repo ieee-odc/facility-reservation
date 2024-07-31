@@ -1,13 +1,15 @@
 import React, { useState } from 'react';
 import '../Reserver.css'; 
 import Navbar from '../navbar';
+import FacilitiesForm from './FacilitiesForm';
 
 const EventForm = ({ onSubmit }) => {
   const [eventName, setEventName] = useState('');
   const [eventDescription, setEventDescription] = useState('');
   const [startDate, setStartDate] = useState(new Date().toISOString().split('T')[0]);
   const [endDate, setEndDate] = useState(new Date().toISOString().split('T')[0]);
-  const [numberOfFacilities, setNumberOfFacilities] = useState(0);
+  const [numberOfFacilities, setNumberOfFacilities] = useState(1);
+  const [submitted, setSubmitted] = useState(false);
 
   const today = new Date().toISOString().split('T')[0]; // Get today's date in YYYY-MM-DD format
 
@@ -24,8 +26,12 @@ const EventForm = ({ onSubmit }) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    onSubmit(eventName, startDate, endDate, numberOfFacilities);
+    setSubmitted(true);
   };
+
+  if (submitted) {
+    return <FacilitiesForm numberOfFacilities={numberOfFacilities} form1={{eventName,eventDescription,startDate,endDate,numberOfFacilities}}/>;
+  }
 
   return (
     <div>
@@ -98,7 +104,7 @@ const EventForm = ({ onSubmit }) => {
                 className="input"
                 value={numberOfFacilities}
                 onChange={(e) => setNumberOfFacilities(Number(e.target.value))}
-                min="0"
+                min="1"
                 required
               />
             </div>

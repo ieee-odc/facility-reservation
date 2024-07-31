@@ -175,3 +175,49 @@ body {
 .button.cancel-button:hover {
   background-color: #807e7e; /* Darker red on hover */
 }
+
+/*here*/
+
+
+.facility-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  padding: 10px;
+  background-color: #fff;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+}
+
+.facility-form-group {
+  flex: 1 1 calc(50% - 10px); /* Adjust this value to control the width of the fields */
+  display: flex;
+  flex-direction: column;
+}
+
+.facility-input-container {
+  display: flex;
+  flex-direction: column;
+  margin-top: 5px;
+}
+
+.facility-input-container input {
+  padding: 8px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.facility-button {
+  padding: 10px 15px;
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  text-align: center;
+  margin-top: 20px;
+}
+
+.facility-button:hover {
+  background-color: #0056b3;
+}
