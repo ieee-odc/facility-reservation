@@ -85,7 +85,7 @@ const ReservationDetails = ({ date, time, participants, facility: facilityLabel,
   return (
     <div>
       <Navbar />
-      <div className="container1 container2">
+      <div className="container1">
         <div className="form">
           <div className="button-group">
             <IoArrowBackOutline className="back" size={24} onClick={onBack} />

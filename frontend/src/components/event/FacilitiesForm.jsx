@@ -51,7 +51,7 @@ const FacilitiesForm = ({ numberOfFacilities }) => {
   return (
     <div>
       <Navbar />
-      <div className="container1">
+      <div className="container2">
         <div className="form-title-container">
           <h2 className="form-title">Facilities Form</h2>
         </div>

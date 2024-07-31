@@ -11,7 +11,7 @@ import ReservationDetails from "./components/reservationDetails";
 import ReserverSalleform from "./components/reservationForm2";
 import ReserverTimeDate from "./components/reservationForm1";
 import ParentComponent from "./components/ParentComponent";
-import EventForm from "./components/event/eventForm1";
+import EventForm from "./components/event/EventForm1";
 import CalendarPage from "./components/Calendar/CalendarPage";
 
 const AuthStatus = () => {
