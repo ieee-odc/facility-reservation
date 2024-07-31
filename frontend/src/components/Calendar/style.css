@@ -1,3 +1,19 @@
+
+.rbc-toolbar button {
+  color: #373a3c;
+  display: inline-block;
+  margin: 0;
+  text-align: center;
+  vertical-align: middle;
+  background: none;
+  background-image: none;
+  border: none;
+  padding: 0.375rem 1rem;
+  border-radius: 4px;
+  line-height: normal;
+  white-space: nowrap;
+}
+
 .calendar-page {
   display: flex;
   height: 100vh;
@@ -37,8 +53,39 @@
   overflow-y: auto; 
 }
 
+
 .rbc-calendar {
   position: relative;
   width: 77vw !important;
   padding: 50px !important;
+}
+
+.rbc-btn-group > button:first-child:not(:last-child) ,
+.rbc-btn-group button + button {
+  border: none;
+  border-radius: 50px !important;
+}
+
+.rbc-btn-group > button:not(:first-child):not(:last-child){
+  border-radius: 50px !important;
+}
+
+
+.rbc-toolbar button:active, .rbc-toolbar button.rbc-active {
+  background-color: #DAEF84 !important;
+  border-radius: 50px !important;
+}
+
+.rbc-toolbar .rbc-btn-group .rbc-active {
+  background-color: #DAEF84 !important; /* Active button background color */
+  color: #fff !important; /* Active button text color */
+  border-color: #DAEF84 !important; /* Active button border color */
+}
+
+
+.rbc-btn-group > button:focus,
+.rbc-btn-group > button:active{
+  color: #fff !important; /* Active button text color */
+  background-color: #DAEF84 !important;
+  border-radius: 50px !important;
 }

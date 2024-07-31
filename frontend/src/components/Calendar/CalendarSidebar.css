@@ -7,8 +7,44 @@
   color: white;
   min-height: 100%;
   overflow-y: auto; 
-  max-height: calc(100vh - 50px);
+  max-height: calc(100vh - 20px);
 }
+
+
+
+.calendar-sidebar::-webkit-scrollbar {
+  width: 12px;
+}
+
+/* Track */
+.calendar-sidebar::-webkit-scrollbar-track {
+  border-radius: 10px;
+  background: #A2A2A6;
+}
+
+/* Handle */
+.calendar-sidebar::-webkit-scrollbar-thumb {
+  background: #dbdada;
+  border-radius: 10px;
+  cursor: grab;
+}
+.calendar-sidebar::-webkit-scrollbar-thumb:active {
+  background: #dbdada;
+  border-radius: 10px;
+  cursor: grabbing;
+}
+
+/* Handle on hover */
+.calendar-sidebar::-webkit-scrollbar-thumb:hover {
+  background: #bcbcbc;
+  transition: cursor 4s ease-in-out;
+}
+
+
+
+
+
+
 
 .calendar-sidebar__calendar-container {
   width: 100%;
