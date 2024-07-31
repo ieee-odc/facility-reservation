@@ -1,31 +1,48 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Navbar from "../navbar";
 import CalendarSidebar from "./CalendarSidebar";
 import "./style.css";
 import BigCalendarComponent from "./BigCalendarComponent";
+import axios from "axios";
 
 const CalendarPage = () => {
-  const events = [
-    {
-      title: "Meeting with team",
-      start: new Date("2024-07-28T10:00:00"),
-      end: new Date("2024-07-28T11:00:00"),
-      allDay: false,
-    },
-    {
-      title: "Project deadline",
-      start: new Date("2024-07-30T15:00:00"),
-      end: new Date("2024-07-30T16:00:00"),
-      allDay: false,
-    },
-    {
-      title: "Lunch with client",
-      start: new Date("2024-07-31T12:00:00"),
-      end: new Date("2024-07-31T13:00:00"),
-      allDay: false,
-    },
-  ];  
+  const [events, setEvents] = useState([]);
   const holidays = ["New Year's Day", "Independence Day"];
+
+  useEffect(() => {
+    const fetchReservations = async () => {
+      try {
+        const response = await axios.get("http://localhost:3000/api/reservations");
+        const reservations = response.data; 
+        console.log(response.data);
+
+  
+        if (Array.isArray(reservations)) {
+          const formattedEvents = reservations.map(reservation => {
+            const start = new Date(`${reservation.date}T${reservation.time}`);
+            const end = new Date(start);
+            end.setHours(start.getHours() + 1);
+            return {
+              title: reservation.motive,
+              start,
+              end,
+              allDay: false
+            };
+          });
+          
+          
+          setEvents(formattedEvents);
+        } else {
+          console.error("Unexpected response format", reservations);
+        }
+      } catch (error) {
+        console.error("Error fetching reservations from calendar page", error);
+      }
+    };
+  
+    fetchReservations();
+  }, []);
+  
 
   return (
     <div>

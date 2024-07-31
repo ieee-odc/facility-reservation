@@ -33,32 +33,38 @@ const ReservationDetails = ({ date, time, participants, facility: facilityLabel,
 
   const handleSubmit = async () => {
     try {
-      
       const facility = facilities.find(f => f.label === facilityLabel);
       const facilityId = facility ? facility._id : null;
-
+  
       const equipmentIds = Object.entries(equipment).map(([label, _]) => {
         const matchedEquipment = equipments.find(e => e.label === label);
         return matchedEquipment ? matchedEquipment._id : null;
       }).filter(id => id !== null);
-
+  
       if (!facilityId) {
         throw new Error('Invalid facility selected');
       }
-
+  
       if (equipmentIds.includes(null)) {
         throw new Error('Some equipment could not be matched to IDs');
       }
-
+  
+      const [startTime, endTime] = time.split(' - ');
+  
+      if (!startTime || !endTime) {
+        throw new Error('Invalid time format');
+      }
+  
       const response = await axios.post('http://localhost:3000/api/reservations', {
         date,
-        time,
+        startTime,
+        endTime,
         motive: motif,
         effective: participants,
         materials: equipmentIds,
         facility: facilityId,
       });
-
+  
       console.log('Data sent to MongoDB:', response.data);
       toast.success('Reservation successfully submitted!');
       //setFormVisible(false);
@@ -67,7 +73,7 @@ const ReservationDetails = ({ date, time, participants, facility: facilityLabel,
       toast.error('Failed to submit reservation. Please try again.');
     }
   };
-
+  
   const formatDate = (date) => {
     const d = new Date(date);
     const day = d.getDate();

@@ -1,7 +1,8 @@
 import { Reservation } from "../models/reservationModel.js";
 /*
   date: 
-  time: 
+  startTime: 
+  endTime:
   motive: 
   materials: 
   files: 
@@ -56,7 +57,8 @@ export const addReservation = async (req, res) => {
       facility,
       motive,
       date,
-      time,
+      startTime,
+      endTime,
       state,
       entity,
       event,
@@ -69,7 +71,8 @@ export const addReservation = async (req, res) => {
       facility,
       motive,
       date,
-      time,
+      startTime,
+      endTime,
       state,
       entity,
       event,
