@@ -1,20 +1,17 @@
+// EventForm.js
 import React, { useState } from 'react';
 import '../Reserver.css'; 
 import Navbar from '../navbar';
 
-const EventForm = () => {
+const EventForm = ({ onSubmit }) => {
   const [eventName, setEventName] = useState('');
   const [startDate, setStartDate] = useState('');
   const [endDate, setEndDate] = useState('');
-  const [numberOfFacilities, setNumberOfFacilities] = useState(0); // Default value set to 0
+  const [numberOfFacilities, setNumberOfFacilities] = useState(0);
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    
-    console.log('Event Name:', eventName);
-    console.log('Start Date:', startDate);
-    console.log('End Date:', endDate);
-    console.log('Number of Facilities Required:', numberOfFacilities);
+    onSubmit(eventName, startDate, endDate, numberOfFacilities);
   };
 
   return (
