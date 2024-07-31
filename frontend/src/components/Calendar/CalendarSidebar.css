@@ -3,7 +3,7 @@
   padding: 30px;
   box-sizing: border-box;
   display: grid;
-  background: #cecece;
+  background: #A2A2A6;
   color: white;
   min-height: 100%;
   overflow-y: auto; 
@@ -76,4 +76,16 @@
 
 .rs-calendar-table-cell-content:hover{
   background-color: rgb(168, 173, 198);
+}
+.rs-calendar-panel .rs-calendar-table-cell-is-today .rs-calendar-table-cell-day {
+  background: #DAEF84;
+}
+
+.rs-calendar-panel .rs-calendar-table-header-row .rs-calendar-table-header-cell-content {
+
+  color: white;
+}
+
+.rs-calendar-table-cell-disabled .rs-calendar-table-cell-content, .rs-calendar-table-cell-disabled .rs-calendar-table-cell-content:hover, .rs-calendar-table-cell-disabled .rs-calendar-table-header-cell-content, .rs-calendar-table-cell-disabled .rs-calendar-table-header-cell-content:hover, .rs-calendar-table-cell-un-same-month .rs-calendar-table-cell-content, .rs-calendar-table-cell-un-same-month .rs-calendar-table-cell-content:hover, .rs-calendar-table-cell-un-same-month .rs-calendar-table-header-cell-content, .rs-calendar-table-cell-un-same-month .rs-calendar-table-header-cell-content:hover, .rs-calendar-table-header-cell-disabled .rs-calendar-table-cell-content, .rs-calendar-table-header-cell-disabled .rs-calendar-table-cell-content:hover, .rs-calendar-table-header-cell-disabled .rs-calendar-table-header-cell-content, .rs-calendar-table-header-cell-disabled .rs-calendar-table-header-cell-content:hover, .rs-calendar-table-header-cell-un-same-month .rs-calendar-table-cell-content, .rs-calendar-table-header-cell-un-same-month .rs-calendar-table-cell-content:hover, .rs-calendar-table-header-cell-un-same-month .rs-calendar-table-header-cell-content, .rs-calendar-table-header-cell-un-same-month .rs-calendar-table-header-cell-content:hover {
+  color: #007AFF ;
 }
