@@ -13,15 +13,14 @@ const CalendarPage = () => {
     const fetchReservations = async () => {
       try {
         const response = await axios.get("http://localhost:3000/api/reservations");
-        const reservations = response.data; 
-        console.log(response.data);
+        const reservations = response.data;
 
-  
         if (Array.isArray(reservations)) {
           const formattedEvents = reservations.map(reservation => {
-            const start = new Date(`${reservation.date}T${reservation.time}`);
-            const end = new Date(start);
-            end.setHours(start.getHours() + 1);
+            // Combine date with start and end time
+            const start = new Date(`${reservation.date}T${reservation.startTime}`);
+            const end = new Date(`${reservation.date}T${reservation.endTime}`);
+            
             return {
               title: reservation.motive,
               start,
@@ -29,7 +28,6 @@ const CalendarPage = () => {
               allDay: false
             };
           });
-          
           
           setEvents(formattedEvents);
         } else {
@@ -42,7 +40,6 @@ const CalendarPage = () => {
   
     fetchReservations();
   }, []);
-  
 
   return (
     <div>

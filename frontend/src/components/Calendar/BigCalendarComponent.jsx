@@ -27,7 +27,7 @@ const BigCalendarComponent = ({ events }) => {
         events={allEvents}
         startAccessor="start"
         endAccessor="end"
-        style = {{ height: '100%', width: 300 }}        
+        style={{ height: '100%', width: '100%' }}
         className="the-calendar"
       />
     </div>
