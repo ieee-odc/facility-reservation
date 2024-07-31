@@ -36,7 +36,8 @@ const validEvent = {
   reservations: [
     {
       date: "2024-08-01",
-      time: "10:00 AM",
+      startTime: "10:00 AM",
+      endTime: "11:00 AM",
       motive: "Meeting",
       materials: [],
       files: ["file1.pdf"],
@@ -46,7 +47,8 @@ const validEvent = {
     },
     {
       date: "2024-08-02",
-      time: "02:00 PM",
+      startTime: "11:00 AM",
+      endTime: "12:00 AM",
       motive: "Conference",
       materials: [],
       files: ["file2.pdf"],
