@@ -10,6 +10,7 @@ const CalendarSidebar = () => {
   const [dailyEvents, setDailyEvents] = useState([]);
   const [holidays, setHolidays] = useState([]);
   const [upcomingHolidays, setUpcomingHolidays] = useState([]);
+  const [showRequests, setShowRequests] = useState(true); // State for checkbox
 
   const countryCode = 'TN'; // Tunisia country code
   const currentYear = new Date().getFullYear();
@@ -60,40 +61,48 @@ const CalendarSidebar = () => {
         <Calendar
           compact
           renderCell={renderCell}
-          style={{ width: '100%'}}
+          style={{ width: '100%' }}
           onSelect={handleDateSelect}
         />
       </div>
+
       {selectedDate && (
-        <div className="calendar-sidebar__events">
-          <h5>Events for {selectedDate.toDateString()}</h5>
-          <ul>
-            {dailyEvents.length ? (
-              dailyEvents.map((event, index) => (
-                <li key={index}>
-                  {event.time} - {event.title}
-                </li>
-              ))
-            ) : (
-              <li>No events for this day</li>
-            )}
-          </ul>
-          <div className="calendar-sidebar__holidays">
-            <h5>Holidays</h5>
-            <ul>
-              {holidayNames.length ? (
-                holidayNames.map((name, index) => (
-                  <li key={index}>{name}</li>
-                ))
-              ) : (
-                <li>No holidays</li>
-              )}
-            </ul>
-          </div>
+        <div className="calendar-sidebar__content">
+          {showRequests ? (
+            <div className="calendar-sidebar__events">
+              <h5>Events for {selectedDate.toDateString()}</h5>
+              <hr />
+              <ul>
+                {dailyEvents.length ? (
+                  dailyEvents.map((event, index) => (
+                    <li key={index}>
+                      {event.time} - {event.title}
+                    </li>
+                  ))
+                ) : (
+                  <li>No events for this day</li>
+                )}
+              </ul>
+            </div>
+          ) : (
+            <div className="calendar-sidebar__holidays">
+              <h5>Holidays</h5>
+              <ul>
+                {holidayNames.length ? (
+                  holidayNames.map((name, index) => (
+                    <li key={index}>{name}</li>
+                  ))
+                ) : (
+                  <li>No holidays</li>
+                )}
+              </ul>
+            </div>
+          )}
         </div>
       )}
       <div className="calendar-sidebar__upcoming-holidays">
         <h5>Upcoming Holidays</h5>
+        <hr />
         <ul>
           {upcomingHolidays.length ? (
             upcomingHolidays.map((holiday, index) => (
@@ -105,6 +114,31 @@ const CalendarSidebar = () => {
             <li>No upcoming holidays</li>
           )}
         </ul>
+      </div>
+      <div className="calendar-sidebar__checkboxes">
+      <h5>View</h5>
+      <hr />
+      <div>
+        <label>
+          <input
+            type="checkbox"
+            checked={showRequests}
+            onChange={() => setShowRequests(true)}
+          />
+          Requests
+        </label>
+        <br />
+        </div>
+        <div>
+        <label>
+          <input
+            type="checkbox"
+            checked={!showRequests}
+            onChange={() => setShowRequests(false)}
+          />
+          Events
+        </label>
+      </div>
       </div>
     </div>
   );
