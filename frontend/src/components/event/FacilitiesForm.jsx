@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import "../Reserver.css";
+import "./event.css";
 import Navbar from "../navbar";
 import { Uploader, Button, Tag } from "rsuite";
 import "rsuite/dist/rsuite.min.css";
