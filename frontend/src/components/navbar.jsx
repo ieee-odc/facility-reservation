@@ -19,6 +19,7 @@ import lockIcon from '../assets/lock.png';
 import languageIcon from '../assets/language.png';
 import modeIcon from '../assets/mode.png';
 import historyIcon from '../assets/history.png';
+import eventIcon from '../assets/event.png';
 
 import GiveFeedback from "./feedback";
 import ChangePasswordModal from './ChangePasswordModal'; 
@@ -97,6 +98,10 @@ const Navbar = () => {
   const reservation = async () => {
     navigate("/reserver");
   };
+  const event = async () => {
+    navigate("/event");
+  };
+
 
   const handleChangePassword = () => {
     setShowChangePasswordModal(true);
@@ -117,6 +122,8 @@ const Navbar = () => {
     { icon: <img src={homeIcon} alt="home Icon" style={{ width: '30px', height: '30px'  }} />, text: "Dashboard"},
     { icon: <img src={calendarIcon} alt="calendar Icon" style={{ width: '30px', height: '30px' }} />, text: "Calendar", handleClick: calendar},
     { icon: <img src={reservationIcon} alt="reservation Icon" style={{ width: '30px', height: '30px' }} />, text: "Reservation" , handleClick: reservation},
+    { icon: <img src={eventIcon} alt="event Icon" style={{ width: '30px', height: '30px' }} />, text: "Event" , handleClick: event},
+
     { icon: <img src={historyIcon} alt="history Icon" style={{ width: '30px', height: '30px' }} />, text: "History"},
 
     { icon: <img src={profileIcon} alt="Profile Icon" style={{ width: '30px', height: '30px' }} />, text: "Profile", handleClick: profile },
