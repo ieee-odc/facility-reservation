@@ -14,21 +14,20 @@ const CalendarPage = () => {
       try {
         const response = await axios.get("http://localhost:3000/api/reservations");
         const reservations = response.data;
-
+  
         if (Array.isArray(reservations)) {
           const formattedEvents = reservations.map(reservation => {
-            // Combine date with start and end time
-            const start = new Date(`${reservation.date}T${reservation.startTime}`);
-            const end = new Date(`${reservation.date}T${reservation.endTime}`);
+            const start = new Date(`${reservation.date.split("T")[0]} ${reservation.startTime}`);
+            const end = new Date(`${reservation.date.split("T")[0]} ${reservation.endTime}`);
             
             return {
               title: reservation.motive,
               start,
               end,
-              allDay: false
+              allDay: false 
             };
           });
-          
+  
           setEvents(formattedEvents);
         } else {
           console.error("Unexpected response format", reservations);
@@ -40,7 +39,7 @@ const CalendarPage = () => {
   
     fetchReservations();
   }, []);
-
+  
   return (
     <div>
       <Navbar />

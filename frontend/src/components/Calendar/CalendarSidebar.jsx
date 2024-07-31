@@ -11,6 +11,7 @@ const CalendarSidebar = () => {
   const [holidays, setHolidays] = useState([]);
   const [upcomingHolidays, setUpcomingHolidays] = useState([]);
   const [showRequests, setShowRequests] = useState(true); // State for checkbox
+  const [reservations, setReservations] = useState([]); // State for reservations
 
   const countryCode = 'TN'; // Tunisia country code
   const currentYear = new Date().getFullYear();
@@ -20,21 +21,42 @@ const CalendarSidebar = () => {
     const fetchHolidaysData = async () => {
       const holidaysData = await fetchHolidays(countryCode, currentYear);
       setHolidays(holidaysData);
-      setUpcomingHolidays(holidaysData.filter(
-        (holiday) => new Date(holiday.date) > new Date()
-      ).sort((a, b) => new Date(a.date) - new Date(b.date)));
+      setUpcomingHolidays(
+        holidaysData.filter(
+          (holiday) => new Date(holiday.date) > new Date()
+        ).sort((a, b) => new Date(a.date) - new Date(b.date))
+      );
+    };
+
+    // Fetch reservations from API
+    const fetchReservations = async () => {
+      try {
+        const response = await axios.get('http://localhost:3000/api/reservations');
+        setReservations(response.data);
+      } catch (error) {
+        console.error('Error fetching reservations:', error);
+      }
     };
 
     fetchHolidaysData();
+    fetchReservations();
   }, []);
 
   const handleDateSelect = (date) => {
     setSelectedDate(date);
-    setDailyEvents(getTodoList(date));
+    const filteredEvents = reservations.filter(reservation =>
+      new Date(reservation.date).toDateString() === date.toDateString()
+    ).map(reservation => ({
+      time: reservation.startTime,
+      title: reservation.motive
+    }));
+    setDailyEvents(filteredEvents);
   };
 
   const renderCell = (date) => {
-    const list = getTodoList(date);
+    const list = reservations.filter(reservation =>
+      new Date(reservation.date).toDateString() === date.toDateString()
+    );
     const holiday = holidays.find(
       (holiday) =>
         new Date(holiday.date).toDateString() === date.toDateString()
@@ -142,28 +164,6 @@ const CalendarSidebar = () => {
       </div>
     </div>
   );
-};
-
-const getTodoList = (date) => {
-  const day = date.getDate();
-  switch (day) {
-    case 10:
-      return [
-        { time: '10:30 am', title: 'Meeting' },
-        { time: '12:00 pm', title: 'Lunch' },
-      ];
-    case 15:
-      return [
-        { time: '09:30 am', title: 'Products Introduction Meeting' },
-        { time: '12:30 pm', title: 'Client entertaining' },
-        { time: '02:00 pm', title: 'Product design discussion' },
-        { time: '05:00 pm', title: 'Product test and acceptance' },
-        { time: '06:30 pm', title: 'Reporting' },
-        { time: '10:00 pm', title: 'Going home to walk the dog' },
-      ];
-    default:
-      return [];
-  }
 };
 
 export default CalendarSidebar;
