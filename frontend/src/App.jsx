@@ -11,7 +11,7 @@ import ReservationDetails from "./components/reservationDetails";
 import ReserverSalleform from "./components/reservationForm2";
 import ReserverTimeDate from "./components/reservationForm1";
 import ParentComponent from "./components/ParentComponent";
-import EventForm from "./components/event/eventForm1";
+import EventForm from "./components/event/EventForm1";
 import CalendarPage from "./components/Calendar/CalendarPage";
 
 const AuthStatus = () => {
@@ -35,6 +35,7 @@ const AppRoutes = () => {
       <Route path="/login" element={<Login />} />
       <Route path="/reset-password" element={<ResetPassword />} />
       <Route exact path="/calendar" element={<CalendarPage />} />
+      <Route exact path="/event" element={<EventForm />} />
 
       {userLoggedIn ? (
         <>
@@ -44,7 +45,6 @@ const AppRoutes = () => {
         <Route path="/profile" element={<Profile />} />
           <Route path="/navbar" element={<Navbar />} />
           <Route exact path="/reserver" element={<ParentComponent />} />
-          <Route exact path="/event" element={<EventForm />} />
 
 
 
