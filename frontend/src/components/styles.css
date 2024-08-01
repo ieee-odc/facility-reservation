@@ -229,8 +229,11 @@ button.social-login.microsoft {
 .login-main{
   display: flex;
   flex-direction: row;
-  position: relative;
-  
+  position: fixed;
+  bottom: 0;
+  right: 0;
+  top: 0;
+  left: 0;
 }
 
 .login-left-side{
@@ -253,7 +256,6 @@ button.social-login.microsoft {
   align-items: center;
   justify-content: center;
   padding: 20px;
-  height: 94.5vh;
 }
 
 .login-right-side h3 {
