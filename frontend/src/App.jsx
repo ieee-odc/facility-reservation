@@ -18,13 +18,11 @@ const AuthStatus = () => {
   const { currentUser, userLoggedIn, loading } = useAuth();
 
   useEffect(() => {
-    console.log(currentUser, userLoggedIn, loading);
+    console.log(currentUser.email, userLoggedIn, loading);
   }, [currentUser, userLoggedIn, loading]);
 
   return null;
 };
-
-console.log("afwan" + process.env.REACT_APP_FIREBASE_APP_ID);
 
 const AppRoutes = () => {
   const { userLoggedIn } = useAuth();

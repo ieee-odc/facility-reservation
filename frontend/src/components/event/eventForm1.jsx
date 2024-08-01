@@ -1,18 +1,41 @@
-import React, { useState } from 'react';
-import './event.css'; 
-import Navbar from '../navbar';
-import FacilitiesForm from './FacilitiesForm';
+import React, { useEffect, useState } from "react";
+import "./event.css";
+import Navbar from "../navbar";
+import FacilitiesForm from "./FacilitiesForm";
+import { useAuth } from "../../context/authContext/AuthProvider";
+import axios from "axios";
 
 const EventForm = ({ onSubmit }) => {
-  const [eventName, setEventName] = useState('');
-  const [eventDescription, setEventDescription] = useState('');
-  const [startDate, setStartDate] = useState(new Date().toISOString().split('T')[0]);
-  const [endDate, setEndDate] = useState(new Date().toISOString().split('T')[0]);
+  const { currentUser, userLoggedIn, loading } = useAuth();
+  console.log("hello from event", currentUser);
+  const [name, setName] = useState("");
+  const [description, setDescription] = useState("");
+  const [startDate, setStartDate] = useState(
+    new Date().toISOString().split("T")[0]
+  );
+  const [endDate, setEndDate] = useState(
+    new Date().toISOString().split("T")[0]
+  );
   const [numberOfFacilities, setNumberOfFacilities] = useState(1);
   const [submitted, setSubmitted] = useState(false);
+  const [organizer, setOrganizer] = useState("");
+  useEffect(() => {
+    const fetchUser = async () => {
+      try {
+        const response = await axios.get(
+          `http://localhost:3000/api/reservationInitiators/get-user-id/${currentUser.email}`
+        );
+        console.log("response 2", response.data.id);
+        setOrganizer(response.data.id);
+      } catch (error) {
+        console.error("Error fetching available facilities:", error);
+      }
+    };
 
-  const today = new Date().toISOString().split('T')[0]; // Get today's date in YYYY-MM-DD format
+    fetchUser();
+  }, []);
 
+  const today = new Date().toISOString().split("T")[0]; 
   const handleStartDateChange = (e) => {
     setStartDate(e.target.value);
     if (endDate && e.target.value > endDate) {
@@ -30,7 +53,19 @@ const EventForm = ({ onSubmit }) => {
   };
 
   if (submitted) {
-    return <FacilitiesForm numberOfFacilities={numberOfFacilities} form1={{eventName,eventDescription,startDate,endDate,numberOfFacilities}}/>;
+    return (
+      <FacilitiesForm
+        numberOfFacilities={numberOfFacilities}
+        form1={{
+          name,
+          description,
+          startDate,
+          endDate,
+          numberOfFacilities,
+          organizer,
+        }}
+      />
+    );
   }
 
   return (
@@ -48,8 +83,8 @@ const EventForm = ({ onSubmit }) => {
                 type="text"
                 id="event-name"
                 className="event-input"
-                value={eventName}
-                onChange={(e) => setEventName(e.target.value)}
+                value={name}
+                onChange={(e) => setName(e.target.value)}
                 required
               />
             </div>
@@ -61,8 +96,8 @@ const EventForm = ({ onSubmit }) => {
                 type="text"
                 id="event-description"
                 className="event-input"
-                value={eventDescription}
-                onChange={(e) => setEventDescription(e.target.value)}
+                value={description}
+                onChange={(e) => setDescription(e.target.value)}
                 required
               />
             </div>
@@ -96,7 +131,9 @@ const EventForm = ({ onSubmit }) => {
             </div>
           </div>
           <div className="event-form-group">
-            <label htmlFor="number-of-facilities">Number of Facilities Required</label>
+            <label htmlFor="number-of-facilities">
+              Number of Facilities Required
+            </label>
             <div className="event-input-container">
               <input
                 type="number"
@@ -105,11 +142,12 @@ const EventForm = ({ onSubmit }) => {
                 value={numberOfFacilities}
                 onChange={(e) => setNumberOfFacilities(Number(e.target.value))}
                 required
-                
               />
             </div>
           </div>
-          <button type="submit" className="event-button">Next</button>
+          <button type="submit" className="event-button">
+            Next
+          </button>
         </form>
       </div>
     </div>

@@ -1,25 +1,66 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import "./event.css";
 import Navbar from "../navbar";
 import { Uploader, Button, Tag } from "rsuite";
 import "rsuite/dist/rsuite.min.css";
 import { GrAttachment } from "react-icons/gr";
+import { TagPicker } from "rsuite";
+import axios from "axios";
 
-const FacilitiesForm = ({ numberOfFacilities }) => {
+const FacilitiesForm = ({ numberOfFacilities, form1 }) => {
   const initialFacilities = Array.from({ length: numberOfFacilities }, () => ({
     date: "",
     startTime: "",
     endTime: "",
     facility: "",
-    effective: "",
+    effective: 0,
     motive: "",
     files: [],
     materials: "",
+    entity: form1.organizer
   }));
-  const today = new Date().toISOString().split("T")[0]; // Get today's date in YYYY-MM-DD format
+  const start = new Date(form1.startDate).toISOString().split("T")[0];
+  const end = new Date(form1.endDate).toISOString().split("T")[0];
 
   const [facilities, setFacilities] = useState(initialFacilities);
-  const [errorMessages, setErrorMessages] = useState(Array(numberOfFacilities).fill(""));
+  const [errorMessages, setErrorMessages] = useState(
+    Array(numberOfFacilities).fill("")
+  );
+  const [availableFacilities, setAvailableFacilities] = useState([]);
+  const [availableEquipments, setAvailableEquipments] = useState([]);
+
+  useEffect(() => {
+    const fetchAvailableFacilities = async () => {
+      try {
+        const response = await axios.get(
+          "http://localhost:3000/api/facilities"
+        );
+        setAvailableFacilities(response.data.data || []);
+        console.log("response", response);
+      } catch (error) {
+        console.error("Error fetching available facilities:", error);
+      }
+    };
+    const fetchAvailableEquipments = async () => {
+      try {
+        const response = await axios.get(
+          "http://localhost:3000/api/equipments"
+        );
+        const data = response.data.data.map((item) => ({
+          label: item.label,
+          value: item._id,
+        }));
+        setAvailableEquipments(data);
+        console.log("response 2", data);
+      } catch (error) {
+        console.error("Error fetching available facilities:", error);
+      }
+    };
+    
+
+    fetchAvailableFacilities();
+    fetchAvailableEquipments();
+  }, [initialFacilities.date, initialFacilities.time]);
 
   const handleChange = (index, field, value) => {
     const updatedFacilities = [...facilities];
@@ -57,10 +98,24 @@ const FacilitiesForm = ({ numberOfFacilities }) => {
     setFacilities(updatedFacilities);
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    // Handle form submission logic here
-    console.log(facilities);
+    const totalEffective = facilities.reduce((total, item) => {
+      return total + Number(item.effective);
+    }, 0);
+    console.log("total effective", totalEffective);
+    axios
+      .post("http://localhost:3000/api/events", {
+        reservations: facilities,
+        ...form1,
+        totalEffective,
+      })
+      .then((resp) => {
+        console.log(resp);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
   };
 
   return (
@@ -82,7 +137,8 @@ const FacilitiesForm = ({ numberOfFacilities }) => {
                     onChange={(e) =>
                       handleChange(index, "date", e.target.value)
                     }
-                    min={today}
+                    min={start}
+                    max={end}
                     required
                   />
                 </div>
@@ -114,7 +170,9 @@ const FacilitiesForm = ({ numberOfFacilities }) => {
                     required
                   />
                   {errorMessages[index] && (
-                    <span className="error-message">{errorMessages[index]}</span>
+                    <span className="error-message">
+                      {errorMessages[index]}
+                    </span>
                   )}
                 </div>
               </div>
@@ -122,14 +180,22 @@ const FacilitiesForm = ({ numberOfFacilities }) => {
               <div className="facility-form-group">
                 <label>Facility</label>
                 <div className="facility-input-container">
-                  <input
-                    type="text"
+                  <select
+                    id="facility"
+                    className="input"
                     value={facility.facility}
                     onChange={(e) =>
                       handleChange(index, "facility", e.target.value)
                     }
-                    required
-                  />
+                  >
+                    <option value="">Select a facility</option>
+                    {Array.isArray(availableFacilities) &&
+                      availableFacilities.map((fac) => (
+                        <option key={fac._id} value={fac._id}>
+                          {fac.label}
+                        </option>
+                      ))}
+                  </select>
                 </div>
               </div>
 
@@ -148,10 +214,34 @@ const FacilitiesForm = ({ numberOfFacilities }) => {
               </div>
 
               <div className="facility-form-group">
-                <label>Motive</label>
+                <label htmlFor="motif" className="required-label">
+                  Reasons for reservation
+                </label>
                 <div className="facility-input-container">
-                  <input
+                  <select
+                    id="motif"
+                    className="event-input"
+                    value={facility.motive}
+                    onChange={(e) =>
+                      handleChange(index, "motive", e.target.value)
+                    }
+                  >
+                    <option value="">Select a reason</option>
+                    <option value="Club meeting">Club meeting</option>
+                    <option value="Workshop">Workshop</option>
+                    <option value="Conference">Conference</option>
+                    <option value="Special event">Special event</option>
+                  </select>
+                </div>
+              </div>
+
+              <div className="facility-form-group">
+                <label>Other reasons (optional)</label>
+                <div className="facility-input-container">
+                  <textarea
+                    id="otherMotif"
                     type="text"
+                    className="event-input"
                     value={facility.motive}
                     onChange={(e) =>
                       handleChange(index, "motive", e.target.value)
@@ -160,19 +250,17 @@ const FacilitiesForm = ({ numberOfFacilities }) => {
                   />
                 </div>
               </div>
+
               <div className="facility-form-group">
                 <label>Materials</label>
-                <div className="facility-input-container">
-                  <input
-                    type="text"
-                    value={facility.materials}
-                    onChange={(e) =>
-                      handleChange(index, "materials", e.target.value)
-                    }
-                    required
-                  />
-                </div>
+                <TagPicker
+                  className="facility-input-container"
+                  data={availableEquipments}
+                  style={{ width: 300 }}
+                  onChange={(value) => handleChange(index, "materials", value)}
+                />
               </div>
+
               <div className="facility-form-group">
                 <label htmlFor={`file-input-${index}`}>Files</label>
                 <div className="file-upload-container">
@@ -207,8 +295,6 @@ const FacilitiesForm = ({ numberOfFacilities }) => {
                   </div>
                 </div>
               </div>
-
-             
             </div>
           ))}
           <button type="submit" className="facility-button">

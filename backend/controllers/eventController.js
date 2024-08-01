@@ -136,6 +136,7 @@ export const createEvent = async (req, res) => {
           .json({ event, reservations: createdReservations });
       })
       .catch((e) => {
+        console.log(e);
         return res
           .status(409)
           .json({ message: "An error occurred when creating the event" });
