@@ -6,6 +6,10 @@ import "rsuite/dist/rsuite.min.css";
 import { GrAttachment } from "react-icons/gr";
 import { TagPicker } from "rsuite";
 import axios from "axios";
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import { useNavigate } from "react-router-dom";
+import { useNotification } from "../../context/NotificationContext";
 
 const FacilitiesForm = ({ numberOfFacilities, form1 }) => {
   const initialFacilities = Array.from({ length: numberOfFacilities }, () => ({
@@ -16,7 +20,7 @@ const FacilitiesForm = ({ numberOfFacilities, form1 }) => {
     effective: 0,
     motive: "",
     files: [],
-    materials: "",
+    materials: [],
     entity: form1.organizer
   }));
   const start = new Date(form1.startDate).toISOString().split("T")[0];
@@ -28,6 +32,9 @@ const FacilitiesForm = ({ numberOfFacilities, form1 }) => {
   );
   const [availableFacilities, setAvailableFacilities] = useState([]);
   const [availableEquipments, setAvailableEquipments] = useState([]);
+
+  const navigate = useNavigate();
+  const showNotification = useNotification();
 
   useEffect(() => {
     const fetchAvailableFacilities = async () => {
@@ -112,9 +119,12 @@ const FacilitiesForm = ({ numberOfFacilities, form1 }) => {
       })
       .then((resp) => {
         console.log(resp);
+        showNotification('Event has been submitted successfully!', 'success');
+        navigate('/calendar')
       })
       .catch((error) => {
         console.log(error);
+        showNotification('Failed to submit the event. Please try again.', 'error');
       });
   };
 
