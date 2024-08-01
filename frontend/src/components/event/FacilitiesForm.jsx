@@ -146,7 +146,7 @@ const FacilitiesForm = ({ numberOfFacilities, form1 }) => {
         </div><PanelGroup accordion bordered>
         <form className="form form-facilities" onSubmit={handleSubmit}>
           {facilities.map((facility, index) => (
-            <Panel header={`Facility n° ${index+1}`} defaultExpanded>
+            <Panel header={`Facility n° ${index+1}`} defaultExpanded={index===0}>
             <div key={index} className="facility-row">
               <div className="facility-form-group">
                 <label>Date</label>
