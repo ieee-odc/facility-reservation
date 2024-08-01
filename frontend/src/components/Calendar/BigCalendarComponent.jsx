@@ -1,33 +1,44 @@
-import React, { useState, useEffect } from "react";
-import { Calendar, momentLocalizer } from "react-big-calendar";
-import moment from "moment";
-import "react-big-calendar/lib/css/react-big-calendar.css";
-import "./style.css";
+// src/components/BigCalendarComponent.js
+import React, { useState, useEffect } from 'react';
+import { Calendar, momentLocalizer } from 'react-big-calendar';
+import moment from 'moment';
+import 'react-big-calendar/lib/css/react-big-calendar.css';
+import './style.css';
+import EventModal from './EventModal';
 
 const localizer = momentLocalizer(moment);
 
 const BigCalendarComponent = ({ events, requests, viewType }) => {
   const [allEvents, setAllEvents] = useState([]);
+  const [selectedEvent, setSelectedEvent] = useState(null);
+  const [modalShow, setModalShow] = useState(false);
 
   useEffect(() => {
     const formattedRequests = requests.map((event) => ({
-      title: event.title,
+      ...event,
       start: new Date(event.start),
-      end: new Date(event.end),
-      allDay: event.allDay || false,
-      state: event.state  
+      end: new Date(event.end)
     }));
 
     const formattedEvents = events.map((event) => ({
-      title: event.title,
+      ...event,
       start: new Date(event.start),
-      end: new Date(event.end),
-      allDay: event.allDay || false,
-      state: event.state  
+      end: new Date(event.end)
     }));
 
     setAllEvents(viewType === 'requests' ? formattedRequests : formattedEvents);
   }, [events, requests, viewType]);
+
+  const handleEventClick = (event) => {
+    setSelectedEvent(event);
+    setModalShow(true);
+  };
+
+  const handleCancel = (eventId) => {
+    setAllEvents((prevEvents) => prevEvents.map((event) =>
+      event.id === eventId ? { ...event, state: 'Cancelled' } : event
+    ));
+  };
 
   const eventPropGetter = (event) => {
     let style = {};
@@ -63,6 +74,16 @@ const BigCalendarComponent = ({ events, requests, viewType }) => {
           fontSize: "0.875em",
         };
         break;
+      case "Cancelled":
+        style = {
+          backgroundColor: "#d3d3d3",
+          borderLeft: "6px solid #808080",
+          color: "#333333",
+          padding: "10px 15px",
+          borderRadius: "4px",
+          fontSize: "0.875em",
+        };
+        break;
       default:
         break;
     }
@@ -79,9 +100,18 @@ const BigCalendarComponent = ({ events, requests, viewType }) => {
         endAccessor="end"
         style={{ height: '100%', width: '100%' }}
         eventPropGetter={eventPropGetter}
+        onSelectEvent={handleEventClick}
         resizable
         className="the-calendar"
       />
+      {selectedEvent && (
+        <EventModal
+          show={modalShow}
+          onHide={() => setModalShow(false)}
+          eventDetails={selectedEvent}
+          onCancel={handleCancel}
+        />
+      )}
     </div>
   );
 };
