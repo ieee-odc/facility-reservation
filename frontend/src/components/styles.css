@@ -7,7 +7,7 @@
   border-radius: 8px;
   text-align: center;
   padding-top: 1rem;
-  margin-top: 5%;
+  margin-top: 10%;
 }
 
 .login-container h2 {
@@ -27,7 +27,7 @@
   grid-template-columns: 1fr; 
   row-gap: 20px; 
   margin-bottom: 1rem;
-  width: 80%;
+  width: 130%;
 }
 
 .input-container {
@@ -266,7 +266,7 @@ button.social-login.microsoft {
 .login-right-side p {
   font-size: 16px;
   margin-bottom: 20px;
-}
+};
 
 .login-right-side blockquote {
   font-style: italic;
