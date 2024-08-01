@@ -4,12 +4,13 @@ import CalendarSidebar from "./CalendarSidebar";
 import "./style.css";
 import BigCalendarComponent from "./BigCalendarComponent";
 import axios from "axios";
+import { Dropdown } from 'rsuite';
+import 'rsuite/dist/rsuite.min.css'; // Import RSuite's CSS
 
 const CalendarPage = () => {
   const [events, setEvents] = useState([]);
   const [requests, setRequests] = useState([]);
   const [viewType, setViewType] = useState('requests'); // State to manage view type
-  const holidays = ["New Year's Day", "Independence Day"];
 
   useEffect(() => {
     const fetchReservations = async () => {
@@ -52,7 +53,6 @@ const CalendarPage = () => {
         );
         console.log("events : ", response.data);
         const reservations = response.data;
-        //new Date(form1.startDate).toISOString().split("T")[0]
         if (Array.isArray(reservations)) {
           const formattedEvents = reservations.map((reservation) => {
             const start = new Date(reservation.startDate)
@@ -66,7 +66,6 @@ const CalendarPage = () => {
               title: reservation.name,
               start,
               end,
-              //allDay: true,
               state: reservation.state,
             };
           });
@@ -83,17 +82,26 @@ const CalendarPage = () => {
     fetchReservations();
   }, []);
 
+  const handleDropdownChange = (key) => {
+    setViewType(key);
+  };
+
   return (
     <div>
       <Navbar />
       <div className="calendar-page">
         <div className="calendar-page__content">
           <div className="calendar-page__sidebar">
-            <CalendarSidebar setViewType={setViewType} events={events}
-                requests={requests} />
+            <CalendarSidebar setViewType={setViewType} events={events} requests={requests} />
           </div>
 
           <div className="calendar-page_calendar">
+            <div className="calendar-header custom-dropdown">
+              <Dropdown title="Select View" activeKey={viewType} onSelect={handleDropdownChange}>
+                <Dropdown.Item eventKey="requests">Requests</Dropdown.Item>
+                <Dropdown.Item eventKey="events">Events</Dropdown.Item>
+              </Dropdown>
+            </div>
             <div className="main-calendar">
               <BigCalendarComponent
                 events={events}

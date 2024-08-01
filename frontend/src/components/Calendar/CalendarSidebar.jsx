@@ -6,8 +6,6 @@ import 'rsuite/dist/rsuite.min.css'; // Import RSuite's CSS
 import './CalendarSidebar.css'; // Import the stylesheet for the sidebar
 
 const CalendarSidebar = ({ setViewType, events, requests }) => {
-  //console.log("events", events, requests);
-  
   const [selectedDate, setSelectedDate] = useState(new Date());
   const [dailyEvents, setDailyEvents] = useState([]);
   const [holidays, setHolidays] = useState([]);
@@ -72,13 +70,6 @@ const CalendarSidebar = ({ setViewType, events, requests }) => {
     );
   };
 
-  const holidayNames = holidays
-    .filter(
-      (holiday) =>
-        new Date(holiday.date).toDateString() === selectedDate?.toDateString()
-    )
-    .map((holiday) => holiday.name);
-
   const handleViewChange = (view) => {
     setShowRequests(view === 'requests');
     setViewType(view);
@@ -97,38 +88,24 @@ const CalendarSidebar = ({ setViewType, events, requests }) => {
 
       {selectedDate && (
         <div className="calendar-sidebar__content">
-          {showRequests ? (
-            <div className="calendar-sidebar__events">
-              <h5>Events for {selectedDate.toDateString()}</h5>
-              <hr />
-              <ul>
-                {dailyEvents.length ? (
-                  dailyEvents.map((event, index) => (
-                    <li key={index}>
-                      {event.time} - {event.title}
-                    </li>
-                  ))
-                ) : (
-                  <li>No events for this day</li>
-                )}
-              </ul>
-            </div>
-          ) : (
-            <div className="calendar-sidebar__holidays">
-              <h5>Holidays</h5>
-              <ul>
-                {holidayNames.length ? (
-                  holidayNames.map((name, index) => (
-                    <li key={index}>{name}</li>
-                  ))
-                ) : (
-                  <li>No holidays</li>
-                )}
-              </ul>
-            </div>
-          )}
+          <div className="calendar-sidebar__events">
+            <h5>Events for {selectedDate.toDateString()}</h5>
+            <hr />
+            <ul>
+              {dailyEvents.length ? (
+                dailyEvents.map((event, index) => (
+                  <li key={index}>
+                    {event.time} - {event.title}
+                  </li>
+                ))
+              ) : (
+                <li>No events for this day</li>
+              )}
+            </ul>
+          </div>
         </div>
       )}
+
       <div className="calendar-sidebar__upcoming-holidays">
         <h5>Upcoming Holidays</h5>
         <hr />
@@ -144,6 +121,7 @@ const CalendarSidebar = ({ setViewType, events, requests }) => {
           )}
         </ul>
       </div>
+      
       <div className="calendar-sidebar__checkboxes">
         <h5>View</h5>
         <hr />
@@ -161,7 +139,7 @@ const CalendarSidebar = ({ setViewType, events, requests }) => {
         <div>
           <label className="custom-checkbox">
             <input
-            className='radio-button'
+              className='radio-button'
               type="radio"
               checked={!showRequests}
               onChange={() => handleViewChange('events')}

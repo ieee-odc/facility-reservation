@@ -55,7 +55,7 @@
 .calendar-sidebar__events,
 .calendar-sidebar__holidays,
 .calendar-sidebar__upcoming-holidays {
-  margin-bottom: 20px;
+  margin-bottom: 0px;
   width: 100%;
   max-width: 300px; 
 }

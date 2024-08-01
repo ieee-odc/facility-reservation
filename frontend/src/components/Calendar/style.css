@@ -190,3 +190,26 @@
   text-align: right;
   margin-top: 2px;
 }
+.rbc-more {
+  color: blue;
+  cursor: pointer;
+}
+
+.rbc-more:hover {
+  text-decoration: underline;
+}
+.custom-dropdown {
+  width: 200px; 
+  margin-left: auto; 
+}
+
+.custom-dropdown .rs-dropdown-toggle {
+  padding: 10px 30px; 
+  font-size: 1rem; 
+  background-color: #f0f0f0; 
+  border-radius: 4px; 
+}
+
+.custom-dropdown .rs-dropdown-toggle:hover {
+  background-color: #e0e0e0; 
+}
