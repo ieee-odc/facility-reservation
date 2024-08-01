@@ -97,6 +97,9 @@
   display: flex;
   justify-content: right;
   margin-bottom: 10px;
+  position: relative;
+  bottom: 30px;
+  right: 0;
 }
 
 .legend-item {

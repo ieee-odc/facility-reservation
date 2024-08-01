@@ -22,6 +22,16 @@ export const findAllReservations = async (req, res) => {
   }
 };
 
+export const findAllPureReservations = async (req, res) => {
+  try {
+    const reservations = await Reservation.find({ event: { $eq: null } });
+
+    return res.status(200).json(reservations);
+  } catch (error) {
+    return res.status(500).json({ message: error.message });
+  }
+};
+
 export const findReservationById = async (req, res) => {
   try {
     const { id } = req.params;

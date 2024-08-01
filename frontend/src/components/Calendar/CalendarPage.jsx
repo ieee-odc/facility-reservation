@@ -7,25 +7,67 @@ import axios from "axios";
 
 const CalendarPage = () => {
   const [events, setEvents] = useState([]);
+  const [requests, setRequests] = useState([]);
+  const [viewType, setViewType] = useState('requests'); // State to manage view type
   const holidays = ["New Year's Day", "Independence Day"];
 
   useEffect(() => {
     const fetchReservations = async () => {
       try {
-        const response = await axios.get("http://localhost:3000/api/reservations");
+        const response = await axios.get(
+          "http://localhost:3000/api/reservations/pure"
+        );
         const reservations = response.data;
 
         if (Array.isArray(reservations)) {
-          const formattedEvents = reservations.map(reservation => {
-            const start = new Date(`${reservation.date.split("T")[0]} ${reservation.startTime}`);
-            const end = new Date(`${reservation.date.split("T")[0]} ${reservation.endTime}`);
-            
+          const formattedEvents = reservations.map((reservation) => {
+            const start = new Date(
+              `${reservation.date.split("T")[0]} ${reservation.startTime}`
+            );
+            const end = new Date(
+              `${reservation.date.split("T")[0]} ${reservation.endTime}`
+            );
+
             return {
               title: reservation.motive,
               start,
               end,
               allDay: false,
-              state: reservation.state 
+              state: reservation.state,
+            };
+          });
+
+          setRequests(formattedEvents);
+        } else {
+          console.error("Unexpected response format", reservations);
+        }
+      } catch (error) {
+        console.error("Error fetching reservations from calendar page", error);
+      }
+    };
+    const fetchEvents = async () => {
+      try {
+        const response = await axios.get(
+          "http://localhost:3000/api/events/reservations"
+        );
+        console.log("events : ", response.data);
+        const reservations = response.data;
+        //new Date(form1.startDate).toISOString().split("T")[0]
+        if (Array.isArray(reservations)) {
+          const formattedEvents = reservations.map((reservation) => {
+            const start = new Date(reservation.startDate)
+              .toISOString()
+              .split("T")[0];
+            const end = new Date(reservation.endDate)
+              .toISOString()
+              .split("T")[0];
+
+            return {
+              title: reservation.name,
+              start,
+              end,
+              //allDay: true,
+              state: reservation.state,
             };
           });
 
@@ -37,7 +79,7 @@ const CalendarPage = () => {
         console.error("Error fetching reservations from calendar page", error);
       }
     };
-
+    fetchEvents();
     fetchReservations();
   }, []);
 
@@ -47,13 +89,17 @@ const CalendarPage = () => {
       <div className="calendar-page">
         <div className="calendar-page__content">
           <div className="calendar-page__sidebar">
-            <CalendarSidebar events={events} holidays={holidays} />
+            <CalendarSidebar setViewType={setViewType} events={events}
+                requests={requests} />
           </div>
-          
+
           <div className="calendar-page_calendar">
-     
             <div className="main-calendar">
-              <BigCalendarComponent events={events} />
+              <BigCalendarComponent
+                events={events}
+                requests={requests}
+                viewType={viewType}
+              />
             </div>
             <div className="legend">
               <div className="legend-item">

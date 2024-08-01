@@ -6,10 +6,18 @@ import "./style.css";
 
 const localizer = momentLocalizer(moment);
 
-const BigCalendarComponent = ({ events }) => {
+const BigCalendarComponent = ({ events, requests, viewType }) => {
   const [allEvents, setAllEvents] = useState([]);
 
   useEffect(() => {
+    const formattedRequests = requests.map((event) => ({
+      title: event.title,
+      start: new Date(event.start),
+      end: new Date(event.end),
+      allDay: event.allDay || false,
+      state: event.state  
+    }));
+
     const formattedEvents = events.map((event) => ({
       title: event.title,
       start: new Date(event.start),
@@ -17,8 +25,9 @@ const BigCalendarComponent = ({ events }) => {
       allDay: event.allDay || false,
       state: event.state  
     }));
-    setAllEvents(formattedEvents);
-  }, [events]);
+
+    setAllEvents(viewType === 'requests' ? formattedRequests : formattedEvents);
+  }, [events, requests, viewType]);
 
   const eventPropGetter = (event) => {
     let style = {};
@@ -69,7 +78,8 @@ const BigCalendarComponent = ({ events }) => {
         startAccessor="start"
         endAccessor="end"
         style={{ height: '100%', width: '100%' }}
-        eventPropGetter={eventPropGetter}  // Pass the eventPropGetter function
+        eventPropGetter={eventPropGetter}
+        resizable
         className="the-calendar"
       />
     </div>

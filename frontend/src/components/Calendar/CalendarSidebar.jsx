@@ -5,7 +5,9 @@ import { fetchHolidays } from './holidayService'; // Import holiday service
 import 'rsuite/dist/rsuite.min.css'; // Import RSuite's CSS
 import './CalendarSidebar.css'; // Import the stylesheet for the sidebar
 
-const CalendarSidebar = () => {
+const CalendarSidebar = ({ setViewType, events, requests }) => {
+  //console.log("events", events, requests);
+  
   const [selectedDate, setSelectedDate] = useState(new Date());
   const [dailyEvents, setDailyEvents] = useState([]);
   const [holidays, setHolidays] = useState([]);
@@ -31,7 +33,7 @@ const CalendarSidebar = () => {
     // Fetch reservations from API
     const fetchReservations = async () => {
       try {
-        const response = await axios.get('http://localhost:3000/api/reservations');
+        const response = await axios.get('http://localhost:3000/api/reservations/pure');
         setReservations(response.data);
       } catch (error) {
         console.error('Error fetching reservations:', error);
@@ -76,6 +78,11 @@ const CalendarSidebar = () => {
         new Date(holiday.date).toDateString() === selectedDate?.toDateString()
     )
     .map((holiday) => holiday.name);
+
+  const handleViewChange = (view) => {
+    setShowRequests(view === 'requests');
+    setViewType(view);
+  };
 
   return (
     <div className="calendar-sidebar">
@@ -138,29 +145,30 @@ const CalendarSidebar = () => {
         </ul>
       </div>
       <div className="calendar-sidebar__checkboxes">
-      <h5>View</h5>
-      <hr />
-      <div>
-        <label>
-          <input
-            type="checkbox"
-            checked={showRequests}
-            onChange={() => setShowRequests(true)}
-          />
-          Requests
-        </label>
-        <br />
+        <h5>View</h5>
+        <hr />
+        <div>
+          <label className="custom-checkbox">
+            <input
+              type="radio"
+              checked={showRequests}
+              onChange={() => handleViewChange('requests')}
+            />
+            Requests
+          </label>
+          <br />
         </div>
         <div>
-        <label>
-          <input
-            type="checkbox"
-            checked={!showRequests}
-            onChange={() => setShowRequests(false)}
-          />
-          Events
-        </label>
-      </div>
+          <label className="custom-checkbox">
+            <input
+            className='radio-button'
+              type="radio"
+              checked={!showRequests}
+              onChange={() => handleViewChange('events')}
+            />
+            Events
+          </label>
+        </div>
       </div>
     </div>
   );
