@@ -72,11 +72,18 @@ const FacilitiesForm = ({ numberOfFacilities, form1 }) => {
   const handleChange = (index, field, value) => {
     const updatedFacilities = [...facilities];
     const updatedErrors = [...errorMessages];
-
-    if (field === "endTime") {
+  
+    if (field === "startTime") {
+      const endTime = updatedFacilities[index].endTime;
+      if (endTime && value >= endTime) {
+        updatedErrors[index] = "Start time must be before end time";
+      } else {
+        updatedErrors[index] = "";
+        updatedFacilities[index][field] = value;
+      }
+    } else if (field === "endTime") {
       const startTime = updatedFacilities[index].startTime;
       if (startTime && value <= startTime) {
-        updatedFacilities[index][field] = ""; // Reset end time field
         updatedErrors[index] = "End time must be after start time";
       } else {
         updatedErrors[index] = "";
@@ -85,11 +92,11 @@ const FacilitiesForm = ({ numberOfFacilities, form1 }) => {
     } else {
       updatedFacilities[index][field] = value;
     }
-
+  
     setFacilities(updatedFacilities);
     setErrorMessages(updatedErrors);
   };
-
+  
   const handleFilesChange = (index, event) => {
     const files = Array.from(event.target.files);
     const updatedFacilities = [...facilities];
@@ -155,37 +162,43 @@ const FacilitiesForm = ({ numberOfFacilities, form1 }) => {
               </div>
 
               <div className="facility-form-group">
-                <label>Start Time</label>
-                <div className="facility-input-container">
-                  <input
-                    type="time"
-                    value={facility.startTime}
-                    onChange={(e) =>
-                      handleChange(index, "startTime", e.target.value)
-                    }
-                    required
-                  />
-                </div>
-              </div>
+  <label>Start Time</label>
+  <div className="facility-input-container">
+    <input
+      type="time"
+      value={facility.startTime}
+      onChange={(e) =>
+        handleChange(index, "startTime", e.target.value)
+      }
+      required
+    />
+    {errorMessages[index] && (
+      <span className="error-message">
+        {errorMessages[index]}
+      </span>
+    )}
+  </div>
+</div>
 
-              <div className="facility-form-group">
-                <label>End Time</label>
-                <div className="facility-input-container">
-                  <input
-                    type="time"
-                    value={facility.endTime}
-                    onChange={(e) =>
-                      handleChange(index, "endTime", e.target.value)
-                    }
-                    required
-                  />
-                  {errorMessages[index] && (
-                    <span className="error-message">
-                      {errorMessages[index]}
-                    </span>
-                  )}
-                </div>
-              </div>
+<div className="facility-form-group">
+  <label>End Time</label>
+  <div className="facility-input-container">
+    <input
+      type="time"
+      value={facility.endTime}
+      onChange={(e) =>
+        handleChange(index, "endTime", e.target.value)
+      }
+      required
+    />
+    {errorMessages[index] && (
+      <span className="error-message">
+        {errorMessages[index]}
+      </span>
+    )}
+  </div>
+</div>
+
 
               <div className="facility-form-group">
                 <label>Facility</label>
