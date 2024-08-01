@@ -14,7 +14,7 @@ const CalendarPage = () => {
       try {
         const response = await axios.get("http://localhost:3000/api/reservations");
         const reservations = response.data;
-  
+
         if (Array.isArray(reservations)) {
           const formattedEvents = reservations.map(reservation => {
             const start = new Date(`${reservation.date.split("T")[0]} ${reservation.startTime}`);
@@ -24,10 +24,11 @@ const CalendarPage = () => {
               title: reservation.motive,
               start,
               end,
-              allDay: false 
+              allDay: false,
+              state: reservation.state 
             };
           });
-  
+
           setEvents(formattedEvents);
         } else {
           console.error("Unexpected response format", reservations);
@@ -36,10 +37,10 @@ const CalendarPage = () => {
         console.error("Error fetching reservations from calendar page", error);
       }
     };
-  
+
     fetchReservations();
   }, []);
-  
+
   return (
     <div>
       <Navbar />
