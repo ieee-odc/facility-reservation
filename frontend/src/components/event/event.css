@@ -62,7 +62,7 @@ body {
 .event-form {
   display: flex;
   flex-direction: column;
-padding: 5%;  
+  padding: 5%;
 }
 
 .event-form-group {
@@ -196,6 +196,7 @@ input[type="datetime-local"] {
   display: flex;
   flex-direction: column;
   gap: 0.5rem;
+  max-width: 100%;
 }
 
 .file-input {
@@ -205,8 +206,8 @@ input[type="datetime-local"] {
 .file-input-label {
   display: inline-block;
   padding: 0.5rem 1rem;
-  background-color: #007bff;
-  color: white;
+  background-color: #f0f4f8;
+  color: #1a1a1a;
   border-radius: 4px;
   cursor: pointer;
   text-align: center;
@@ -214,14 +215,16 @@ input[type="datetime-local"] {
 }
 
 .file-input-label > span {
-  color: white;
+  color: #1a1a1a;
 }
 
 .file-input-label:hover {
-  background-color: #006ada;
+  background-color: #e0e7ef;
+  color: #0c4a6e;
 }
 .file-input-label:active {
-  background-color: #258af6;
+  background-color: #c8d1dc;
+  color: #081d33;
 }
 
 .file-list {
@@ -361,7 +364,7 @@ input[type="datetime-local"] {
   .container2 {
     left: 3%;
     width: 90%;
-    padding: 10px; 
+    padding: 10px;
     top: 12vh;
   }
   .event-button,
@@ -374,7 +377,7 @@ input[type="datetime-local"] {
   .container2 {
     left: 3%;
     width: 90%;
-    padding: 10px; 
+    padding: 10px;
     top: 12vh;
   }
   .event-button,
@@ -412,6 +415,3 @@ input[type="datetime-local"] {
     padding: 5px;
   }
 }
-
-
-
