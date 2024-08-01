@@ -64,7 +64,7 @@ const Login = () => {
         console.log("signed in ", signedIn);
         localStorage.setItem("userEmail", email);
 
-        navigate("/navbar");
+        navigate("/calendar");
       })
       .catch((error) => {
         console.log(error);
@@ -76,7 +76,7 @@ const Login = () => {
     console.log("hello google");
     localStorage.setItem("userEmail", email);
     if (signedIn) {
-      navigate("/navbar");
+      navigate("/calendar");
     }
   };
 

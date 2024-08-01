@@ -49,9 +49,22 @@ const CalendarPage = () => {
           <div className="calendar-page__sidebar">
             <CalendarSidebar events={events} holidays={holidays} />
           </div>
+          
           <div className="calendar-page_calendar">
+     
             <div className="main-calendar">
               <BigCalendarComponent events={events} />
+            </div>
+            <div className="legend">
+              <div className="legend-item">
+                <span className="legend-color pending"></span> Pending
+              </div>
+              <div className="legend-item">
+                <span className="legend-color approved"></span> Approved
+              </div>
+              <div className="legend-item">
+                <span className="legend-color rejected"></span> Rejected
+              </div>
             </div>
           </div>
         </div>
