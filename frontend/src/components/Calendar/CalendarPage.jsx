@@ -5,12 +5,12 @@ import "./style.css";
 import BigCalendarComponent from "./BigCalendarComponent";
 import axios from "axios";
 import { Dropdown } from 'rsuite';
-import 'rsuite/dist/rsuite.min.css'; // Import RSuite's CSS
+import 'rsuite/dist/rsuite.min.css'; 
 
 const CalendarPage = () => {
   const [events, setEvents] = useState([]);
   const [requests, setRequests] = useState([]);
-  const [viewType, setViewType] = useState('requests'); // State to manage view type
+  const [viewType, setViewType] = useState('requests'); 
 
   useEffect(() => {
     const fetchReservations = async () => {
@@ -35,6 +35,7 @@ const CalendarPage = () => {
               end,
               allDay: false,
               state: reservation.state,
+              facility: reservation.facility,
             };
           });
 

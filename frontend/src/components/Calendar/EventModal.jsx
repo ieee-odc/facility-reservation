@@ -24,9 +24,14 @@ const EventModal = ({ show, onHide, eventDetails, onCancel }) => {
         <h2>{eventDetails.title}</h2>
         <p><strong>Start:</strong> {new Date(eventDetails.start).toLocaleString()}</p>
         <p><strong>End:</strong> {new Date(eventDetails.end).toLocaleString()}</p>
+        <p><strong>Motive:</strong> {eventDetails.title}</p>
+        <p><strong>Facility:</strong> {eventDetails.facility}</p>
+
         <p><strong>State:</strong> {eventDetails.state}</p>
-        <p><strong>Motive:</strong> {eventDetails.motive}</p>
+        <div className='button-group'>
         <button className="cancel-button" onClick={handleCancel}>Cancel Reservation</button>
+        <button className="edit-button" >Edit reservation</button></div>
+
       </div>
     </div>
   );
