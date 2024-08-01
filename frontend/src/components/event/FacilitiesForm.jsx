@@ -3,6 +3,7 @@ import "./event.css";
 import Navbar from "../navbar";
 import { Uploader, Button, Tag } from "rsuite";
 import "rsuite/dist/rsuite.min.css";
+import { GrAttachment } from "react-icons/gr";
 
 const FacilitiesForm = ({ numberOfFacilities }) => {
   const initialFacilities = Array.from({ length: numberOfFacilities }, () => ({
@@ -15,8 +16,7 @@ const FacilitiesForm = ({ numberOfFacilities }) => {
     files: [],
     materials: "",
   }));
-  const today = new Date().toISOString().split('T')[0]; // Get today's date in YYYY-MM-DD format
-
+  const today = new Date().toISOString().split("T")[0]; // Get today's date in YYYY-MM-DD format
 
   const [facilities, setFacilities] = useState(initialFacilities);
 
@@ -25,7 +25,6 @@ const FacilitiesForm = ({ numberOfFacilities }) => {
     updatedFacilities[index][field] = value;
     setFacilities(updatedFacilities);
   };
-  
 
   const handleFilesChange = (index, event) => {
     const files = Array.from(event.target.files);
@@ -182,6 +181,7 @@ const FacilitiesForm = ({ numberOfFacilities }) => {
                     htmlFor={`file-input-${index}`}
                     className="file-input-label"
                   >
+                    <GrAttachment className="attach" />
                     <span>Select Files</span>
                   </label>
                   <div className="file-list">
