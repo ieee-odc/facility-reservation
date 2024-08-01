@@ -143,193 +143,190 @@ const FacilitiesForm = ({ numberOfFacilities, form1 }) => {
       <div className="container2">
         <div className="form-title-container">
           <h2 className="form-title">Facilities Form</h2>
-        </div>
-        <PanelGroup accordion bordered>
-          <form className="form form-facilities" onSubmit={handleSubmit}>
-            {facilities.map((facility, index) => (
-              <Panel header={`Facility n° ${index + 1}`}>
-                <div key={index} className="facility-row">
-                  <div className="facility-form-group">
-                    <label>Date</label>
-                    <div className="facility-input-container">
-                      <input
-                        type="date"
-                        value={facility.date}
-                        onChange={(e) =>
-                          handleChange(index, "date", e.target.value)
-                        }
-                        min={start}
-                        max={end}
-                        required
-                      />
-                    </div>
-                  </div>
+        </div><PanelGroup accordion bordered>
+        <form className="form form-facilities" onSubmit={handleSubmit}>
+          {facilities.map((facility, index) => (
+            <Panel header={`Facility n° ${index+1}`} defaultExpanded>
+            <div key={index} className="facility-row">
+              <div className="facility-form-group">
+                <label>Date</label>
+                <div className="facility-input-container">
+                  <input
+                    type="date"
+                    value={facility.date}
+                    onChange={(e) =>
+                      handleChange(index, "date", e.target.value)
+                    }
+                    min={start}
+                    max={end}
+                    required
+                  />
+                </div>
+              </div>
 
-                  <div className="facility-form-group">
-                    <label>Start Time</label>
-                    <div className="facility-input-container">
-                      <input
-                        type="time"
-                        value={facility.startTime}
-                        onChange={(e) =>
-                          handleChange(index, "startTime", e.target.value)
-                        }
-                        required
-                      />
-                      {errorMessages[index] && (
-                        <span className="error-message">
-                          {errorMessages[index]}
-                        </span>
-                      )}
-                    </div>
-                  </div>
+              <div className="facility-form-group">
+                <label>Start Time</label>
+                <div className="facility-input-container">
+                  <input
+                    type="time"
+                    value={facility.startTime}
+                    onChange={(e) =>
+                      handleChange(index, "startTime", e.target.value)
+                    }
+                    required
+                  />
+                  {errorMessages[index] && (
+                    <span className="error-message">
+                      {errorMessages[index]}
+                    </span>
+                  )}
+                </div>
+              </div>
 
-                  <div className="facility-form-group">
-                    <label>End Time</label>
-                    <div className="facility-input-container">
-                      <input
-                        type="time"
-                        value={facility.endTime}
-                        onChange={(e) =>
-                          handleChange(index, "endTime", e.target.value)
-                        }
-                        required
-                      />
-                      {errorMessages[index] && (
-                        <span className="error-message">
-                          {errorMessages[index]}
-                        </span>
-                      )}
-                    </div>
-                  </div>
+              <div className="facility-form-group">
+                <label>End Time</label>
+                <div className="facility-input-container">
+                  <input
+                    type="time"
+                    value={facility.endTime}
+                    onChange={(e) =>
+                      handleChange(index, "endTime", e.target.value)
+                    }
+                    required
+                  />
+                  {errorMessages[index] && (
+                    <span className="error-message">
+                      {errorMessages[index]}
+                    </span>
+                  )}
+                </div>
+              </div>
 
-                  <div className="facility-form-group">
-                    <label>Facility</label>
-                    <div className="facility-input-container">
-                      <select
-                        id="facility"
-                        className="input"
-                        value={facility.facility}
-                        onChange={(e) =>
-                          handleChange(index, "facility", e.target.value)
-                        }
-                      >
-                        <option value="">Select a facility</option>
-                        {Array.isArray(availableFacilities) &&
-                          availableFacilities.map((fac) => (
-                            <option key={fac._id} value={fac._id}>
-                              {fac.label}
-                            </option>
-                          ))}
-                      </select>
-                    </div>
-                  </div>
+              <div className="facility-form-group">
+                <label>Facility</label>
+                <div className="facility-input-container">
+                  <select
+                    id="facility"
+                    className="input"
+                    value={facility.facility}
+                    onChange={(e) =>
+                      handleChange(index, "facility", e.target.value)
+                    }
+                  >
+                    <option value="">Select a facility</option>
+                    {Array.isArray(availableFacilities) &&
+                      availableFacilities.map((fac) => (
+                        <option key={fac._id} value={fac._id}>
+                          {fac.label}
+                        </option>
+                      ))}
+                  </select>
+                </div>
+              </div>
 
-                  <div className="facility-form-group">
-                    <label>Effective</label>
-                    <div className="facility-input-container">
-                      <input
-                        type="number"
-                        value={facility.effective}
-                        onChange={(e) =>
-                          handleChange(index, "effective", e.target.value)
-                        }
-                        required
-                      />
-                    </div>
-                  </div>
+              <div className="facility-form-group">
+                <label>Effective</label>
+                <div className="facility-input-container">
+                  <input
+                    type="number"
+                    value={facility.effective}
+                    onChange={(e) =>
+                      handleChange(index, "effective", e.target.value)
+                    }
+                    required
+                  />
+                </div>
+              </div>
 
-                  <div className="facility-form-group">
-                    <label htmlFor="motif" className="required-label">
-                      Reasons for reservation
-                    </label>
-                    <div className="facility-input-container">
-                      <select
-                        id="motif"
-                        className="event-input"
-                        value={facility.motive}
-                        onChange={(e) =>
-                          handleChange(index, "motive", e.target.value)
-                        }
-                      >
-                        <option value="">Select a reason</option>
-                        <option value="Club meeting">Club meeting</option>
-                        <option value="Workshop">Workshop</option>
-                        <option value="Conference">Conference</option>
-                        <option value="Special event">Special event</option>
-                      </select>
-                    </div>
-                  </div>
+              <div className="facility-form-group">
+                <label htmlFor="motif" className="required-label">
+                  Reasons for reservation
+                </label>
+                <div className="facility-input-container">
+                  <select
+                    id="motif"
+                    className="event-input"
+                    value={facility.motive}
+                    onChange={(e) =>
+                      handleChange(index, "motive", e.target.value)
+                    }
+                  >
+                    <option value="">Select a reason</option>
+                    <option value="Club meeting">Club meeting</option>
+                    <option value="Workshop">Workshop</option>
+                    <option value="Conference">Conference</option>
+                    <option value="Special event">Special event</option>
+                  </select>
+                </div>
+              </div>
 
-                  <div className="facility-form-group">
-                    <label>Other reasons (optional)</label>
-                    <div className="facility-input-container">
-                      <textarea
-                        id="otherMotif"
-                        type="text"
-                        className="event-input"
-                        value={facility.motive}
-                        onChange={(e) =>
-                          handleChange(index, "motive", e.target.value)
-                        }
-                        required
-                      />
-                    </div>
-                  </div>
+              <div className="facility-form-group">
+                <label>Other reasons (optional)</label>
+                <div className="facility-input-container">
+                  <textarea
+                    id="otherMotif"
+                    type="text"
+                    className="event-input"
+                    value={facility.motive}
+                    onChange={(e) =>
+                      handleChange(index, "motive", e.target.value)
+                    }
+                    required
+                  />
+                </div>
+              </div>
 
-                  <div className="facility-form-group">
-                    <label>Materials</label>
-                    <TagPicker
-                      className="facility-input-container"
-                      data={availableEquipments}
-                      style={{ width: 300 }}
-                      onChange={(value) =>
-                        handleChange(index, "materials", value)
-                      }
-                    />
-                  </div>
+              <div className="facility-form-group">
+                <label>Materials</label>
+                <TagPicker
+                  className="facility-input-container"
+                  data={availableEquipments}
+                  style={{ width: 300 }}
+                  onChange={(value) => handleChange(index, "materials", value)}
+                />
+              </div>
 
-                  <div className="facility-form-group">
-                    <label htmlFor={`file-input-${index}`}>Files</label>
-                    <div className="file-upload-container">
-                      <input
-                        id={`file-input-${index}`}
-                        type="file"
-                        multiple
-                        accept=".csv, .pdf"
-                        onChange={(e) => handleFilesChange(index, e)}
-                        className="file-input"
-                      />
-                      <label
-                        htmlFor={`file-input-${index}`}
-                        className="file-input-label"
-                      >
-                        <GrAttachment className="attach" />
-                        <span>Select Files</span>
-                      </label>
-                      <div className="file-list">
-                        {facility.files.map((file) => (
-                          <div key={file.name} className="file-item">
-                            <span className="file-name">{file.name}</span>
-                            <button
-                              type="button"
-                              className="remove-file-button"
-                              onClick={() => handleRemoveFile(index, file.name)}
-                            >
-                              Remove
-                            </button>
-                          </div>
-                        ))}
+              <div className="facility-form-group">
+                <label htmlFor={`file-input-${index}`}>Files</label>
+                <div className="file-upload-container">
+                  <input
+                    id={`file-input-${index}`}
+                    type="file"
+                    multiple
+                    accept=".csv, .pdf"
+                    onChange={(e) => handleFilesChange(index, e)}
+                    className="file-input"
+                  />
+                  <label
+                    htmlFor={`file-input-${index}`}
+                    className="file-input-label"
+                  >
+                    <GrAttachment className="attach" />
+                    <span>Select Files</span>
+                  </label>
+                  <div className="file-list">
+                    {facility.files.map((file) => (
+                      <div key={file.name} className="file-item">
+                        <span className="file-name">{file.name}</span>
+                        <button
+                          type="button"
+                          className="remove-file-button"
+                          onClick={() => handleRemoveFile(index, file.name)}
+                        >
+                          Remove
+                        </button>
                       </div>
-                    </div>
+                    ))}
                   </div>
                 </div>
-              </Panel>
-            ))}
-            <button type="submit" className="facility-button">
-              Submit
-            </button>
-          </form>
+              </div>
+            </div>
+            </Panel>
+          ))}
+          <button type="submit" className="facility-button">
+            Submit
+          </button>
+        </form>
         </PanelGroup>
       </div>
     </div>
