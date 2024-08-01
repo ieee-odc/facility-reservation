@@ -12,6 +12,19 @@ import {
 import logo from "./../assets/logo/Group3.svg";
 //import { useAuth } from "../context/authContext/AuthProvider";
 const Login = () => {
+  const blockquoteStyle = {
+    fontStyle: 'italic',
+    margin: '0',
+    padding: '10px 20px',
+    borderLeft: '5px solid rgba(255, 255, 255, 0.7)',
+    background: 'rgba(255, 255, 255, 0.1)',
+  };
+
+  const footerStyle = {
+    marginTop: '10px',
+    fontSize: '14px',
+    color: 'rgba(255, 255, 255, 0.7)'
+  };
   //const {userLoggedIn} = useAuth();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -158,10 +171,10 @@ const Login = () => {
         <p>
           Our mission is to simplify your life with our innovative solutions.
         </p>
-        <blockquote>
+        <blockquote style={blockquoteStyle}>
           "FlexiSpace has transformed the way we handle our daily tasks. It's truly a
           game-changer!"
-          <footer>— Happy Customer</footer>
+          <footer style={footerStyle}>— Happy Customer</footer>
         </blockquote>
       </div>
     </div>
