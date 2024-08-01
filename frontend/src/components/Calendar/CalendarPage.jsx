@@ -10,9 +10,28 @@ import 'rsuite/dist/rsuite.min.css';
 const CalendarPage = () => {
   const [events, setEvents] = useState([]);
   const [requests, setRequests] = useState([]);
+  const [facilities, setFacilities] = useState({});
   const [viewType, setViewType] = useState('requests'); 
 
   useEffect(() => {
+    const fetchFacilities = async () => {
+      try {
+        const response = await axios.get("http://localhost:3000/api/facilities");
+        const facilitiesArray = response.data.data; 
+        if (Array.isArray(facilitiesArray)) {
+          const facilitiesData = facilitiesArray.reduce((acc, facility) => {
+            acc[facility._id] = facility.label;
+            return acc;
+          }, {});
+          setFacilities(facilitiesData);
+        } else {
+          console.error("Unexpected response format for facilities", response.data);
+        }
+      } catch (error) {
+        console.error("Error fetching facilities", error);
+      }
+    };
+
     const fetchReservations = async () => {
       try {
         const response = await axios.get(
@@ -21,7 +40,7 @@ const CalendarPage = () => {
         const reservations = response.data;
 
         if (Array.isArray(reservations)) {
-          const formattedEvents = reservations.map((reservation) => {
+          const formattedRequests = reservations.map((reservation) => {
             const start = new Date(
               `${reservation.date.split("T")[0]} ${reservation.startTime}`
             );
@@ -30,16 +49,17 @@ const CalendarPage = () => {
             );
 
             return {
+              id: reservation._id,
               title: reservation.motive,
               start,
               end,
               allDay: false,
               state: reservation.state,
-              facility: reservation.facility,
+              facility: facilities[reservation.facility] || "Unknown Facility",
             };
           });
 
-          setRequests(formattedEvents);
+          setRequests(formattedRequests);
         } else {
           console.error("Unexpected response format", reservations);
         }
@@ -47,12 +67,12 @@ const CalendarPage = () => {
         console.error("Error fetching reservations from calendar page", error);
       }
     };
+
     const fetchEvents = async () => {
       try {
         const response = await axios.get(
           "http://localhost:3000/api/events/reservations"
         );
-        console.log("events : ", response.data);
         const reservations = response.data;
         if (Array.isArray(reservations)) {
           const formattedEvents = reservations.map((reservation) => {
@@ -64,10 +84,12 @@ const CalendarPage = () => {
               .split("T")[0];
 
             return {
+              id: reservation._id,
               title: reservation.name,
               start,
               end,
               state: reservation.state,
+              facility: facilities[reservation.facility] || "Unknown Facility",
             };
           });
 
@@ -79,9 +101,11 @@ const CalendarPage = () => {
         console.error("Error fetching reservations from calendar page", error);
       }
     };
+
+    fetchFacilities();
     fetchEvents();
     fetchReservations();
-  }, []);
+  }, [facilities]);
 
   const handleDropdownChange = (key) => {
     setViewType(key);
@@ -119,6 +143,9 @@ const CalendarPage = () => {
               </div>
               <div className="legend-item">
                 <span className="legend-color rejected"></span> Rejected
+              </div>
+              <div className="legend-item">
+                <span className="legend-color cancelled"></span> Cancelled
               </div>
             </div>
           </div>

@@ -1,6 +1,7 @@
 // src/components/EventModal.js
 import React from 'react';
 import './EventModal.css';
+import axios from 'axios';
 
 const EventModal = ({ show, onHide, eventDetails, onCancel }) => {
   if (!show) return null;

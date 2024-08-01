@@ -132,6 +132,10 @@
   background-color: #f8d7da;
   border-left: 6px solid #dc3545;
 }
+.legend-color.cancelled {
+  background-color: #d3d3d3;
+  border-left: 6px solid #808080;
+}
 .rbc-event {
   font-size: 0.75em; 
   position: relative;  
