@@ -203,8 +203,10 @@
   text-decoration: underline;
 }
 .custom-dropdown {
+  position: relative;
   width: 200px; 
-  margin-left: auto; 
+  margin-left: 1100px;
+   
 }
 
 .custom-dropdown .rs-dropdown-toggle {
@@ -212,9 +214,45 @@
   font-size: 1rem; 
   background-color: #f0f0f0; 
   border-radius: 4px; 
-  top:20px;
+  top: 20px;
 }
 
 .custom-dropdown .rs-dropdown-toggle:hover {
   background-color: #e0e0e0; 
 }
+/* CalendarPage Styling */
+.calendar-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 0px;
+}
+
+.custom-dropdown {
+  display: flex;
+  
+}
+.new-reservation-button {
+  background-color: #b3d9ff; /* Light blue */
+  color: #003366; /* Darker blue */
+  border: none;
+  border-radius: 4px;
+  padding: 0px 40px; /* Reduced height and increased width */
+  font-size: 16px; /* Font size */
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  margin-left: 30px; /* Space between dropdown and button */
+  width: 700px; /* Set a specific width for the button */
+  text-align: left; /* Align text to the left */
+  display: flex; /* Use flexbox to manage text alignment */
+  margin-top: 30px;
+}
+
+.new-reservation-button:hover {
+  background-color: #99c2ff; /* Slightly darker light blue on hover */
+}
+
+.new-reservation-button:focus {
+  outline: none;
+}
+
