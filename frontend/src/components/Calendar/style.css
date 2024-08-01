@@ -89,3 +89,101 @@
   background-color: #DAEF84 !important;
   border-radius: 50px !important;
 }
+.rbc-event-content{
+  font-size: medium;
+}
+
+.legend {
+  display: flex;
+  justify-content: right;
+  margin-bottom: 10px;
+}
+
+.legend-item {
+  
+  font-size: larger;
+  margin-right: 100px;
+  display: flex;
+  align-items: center;
+}
+
+.legend-color {
+  width: 15px;
+  height: 15px;
+  display: inline-block;
+  margin-right: 5px;
+  border-radius: 2px;
+}
+
+.legend-color.pending {
+  background-color: #fef3e7;
+  border-left: 6px solid #f39c12;
+}
+
+.legend-color.approved {
+  background-color: #e7f7e7;
+  border-left: 6px solid #28a745;
+}
+
+.legend-color.rejected {
+  background-color: #f8d7da;
+  border-left: 6px solid #dc3545;
+}
+.rbc-event {
+  font-size: 0.75em; 
+  position: relative;  
+  left: 10%;     
+  padding: 2px 5px;         
+  max-width: 80%;           
+  margin: 0 auto;     
+  border-radius: 3px;       /* Keep rounded corners */
+  text-align: center;       /* Center text within the event */
+  overflow: hidden;         /* Prevent overflow of content */
+  white-space: nowrap;      /* Prevent text wrapping */
+  text-overflow: ellipsis;  /* Add ellipsis for overflow text */
+  margin-left: 20px;      /* Center the event within the cell */
+}
+
+/* Additional styles for event content */
+.rbc-event-content {
+  white-space: nowrap; /* Prevent text wrapping */
+  overflow: hidden;
+  text-overflow: ellipsis; /* Add ellipsis for overflow text */
+}
+
+/* Adjust the height of the day cell if needed */
+.rbc-day-slot .rbc-time-slot {
+  min-height: 20px;  /* Set a minimum height for each time slot */
+}
+.rbc-row-segment{
+  align-items: center;
+}
+.rbc-event {
+  padding: 5px;
+  border-radius: 4px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.rbc-event:hover {
+  background-color: #f0f4f8;
+}
+
+.rbc-event-content {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.rbc-event-label {
+  margin-right: 8px;
+}
+
+.more-events {
+  color: #007bff;
+  cursor: pointer;
+  font-size: 0.875rem;
+  text-align: right;
+  margin-top: 2px;
+}
