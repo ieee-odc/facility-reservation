@@ -6,8 +6,8 @@ import "rsuite/dist/rsuite.min.css";
 import { GrAttachment } from "react-icons/gr";
 import { TagPicker } from "rsuite";
 import axios from "axios";
-import { ToastContainer, toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+import { PanelGroup, Panel, Placeholder } from "rsuite";
+import "react-toastify/dist/ReactToastify.css";
 import { useNavigate } from "react-router-dom";
 import { useNotification } from "../../context/NotificationContext";
 
@@ -21,7 +21,7 @@ const FacilitiesForm = ({ numberOfFacilities, form1 }) => {
     motive: "",
     files: [],
     materials: [],
-    entity: form1.organizer
+    entity: form1.organizer,
   }));
   const start = new Date(form1.startDate).toISOString().split("T")[0];
   const end = new Date(form1.endDate).toISOString().split("T")[0];
@@ -63,7 +63,6 @@ const FacilitiesForm = ({ numberOfFacilities, form1 }) => {
         console.error("Error fetching available facilities:", error);
       }
     };
-    
 
     fetchAvailableFacilities();
     fetchAvailableEquipments();
@@ -72,7 +71,7 @@ const FacilitiesForm = ({ numberOfFacilities, form1 }) => {
   const handleChange = (index, field, value) => {
     const updatedFacilities = [...facilities];
     const updatedErrors = [...errorMessages];
-  
+
     if (field === "startTime") {
       const endTime = updatedFacilities[index].endTime;
       if (endTime && value >= endTime) {
@@ -92,11 +91,11 @@ const FacilitiesForm = ({ numberOfFacilities, form1 }) => {
     } else {
       updatedFacilities[index][field] = value;
     }
-  
+
     setFacilities(updatedFacilities);
     setErrorMessages(updatedErrors);
   };
-  
+
   const handleFilesChange = (index, event) => {
     const files = Array.from(event.target.files);
     const updatedFacilities = [...facilities];
@@ -126,12 +125,15 @@ const FacilitiesForm = ({ numberOfFacilities, form1 }) => {
       })
       .then((resp) => {
         console.log(resp);
-        showNotification('Event has been submitted successfully!', 'success');
-        navigate('/calendar')
+        showNotification("Event has been submitted successfully!", "success");
+        navigate("/calendar");
       })
       .catch((error) => {
         console.log(error);
-        showNotification('Failed to submit the event. Please try again.', 'error');
+        showNotification(
+          "Failed to submit the event. Please try again.",
+          "error"
+        );
       });
   };
 
@@ -141,9 +143,10 @@ const FacilitiesForm = ({ numberOfFacilities, form1 }) => {
       <div className="container2">
         <div className="form-title-container">
           <h2 className="form-title">Facilities Form</h2>
-        </div>
+        </div><PanelGroup accordion bordered>
         <form className="form form-facilities" onSubmit={handleSubmit}>
           {facilities.map((facility, index) => (
+            <Panel header={`Facility n° ${index+1}`} defaultExpanded>
             <div key={index} className="facility-row">
               <div className="facility-form-group">
                 <label>Date</label>
@@ -162,43 +165,42 @@ const FacilitiesForm = ({ numberOfFacilities, form1 }) => {
               </div>
 
               <div className="facility-form-group">
-  <label>Start Time</label>
-  <div className="facility-input-container">
-    <input
-      type="time"
-      value={facility.startTime}
-      onChange={(e) =>
-        handleChange(index, "startTime", e.target.value)
-      }
-      required
-    />
-    {errorMessages[index] && (
-      <span className="error-message">
-        {errorMessages[index]}
-      </span>
-    )}
-  </div>
-</div>
+                <label>Start Time</label>
+                <div className="facility-input-container">
+                  <input
+                    type="time"
+                    value={facility.startTime}
+                    onChange={(e) =>
+                      handleChange(index, "startTime", e.target.value)
+                    }
+                    required
+                  />
+                  {errorMessages[index] && (
+                    <span className="error-message">
+                      {errorMessages[index]}
+                    </span>
+                  )}
+                </div>
+              </div>
 
-<div className="facility-form-group">
-  <label>End Time</label>
-  <div className="facility-input-container">
-    <input
-      type="time"
-      value={facility.endTime}
-      onChange={(e) =>
-        handleChange(index, "endTime", e.target.value)
-      }
-      required
-    />
-    {errorMessages[index] && (
-      <span className="error-message">
-        {errorMessages[index]}
-      </span>
-    )}
-  </div>
-</div>
-
+              <div className="facility-form-group">
+                <label>End Time</label>
+                <div className="facility-input-container">
+                  <input
+                    type="time"
+                    value={facility.endTime}
+                    onChange={(e) =>
+                      handleChange(index, "endTime", e.target.value)
+                    }
+                    required
+                  />
+                  {errorMessages[index] && (
+                    <span className="error-message">
+                      {errorMessages[index]}
+                    </span>
+                  )}
+                </div>
+              </div>
 
               <div className="facility-form-group">
                 <label>Facility</label>
@@ -319,11 +321,13 @@ const FacilitiesForm = ({ numberOfFacilities, form1 }) => {
                 </div>
               </div>
             </div>
+            </Panel>
           ))}
           <button type="submit" className="facility-button">
             Submit
           </button>
         </form>
+        </PanelGroup>
       </div>
     </div>
   );
