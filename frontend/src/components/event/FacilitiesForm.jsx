@@ -19,11 +19,27 @@ const FacilitiesForm = ({ numberOfFacilities }) => {
   const today = new Date().toISOString().split("T")[0]; // Get today's date in YYYY-MM-DD format
 
   const [facilities, setFacilities] = useState(initialFacilities);
+  const [errorMessages, setErrorMessages] = useState(Array(numberOfFacilities).fill(""));
 
   const handleChange = (index, field, value) => {
     const updatedFacilities = [...facilities];
-    updatedFacilities[index][field] = value;
+    const updatedErrors = [...errorMessages];
+
+    if (field === "endTime") {
+      const startTime = updatedFacilities[index].startTime;
+      if (startTime && value <= startTime) {
+        updatedFacilities[index][field] = ""; // Reset end time field
+        updatedErrors[index] = "End time must be after start time";
+      } else {
+        updatedErrors[index] = "";
+        updatedFacilities[index][field] = value;
+      }
+    } else {
+      updatedFacilities[index][field] = value;
+    }
+
     setFacilities(updatedFacilities);
+    setErrorMessages(updatedErrors);
   };
 
   const handleFilesChange = (index, event) => {
@@ -57,19 +73,6 @@ const FacilitiesForm = ({ numberOfFacilities }) => {
         <form className="form form-facilities" onSubmit={handleSubmit}>
           {facilities.map((facility, index) => (
             <div key={index} className="facility-row">
-              {/*              <div className="facility-form-group">
-                <label>Date & Time</label>
-                <div className="facility-input-container">
-                  <input
-                    type="datetime-local"
-                    value={facility.dateTime}
-                    onChange={(e) =>
-                      handleChange(index, "dateTime", e.target.value)
-                    }
-                    required
-                  />
-                </div>
-              </div>*/}
               <div className="facility-form-group">
                 <label>Date</label>
                 <div className="facility-input-container">
@@ -110,8 +113,12 @@ const FacilitiesForm = ({ numberOfFacilities }) => {
                     }
                     required
                   />
+                  {errorMessages[index] && (
+                    <span className="error-message">{errorMessages[index]}</span>
+                  )}
                 </div>
               </div>
+
               <div className="facility-form-group">
                 <label>Facility</label>
                 <div className="facility-input-container">
@@ -125,6 +132,7 @@ const FacilitiesForm = ({ numberOfFacilities }) => {
                   />
                 </div>
               </div>
+
               <div className="facility-form-group">
                 <label>Effective</label>
                 <div className="facility-input-container">
@@ -138,6 +146,7 @@ const FacilitiesForm = ({ numberOfFacilities }) => {
                   />
                 </div>
               </div>
+
               <div className="facility-form-group">
                 <label>Motive</label>
                 <div className="facility-input-container">
@@ -151,21 +160,19 @@ const FacilitiesForm = ({ numberOfFacilities }) => {
                   />
                 </div>
               </div>
-              {/*<div className="facility-form-group">
-                <label>Files</label>
+              <div className="facility-form-group">
+                <label>Materials</label>
                 <div className="facility-input-container">
-                  <div className="custom-file-input">
-                    <input
-                      type="file"
-                      value={facility.files}
-                      onChange={(e) => handleChange(index, 'files', e.target.value)}
-                      required
-                      multiple
-                    accept=".csv, .pdf" 
-                    />
-                  </div>
+                  <input
+                    type="text"
+                    value={facility.materials}
+                    onChange={(e) =>
+                      handleChange(index, "materials", e.target.value)
+                    }
+                    required
+                  />
                 </div>
-              </div>*/}
+              </div>
               <div className="facility-form-group">
                 <label htmlFor={`file-input-${index}`}>Files</label>
                 <div className="file-upload-container">
@@ -201,19 +208,7 @@ const FacilitiesForm = ({ numberOfFacilities }) => {
                 </div>
               </div>
 
-              <div className="facility-form-group">
-                <label>Materials</label>
-                <div className="facility-input-container">
-                  <input
-                    type="text"
-                    value={facility.materials}
-                    onChange={(e) =>
-                      handleChange(index, "materials", e.target.value)
-                    }
-                    required
-                  />
-                </div>
-              </div>
+             
             </div>
           ))}
           <button type="submit" className="facility-button">
