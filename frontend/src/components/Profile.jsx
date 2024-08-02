@@ -24,6 +24,7 @@ import Vav from "./Vav";
 import EditableField from "./EditableField";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCamera } from "@fortawesome/free-solid-svg-icons";
+import { useAuth } from "../context/authContext/AuthProvider";
 
 const dataFacilities = [
   { name: "ODC", count: 10 },
@@ -44,13 +45,15 @@ const dataAttendance = [
 ];
 
 const Profile = () => {
+  const { currentUser, userLoggedIn, loading } = useAuth();
+
   const [activeTab, setActiveTab] = useState("Overview");
   const [editingField, setEditingField] = useState(null);
   const [fieldValues, setFieldValues] = useState({
     nature: "",
     service: "",
     organisation: "",
-    email: "",
+    email: currentUser.email,
     phoneNumber: "",
     manager: "",
   });
@@ -197,6 +200,7 @@ const Profile = () => {
                       handleFieldChange={handleFieldChange}
                       handleCancel={handleCancel}
                       handleApprove={handleApprove}
+                      
                     />
                     <EditableField
                       iconSrc={iphone}

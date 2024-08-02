@@ -43,9 +43,6 @@ const AppRoutes = () => {
         <Route path="/profile" element={<Profile />} />
           <Route path="/navbar" element={<Navbar />} />
           <Route exact path="/reserver" element={<ParentComponent />} />
-
-
-
           <Route exact path="/reserver/ReserverTimeDate" element={<ReserverTimeDate />} />
             <Route exact path="/reserver/ReserverSalleform" element={<ReserverSalleform />} />
             <Route exact path="/reserver/DetailsReservation" element={<ReservationDetails />} />
