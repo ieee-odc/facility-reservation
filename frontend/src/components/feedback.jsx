@@ -80,6 +80,7 @@ const GiveFeedback = ({ isOpen, onClose }) => {
               value={message}
               onChange={handleMessageChange}
               rows="5"
+              
               placeholder="Enter your feedback message here..."
               required
             ></textarea>
