@@ -1,14 +1,17 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import './ReservationDetails.css';
 import axios from 'axios';
 import Navbar from "./navbar";
 import { IoArrowBackOutline } from "react-icons/io5";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { useNavigate } from 'react-router-dom';
 
 const ReservationDetails = ({ date, time, participants, facility: facilityLabel, motif, equipment, onBack, onQuit }) => {
   const [facilities, setFacilities] = useState([]);
   const [equipments, setEquipments] = useState([]);
+  const navigate = useNavigate();
+  const successToastShownRef = useRef(false);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -66,8 +69,14 @@ const ReservationDetails = ({ date, time, participants, facility: facilityLabel,
       });
   
       console.log('Data sent to MongoDB:', response.data);
-      toast.success('Reservation successfully submitted!');
-      //setFormVisible(false);
+      toast.success('Reservation successfully submitted!', {
+        onClose: () => {
+          if (!successToastShownRef.current) {
+            successToastShownRef.current = true;
+            navigate("/calendar");
+          }
+        }
+      });
     } catch (error) {
       console.error('Error sending data:', error.response ? error.response.data : error.message);
       toast.error('Failed to submit reservation. Please try again.');
