@@ -270,7 +270,6 @@ export const findAllEventstWithReservations = async (req, res) => {
         const reservations = await Reservation.find({
           event: event._id,
         }).exec();
-        console.log("reservatioooons", reservations);
         return { ...event.toObject(), reservations: reservations };
       })
     );
