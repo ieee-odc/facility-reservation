@@ -133,8 +133,7 @@ const ReservationDetails = ({ date, time, participants, facility: facilityLabel,
           </div>
 
           <div className="button-group">
-            <button type="button" className="button" onClick={handleSubmit}>Confirm</button>
-            <button type="button" className="button cancel-button" onClick={handleCancel}>Cancel</button>
+            <button type="button" className="confirm-button" onClick={handleSubmit}>Confirm</button>
           </div>
         </div>
       </div>

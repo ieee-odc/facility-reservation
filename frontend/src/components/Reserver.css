@@ -61,7 +61,7 @@ body {
   outline: none;
 }
 
-.button {
+.button ,.confirm-button{
   padding: 10px;
   border: none;
   border-radius: 18px;
@@ -73,7 +73,7 @@ body {
   margin-top: 10px;
 }
 
-.button:hover {
+.button:hover ,.confirm-button:hover{
   background-color: #0056b3;
 }
 
@@ -143,6 +143,10 @@ body {
 
 .button.cancel-button {
   background-color: #d4d0d0; 
+ 
+}
+.confirm-button {
+  background-color: #007bff;
  
 }
 

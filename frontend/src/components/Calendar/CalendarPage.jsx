@@ -6,14 +6,14 @@ import BigCalendarComponent from "./BigCalendarComponent";
 import axios from "axios";
 import { Dropdown } from 'rsuite';
 import 'rsuite/dist/rsuite.min.css'; 
-import { useNavigate } from 'react-router-dom'; // Import useNavigate
+import { useNavigate } from 'react-router-dom'; 
 
 const CalendarPage = () => {
   const [events, setEvents] = useState([]);
   const [requests, setRequests] = useState([]);
   const [facilities, setFacilities] = useState({});
   const [viewType, setViewType] = useState('requests'); 
-  const navigate = useNavigate(); // Initialize useNavigate
+  const navigate = useNavigate(); 
 
   useEffect(() => {
     const fetchFacilities = async () => {
@@ -128,11 +128,10 @@ const CalendarPage = () => {
 
           <div className="calendar-page_calendar">
             <div className="calendar-header custom-dropdown">
-              <Dropdown title="Select View" activeKey={viewType} onSelect={handleDropdownChange}>
+              <Dropdown className="the-button" title="Select View" activeKey={viewType} onSelect={handleDropdownChange}>
                 <Dropdown.Item eventKey="requests">Requests</Dropdown.Item>
                 <Dropdown.Item eventKey="events">Events</Dropdown.Item>
               </Dropdown>
-              <button className="new-reservation-button" onClick={handleNewReservation}> + New reservation</button>
             </div>
             <div className="main-calendar">
               <BigCalendarComponent
