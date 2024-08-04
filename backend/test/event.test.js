@@ -214,17 +214,18 @@ test.serial(
   async (t) => {
     const id = eventId;
     const reservations = await Reservation.find({ event: id });
-    reservations[0].state = "Canceled";
-    reservations[1].state = "Canceled";
+    reservations[0].state = "Cancelled";
+    reservations[1].state = "Cancelled";
 
     await Promise.all(reservations.map((reservation) => reservation.save()));
-
+    console.log("new reservations", reservations);
+    
     const updateStateResponse = await request(app)
       .patch(`/api/events/state/${id}`)
       .expect(200);
-    console.log("updateState", updateStateResponse.body);
+    console.log("updateState here", updateStateResponse.body);
     t.is(updateStateResponse.status, 200);
-    t.is(updateStateResponse.body.state, "Canceled");
+    t.is(updateStateResponse.body.state, "Cancelled");
   }
 );
 test.serial(
