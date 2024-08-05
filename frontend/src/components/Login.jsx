@@ -58,8 +58,15 @@ const Login = () => {
   }, []);
 
   const signInWithEmail = async () => {
-    doSignInWithEmailAndPassword(email, password)     
-      .then((signedIn) => {
+    const signedIn = await doSignInWithEmailAndPassword(email, password)   
+    localStorage.setItem("userEmail", email);
+    if (signedIn) {
+      navigate("/calendar");
+    } else {
+      console.log("sahytek");
+      showNotification("Incorrect email or password. Please try again.", "error");
+    }  
+      /*.then((signedIn) => {
         console.log("signed in ", signedIn);
         localStorage.setItem("userEmail", email);
         navigate("/calendar");
@@ -68,7 +75,8 @@ const Login = () => {
         console.log(error);
         showNotification("Incorrect email or password. Please try again.", "error");
         console.log("error");
-      });
+      });*/
+
   };
 
   const signInWithGoogle = async () => {

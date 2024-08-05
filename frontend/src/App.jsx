@@ -18,7 +18,7 @@ const AuthStatus = () => {
   const { currentUser, userLoggedIn, loading } = useAuth();
 
   useEffect(() => {
-    console.log(currentUser?, userLoggedIn, loading);
+    console.log(currentUser?.email, userLoggedIn, loading);
   }, [currentUser, userLoggedIn, loading]);
 
   return null;
