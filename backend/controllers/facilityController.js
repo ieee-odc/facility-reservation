@@ -4,7 +4,7 @@ export const addFacility = async (req, res) => {
   try {
     const { label, capacity, state } = req.body;
 
-    if (!label || !capacity || !state) {
+    if (!label || !capacity || state===null) {
       return res
         .status(400)
         .json({ message: "Please provide all the required fields." });

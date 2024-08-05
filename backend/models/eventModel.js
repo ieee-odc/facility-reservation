@@ -25,7 +25,7 @@ const eventSchema = mongoose.Schema(
         "Approved",
         "PartiallyApproved",
         "Rejected",
-        "Canceled",
+        "Cancelled",
       ],
       default: "Pending",
     },

@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import axios from "axios";
 import {
   BarChart,
   Bar,
@@ -23,6 +24,7 @@ import Vav from "./Vav";
 import EditableField from "./EditableField";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCamera } from "@fortawesome/free-solid-svg-icons";
+import { useAuth } from "../context/authContext/AuthProvider";
 
 const dataFacilities = [
   { name: "ODC", count: 10 },
@@ -43,19 +45,34 @@ const dataAttendance = [
 ];
 
 const Profile = () => {
+  const { currentUser, userLoggedIn, loading } = useAuth();
+
   const [activeTab, setActiveTab] = useState("Overview");
   const [editingField, setEditingField] = useState(null);
   const [fieldValues, setFieldValues] = useState({
     nature: "",
     service: "",
     organisation: "",
-    email: "",
+    email: currentUser.email,
     phoneNumber: "",
     manager: "",
   });
-
   const [profileImage, setProfileImage] = useState(logo);
   const [bannerImage, setBannerImage] = useState(banner);
+  const [events, setEvents] = useState([]);
+
+  useEffect(() => {
+    const fetchEvents = async () => {
+      try {
+        const response = await axios.get("http://localhost:3000/api/events");
+        setEvents(response.data);
+      } catch (error) {
+        console.error("Error fetching events:", error);
+      }
+    };
+
+    fetchEvents();
+  }, []);
 
   const handleEdit = (field) => {
     setEditingField(field);
@@ -183,6 +200,7 @@ const Profile = () => {
                       handleFieldChange={handleFieldChange}
                       handleCancel={handleCancel}
                       handleApprove={handleApprove}
+                      
                     />
                     <EditableField
                       iconSrc={iphone}
@@ -232,8 +250,8 @@ const Profile = () => {
                       <h3>Event List</h3>
                       <div className="event-items">
                         <ul>
-                          {dataAttendance.map((data) => (
-                            <li key={data.name}>{data.name}</li>
+                          {events.map((event) => (
+                            <li key={event.id}>{event.name}</li>
                           ))}
                         </ul>
                       </div>
@@ -270,19 +288,19 @@ const Profile = () => {
                     <div className="chart">
                       <ResponsiveContainer width="95%" height={200}>
                         <LineChart className="line-chart" data={dataAttendance}>
-                        <defs>
-                              <linearGradient
-                                id="gradient1"
-                                x1="0"
-                                y1="0"
-                                x2="1"
-                                y2="1"
-                              >
-                                <stop offset="0%" stopColor="#22c1c3" />
-                                <stop offset="43%" stopColor="#30caad" />
-                                <stop offset="100%" stopColor="#4f2dfd" />
-                              </linearGradient>
-                            </defs>
+                          <defs>
+                            <linearGradient
+                              id="gradient1"
+                              x1="0"
+                              y1="0"
+                              x2="1"
+                              y2="1"
+                            >
+                              <stop offset="0%" stopColor="#22c1c3" />
+                              <stop offset="43%" stopColor="#30caad" />
+                              <stop offset="100%" stopColor="#4f2dfd" />
+                            </linearGradient>
+                          </defs>
                           <XAxis dataKey="name" />
                           <YAxis />
                           <Tooltip />

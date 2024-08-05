@@ -601,6 +601,7 @@ p.about-content-element-two:hover {
 .add-button {
   display: flex;
   align-items: flex-end;
+  background-color: transparent !important;
 }
 
 .add-button button {

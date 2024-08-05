@@ -74,5 +74,10 @@
   background-color: #0056b3;
 
 }
-
+#message {
+  width: 450px;
+}
+#feedbackType{
+  width: 475px;
+}
 

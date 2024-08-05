@@ -161,7 +161,7 @@ export const updateEventState = async (req, res) => {
       (reservation) => reservation.state === "Rejected"
     );
     const allCanceled = reservations.every(
-      (reservation) => reservation.state === "Canceled"
+      (reservation) => reservation.state === "Cancelled"
     );
     const someApproved = reservations.some(
       (reservation) => reservation.state === "Approved"
@@ -179,7 +179,7 @@ export const updateEventState = async (req, res) => {
     } else if (allRejected) {
       newState = "Rejected";
     } else if (allCanceled) {
-      newState = "Canceled";
+      newState = "Cancelled";
     } else if (someApproved && (someRejected || somePending)) {
       newState = "PartiallyApproved";
     } else {
