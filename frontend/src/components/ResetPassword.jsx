@@ -3,6 +3,8 @@ import { MdEmail } from "react-icons/md";
 import { getAuth, sendPasswordResetEmail } from "firebase/auth";
 import { useNavigate } from "react-router-dom";
 import "./styles.css";
+import { MdOutlineEmail } from "react-icons/md";
+
 
 const ResetPassword = () => {
   const [contact, setContact] = useState("");
@@ -28,7 +30,8 @@ const ResetPassword = () => {
         <div className="inputs-container">
           <div className="input-container">
             <div className="icon-box">
-              <MdEmail className="input-icon" />
+              <MdOutlineEmail 
+className="input-icon" />
               <input
                 type="email"
                 placeholder="Email Address"

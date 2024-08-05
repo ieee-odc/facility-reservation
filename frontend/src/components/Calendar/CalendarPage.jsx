@@ -33,6 +33,7 @@ const CalendarPage = () => {
         console.error("Error fetching facilities", error);
       }
     };
+   
 
     const fetchReservations = async () => {
       try {
@@ -128,10 +129,17 @@ const CalendarPage = () => {
 
           <div className="calendar-page_calendar">
             <div className="calendar-header custom-dropdown">
+            
+
               <Dropdown className="the-button" title="Select View" activeKey={viewType} onSelect={handleDropdownChange}>
-                <Dropdown.Item eventKey="requests">Requests</Dropdown.Item>
-                <Dropdown.Item eventKey="events">Events</Dropdown.Item>
+                <Dropdown.Item className="the-item" eventKey="requests">Requests</Dropdown.Item>
+                <Dropdown.Item className="the-item" eventKey="events">Events</Dropdown.Item>
               </Dropdown>
+              <div className="add-button" >
+
+              
+<button  type="button" onClick={handleNewReservation}>+ Add reservation</button></div>
+            
             </div>
             <div className="main-calendar">
               <BigCalendarComponent
