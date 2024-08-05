@@ -1,16 +1,15 @@
 import React, { useState, useEffect } from "react";
-import axios from "axios";
 import { MdLockOutline, MdInfoOutline, MdClose } from "react-icons/md";
-import { IoMail } from "react-icons/io5";
 import { Link, useLocation, useNavigate } from "react-router-dom";
+import { useNotification} from ".././context/NotificationContext"
 import "./styles.css";
 import {
   doSignInWithEmailAndPassword,
   doSignInWithGoogle,
-  doSignOut,
 } from "../config/auth";
 import logo from "./../assets/logo/Group3.svg";
-//import { useAuth } from "../context/authContext/AuthProvider";
+import { MdOutlineEmail } from "react-icons/md";
+
 const Login = () => {
   const blockquoteStyle = {
     fontStyle: 'italic',
@@ -25,15 +24,15 @@ const Login = () => {
     fontSize: '14px',
     color: 'rgba(255, 255, 255, 0.7)'
   };
-  //const {userLoggedIn} = useAuth();
+
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const location = useLocation();
   const myProp = location.state?.myProp;
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [showInfoMessage, setShowInfoMessage] = useState(true);
   const [isEmailValid, setIsEmailValid] = useState(false);
   const navigate = useNavigate();
+  const showNotification = useNotification();
 
   const handleCloseInfoMessage = (e) => {
     e.preventDefault();
@@ -59,15 +58,16 @@ const Login = () => {
   }, []);
 
   const signInWithEmail = async () => {
-    doSignInWithEmailAndPassword(email, password)
+    doSignInWithEmailAndPassword(email, password)     
       .then((signedIn) => {
         console.log("signed in ", signedIn);
         localStorage.setItem("userEmail", email);
-
         navigate("/calendar");
-      })
+      })  
       .catch((error) => {
         console.log(error);
+        showNotification("Incorrect email or password. Please try again.", "error");
+        console.log("error");
       });
   };
 
@@ -77,6 +77,8 @@ const Login = () => {
     localStorage.setItem("userEmail", email);
     if (signedIn) {
       navigate("/calendar");
+    } else {
+      showNotification("Failed to sign in with Google.", "error");
     }
   };
 
@@ -116,7 +118,7 @@ const Login = () => {
             <div className="inputs-container">
               <div className="input-container">
                 <div className="icon-box">
-                  <IoMail className="input-icon" />
+                  <MdOutlineEmail  className="input-icon" />
                   <input
                     type="email"
                     placeholder="Email"

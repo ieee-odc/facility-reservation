@@ -18,7 +18,7 @@ const AuthStatus = () => {
   const { currentUser, userLoggedIn, loading } = useAuth();
 
   useEffect(() => {
-    console.log(currentUser.email, userLoggedIn, loading);
+    console.log(currentUser?.email, userLoggedIn, loading);
   }, [currentUser, userLoggedIn, loading]);
 
   return null;
@@ -32,14 +32,14 @@ const AppRoutes = () => {
 
       <Route path="/login" element={<Login />} />
       <Route path="/reset-password" element={<ResetPassword />} />
-      <Route exact path="/calendar" element={<CalendarPage />} />
-      <Route exact path="/event" element={<EventForm />} />
+  
 
       {userLoggedIn ? (
         <>
         <Route path="/feedback" element={<GiveFeedback />} />
   
-        
+        <Route exact path="/calendar" element={<CalendarPage />} />
+      <Route exact path="/event" element={<EventForm />} />
         <Route path="/profile" element={<Profile />} />
           <Route path="/navbar" element={<Navbar />} />
           <Route exact path="/reserver" element={<ParentComponent />} />
