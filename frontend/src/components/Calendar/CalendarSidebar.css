@@ -3,12 +3,24 @@
   padding: 30px;
   box-sizing: border-box;
   display: grid;
+  background: rgb(1, 63, 121);
   background: rgb(1, 53, 101);
+
+
   color:white;
   min-height: 100%;
   overflow-y: auto; 
   max-height: 100vh;
 }
+
+
+.calendar-sidebar {
+  width: 100%;
+  min-height: 90%;
+  overflow-y: auto; 
+  max-height: calc(100vh - 10vh);
+}
+
 
 
 

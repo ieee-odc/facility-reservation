@@ -16,6 +16,9 @@ const CalendarPage = () => {
   const navigate = useNavigate(); 
 
   useEffect(() => {
+
+
+    
     const fetchFacilities = async () => {
       try {
         const response = await axios.get("http://localhost:3000/api/facilities");
@@ -33,7 +36,7 @@ const CalendarPage = () => {
         console.error("Error fetching facilities", error);
       }
     };
-   
+
 
     const fetchReservations = async () => {
       try {
@@ -117,6 +120,13 @@ const CalendarPage = () => {
   const handleNewReservation = () => {
     navigate('/reserver');
   };
+  useEffect(() => {
+    document.body.classList.add('no-scroll');
+    
+    return () => {
+      document.body.classList.remove('no-scroll');
+    };
+  }, []);
 
   return (
     <div>
@@ -148,20 +158,7 @@ const CalendarPage = () => {
                 viewType={viewType}
               />
             </div>
-            <div className="legend">
-              <div className="legend-item">
-                <span className="legend-color pending"></span> Pending
-              </div>
-              <div className="legend-item">
-                <span className="legend-color approved"></span> Approved
-              </div>
-              <div className="legend-item">
-                <span className="legend-color rejected"></span> Rejected
-              </div>
-              <div className="legend-item">
-                <span className="legend-color cancelled"></span> Cancelled
-              </div>
-            </div>
+           
           </div>
         </div>
       </div>

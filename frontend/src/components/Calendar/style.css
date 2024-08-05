@@ -20,6 +20,8 @@
   position: relative;
   margin: 0 auto;
   margin-top: 0%;
+  bottom: 0%;
+
 }
 
 .calendar-page__content {
@@ -48,16 +50,74 @@
 }
 
 .big-calendar {
-  position: relative;
   width: 100%;
-  height: 100%;
-  overflow-y: auto; 
+  padding: 30px;
+  box-sizing: border-box;
 }
+
+
+.big-calendar {
+  height: 100%;
+}
+
+.big-calendar{
+  width: 100%;
+  min-height: 90%;
+  overflow-y: auto; 
+  max-height: calc(100vh - 10vh);
+}
+
+
+
+.big-calendar::-webkit-scrollbar {
+  width: 12px;
+}
+
+/* Track */
+.big-calendar::-webkit-scrollbar-track {
+  border-radius: 10px;
+  background: #A2A2A6;
+}
+
+/* Handle */
+.big-calendar::-webkit-scrollbar-thumb {
+  background: #dbdada;
+  border-radius: 10px;
+  cursor: grab;
+}
+.big-calendar::-webkit-scrollbar-thumb:active {
+  background: #dbdada;
+  border-radius: 10px;
+  cursor: grabbing;
+}
+
+/* Handle on hover */
+.big-calendar::-webkit-scrollbar-thumb:hover {
+  background: #bcbcbc;
+  transition: cursor 4s ease-in-out;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 .rbc-calendar {
   position: relative;
   width: 77vw !important;
-  padding: 50px !important;
+  padding-left: 20px;
+  padding-bottom: 50px !important; 
 }
 
 .rbc-btn-group > button:first-child:not(:last-child),
@@ -232,7 +292,7 @@
   display: flex;
   align-items: center;
   justify-content: flex-end;
-  width: 90%;
+  width: 94%;
   position: relative;
   padding: 10px 20px;
   margin-bottom: 0%;
@@ -271,4 +331,10 @@
 .the-item{
   width :150px;
   
+}
+.rbc-off-range-bg {
+  background: #F0F0F0;
+}
+.no-scroll {
+  overflow: hidden !important;
 }
