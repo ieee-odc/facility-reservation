@@ -49,7 +49,8 @@ const BigCalendarComponent = ({ events, requests, viewType }) => {
           backgroundColor: "#fef3e7",
           borderLeft: "6px solid #f39c12",
           color: "#9c6612",
-          padding: "10px 10px",
+          padding: "4%",
+
           borderRadius: "4px",
           fontSize: "0.875em",
         };
@@ -59,7 +60,8 @@ const BigCalendarComponent = ({ events, requests, viewType }) => {
           backgroundColor: "#e7f7e7",
           borderLeft: "6px solid #28a745",
           color: "#155724",
-          padding: "10px 10px",
+          padding: "4%",
+
           borderRadius: "4px",
           fontSize: "0.875em",
         };
@@ -69,7 +71,8 @@ const BigCalendarComponent = ({ events, requests, viewType }) => {
           backgroundColor: "#f8d7da",
           borderLeft: "6px solid #dc3545",
           color: "#721c24",
-          padding: "10px 10px",
+          padding: "4%",
+
           borderRadius: "4px",
           fontSize: "0.875em",
         };
@@ -79,7 +82,7 @@ const BigCalendarComponent = ({ events, requests, viewType }) => {
           backgroundColor: "#d3d3d3",
           borderLeft: "6px solid #808080",
           color: "#333333",
-          padding: "10px 10px",
+          padding: "4%",
           borderRadius: "4px",
           fontSize: "0.875em",
         };
