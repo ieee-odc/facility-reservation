@@ -17,7 +17,7 @@ function ParentComp({ isOpen, onRequestClose, slotDetails, currentView }) {
   const [equipmentFormSubmitted, setEquipmentFormSubmitted] = useState(false);
   const [reservationDetails, setReservationDetails] = useState({
     date: null,
-    time: null,
+    time: "09:30 AM - 10:00 AM",
     participants: null,
     facility: null,
     motif: null,

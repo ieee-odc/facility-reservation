@@ -39,14 +39,7 @@ const BigCalendarComponent = ({ events, requests, viewType }) => {
   };
 
   const handleSlotSelect = ({ start, end }) => {
-    // Set default time slot to 9:00 AM - 10:00 AM
-    const defaultStart = new Date(start);
-    defaultStart.setHours(9, 0, 0, 0); // Set time to 9:00 AM
-
-    const defaultEnd = new Date(start);
-    defaultEnd.setHours(10, 0, 0, 0); // Set time to 10:00 AM
-
-    setSelectedSlot({ start: defaultStart, end: defaultEnd });
+    setSelectedSlot({ start, end });
     setSlotModalShow(true);
   };
 

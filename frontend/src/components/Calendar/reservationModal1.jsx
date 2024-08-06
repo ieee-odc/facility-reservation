@@ -22,15 +22,15 @@ function ReserverTimeDate({ onSubmit, initialData }) {
   
   const [formData, setFormData] = useState({
     date: initialData.date || '',
-    //date: new Date().toISOString().split('T')[0],
-    //time: "09:00 AM - 10:30 AM",
     time: initialData.time || '',
-    
     participants: 1,
   });
- /* const [date, setDate] = useState(initialData.date || '');
-  const [time, setTime] = useState(initialData.time || '');
-  const [participants, setParticipants] = useState(initialData.participants || '');*/
+
+  if (initialData.time=="12:00 AM - 12:00 AM") {
+    formData.time = "09:00 AM - 10:30 AM"
+  }
+
+  
   const [errors, setErrors] = useState({});
 
   const handleInputChange = (e) => {
@@ -43,9 +43,6 @@ function ReserverTimeDate({ onSubmit, initialData }) {
 
   useEffect(() => {
     if (initialData) {
-      /*setDate(initialData.date);
-      setTime(initialData.time);
-      setParticipants(initialData.participants);*/
       setFormData({date: initialData.date, time: initialData.time, participants: initialData.participants})
     }
   }, [initialData]);
