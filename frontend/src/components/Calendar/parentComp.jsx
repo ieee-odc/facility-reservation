@@ -1,34 +1,68 @@
-
-
-import React, { useState } from 'react';
+import React, { useEffect, useState } from "react";
 import ReserverTimeDate from "./reservationModal1";
 import ReserverSalleform from "./reservationModal2";
-import EquipmentReservationForm from './reservationModal3';
+import EquipmentReservationForm from "./reservationModal3";
 import ReservationDetails from "./reservationModal4";
-import Modal from 'react-modal';
+import Modal from "react-modal";
+import moment from "moment";
 import "./style.css"; // Ensure this is imported for the styles
 
-Modal.setAppElement('#root'); // Set the app root element for accessibility
+Modal.setAppElement("#root"); // Set the app root element for accessibility
 
-function ParentComp({ isOpen, onRequestClose }) {
-  const [reserverTimeDateSubmitted, setReserverTimeDateSubmitted] = useState(false);
-  const [reserverSalleFormSubmitted, setReserverSalleFormSubmitted] = useState(false);
-  const [equipmentFormSubmitted, setEquipmentFormSubmitted] = useState(false); 
-  const [reservationDetails, setReservationDetails] = useState({ date: null, time: null, participants: null, facility: null, motif: null, equipment: {} });
+function ParentComp({ isOpen, onRequestClose, slotDetails, currentView }) {
+  const [reserverTimeDateSubmitted, setReserverTimeDateSubmitted] =
+    useState(false);
+  const [reserverSalleFormSubmitted, setReserverSalleFormSubmitted] =
+    useState(false);
+  const [equipmentFormSubmitted, setEquipmentFormSubmitted] = useState(false);
+  const [reservationDetails, setReservationDetails] = useState({
+    date: null,
+    time: null,
+    participants: null,
+    facility: null,
+    motif: null,
+    equipment: {},
+  });
+
+  useEffect(() => {
+    if (slotDetails) {
+      const start = moment(slotDetails.start);
+      const end = moment(slotDetails.end);
+
+      if (currentView === "month") {
+        setReservationDetails((prevState) => ({
+          ...prevState,
+          date: start.format("YYYY-MM-DD"),
+          time: "09:30 AM - 10:00 AM",
+        }));
+      } else {
+        setReservationDetails((prevState) => ({
+          ...prevState,
+          date: start.format("YYYY-MM-DD"),
+          time: `${start.format("hh:mm A")} - ${end.format("hh:mm A")}`,
+        }));
+      }
+    }
+  }, [slotDetails, currentView]);
 
   const handleReservationTimeDateSubmit = (date, time, participants) => {
     setReserverTimeDateSubmitted(true);
-    setReservationDetails(prevState => ({ ...prevState, date, time, participants }));
+    setReservationDetails((prevState) => ({
+      ...prevState,
+      date,
+      time,
+      participants,
+    }));
   };
 
   const handleReservationSalleformSubmit = (facility, motif) => {
     setReserverSalleFormSubmitted(true);
-    setReservationDetails(prevState => ({ ...prevState, facility, motif }));
+    setReservationDetails((prevState) => ({ ...prevState, facility, motif }));
   };
 
   const handleEquipmentReservationSubmit = (equipment) => {
-    setReservationDetails(prevState => ({ ...prevState, equipment }));
-    setEquipmentFormSubmitted(true); 
+    setReservationDetails((prevState) => ({ ...prevState, equipment }));
+    setEquipmentFormSubmitted(true);
   };
 
   const handleBackToTimeDate = () => {
@@ -55,21 +89,29 @@ function ParentComp({ isOpen, onRequestClose }) {
         overlayClassName="custom-modal-overlay"
         className="custom-modal-content"
       >
-        <ReserverTimeDate onSubmit={handleReservationTimeDateSubmit} />
+        <ReserverTimeDate
+          onSubmit={handleReservationTimeDateSubmit}
+          initialData={reservationDetails}
+        />
       </Modal>
-      
+
       <Modal
-        isOpen={isOpen && reserverTimeDateSubmitted && !reserverSalleFormSubmitted && !equipmentFormSubmitted}
+        isOpen={
+          isOpen &&
+          reserverTimeDateSubmitted &&
+          !reserverSalleFormSubmitted &&
+          !equipmentFormSubmitted
+        }
         onRequestClose={handleBackToTimeDate}
         contentLabel="Reserver Salle Form Modal"
         overlayClassName="custom-modal-overlay"
         className="custom-modal-content"
       >
-        <ReserverSalleform 
-          onSubmit={handleReservationSalleformSubmit} 
-          onBack={handleBackToTimeDate} 
-          date={reservationDetails.date} 
-          time={reservationDetails.time} 
+        <ReserverSalleform
+          onSubmit={handleReservationSalleformSubmit}
+          onBack={handleBackToTimeDate}
+          date={reservationDetails.date}
+          time={reservationDetails.time}
         />
       </Modal>
 
@@ -93,7 +135,7 @@ function ParentComp({ isOpen, onRequestClose }) {
         overlayClassName="custom-modal-overlay"
         className="custom-modal-content"
       >
-        <ReservationDetails
+        {/* <ReservationDetails
           date={reservationDetails.date}
           time={reservationDetails.time}
           facility={reservationDetails.facility}
@@ -102,11 +144,15 @@ function ParentComp({ isOpen, onRequestClose }) {
           equipment={reservationDetails.equipment}
           onBack={handleBackToEquipmentForm}
           onQuit={() => onRequestClose()}
+        />*/}
+
+        <ReservationDetails
+          details={reservationDetails}
+          onRequestClose={onRequestClose}
         />
       </Modal>
     </div>
   );
 }
-
 
 export default ParentComp;

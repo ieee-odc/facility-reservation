@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import * as yup from "yup";
 import "../Reserver.css";
 
@@ -18,12 +18,19 @@ const schema = yup.object().shape({
     .required("Veuillez entrer le nombre de participants"),
 });
 
-function ReserverTimeDate({ onSubmit }) {
+function ReserverTimeDate({ onSubmit, initialData }) {
+  
   const [formData, setFormData] = useState({
-    date: new Date().toISOString().split('T')[0],
-    time: "09:00 AM - 10:30 AM",
+    date: initialData.date || '',
+    //date: new Date().toISOString().split('T')[0],
+    //time: "09:00 AM - 10:30 AM",
+    time: initialData.time || '',
+    
     participants: 1,
   });
+ /* const [date, setDate] = useState(initialData.date || '');
+  const [time, setTime] = useState(initialData.time || '');
+  const [participants, setParticipants] = useState(initialData.participants || '');*/
   const [errors, setErrors] = useState({});
 
   const handleInputChange = (e) => {
@@ -33,6 +40,15 @@ function ReserverTimeDate({ onSubmit }) {
       [name]: value,
     });
   };
+
+  useEffect(() => {
+    if (initialData) {
+      /*setDate(initialData.date);
+      setTime(initialData.time);
+      setParticipants(initialData.participants);*/
+      setFormData({date: initialData.date, time: initialData.time, participants: initialData.participants})
+    }
+  }, [initialData]);
 
   const handleFormSubmit = (e) => {
     e.preventDefault();
