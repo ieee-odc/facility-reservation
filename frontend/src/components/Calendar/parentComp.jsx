@@ -135,7 +135,7 @@ function ParentComp({ isOpen, onRequestClose, slotDetails, currentView }) {
         overlayClassName="custom-modal-overlay"
         className="custom-modal-content"
       >
-        {/* <ReservationDetails
+         <ReservationDetails
           date={reservationDetails.date}
           time={reservationDetails.time}
           facility={reservationDetails.facility}
@@ -144,12 +144,8 @@ function ParentComp({ isOpen, onRequestClose, slotDetails, currentView }) {
           equipment={reservationDetails.equipment}
           onBack={handleBackToEquipmentForm}
           onQuit={() => onRequestClose()}
-        />*/}
-
-        <ReservationDetails
-          details={reservationDetails}
-          onRequestClose={onRequestClose}
         />
+
       </Modal>
     </div>
   );
