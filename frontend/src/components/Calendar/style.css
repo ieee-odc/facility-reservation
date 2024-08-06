@@ -101,7 +101,9 @@
 
 
 
-
+.rs-calendar-header-has-month:not(.rs-calendar-header-has-time) {
+  padding: 0;
+}
 
 
 
