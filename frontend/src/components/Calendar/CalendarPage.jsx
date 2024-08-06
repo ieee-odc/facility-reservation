@@ -16,6 +16,9 @@ const CalendarPage = () => {
   const navigate = useNavigate(); 
 
   useEffect(() => {
+
+
+    
     const fetchFacilities = async () => {
       try {
         const response = await axios.get("http://localhost:3000/api/facilities");
@@ -33,6 +36,7 @@ const CalendarPage = () => {
         console.error("Error fetching facilities", error);
       }
     };
+
 
     const fetchReservations = async () => {
       try {
@@ -116,6 +120,16 @@ const CalendarPage = () => {
   const handleNewReservation = () => {
     navigate('/reserver');
   };
+  const handleNewEvent = () => {
+    navigate('/event');
+  };
+  useEffect(() => {
+    document.body.classList.add('no-scroll');
+    
+    return () => {
+      document.body.classList.remove('no-scroll');
+    };
+  }, []);
 
   return (
     <div>
@@ -128,10 +142,20 @@ const CalendarPage = () => {
 
           <div className="calendar-page_calendar">
             <div className="calendar-header custom-dropdown">
+            
+
               <Dropdown className="the-button" title="Select View" activeKey={viewType} onSelect={handleDropdownChange}>
-                <Dropdown.Item eventKey="requests">Requests</Dropdown.Item>
-                <Dropdown.Item eventKey="events">Events</Dropdown.Item>
+                <Dropdown.Item className="the-item" eventKey="requests">Requests</Dropdown.Item>
+                <Dropdown.Item className="the-item" eventKey="events">Events</Dropdown.Item>
               </Dropdown>
+              <div className="add-button" >
+
+              
+<button  type="button" onClick={handleNewReservation}>+ Add reservation</button>
+<button  type="button" onClick={handleNewEvent}>+ Add event</button>
+</div>
+
+            
             </div>
             <div className="main-calendar">
               <BigCalendarComponent
@@ -140,20 +164,7 @@ const CalendarPage = () => {
                 viewType={viewType}
               />
             </div>
-            <div className="legend">
-              <div className="legend-item">
-                <span className="legend-color pending"></span> Pending
-              </div>
-              <div className="legend-item">
-                <span className="legend-color approved"></span> Approved
-              </div>
-              <div className="legend-item">
-                <span className="legend-color rejected"></span> Rejected
-              </div>
-              <div className="legend-item">
-                <span className="legend-color cancelled"></span> Cancelled
-              </div>
-            </div>
+           
           </div>
         </div>
       </div>

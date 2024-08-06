@@ -124,7 +124,6 @@ const Navbar = () => {
     { icon: <img src={reservationIcon} alt="reservation Icon" style={{ width: '30px', height: '30px' }} />, text: "Reservation" , handleClick: reservation},
     { icon: <img src={eventIcon} alt="event Icon" style={{ width: '30px', height: '30px' }} />, text: "Event" , handleClick: event},
 
-    { icon: <img src={historyIcon} alt="history Icon" style={{ width: '30px', height: '30px' }} />, text: "History"},
 
     { icon: <img src={profileIcon} alt="Profile Icon" style={{ width: '30px', height: '30px' }} />, text: "Profile", handleClick: profile },
     { icon: <img src={logoutIcon} alt="Logout Icon" style={{ width: '30px', height: '30px' }} />, text: "Logout", handleClick: Logout },

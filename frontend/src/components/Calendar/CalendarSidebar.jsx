@@ -48,7 +48,8 @@ const CalendarSidebar = ({ setViewType, events, requests }) => {
       new Date(reservation.date).toDateString() === date.toDateString()
     ).map(reservation => ({
       time: reservation.startTime,
-      title: reservation.motive
+      title: reservation.motive,
+      state: reservation.state // Add state to the mapped events
     }));
     setDailyEvents(filteredEvents);
   };
@@ -75,6 +76,21 @@ const CalendarSidebar = ({ setViewType, events, requests }) => {
     setViewType(view);
   };
 
+  const getDotClass = (state) => {
+    switch (state) {
+      case "Pending":
+        return "event-dot pending";
+      case "Approved":
+        return "event-dot approved";
+      case "Rejected":
+        return "event-dot rejected";
+      case "Cancelled":
+        return "event-dot cancelled";
+      default:
+        return "";
+    }
+  };
+
   return (
     <div className="calendar-sidebar">
       <div className="calendar-sidebar__calendar-container">
@@ -95,6 +111,7 @@ const CalendarSidebar = ({ setViewType, events, requests }) => {
               {dailyEvents.length ? (
                 dailyEvents.map((event, index) => (
                   <li key={index}>
+                    <span className={getDotClass(event.state)}></span>
                     {event.time} - {event.title}
                   </li>
                 ))
