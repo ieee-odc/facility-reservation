@@ -120,6 +120,9 @@ const CalendarPage = () => {
   const handleNewReservation = () => {
     navigate('/reserver');
   };
+  const handleNewEvent = () => {
+    navigate('/event');
+  };
   useEffect(() => {
     document.body.classList.add('no-scroll');
     
@@ -148,7 +151,10 @@ const CalendarPage = () => {
               <div className="add-button" >
 
               
-<button  type="button" onClick={handleNewReservation}>+ Add reservation</button></div>
+<button  type="button" onClick={handleNewReservation}>+ Add reservation</button>
+<button  type="button" onClick={handleNewEvent}>+ Add event</button>
+</div>
+
             
             </div>
             <div className="main-calendar">

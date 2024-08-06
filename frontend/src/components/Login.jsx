@@ -28,6 +28,7 @@ const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const location = useLocation();
+  const [signedIn, setSignedIn] = useState("");
   const myProp = location.state?.myProp;
   const [showInfoMessage, setShowInfoMessage] = useState(true);
   const [isEmailValid, setIsEmailValid] = useState(false);
@@ -58,12 +59,12 @@ const Login = () => {
   }, []);
 
   const signInWithEmail = async () => {
-    const signedIn = await doSignInWithEmailAndPassword(email, password)   
+    const signed = await doSignInWithEmailAndPassword(email, password)   
     localStorage.setItem("userEmail", email);
-    if (signedIn) {
+    if (signed && !signedIn) {
+      setSignedIn(signed);
       navigate("/calendar");
     } else {
-      console.log("sahytek");
       showNotification("Incorrect email or password. Please try again.", "error");
     }  
       /*.then((signedIn) => {
@@ -80,10 +81,11 @@ const Login = () => {
   };
 
   const signInWithGoogle = async () => {
-    const signedIn = await doSignInWithGoogle();
+    const signed = await doSignInWithGoogle();
     console.log("hello google");
     localStorage.setItem("userEmail", email);
-    if (signedIn) {
+    if (signed && !signedIn) {
+      setSignedIn(signed);
       navigate("/calendar");
     } else {
       showNotification("Failed to sign in with Google.", "error");

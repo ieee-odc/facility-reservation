@@ -319,6 +319,11 @@
   margin-left: auto;
 }
 
+
+.add-button{
+  gap: 10px;
+}
+
 .add-button button:hover {
   background-color: #d8defa;
   color: #2657d4;
