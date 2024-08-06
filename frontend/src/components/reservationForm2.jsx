@@ -1,49 +1,47 @@
-import React, { useState, useEffect, useRef } from 'react';
-import axios from 'axios';
-import './Reserver.css';
+import React, { useState, useEffect, useRef } from "react";
+import axios from "axios";
+import "./Reserver.css";
 import Navbar from "./navbar";
 import { IoArrowBackOutline } from "react-icons/io5";
 import { IoMdClose } from "react-icons/io";
 import { GrAttachment } from "react-icons/gr";
+import moment from 'moment';
 
 const ReserverSalleform = ({ onSubmit, onBack, date, time }) => {
-  const [facility, setFacility] = useState('');
-  const [motif, setMotif] = useState('');
-  const [otherMotif, setOtherMotif] = useState('');
+  const [facility, setFacility] = useState("");
+  const [motif, setMotif] = useState("");
+  const [otherMotif, setOtherMotif] = useState("");
   const [files, setFiles] = useState([]);
   const [errors, setErrors] = useState({});
   const [formData, setFormData] = useState({
-    facility: '',
-    motif: '',
-    otherMotif: '',
-    files: []
+    facility: "",
+    motif: "",
+    otherMotif: "",
+    files: [],
   });
   const [availableFacilities, setAvailableFacilities] = useState([]);
   const [pendingFacilities, setPendingFacilities] = useState([]);
-  const [warningMessage, setWarningMessage] = useState('');
-  const [fileErrors, setFileErrors] = useState('');
+  const [warningMessage, setWarningMessage] = useState("");
+  const [fileErrors, setFileErrors] = useState("");
   const fileInputRef = useRef(null);
 
-  /*useEffect(() => {
-    const fetchAvailableFacilities = async () => {
-      try {
-        const response = await axios.get('http://localhost:3000/facilities', {
-          params: { date, time }
-        });
-        setAvailableFacilities(response.data.availableFacilities); // Assume response.data.availableFacilities is an array of facility objects
-        setPendingFacilities(response.data.pendingFacilities);
-      } catch (error) {
-        console.error("Error fetching available facilities:", error);
-      }
-    };
-
-    fetchAvailableFacilities();
-  }, [date, time]);*/
   useEffect(() => {
     const fetchAvailableFacilities = async () => {
       try {
-        const response = await axios.get('http://localhost:3000/api/facilities');
-        setAvailableFacilities(response.data.data || []);
+        const [startTime, endTime] = time.split(" - ").map(t => t.trim());
+        console.log("start time", startTime, "end time", endTime);
+        
+        const response = await axios.get('http://localhost:3000/api/reservations/available-facilities', {
+          params: {
+            date,
+            startTime,
+            endTime
+          }
+        });
+        console.log(response);
+        
+        setAvailableFacilities(response.data.availableFacilities); // Extract labels
+        setPendingFacilities(response.data.pendingFacilities);
       } catch (error) {
         console.error("Error fetching available facilities:", error);
       }
@@ -51,18 +49,17 @@ const ReserverSalleform = ({ onSubmit, onBack, date, time }) => {
   
     fetchAvailableFacilities();
   }, [date, time]);
-  
-  
-
 
   const handleFacilityChange = (e) => {
     const selectedFacility = e.target.value;
     setFacility(selectedFacility);
     setFormData({ ...formData, facility: selectedFacility });
     if (pendingFacilities.includes(selectedFacility)) {
-      setWarningMessage('Warning: This room is likely already reserved for this time slot.');
+      setWarningMessage(
+        "Warning: This room is likely already reserved for this time slot."
+      );
     } else {
-      setWarningMessage('');
+      setWarningMessage("");
     }
   };
 
@@ -71,10 +68,11 @@ const ReserverSalleform = ({ onSubmit, onBack, date, time }) => {
     const newErrors = {};
 
     if (!facility) {
-      newErrors.facility = 'Please choose a facility.';
+      newErrors.facility = "Please choose a facility.";
     }
     if (!motif && !otherMotif) {
-      newErrors.motif = 'Please choose or enter the reason for the reservation.';
+      newErrors.motif =
+        "Please choose or enter the reason for the reservation.";
     }
 
     setErrors(newErrors);
@@ -87,15 +85,17 @@ const ReserverSalleform = ({ onSubmit, onBack, date, time }) => {
 
   const handleFileChange = (event) => {
     const selectedFiles = Array.from(event.target.files);
-    const allowedTypes = ['application/pdf', 'text/csv'];
-    const invalidFiles = selectedFiles.filter(file => !allowedTypes.includes(file.type));
+    const allowedTypes = ["application/pdf", "text/csv"];
+    const invalidFiles = selectedFiles.filter(
+      (file) => !allowedTypes.includes(file.type)
+    );
 
     if (invalidFiles.length > 0) {
-      setFileErrors('Please upload only PDF or CSV files.');
+      setFileErrors("Please upload only PDF or CSV files.");
       return;
     }
 
-    setFileErrors('');
+    setFileErrors("");
     setFiles(selectedFiles);
     setFormData({ ...formData, files: selectedFiles });
   };
@@ -130,18 +130,21 @@ const ReserverSalleform = ({ onSubmit, onBack, date, time }) => {
               onChange={handleFacilityChange}
             >
               <option value="">Select a facility</option>
-              {Array.isArray(availableFacilities) && availableFacilities.map((fac) => (
-  <option key={fac.id} value={fac.id}>
-    {fac.label}
-  </option>
-))}
-
-              
+              {Array.isArray(availableFacilities) &&
+                availableFacilities.map((fac) => (
+                  <option key={fac.id} value={fac.id}>
+                    {fac.label}
+                  </option>
+                ))}
             </select>
           </div>
           <div className="form-group">
-            {errors.facility && <p className="error-message">{errors.facility}</p>}
-            {warningMessage && <p className="warning-message">{warningMessage}</p>}
+            {errors.facility && (
+              <p className="error-message">{errors.facility}</p>
+            )}
+            {warningMessage && (
+              <p className="warning-message">{warningMessage}</p>
+            )}
           </div>
           <div className="form-group">
             <label htmlFor="motif" className="required-label">
@@ -188,9 +191,9 @@ const ReserverSalleform = ({ onSubmit, onBack, date, time }) => {
               type="file"
               ref={fileInputRef}
               onChange={handleFileChange}
-              style={{ display: 'none' }}
+              style={{ display: "none" }}
               multiple
-              accept=".csv, .pdf" 
+              accept=".csv, .pdf"
             />
             {fileErrors && <p className="error-message">{fileErrors}</p>}
             {files.length > 0 && (
@@ -205,7 +208,8 @@ const ReserverSalleform = ({ onSubmit, onBack, date, time }) => {
             )}
           </div>
           <div className="warning-message">
-            Warning! The CVs of the trainers and the list of participants are mandatory to attach for workshops.
+            Warning! The CVs of the trainers and the list of participants are
+            mandatory to attach for workshops.
           </div>
           <button type="submit" className="button">
             Reserve

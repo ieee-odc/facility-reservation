@@ -1,4 +1,4 @@
-import mongoose from "mongoose";
+import mongoose from 'mongoose';
 
 const facilitySchema = mongoose.Schema(
   {
@@ -16,10 +16,9 @@ const facilitySchema = mongoose.Schema(
       required: true,
     },
   },
-
   {
     timestamps: true,
   }
 );
 
-export const Facility = mongoose.model("facilities", facilitySchema);
+export const Facility = mongoose.model('Facility', facilitySchema); // Ensure the model name is correct
