@@ -1,4 +1,4 @@
-import mongoose from "mongoose";
+import mongoose from 'mongoose';
 
 const reservationSchema = mongoose.Schema(
   {
@@ -21,7 +21,7 @@ const reservationSchema = mongoose.Schema(
     materials: [
       {
         type: mongoose.Schema.Types.ObjectId,
-        ref: "Equipment",
+        ref: 'Equipment',
         default: [],
       },
     ],
@@ -35,27 +35,27 @@ const reservationSchema = mongoose.Schema(
     },
     facility: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: "Facility",
+      ref: 'Facility', // Ensure the reference name matches the model name
       required: false,
     },
     entity: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: "ReservationInitiator",
+      ref: 'ReservationInitiator',
       required: false,
     },
     event: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: "Event",
+      ref: 'Event',
       required: false,
       default: null,
     },
     state: {
       type: String,
-      enum: ["Pending", "Approved", "Rejected", "Cancelled"],
-      default: "Pending",
+      enum: ['Pending', 'Approved', 'Rejected', 'Cancelled'],
+      default: 'Pending',
     },
   },
   { timestamps: true }
 );
 
-export const Reservation = mongoose.model("reservations", reservationSchema);
+export const Reservation = mongoose.model('Reservation', reservationSchema);

@@ -7,12 +7,14 @@ import {
   updateReservation,
   deleteReservation,
   findAllPureReservations,
+  getAvailableFacilities,
 } from "../controllers/reservationController.js";
 
 const router = express.Router();
 
 router.get('/', findAllReservations);
 router.get('/pure', findAllPureReservations);
+router.get('/available-facilities', getAvailableFacilities);
 
 router.get('/:id', findReservationById);
 router.post('/', addReservation);
