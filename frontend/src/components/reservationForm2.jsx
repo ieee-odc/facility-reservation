@@ -180,7 +180,7 @@ const ReserverSalleform = ({ onSubmit, onBack, date, time }) => {
             ></textarea>
           </div>
           <div className="form-group">
-            <button className="add-button" onClick={handleUploadButtonClick}>
+            <button className="attach-button" onClick={handleUploadButtonClick}>
               <GrAttachment className="attach" />
               Attach a file
             </button>
