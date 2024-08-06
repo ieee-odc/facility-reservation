@@ -13,6 +13,7 @@ import ReserverTimeDate from "./components/reservationForm1";
 import ParentComponent from "./components/ParentComponent";
 import EventForm from "./components/event/eventForm1";
 import CalendarPage from "./components/Calendar/CalendarPage";
+import ParentComp from "./components/Calendar/parentComp";
 
 const AuthStatus = () => {
   const { currentUser, userLoggedIn, loading } = useAuth();
@@ -43,6 +44,8 @@ const AppRoutes = () => {
         <Route path="/profile" element={<Profile />} />
           <Route path="/navbar" element={<Navbar />} />
           <Route exact path="/reserver" element={<ParentComponent />} />
+          <Route exact path="/reservation" element={<ParentComp/>} />
+
           <Route exact path="/reserver/ReserverTimeDate" element={<ReserverTimeDate />} />
             <Route exact path="/reserver/ReserverSalleform" element={<ReserverSalleform />} />
             <Route exact path="/reserver/DetailsReservation" element={<ReservationDetails />} />

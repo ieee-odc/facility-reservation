@@ -7,12 +7,14 @@ import axios from "axios";
 import { Dropdown } from "rsuite";
 import "rsuite/dist/rsuite.min.css";
 import { useNavigate } from "react-router-dom";
+import ParentComponent from "./parentComp"; // Import the parent component
 
 const CalendarPage = () => {
   const [events, setEvents] = useState([]);
   const [requests, setRequests] = useState([]);
   const [facilities, setFacilities] = useState({});
   const [viewType, setViewType] = useState("requests");
+  const [isParentModalOpen, setParentModalOpen] = useState(false);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -119,11 +121,13 @@ const CalendarPage = () => {
   };
 
   const handleNewReservation = () => {
-    navigate("/reserver");
+    setParentModalOpen(true);
   };
+
   const handleNewEvent = () => {
     navigate("/event");
   };
+
   useEffect(() => {
     document.body.classList.add("no-scroll");
 
@@ -179,6 +183,10 @@ const CalendarPage = () => {
           </div>
         </div>
       </div>
+      <ParentComponent
+        isOpen={isParentModalOpen}
+        onRequestClose={() => setParentModalOpen(false)}
+      />
     </div>
   );
 };
