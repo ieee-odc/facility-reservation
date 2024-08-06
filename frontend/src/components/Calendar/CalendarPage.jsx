@@ -4,25 +4,24 @@ import CalendarSidebar from "./CalendarSidebar";
 import "./style.css";
 import BigCalendarComponent from "./BigCalendarComponent";
 import axios from "axios";
-import { Dropdown } from 'rsuite';
-import 'rsuite/dist/rsuite.min.css'; 
-import { useNavigate } from 'react-router-dom'; 
+import { Dropdown } from "rsuite";
+import "rsuite/dist/rsuite.min.css";
+import { useNavigate } from "react-router-dom";
 
 const CalendarPage = () => {
   const [events, setEvents] = useState([]);
   const [requests, setRequests] = useState([]);
   const [facilities, setFacilities] = useState({});
-  const [viewType, setViewType] = useState('requests'); 
-  const navigate = useNavigate(); 
+  const [viewType, setViewType] = useState("requests");
+  const navigate = useNavigate();
 
   useEffect(() => {
-
-
-    
     const fetchFacilities = async () => {
       try {
-        const response = await axios.get("http://localhost:3000/api/facilities");
-        const facilitiesArray = response.data.data; 
+        const response = await axios.get(
+          "http://localhost:3000/api/facilities"
+        );
+        const facilitiesArray = response.data.data;
         if (Array.isArray(facilitiesArray)) {
           const facilitiesData = facilitiesArray.reduce((acc, facility) => {
             acc[facility._id] = facility.label;
@@ -30,13 +29,15 @@ const CalendarPage = () => {
           }, {});
           setFacilities(facilitiesData);
         } else {
-          console.error("Unexpected response format for facilities", response.data);
+          console.error(
+            "Unexpected response format for facilities",
+            response.data
+          );
         }
       } catch (error) {
         console.error("Error fetching facilities", error);
       }
     };
-
 
     const fetchReservations = async () => {
       try {
@@ -118,16 +119,16 @@ const CalendarPage = () => {
   };
 
   const handleNewReservation = () => {
-    navigate('/reserver');
+    navigate("/reserver");
   };
   const handleNewEvent = () => {
-    navigate('/event');
+    navigate("/event");
   };
   useEffect(() => {
-    document.body.classList.add('no-scroll');
-    
+    document.body.classList.add("no-scroll");
+
     return () => {
-      document.body.classList.remove('no-scroll');
+      document.body.classList.remove("no-scroll");
     };
   }, []);
 
@@ -137,25 +138,36 @@ const CalendarPage = () => {
       <div className="calendar-page">
         <div className="calendar-page__content">
           <div className="calendar-page__sidebar">
-            <CalendarSidebar setViewType={setViewType} events={events} requests={requests} />
+            <CalendarSidebar
+              setViewType={setViewType}
+              events={events}
+              requests={requests}
+            />
           </div>
 
           <div className="calendar-page_calendar">
             <div className="calendar-header custom-dropdown">
-            
-
-              <Dropdown className="the-button" title="Select View" activeKey={viewType} onSelect={handleDropdownChange}>
-                <Dropdown.Item className="the-item" eventKey="requests">Requests</Dropdown.Item>
-                <Dropdown.Item className="the-item" eventKey="events">Events</Dropdown.Item>
+              <Dropdown
+                className="the-button"
+                title="Select View"
+                activeKey={viewType}
+                onSelect={handleDropdownChange}
+              >
+                <Dropdown.Item className="the-item" eventKey="requests">
+                  Requests
+                </Dropdown.Item>
+                <Dropdown.Item className="the-item" eventKey="events">
+                  Events
+                </Dropdown.Item>
               </Dropdown>
-              <div className="add-button" >
-
-              
-<button  type="button" onClick={handleNewReservation}>+ Add reservation</button>
-<button  type="button" onClick={handleNewEvent}>+ Add event</button>
-</div>
-
-            
+              <div className="add-button">
+                <button type="button" onClick={handleNewReservation}>
+                  + Add reservation
+                </button>
+                <button type="button" onClick={handleNewEvent}>
+                  + Add event
+                </button>
+              </div>
             </div>
             <div className="main-calendar">
               <BigCalendarComponent
@@ -164,7 +176,6 @@ const CalendarPage = () => {
                 viewType={viewType}
               />
             </div>
-           
           </div>
         </div>
       </div>
