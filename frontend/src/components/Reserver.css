@@ -13,10 +13,54 @@ body {
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   border-radius: 8px;
 }
-.container3 {
+/*.container3 {
 
   min-height:630px;
+}*/
+
+.container3 {
+  max-height: 70vh !important;
+  overflow: auto;
 }
+
+.container3::-webkit-scrollbar {
+  width: 12px;
+  background: #2e2ec400;
+}
+
+.container3::-webkit-scrollbar-track {
+  border-radius: 10px;
+  background: #2e2ec400;
+  position: relative;
+}
+
+.container3::-webkit-scrollbar-thumb {
+  background: #dbdada;
+  border-radius: 10px;
+  cursor: grab;
+}
+
+.container3::-webkit-scrollbar-thumb:active {
+  background: #dbdada;
+  border-radius: 10px;
+  cursor: grabbing;
+}
+
+.container3::-webkit-scrollbar-thumb:hover {
+  background: #bcbcbc;
+  transition: cursor 4s ease-in-out;
+}
+
+
+
+
+
+
+
+
+
+
+
 
 .form-title-container {
   text-align: center;

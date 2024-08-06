@@ -40,8 +40,10 @@ const ReserverSalleform = ({ onSubmit, onBack, date, time }) => {
         });
         console.log(response);
         
-        setAvailableFacilities(response.data.availableFacilities); // Extract labels
-        setPendingFacilities(response.data.pendingFacilities);
+        setAvailableFacilities(response.data.availableFacilities); 
+        setPendingFacilities(response.data.pendingFacilities.map(facility => facility?.label));
+        console.log("testes",response.data.pendingFacilities.map(facility => facility?.label));
+        
       } catch (error) {
         console.error("Error fetching available facilities:", error);
       }
@@ -52,6 +54,8 @@ const ReserverSalleform = ({ onSubmit, onBack, date, time }) => {
 
   const handleFacilityChange = (e) => {
     const selectedFacility = e.target.value;
+    console.log("selected fac", e.target.value);
+    
     setFacility(selectedFacility);
     setFormData({ ...formData, facility: selectedFacility });
     if (pendingFacilities.includes(selectedFacility)) {
@@ -109,7 +113,7 @@ const ReserverSalleform = ({ onSubmit, onBack, date, time }) => {
   };
 
   return (
-    <body>
+    <>
       <Navbar />
       <div className="container3">
         <form className="form" onSubmit={handleFormSubmit}>
@@ -216,7 +220,7 @@ const ReserverSalleform = ({ onSubmit, onBack, date, time }) => {
           </button>
         </form>
       </div>
-    </body>
+    </>
   );
 };
 

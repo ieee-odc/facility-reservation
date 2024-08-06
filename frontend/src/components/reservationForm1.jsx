@@ -57,7 +57,7 @@ function ReserverTimeDate({ onSubmit }) {
   };
   
   return (
-    <body>
+    <>
       <Navbar />
       <div className="container1">
         <form className="form" onSubmit={handleFormSubmit}>
@@ -119,7 +119,7 @@ function ReserverTimeDate({ onSubmit }) {
           <button type="submit" className="button">Next</button>
         </form>
       </div>
-    </body>
+    </>
   );
 }
 
