@@ -82,7 +82,7 @@ const CalendarPage = ({currentId}) => {
     const fetchEvents = async () => {
       try {
         const response = await axios.get(
-          "http://localhost:3000/api/events/reservations"
+          `http://localhost:3000/api/events/reservation/${currentId}`
         );
         const reservations = response.data;
         if (Array.isArray(reservations)) {
