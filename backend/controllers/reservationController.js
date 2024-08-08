@@ -1,6 +1,8 @@
 import { Reservation } from "../models/reservationModel.js";
 import { Facility } from "../models/facilityModel.js";
-import moment from 'moment'
+import ReservationInitiator from "../models/reservationInitiatorModel.js";
+
+import moment from "moment";
 
 /*
   date: 
@@ -28,6 +30,21 @@ export const findAllReservations = async (req, res) => {
 export const findAllPureReservations = async (req, res) => {
   try {
     const reservations = await Reservation.find({ event: { $eq: null } });
+
+    return res.status(200).json(reservations);
+  } catch (error) {
+    return res.status(500).json({ message: error.message });
+  }
+};
+
+export const findAllPureRelatedReservations = async (req, res) => {
+  try {
+    const { entityId } = req.params;
+
+    const reservations = await Reservation.find({
+      event: { $eq: null },
+      entity: entityId,
+    });
 
     return res.status(200).json(reservations);
   } catch (error) {
@@ -208,31 +225,31 @@ export const getAvailableFacilities = async (req, res) => {
     // Find reservations that overlap with the requested time range
     const overlappingReservations = await Reservation.find({
       date: reservationDate,
-      $or: [
-        { startTime: { $lt: endTime }, endTime: { $gt: startTime } },
-      ],
-    }).populate('facility');
+      $or: [{ startTime: { $lt: endTime }, endTime: { $gt: startTime } }],
+    }).populate("facility");
 
     // Separate occupied facilities based on reservation state
     const occupiedFacilities = overlappingReservations
-      .filter(reservation => reservation.state === 'Approved')
-      .map(reservation => reservation.facility._id.toString());
+      .filter((reservation) => reservation.state === "Approved")
+      .map((reservation) => reservation.facility._id.toString());
 
     // Pending facilities
     const pendingFacilities = overlappingReservations
-      .filter(reservation => reservation.state === 'Pending')
-      .map(reservation => reservation.facility);
+      .filter((reservation) => reservation.state === "Pending")
+      .map((reservation) => reservation.facility);
 
     // Find all facilities and filter out the occupied ones
     const allFacilities = await Facility.find();
-    const availableFacilities = allFacilities.filter(facility => !occupiedFacilities.includes(facility._id.toString()));
+    const availableFacilities = allFacilities.filter(
+      (facility) => !occupiedFacilities.includes(facility._id.toString())
+    );
 
     res.status(200).json({
       availableFacilities,
-      pendingFacilities
+      pendingFacilities,
     });
   } catch (error) {
     console.error("Error fetching available facilities:", error);
-    res.status(500).json({ error: 'Internal Server Error' });
+    res.status(500).json({ error: "Internal Server Error" });
   }
 };

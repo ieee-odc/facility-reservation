@@ -9,7 +9,7 @@ import "rsuite/dist/rsuite.min.css";
 import { useNavigate } from "react-router-dom";
 import ParentComponent from "./parentComp"; // Import the parent component
 
-const CalendarPage = () => {
+const CalendarPage = ({currentId}) => {
   const [events, setEvents] = useState([]);
   const [requests, setRequests] = useState([]);
   const [facilities, setFacilities] = useState({});
@@ -44,9 +44,11 @@ const CalendarPage = () => {
     const fetchReservations = async () => {
       try {
         const response = await axios.get(
-          "http://localhost:3000/api/reservations/pure"
+          `http://localhost:3000/api/reservations/pure/${currentId}`
         );
         const reservations = response.data;
+        //console.log("reservations", reservations);
+        
 
         if (Array.isArray(reservations)) {
           const formattedRequests = reservations.map((reservation) => {

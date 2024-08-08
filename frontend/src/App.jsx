@@ -16,24 +16,25 @@ import CalendarPage from "./components/Calendar/CalendarPage";
 import ParentComp from "./components/Calendar/parentComp";
 
 const AuthStatus = () => {
-  const { currentUser, userLoggedIn, loading } = useAuth();
+  const { currentUser, userLoggedIn, loading, currentId } = useAuth();
 
   useEffect(() => {
-    console.log(currentUser?.email, userLoggedIn, loading);
-  }, [currentUser, userLoggedIn, loading]);
+    console.log(currentUser, userLoggedIn, loading, currentId);
+    console.log("currentUser, userLoggedIn, loading,", currentId);
+  }, [currentUser, userLoggedIn, loading, currentId]);
 
   return null;
 };
 
 const AppRoutes = () => {
-  const { userLoggedIn } = useAuth();
+  const { userLoggedIn, currentId } = useAuth();
 
   return (
     <Routes>
       <Route path="/login" element={<Login />} />
       <Route path="/reset-password" element={<ResetPassword />} />
 
-      <Route exact path="/calendar" element={<CalendarPage />} />
+      <Route exact path="/calendar" element={<CalendarPage currentId={currentId} />} />
 
       {userLoggedIn ? (
         <>

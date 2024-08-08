@@ -43,7 +43,7 @@ export const verifyUser = async (req, res) => {
       }
     }*/
 
-    return res.status(201).json({ isValid: (user && true) || false });
+    return res.status(201).json({ isValid: (user && true) || false, id :user._id });
   } catch (error) {
     console.log(error);
     res.status(500).json({ message: "Server error", error });
