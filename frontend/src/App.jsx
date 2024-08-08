@@ -30,29 +30,45 @@ const AppRoutes = () => {
 
   return (
     <Routes>
-
       <Route path="/login" element={<Login />} />
       <Route path="/reset-password" element={<ResetPassword />} />
-  
+
       <Route exact path="/calendar" element={<CalendarPage />} />
 
       {userLoggedIn ? (
         <>
-        <Route path="/feedback" element={<GiveFeedback />} />
-  
-      <Route exact path="/event" element={<EventForm />} />
-        <Route path="/profile" element={<Profile />} />
+          <Route path="/feedback" element={<GiveFeedback />} />
+
+          <Route exact path="/event" element={<EventForm />} />
+          <Route path="/profile" element={<Profile />} />
           <Route path="/navbar" element={<Navbar />} />
           <Route exact path="/reserver" element={<ParentComponent />} />
-          <Route exact path="/reservation" element={<ParentComp/>} />
+          <Route exact path="/reservation" element={<ParentComp />} />
 
-          <Route exact path="/reserver/ReserverTimeDate" element={<ReserverTimeDate />} />
-            <Route exact path="/reserver/ReserverSalleform" element={<ReserverSalleform />} />
-            <Route exact path="/reserver/DetailsReservation" element={<ReservationDetails />} />
+          <Route
+            exact
+            path="/reserver/ReserverTimeDate"
+            element={<ReserverTimeDate />}
+          />
+          <Route
+            exact
+            path="/reserver/ReserverSalleform"
+            element={<ReserverSalleform />}
+          />
+          <Route
+            exact
+            path="/reserver/DetailsReservation"
+            element={<ReservationDetails />}
+          />
+
+
+      <Route path="*" element={<Navigate to="/calendar" />} />
+
         </>
       ) : (
         <Route path="*" element={<Navigate to="/login" />} />
       )}
+      <Route path="*" element={<Navigate to="/login" />} />
     </Routes>
   );
 };
