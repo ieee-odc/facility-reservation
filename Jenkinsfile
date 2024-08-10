@@ -2,7 +2,6 @@ node {
   stage('SCM') {
     checkout scm
   }
-
   stage('Backend') {
     dir('backend') {
       stage('Install Backend Dependencies') {
