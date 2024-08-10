@@ -2,18 +2,11 @@ node {
   stage('SCM') {
     checkout scm
   }
+  
   stage('Backend') {
     dir('backend') {
-      stage('Install Backend Dependencies') {
-        sh 'npm install'
-      }
-
-      /*stage('Build Backend') {
-      }*/
-
-      stage('Test Backend') {
-        sh 'npm test --coverage'
-      }
+      sh 'npm install'
+      sh 'npm test'
     }
   }
   
