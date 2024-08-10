@@ -8,7 +8,6 @@
     "test": "dotenv -e .env.test nyc ava --timeout=3m",
     "coverage": "dotenv -e .env.test nyc ava",
     "coverage:report": "dotenv -e .env.test nyc report --reporter=html"
-    
   },
   "keywords": [],
   "author": "",
