@@ -34,15 +34,18 @@ const AppRoutes = () => {
       <Route path="/login" element={<Login />} />
       <Route path="/reset-password" element={<ResetPassword />} />
 
-      <Route exact path="/calendar" element={<CalendarPage currentId={currentId} />} />
-
       {userLoggedIn ? (
         <>
-          <Route path="/feedback" element={<GiveFeedback />} />
+          <Route exact path="/feedback" element={<GiveFeedback />} />
+          <Route
+            exact
+            path="/calendar"
+            element={<CalendarPage currentId={currentId} />}
+          />
 
           <Route exact path="/event" element={<EventForm />} />
-          <Route path="/profile" element={<Profile />} />
-          <Route path="/navbar" element={<Navbar />} />
+          <Route exact path="/profile" element={<Profile />} />
+          <Route exact path="/navbar" element={<Navbar />} />
           <Route exact path="/reserver" element={<ParentComponent />} />
           <Route exact path="/reservation" element={<ParentComp />} />
 
@@ -62,9 +65,7 @@ const AppRoutes = () => {
             element={<ReservationDetails />}
           />
 
-
-      <Route path="*" element={<Navigate to="/calendar" />} />
-
+          <Route path="*" element={<Navigate to="/calendar" />} />
         </>
       ) : (
         <Route path="*" element={<Navigate to="/login" />} />
