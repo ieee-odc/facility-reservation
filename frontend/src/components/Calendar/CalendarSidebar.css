@@ -1,0 +1,185 @@
+.calendar-sidebar {
+  width: 100%;
+  padding: 30px;
+  box-sizing: border-box;
+  display: grid;
+  background: rgb(1, 63, 121);
+  background: rgb(1, 53, 101);
+
+
+  color:white;
+  min-height: 100%;
+  overflow-y: auto; 
+  max-height: 100vh;
+}
+
+
+.calendar-sidebar {
+  width: 100%;
+  min-height: 90%;
+  overflow-y: auto; 
+  max-height: calc(100vh - 10vh);
+}
+
+
+
+
+.calendar-sidebar::-webkit-scrollbar {
+  width: 12px;
+}
+
+/* Track */
+.calendar-sidebar::-webkit-scrollbar-track {
+  border-radius: 10px;
+  background: #A2A2A6;
+}
+
+/* Handle */
+.calendar-sidebar::-webkit-scrollbar-thumb {
+  background: #dbdada;
+  border-radius: 10px;
+  cursor: grab;
+}
+.calendar-sidebar::-webkit-scrollbar-thumb:active {
+  background: #dbdada;
+  border-radius: 10px;
+  cursor: grabbing;
+}
+
+/* Handle on hover */
+.calendar-sidebar::-webkit-scrollbar-thumb:hover {
+  background: #bcbcbc;
+  transition: cursor 4s ease-in-out;
+}
+
+
+
+
+
+
+
+.calendar-sidebar__calendar-container {
+  width: 100%;
+  max-width: 300px;
+  margin-bottom: 0px;
+}
+
+.calendar-sidebar__events,
+.calendar-sidebar__holidays,
+.calendar-sidebar__upcoming-holidays {
+  margin-bottom: 0px;
+  width: 100%;
+  max-width: 300px; 
+}
+
+.calendar-sidebar__events ul,
+.calendar-sidebar__holidays ul,
+.calendar-sidebar__upcoming-holidays ul {
+  list-style: none;
+  padding: 0;
+}
+
+.calendar-sidebar__events li,
+.calendar-sidebar__holidays li,
+.calendar-sidebar__upcoming-holidays li {
+  margin-bottom: 5px;
+}
+
+.calendar-holiday-badge {
+  background-color: red;
+  display: inline-block;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+}
+
+.calendar-todo-item-badge {
+  background-color: blue;
+  display: inline-block;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+}
+
+.calendar-sidebar__calendar-container .rs-calendar {
+  font-size: 0.8em; 
+}
+
+.calendar-sidebar__calendar-container .rs-calendar-header,
+.calendar-sidebar__calendar-container .rs-calendar-table {
+  width: 100%;
+  margin: 0 auto; 
+}
+
+.calendar-sidebar__calendar-container .rs-calendar-table-cell-content {
+  height: 20px;
+  line-height: 20px; 
+}
+
+.calendar-sidebar__calendar-container .rs-calendar-table-header-cell,
+.calendar-sidebar__calendar-container .rs-calendar-table-row {
+  height: 30px; 
+}
+
+
+.rs-calendar-table-cell-content:hover{
+  background-color: rgb(168, 173, 198);
+}
+.rs-calendar-panel .rs-calendar-table-cell-is-today .rs-calendar-table-cell-day {
+  background: #3498FF;
+}
+
+.rs-calendar-panel .rs-calendar-table-header-row .rs-calendar-table-header-cell-content {
+
+  color: white;
+}
+
+.rs-calendar-table-cell-disabled .rs-calendar-table-cell-content, .rs-calendar-table-cell-disabled .rs-calendar-table-cell-content:hover, .rs-calendar-table-cell-disabled .rs-calendar-table-header-cell-content, .rs-calendar-table-cell-disabled .rs-calendar-table-header-cell-content:hover, .rs-calendar-table-cell-un-same-month .rs-calendar-table-cell-content, .rs-calendar-table-cell-un-same-month .rs-calendar-table-cell-content:hover, .rs-calendar-table-cell-un-same-month .rs-calendar-table-header-cell-content, .rs-calendar-table-cell-un-same-month .rs-calendar-table-header-cell-content:hover, .rs-calendar-table-header-cell-disabled .rs-calendar-table-cell-content, .rs-calendar-table-header-cell-disabled .rs-calendar-table-cell-content:hover, .rs-calendar-table-header-cell-disabled .rs-calendar-table-header-cell-content, .rs-calendar-table-header-cell-disabled .rs-calendar-table-header-cell-content:hover, .rs-calendar-table-header-cell-un-same-month .rs-calendar-table-cell-content, .rs-calendar-table-header-cell-un-same-month .rs-calendar-table-cell-content:hover, .rs-calendar-table-header-cell-un-same-month .rs-calendar-table-header-cell-content, .rs-calendar-table-header-cell-un-same-month .rs-calendar-table-header-cell-content:hover {
+  color: #8f8f91 ;
+}
+
+.radio-button {
+  -webkit-box-sizing: border-box !important;
+  box-sizing: content-box !important;
+  padding: 50px !important;
+  background-color: #ff4400;
+}
+/* CalendarSidebar.css */
+.event-dot {
+  height: 10px;
+  width: 10px;
+  border-radius: 50%;
+  display: inline-block;
+  margin-right: 8px;
+}
+
+.pending {
+  background-color: orange;
+}
+
+.approved {
+  background-color: green;
+}
+
+.rejected {
+  background-color: red;
+}
+
+.cancelled {
+  background-color: grey;
+}
+.rs-calendar-header-title .rs-calendar-header-title-date .rs-btn .rs-btn-subtle .rs-btn-sm{
+  color: white;
+
+}
+.rs-btn-subtle {
+  background-color: white;
+  border: none;
+  color: #343434;
+  color: var(--rs-btn-subtle-text);}
+  .calendar-todo-item-badge {
+    background-color: white;
+    display: inline-block;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;}

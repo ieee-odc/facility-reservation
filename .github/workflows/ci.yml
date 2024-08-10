@@ -1,0 +1,52 @@
+name: CI/CD Pipeline
+
+on:
+  push:
+    branches:
+      - feature/user-reservation-P3-9
+    paths-ignore:
+      - '**.md'
+
+jobs:
+  backend-build:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: backend
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js 
+        uses: actions/setup-node@v4
+        with:
+            node-version: '20.x'
+      - name: Install dependencies
+        run: npm install
+
+  test-backend:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: backend
+    needs: backend-build
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js 
+        uses: actions/setup-node@v4
+        with:
+            node-version: '20.x'
+
+      - name: Install dependencies
+        run: npm install      
+        
+      - name: Launch test
+        run: npm test
+        env: 
+          MONGODB_URL: ${{secrets.MONGODB_URL_TEST}}
+                  
+

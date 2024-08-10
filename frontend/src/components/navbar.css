@@ -1,0 +1,281 @@
+@import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600&display=swap');
+
+.web-logo > img{
+  width: 160px;
+  margin:0px;
+}
+
+.navbar-container {
+  position: sticky;
+  background-color: #fff;
+  z-index: 1000;
+  max-width: 2000px;
+  margin: 0 auto;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 50px;
+  padding: 0.6rem;
+  box-shadow: 0 0px 3px rgba(0, 0, 0, 0.1);
+  font-family: 'Open Sans', sans-serif;
+  top: 0%;
+}
+
+.navbar-container img:hover {
+  opacity: 0.7;
+  cursor: pointer;
+  transform: scale(1.1);
+  transition: transform 0.3s, opacity 0.3s;
+}
+
+.navbar-menu-item:hover {
+  background-color: #f0f0f0;
+}
+
+.navbar-left {
+  display: flex;
+  align-items: center;
+  color: #4b5563;
+}
+
+.navbar-logo {
+  font-size: 2rem;
+  padding-left: 0.5rem;
+  padding-right: 0.5rem;
+}
+
+.navbar-logo-sm {
+  font-size: 3rem;
+}
+
+.navbar-logo-lg {
+  font-size: 4rem;
+}
+
+.navbar-toggle {
+  cursor: pointer;
+  margin-left: 20px;
+}
+
+.navbar-search {
+  background-color: #e5e7eb;
+  border-radius: 9999px;
+  display: flex;
+  align-items: center;
+  padding-left: 0.5rem;
+  width: 200px;
+}
+
+.navbar-search-sm {
+  width: 400px;
+}
+
+.navbar-search-lg {
+  width: 500px;
+}
+
+.navbar-search-input {
+  background: transparent;
+  padding: 0.5rem;
+  width: 100%;
+  border: none;
+  outline: none;
+}
+
+.navbar-cart-button {
+  background-color: #000;
+  color: #fff;
+  display: none;
+  align-items: center;
+  padding: 0.5rem 1.25rem;
+  border-radius: 9999px;
+  border: 1px solid #000;
+}
+
+.navbar-cart-button-md {
+  display: flex;
+}
+
+.navbar-overlay {
+  background: rgba(0, 0, 0, 0.8);
+  position: relative;
+  width: 100%;
+  height: 100vh;
+  z-index: 10;
+  top: 0;
+  left: 0;
+}
+
+.navbar-drawer {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 300px;
+  height: 100vh;
+  background: #fff;
+  z-index: 10;
+  transition: left 0.3s;
+}
+
+.navbar-drawer-hidden {
+  left: -100%;
+}
+
+.navbar-close-icon {
+  position: absolute;
+  right: 1rem;
+  top: 1rem;
+  cursor: pointer;
+  color: #4b5563;
+}
+
+.navbar-menu {
+  padding-left: 1rem;
+  color: #4b5563;
+}
+
+.navbar-menu-item {
+  font-size: 1rem;
+  display: flex;
+  cursor: pointer;
+  width: 80%;
+  border-radius: 5px;
+  margin: 0.5 0rem;
+  padding: 1rem;
+  transition: background 0.3s, color 0.3s;
+}
+
+.navbar-menu-item > * {
+  margin-right: 20px;
+}
+
+.navbar-menu-item:hover {
+  color: #0c66e4;
+  background: #e9f2ff;
+}
+
+.font-bold {
+  color: #0950b4;
+  margin-right: 50px;
+  font-family: 'Open Sans', sans-serif; 
+  font-size: smaller;
+}
+
+.font-fine {
+  color: #0950b4;
+  margin-right: 50px;
+  font-weight: 350;
+  font-size: 13px;
+  font-family: 'Open Sans', sans-serif; 
+}
+
+.top {
+  display: flex;
+  align-items: center;
+  /*padding: 5%;*/
+}
+
+.navbar-header {
+  display: flex;
+  align-items: center;
+  margin: 2rem;
+  margin-bottom: 4rem;
+  font-size: 2rem;
+  position: relative;
+  top: 30px;
+}
+
+.navbar-name {
+  display: flex;
+  align-items: center;
+  margin-right: 10px;
+}
+
+.navbar-separator {
+  width: 2px;
+  height: 50px;
+  background-color: #000;
+  margin: 0 10px;
+  background: linear-gradient(0deg, rgba(101,84,240,1) 0%,  rgba(110,226,245,1) 100%);
+}
+
+.navbar-logo-image {
+  height: 70px;
+  width: 70px;
+  margin-left: 0px;
+}
+
+.profile-icons {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  cursor: pointer;
+  color: #778499;
+  margin-right: 30px;
+}
+
+.profile-card,
+.settings-card {
+  position: absolute;
+  top: 40px;
+  right: 0;
+  background-color: white;
+  border: 1px solid #ddd;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  width: 300px;
+  padding: 15px;
+  z-index: 1000;
+  border-radius: 5px;
+}
+
+.profile-card-header {
+  text-align: center;
+}
+
+.profile-card-body {
+  margin-top: 10px;
+}
+
+.profile-card-button {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  font-size: 15px;
+  background-color: #f5f5f5;
+  border: none;
+  padding: 6px;
+  text-align: center;
+  border-radius: 5px;
+  cursor: pointer;
+  margin-bottom: 5px;
+  transition: background-color 0.3s;
+}
+
+.button-icon {
+  margin-right: 8px;
+  height: 18px;
+  width: 18px;
+}
+
+.profile-card-button:hover {
+  color: #0c66e4;
+  background: #e9f2ff;
+}
+
+.email {
+  font-size: 16px;
+}
+
+.card-title {
+  color: #434343;
+  margin-bottom: 30px;
+  margin-top: 0px;
+  font-size: larger;
+}
+.email-card-title {
+  color: #434343;
+  margin-bottom: 30px;
+  margin-top: 0px;
+  font-size: smaller;
+}
