@@ -6,6 +6,7 @@
   "scripts": {
     "start": "nodemon --env-file=.env server.js",
     "test": "dotenv -e .env.test ava --timeout=3m"
+    
   },
   "keywords": [],
   "author": "",
