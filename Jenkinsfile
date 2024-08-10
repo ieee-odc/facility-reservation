@@ -6,7 +6,7 @@ node {
   stage('Backend') {
     dir('backend') {
       sh 'npm install'
-      sh 'npm run cover'
+      sh 'npm run coverage'
     }
   }
   
