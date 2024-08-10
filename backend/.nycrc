@@ -6,9 +6,10 @@
   ],
   "all": true,
   "include": [
-    "src/**/*.js"
+    "**/*.js"
   ],
   "exclude": [
     "test/**/*.js"
   ]
+
 }
