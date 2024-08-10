@@ -2,11 +2,11 @@ node {
   stage('SCM') {
     checkout scm
   }
-  
+
   stage('Backend') {
     dir('backend') {
       sh 'npm install'
-      sh 'npm test'
+      sh 'npm run cover'
     }
   }
   

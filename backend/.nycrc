@@ -1,7 +1,8 @@
 {
   "reporter": [
     "lcov",
-    "text"
+    "text",
+    "clover"
   ],
   "all": true,
   "include": [
@@ -9,7 +10,5 @@
   ],
   "exclude": [
     "test/**/*.js"
-  ],
-  "sourceMap": false,
-  "instrument": true
+  ]
 }
