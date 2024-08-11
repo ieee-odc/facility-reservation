@@ -5,15 +5,14 @@
   "type": "module",
   "scripts": {
     "start": "nodemon --env-file=.env server.js",
-    "test": "dotenv -e .env.test nyc ava --timeout=3m",
-    "coverage": "dotenv -e .env.test nyc --reporter=html --reporter=text ava",
-    "coverage:report": "dotenv -e .env.test nyc report --reporter=html"
+    "test": "dotenv -e .env.test ava --timeout=3m",
+    "test:coverage": "dotenv -e .env.test nyc ava --timeout=3m"
   },
   "nyc": {
-    "extension": [".js", ".jsx"],
-    "reporter": ["html", "text"],
-    "include": ["**/*.js"],
-    "exclude": ["test/*.js"]
+    "reporter": ["text", "lcov"],
+    "extension": [".js"],
+    "include": ["controllers/**/*.js", "models/**/*.js"],
+    "exclude": ["**/node_modules/**", "**/test/**"]
   },
   "keywords": [],
   "author": "",
