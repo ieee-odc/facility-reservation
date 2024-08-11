@@ -1,6 +1,5 @@
-// src/components/BigCalendarComponent.js
-
 import React, { useState, useEffect } from 'react';
+import PropTypes from 'prop-types';
 import { Calendar, momentLocalizer } from 'react-big-calendar';
 import moment from 'moment';
 import 'react-big-calendar/lib/css/react-big-calendar.css';
@@ -135,6 +134,13 @@ const BigCalendarComponent = ({ events, requests, viewType, currentId }) => {
       )}
     </div>
   );
+};
+
+BigCalendarComponent.propTypes = {
+  events: PropTypes.array.isRequired,
+  requests: PropTypes.array,
+  viewType: PropTypes.string.isRequired,
+  currentId: PropTypes.string.isRequired,
 };
 
 export default BigCalendarComponent;

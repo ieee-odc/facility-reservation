@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import PropTypes from "prop-types";
 import Navbar from "../navbar";
 import CalendarSidebar from "./CalendarSidebar";
 import "./style.css";
@@ -9,12 +10,12 @@ import "rsuite/dist/rsuite.min.css";
 import { useNavigate } from "react-router-dom";
 import ParentComponent from "./parentComp";
 
-const CalendarPage = ({currentId}) => {
+const CalendarPage = ({ currentId }) => {
   const [events, setEvents] = useState([]);
   const [requests, setRequests] = useState([]);
   const [facilities, setFacilities] = useState({});
   const [viewType, setViewType] = useState("requests");
-  const [isParentModalOpen, setParentModalOpen] = useState(false);
+  const [isParentModalOpen, setIsParentModalOpen] = useState(false);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -47,8 +48,6 @@ const CalendarPage = ({currentId}) => {
           `http://localhost:3000/api/reservations/pure/${currentId}`
         );
         const reservations = response.data;
-        //console.log("reservations", reservations);
-        
 
         if (Array.isArray(reservations)) {
           const formattedRequests = reservations.map((reservation) => {
@@ -123,7 +122,7 @@ const CalendarPage = ({currentId}) => {
   };
 
   const handleNewReservation = () => {
-    setParentModalOpen(true);
+    setIsParentModalOpen(true);
   };
 
   const handleNewEvent = () => {
@@ -188,11 +187,15 @@ const CalendarPage = ({currentId}) => {
       </div>
       <ParentComponent
         isOpen={isParentModalOpen}
-        onRequestClose={() => setParentModalOpen(false)}
+        onRequestClose={() => setIsParentModalOpen(false)}
         currentId={currentId}
       />
     </div>
   );
+};
+
+CalendarPage.propTypes = {
+  currentId: PropTypes.string.isRequired,
 };
 
 export default CalendarPage;

@@ -264,10 +264,8 @@ export const findEventWithReservations = async (req, res) => {
 export const findAllRelatedEventstWithReservations = async (req, res) => {
   try {
 
-    const {id} = req.params; //organizer
-    const events = await Event.find({organizer: id}).exec();
-    //console.log("events", events);
-    
+    const {id} = req.params;
+    const events = await Event.find({organizer: id}).exec();    
 
     const eventsWithReservations = await Promise.all(
       events.map(async (event) => {
