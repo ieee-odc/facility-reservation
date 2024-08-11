@@ -1,11 +1,8 @@
 import React, { useState, useEffect, useRef } from "react";
 import axios from "axios";
 import "../Reserver.css";
-//import Navbar from "./navbar";
 import { IoArrowBackOutline } from "react-icons/io5";
-import { IoMdClose } from "react-icons/io";
 import { GrAttachment } from "react-icons/gr";
-import moment from 'moment';
 
 const ReserverSalleform = ({ onSubmit, onBack, date, time }) => {
   const [facility, setFacility] = useState("");
@@ -82,7 +79,7 @@ const ReserverSalleform = ({ onSubmit, onBack, date, time }) => {
     setErrors(newErrors);
 
     if (Object.keys(newErrors).length === 0) {
-      const motifToSend = motif ? motif : otherMotif;
+      const motifToSend = motif || otherMotif;
       onSubmit(formData.facility, motifToSend);
     }
   };

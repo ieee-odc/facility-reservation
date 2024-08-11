@@ -55,21 +55,8 @@
   width: 100%;
   padding: 30px;
   box-sizing: border-box;
-}
-
-
-.big-calendar {
   height: 110%;
 }
-
-/*.big-calendar{
-  width: 100%;
-  min-height: 90%;
-  overflow-y: auto; 
-  max-height: calc(100vh - 10vh);
-}
-*/
-
 
 .calendar-page_calendar::-webkit-scrollbar {
   width: 12px;

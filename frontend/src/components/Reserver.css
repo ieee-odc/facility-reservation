@@ -14,10 +14,6 @@ body {
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   border-radius: 8px;
 }
-/*.container3 {
-
-  min-height:630px;
-}*/
 
 .container3 {
   max-height: 70vh !important;
@@ -51,17 +47,6 @@ body {
   background: #bcbcbc;
   transition: cursor 4s ease-in-out;
 }
-
-
-
-
-
-
-
-
-
-
-
 
 .form-title-container {
   text-align: center;

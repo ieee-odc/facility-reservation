@@ -70,12 +70,12 @@ const AuthProvider = ({ children }) => {
     return unsubscribe;
   }, []);
 
-  const value = {
+  const value = useMemo(() => ({
     currentUser,
     currentId,
     userLoggedIn,
     loading,
-  };
+  }), [currentUser, currentId, userLoggedIn, loading]);
 
   return (
     <AuthContext.Provider value={value}>

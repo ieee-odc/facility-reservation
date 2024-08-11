@@ -1,5 +1,4 @@
 import { ReservationInitiator } from "../models/reservationInitiatorModel.js";
-import generateToken from "../utils/generateToken.js";
 import bcrypt from "bcryptjs";
 
 const authUser = async (req, res) => {
@@ -14,7 +13,6 @@ const authUser = async (req, res) => {
       res.json({
         _id: user._id,
         email: user.email,
-        //token: generateToken(user._id),
       });
     } else {
       res.status(401).json({ message: "Invalid email or password" });
@@ -27,7 +25,6 @@ const authUser = async (req, res) => {
 
 export const verifyUser = async (req, res) => {
   const { email, password, method } = req.body;
-  // any google emailPassword
   console.log("email", email, password, method);
   try {
     const user = await ReservationInitiator.findOne({ email }).select(
@@ -35,15 +32,6 @@ export const verifyUser = async (req, res) => {
     );
     console.log("user", user);
 
-    /*if (password !== "") {
-      const validPassword = await bcrypt.compare(password, user.password);
-      console.log(user.password);
-      if (!validPassword) {
-        return res.status(401).send({ message: "Invalid creds" });
-      }
-    }*/
-
-    //return res.status(201).json({ isValid: (user && true) || false, id :user._id });
     return res.status(201).json({ isValid: (user!==null && user!==undefined), id :user._id });
   } catch (error) {
     console.log(error);

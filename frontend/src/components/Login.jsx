@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { MdLockOutline, MdInfoOutline, MdClose } from "react-icons/md";
+import { MdLockOutline, MdInfoOutline, MdClose, MdOutlineEmail } from "react-icons/md";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useNotification } from ".././context/NotificationContext";
 import "./styles.css";
@@ -9,7 +9,6 @@ import {
   doSignInWithMicrosoft
 } from "../config/auth";
 import logo from "./../assets/logo/Group3.svg";
-import { MdOutlineEmail } from "react-icons/md";
 
 const Login = () => {
   const blockquoteStyle = {

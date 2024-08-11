@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import { MdEmail } from "react-icons/md";
 import { getAuth, sendPasswordResetEmail } from "firebase/auth";
 import { useNavigate } from "react-router-dom";
 import "./styles.css";
