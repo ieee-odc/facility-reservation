@@ -13,7 +13,7 @@ node {
   stage('SonarQube Analysis') {
     def scannerHome = tool 'SonarScanner';
     withSonarQubeEnv() {
-      sh "${scannerHome}/bin/sonar-scanner -Dsonar.javascript.lcov.reportPaths=backend/coverage/lcov.info -Dsonar.clover.reportPath=backend/coverage/clover.xml -Dsonar.coverage.clover.xmlReportPaths=backend/coverage/clover.xml"
+      sh "${scannerHome}/bin/sonar-scanner"
     }
   }
 }
