@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useEffect, useState } from "react";
+import React, { createContext, useContext, useEffect, useMemo, useState } from "react";
 import { onAuthStateChanged } from "firebase/auth";
 import { auth } from "../../config/firebase-config.js";
 import axios from "axios";
@@ -32,8 +32,8 @@ export const verifyAuth = async (email,password, method) => {
       "http://localhost:3000/api/reservationInitiators/verify-user",
       { email, password,method }
     );
-    console.log("res auth provider", res.data);
-    return res.data.isValid;
+    console.log("res auth provider ", res.data);
+    return res.data;
   } catch (error) {
     console.error("Error verifying user:", error);
     return false;
@@ -42,14 +42,18 @@ export const verifyAuth = async (email,password, method) => {
 
 const AuthProvider = ({ children }) => {
   const [currentUser, setCurrentUser] = useState(null);
+  const [currentId, setCurrentId] = useState(null);
   const [userLoggedIn, setUserLoggedIn] = useState(false);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, async (user) => {
       if (user) {
-        const isValid = await verifyAuth(user.email,'' ,'any');
+        const {isValid, id} = await verifyAuth(user.email,'' ,'any');
+        console.log("the id", id);
+        
         if (isValid) {
+          setCurrentId(id)
           setCurrentUser(user);
           setUserLoggedIn(true);
         } else {
@@ -57,6 +61,7 @@ const AuthProvider = ({ children }) => {
           setUserLoggedIn(false);
         }
       } else {
+        setCurrentId(null)
         setCurrentUser(null);
         setUserLoggedIn(false);
       }
@@ -65,11 +70,12 @@ const AuthProvider = ({ children }) => {
     return unsubscribe;
   }, []);
 
-  const value = {
+  const value = useMemo(() => ({
     currentUser,
+    currentId,
     userLoggedIn,
     loading,
-  };
+  }), [currentUser, currentId, userLoggedIn, loading]);
 
   return (
     <AuthContext.Provider value={value}>

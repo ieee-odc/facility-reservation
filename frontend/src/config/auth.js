@@ -9,6 +9,7 @@ import {
   GoogleAuthProvider,
   signInWithPopup,
   signOut,
+  OAuthProvider
 } from "firebase/auth";
 
 export const doSignInWithGoogle = async () => {
@@ -31,40 +32,11 @@ export const doSignInWithGoogle = async () => {
     console.log(error);
   }
 };
+export const doSignInWithMicrosoft = async () => {
+ //guidance here
+};
 
 export const doSignInWithEmailAndPassword = async (email, password) => {
-  /*try {
-    let userCred;
-    signInWithEmailAndPassword(auth, email, password)
-      .then(async (user) => {
-        userCred = user;
-        console.log("user cred1", userCred);
-        if (userCred) {
-          const isValid = await verifyAuth(
-            userCred.user.email,
-            password,
-            "emailPassword"
-          );
-          if (!isValid) {
-            await signOut(auth);
-            clearFirebaseLocalStorageDb();
-            console.log("User email is not verified. Signed out.");
-          } else {
-            console.log("User email is verified.");
-          }
-          return isValid;
-        }
-      })
-      .catch((error) => {
-        console.log("error here", error);
-      });
-
-    return false;
-  } catch (error) {
-    clearFirebaseLocalStorageDb();
-    console.log("global error", error);
-  }*/
-
   try {
     const userCred = await signInWithEmailAndPassword(auth, email, password);
     console.log("userCred 1 ",userCred);

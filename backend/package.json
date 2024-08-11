@@ -5,7 +5,14 @@
   "type": "module",
   "scripts": {
     "start": "nodemon --env-file=.env server.js",
-    "test": "dotenv -e .env.test ava --timeout=3m"
+    "test": "dotenv -e .env.test ava --timeout=3m",
+    "test:coverage": "dotenv -e .env.test nyc ava --timeout=3m"
+  },
+  "nyc": {
+    "reporter": ["text", "lcov"],
+    "extension": [".js"],
+    "include": ["controllers/**/*.js", "models/**/*.js"],
+    "exclude": ["**/node_modules/**", "**/test/**"]
   },
   "keywords": [],
   "author": "",
@@ -31,5 +38,8 @@
     "nodemon": "^3.1.4",
     "react-tooltip": "^5.27.1",
     "supertest": "^7.0.0"
+  },
+  "devDependencies": {
+    "nyc": "^17.0.0"
   }
 }

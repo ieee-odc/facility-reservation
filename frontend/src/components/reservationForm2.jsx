@@ -82,7 +82,7 @@ const ReserverSalleform = ({ onSubmit, onBack, date, time }) => {
     setErrors(newErrors);
 
     if (Object.keys(newErrors).length === 0) {
-      const motifToSend = motif ? motif : otherMotif;
+      const motifToSend = motif || otherMotif;
       onSubmit(formData.facility, motifToSend);
     }
   };

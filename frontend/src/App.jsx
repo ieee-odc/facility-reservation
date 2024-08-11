@@ -16,43 +16,74 @@ import CalendarPage from "./components/Calendar/CalendarPage";
 import ParentComp from "./components/Calendar/parentComp";
 
 const AuthStatus = () => {
-  const { currentUser, userLoggedIn, loading } = useAuth();
+  const { currentUser, userLoggedIn, loading, currentId } = useAuth();
 
   useEffect(() => {
-    console.log(currentUser?.email, userLoggedIn, loading);
-  }, [currentUser, userLoggedIn, loading]);
+    console.log(currentUser, userLoggedIn, loading, currentId);
+    console.log("currentUser, userLoggedIn, loading,", currentId);
+  }, [currentUser, userLoggedIn, loading, currentId]);
 
   return null;
 };
 
 const AppRoutes = () => {
-  const { userLoggedIn } = useAuth();
+  const { userLoggedIn, currentId } = useAuth();
 
   return (
     <Routes>
-
       <Route path="/login" element={<Login />} />
       <Route path="/reset-password" element={<ResetPassword />} />
-  
-      <Route exact path="/calendar" element={<CalendarPage />} />
 
       {userLoggedIn ? (
         <>
-        <Route path="/feedback" element={<GiveFeedback />} />
-  
-      <Route exact path="/event" element={<EventForm />} />
-        <Route path="/profile" element={<Profile />} />
-          <Route path="/navbar" element={<Navbar />} />
-          <Route exact path="/reserver" element={<ParentComponent />} />
-          <Route exact path="/reservation" element={<ParentComp/>} />
+          <Route exact path="/feedback" element={<GiveFeedback />} />
+          <Route
+            exact
+            path="/calendar"
+            element={<CalendarPage currentId={currentId} />}
+          />
 
-          <Route exact path="/reserver/ReserverTimeDate" element={<ReserverTimeDate />} />
-            <Route exact path="/reserver/ReserverSalleform" element={<ReserverSalleform />} />
-            <Route exact path="/reserver/DetailsReservation" element={<ReservationDetails />} />
+          <Route
+            exact
+            path="/event"
+            element={<EventForm currentId={currentId} />}
+          />
+          <Route
+            exact
+            path="/profile"
+            element={<Profile currentId={currentId} />}
+          />
+          <Route exact path="/navbar" element={<Navbar />} />
+          <Route
+            exact
+            path="/reserver"
+            element={<ParentComponent currentId={currentId} />}
+          />
+                
+          <Route exact path="/reservation" element={<ParentComp />} />
+
+          <Route
+            exact
+            path="/reserver/ReserverTimeDate"
+            element={<ReserverTimeDate />}
+          />
+          <Route
+            exact
+            path="/reserver/ReserverSalleform"
+            element={<ReserverSalleform />}
+          />
+          <Route
+            exact
+            path="/reserver/DetailsReservation"
+            element={<ReservationDetails />}
+          />
+
+          <Route path="*" element={<Navigate to="/calendar" />} />
         </>
       ) : (
         <Route path="*" element={<Navigate to="/login" />} />
       )}
+      <Route path="*" element={<Navigate to="/login" />} />
     </Routes>
   );
 };

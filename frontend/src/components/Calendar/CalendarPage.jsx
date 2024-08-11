@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import PropTypes from "prop-types";
 import Navbar from "../navbar";
 import CalendarSidebar from "./CalendarSidebar";
 import "./style.css";
@@ -7,14 +8,14 @@ import axios from "axios";
 import { Dropdown } from "rsuite";
 import "rsuite/dist/rsuite.min.css";
 import { useNavigate } from "react-router-dom";
-import ParentComponent from "./parentComp"; // Import the parent component
+import ParentComponent from "./parentComp";
 
-const CalendarPage = () => {
+const CalendarPage = ({ currentId }) => {
   const [events, setEvents] = useState([]);
   const [requests, setRequests] = useState([]);
   const [facilities, setFacilities] = useState({});
   const [viewType, setViewType] = useState("requests");
-  const [isParentModalOpen, setParentModalOpen] = useState(false);
+  const [isParentModalOpen, setIsParentModalOpen] = useState(false);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -44,7 +45,7 @@ const CalendarPage = () => {
     const fetchReservations = async () => {
       try {
         const response = await axios.get(
-          "http://localhost:3000/api/reservations/pure"
+          `http://localhost:3000/api/reservations/pure/${currentId}`
         );
         const reservations = response.data;
 
@@ -80,7 +81,7 @@ const CalendarPage = () => {
     const fetchEvents = async () => {
       try {
         const response = await axios.get(
-          "http://localhost:3000/api/events/reservations"
+          `http://localhost:3000/api/events/reservation/${currentId}`
         );
         const reservations = response.data;
         if (Array.isArray(reservations)) {
@@ -121,7 +122,7 @@ const CalendarPage = () => {
   };
 
   const handleNewReservation = () => {
-    setParentModalOpen(true);
+    setIsParentModalOpen(true);
   };
 
   const handleNewEvent = () => {
@@ -178,6 +179,7 @@ const CalendarPage = () => {
                 events={events}
                 requests={requests}
                 viewType={viewType}
+                currentId={currentId}
               />
             </div>
           </div>
@@ -185,10 +187,15 @@ const CalendarPage = () => {
       </div>
       <ParentComponent
         isOpen={isParentModalOpen}
-        onRequestClose={() => setParentModalOpen(false)}
+        onRequestClose={() => setIsParentModalOpen(false)}
+        currentId={currentId}
       />
     </div>
   );
+};
+
+CalendarPage.propTypes = {
+  currentId: PropTypes.string.isRequired,
 };
 
 export default CalendarPage;

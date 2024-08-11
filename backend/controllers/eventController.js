@@ -261,6 +261,27 @@ export const findEventWithReservations = async (req, res) => {
   }
 };
 
+export const findAllRelatedEventstWithReservations = async (req, res) => {
+  try {
+
+    const {id} = req.params;
+    const events = await Event.find({organizer: id}).exec();    
+
+    const eventsWithReservations = await Promise.all(
+      events.map(async (event) => {
+        const reservations = await Reservation.find({
+          event: event._id,
+        }).exec();
+        return { ...event.toObject(), reservations: reservations };
+      })
+    );
+
+    res.status(200).json(eventsWithReservations);
+  } catch (error) {
+    console.error("Error fetching events with reservations:", error);
+    res.status(500).json({ message: "Server error" });
+  }
+};
 export const findAllEventstWithReservations = async (req, res) => {
   try {
     const events = await Event.find().exec();

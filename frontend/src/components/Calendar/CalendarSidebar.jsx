@@ -1,9 +1,9 @@
-import React, { useState, useEffect } from 'react';
-import { Calendar, Badge } from 'rsuite';
-import axios from 'axios';
-import { fetchHolidays } from './holidayService'; // Import holiday service
-import 'rsuite/dist/rsuite.min.css'; // Import RSuite's CSS
-import './CalendarSidebar.css'; // Import the stylesheet for the sidebar
+import React, { useState, useEffect } from "react";
+import { Calendar, Badge } from "rsuite";
+import axios from "axios";
+import { fetchHolidays } from "./holidayService"; // Import holiday service
+import "rsuite/dist/rsuite.min.css"; // Import RSuite's CSS
+import "./CalendarSidebar.css"; // Import the stylesheet for the sidebar
 
 const CalendarSidebar = ({ setViewType, events, requests }) => {
   const [selectedDate, setSelectedDate] = useState(new Date());
@@ -13,28 +13,29 @@ const CalendarSidebar = ({ setViewType, events, requests }) => {
   const [showRequests, setShowRequests] = useState(true); // State for checkbox
   const [reservations, setReservations] = useState([]); // State for reservations
 
-  const countryCode = 'TN'; // Tunisia country code
+  const countryCode = "TN"; // Tunisia country code
   const currentYear = new Date().getFullYear();
 
   useEffect(() => {
-    // Fetch holidays for the current year
     const fetchHolidaysData = async () => {
       const holidaysData = await fetchHolidays(countryCode, currentYear);
       setHolidays(holidaysData);
       setUpcomingHolidays(
-        holidaysData.filter(
-          (holiday) => new Date(holiday.date) > new Date()
-        ).sort((a, b) => new Date(a.date) - new Date(b.date))
+        holidaysData
+          .filter((holiday) => new Date(holiday.date) > new Date())
+          .sort((a, b) => new Date(a.date) - new Date(b.date))
       );
     };
 
     // Fetch reservations from API
     const fetchReservations = async () => {
       try {
-        const response = await axios.get('http://localhost:3000/api/reservations/pure');
+        const response = await axios.get(
+          "http://localhost:3000/api/reservations/pure"
+        );
         setReservations(response.data);
       } catch (error) {
-        console.error('Error fetching reservations:', error);
+        console.error("Error fetching reservations:", error);
       }
     };
 
@@ -42,25 +43,40 @@ const CalendarSidebar = ({ setViewType, events, requests }) => {
     fetchReservations();
   }, []);
 
+  useEffect(() => {
+    if (reservations.length > 0) {
+      handleDateSelect(new Date());
+    }
+  }, [reservations]);
+
   const handleDateSelect = (date) => {
-    setSelectedDate(date);
-    const filteredEvents = reservations.filter(reservation =>
-      new Date(reservation.date).toDateString() === date.toDateString()
-    ).map(reservation => ({
-      time: reservation.startTime,
-      title: reservation.motive,
-      state: reservation.state // Add state to the mapped events
-    }));
+
+    const selected = new Date(date);
+    selected.setHours(0, 0, 0, 0);
+
+    setSelectedDate(selected);
+     
+    const filteredEvents = reservations
+      .filter(
+        (reservation) =>
+          new Date(reservation.date).toDateString() === date.toDateString()
+      )
+      .map((reservation) => ({
+        time: reservation.startTime,
+        title: reservation.motive,
+        state: reservation.state,
+      }));
+
     setDailyEvents(filteredEvents);
   };
 
   const renderCell = (date) => {
-    const list = reservations.filter(reservation =>
-      new Date(reservation.date).toDateString() === date.toDateString()
+    const list = reservations.filter(
+      (reservation) =>
+        new Date(reservation.date).toDateString() === date.toDateString()
     );
     const holiday = holidays.find(
-      (holiday) =>
-        new Date(holiday.date).toDateString() === date.toDateString()
+      (holiday) => new Date(holiday.date).toDateString() === date.toDateString()
     );
 
     return (
@@ -72,7 +88,7 @@ const CalendarSidebar = ({ setViewType, events, requests }) => {
   };
 
   const handleViewChange = (view) => {
-    setShowRequests(view === 'requests');
+    setShowRequests(view === "requests");
     setViewType(view);
   };
 
@@ -97,7 +113,7 @@ const CalendarSidebar = ({ setViewType, events, requests }) => {
         <Calendar
           compact
           renderCell={renderCell}
-          style={{ width: '100%' }}
+          style={{ width: "100%" }}
           onSelect={handleDateSelect}
         />
       </div>
@@ -138,7 +154,7 @@ const CalendarSidebar = ({ setViewType, events, requests }) => {
           )}
         </ul>
       </div>
-      
+
       <div className="calendar-sidebar__checkboxes">
         <h5>View</h5>
         <hr />
@@ -147,7 +163,7 @@ const CalendarSidebar = ({ setViewType, events, requests }) => {
             <input
               type="radio"
               checked={showRequests}
-              onChange={() => handleViewChange('requests')}
+              onChange={() => handleViewChange("requests")}
             />
             Requests
           </label>
@@ -156,10 +172,10 @@ const CalendarSidebar = ({ setViewType, events, requests }) => {
         <div>
           <label className="custom-checkbox">
             <input
-              className='radio-button'
+              className="radio-button"
               type="radio"
               checked={!showRequests}
-              onChange={() => handleViewChange('events')}
+              onChange={() => handleViewChange("events")}
             />
             Events
           </label>

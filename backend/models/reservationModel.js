@@ -35,13 +35,13 @@ const reservationSchema = mongoose.Schema(
     },
     facility: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: 'Facility', // Ensure the reference name matches the model name
-      required: false,
+      ref: 'Facility',
+      required: true,
     },
     entity: {
       type: mongoose.Schema.Types.ObjectId,
       ref: 'ReservationInitiator',
-      required: false,
+      required: true,
     },
     event: {
       type: mongoose.Schema.Types.ObjectId,

@@ -15,6 +15,7 @@ const ReservationDetails = ({
   equipment,
   onBack,
   onQuit,
+  currentId
 }) => {
   const [facilities, setFacilities] = useState([]);
   const [equipments, setEquipments] = useState([]);
@@ -85,6 +86,7 @@ const ReservationDetails = ({
           effective: participants,
           materials: equipmentIds,
           facility: facilityId,
+          currentId
         }
       );
 

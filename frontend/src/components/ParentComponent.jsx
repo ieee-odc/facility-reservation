@@ -4,7 +4,7 @@ import ReserverSalleform from "./reservationForm2";
 import EquipmentReservationForm from './reservationForm3';
 import ReservationDetails from "./reservationDetails";
 
-function ParentComponent() {
+function ParentComponent({currentId}) {
   const [reserverTimeDateSubmitted, setReserverTimeDateSubmitted] = useState(false);
   const [reserverSalleFormSubmitted, setReserverSalleFormSubmitted] = useState(false);
   const [equipmentFormSubmitted, setEquipmentFormSubmitted] = useState(false); 
@@ -69,6 +69,7 @@ function ParentComponent() {
           equipment={reservationDetails.equipment}
           onBack={handleBackToEquipmentForm}
           onQuit={() => setEquipmentFormSubmitted(false)}
+          currentId={currentId}
         />
       )}
     </div>

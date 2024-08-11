@@ -14,6 +14,7 @@ const ReservationDetails = ({
   equipment,
   onBack,
   onQuit,
+  currentId,
 }) => {
   const [facilities, setFacilities] = useState([]);
   const [equipments, setEquipments] = useState([]);
@@ -47,6 +48,10 @@ const ReservationDetails = ({
   const handleCancel = async () => {
     onQuit();
   };
+
+  useEffect(() => {
+    console.log("currentId", currentId);
+  }, [currentId]);
 
   const handleSubmit = async () => {
     try {
@@ -84,6 +89,7 @@ const ReservationDetails = ({
           effective: participants,
           materials: equipmentIds,
           facility: facilityId,
+          currentId
         }
       );
 

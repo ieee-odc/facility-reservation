@@ -1,28 +1,28 @@
 import React, { useState, useEffect } from "react";
-import { MdLockOutline, MdInfoOutline, MdClose } from "react-icons/md";
+import { MdLockOutline, MdInfoOutline, MdClose, MdOutlineEmail } from "react-icons/md";
 import { Link, useLocation, useNavigate } from "react-router-dom";
-import { useNotification} from ".././context/NotificationContext"
+import { useNotification } from ".././context/NotificationContext";
 import "./styles.css";
 import {
   doSignInWithEmailAndPassword,
   doSignInWithGoogle,
+  doSignInWithMicrosoft
 } from "../config/auth";
 import logo from "./../assets/logo/Group3.svg";
-import { MdOutlineEmail } from "react-icons/md";
 
 const Login = () => {
   const blockquoteStyle = {
-    fontStyle: 'italic',
-    margin: '0',
-    padding: '10px 20px',
-    borderLeft: '5px solid rgba(255, 255, 255, 0.7)',
-    background: 'rgba(255, 255, 255, 0.1)',
+    fontStyle: "italic",
+    margin: "0",
+    padding: "10px 20px",
+    borderLeft: "5px solid rgba(255, 255, 255, 0.7)",
+    background: "rgba(255, 255, 255, 0.1)",
   };
 
   const footerStyle = {
-    marginTop: '10px',
-    fontSize: '14px',
-    color: 'rgba(255, 255, 255, 0.7)'
+    marginTop: "10px",
+    fontSize: "14px",
+    color: "rgba(255, 255, 255, 0.7)",
   };
 
   const [email, setEmail] = useState("");
@@ -59,15 +59,20 @@ const Login = () => {
   }, []);
 
   const signInWithEmail = async () => {
-    const signed = await doSignInWithEmailAndPassword(email, password)   
+    console.log("i am here");
+
+    const signed = await doSignInWithEmailAndPassword(email, password);
     localStorage.setItem("userEmail", email);
     if (signed && !signedIn) {
       setSignedIn(signed);
       navigate("/calendar");
     } else {
-      showNotification("Incorrect email or password. Please try again.", "error");
-    }  
-      /*.then((signedIn) => {
+      showNotification(
+        "Incorrect email or password. Please try again.",
+        "error"
+      );
+    }
+    /*.then((signedIn) => {
         console.log("signed in ", signedIn);
         localStorage.setItem("userEmail", email);
         navigate("/calendar");
@@ -77,7 +82,6 @@ const Login = () => {
         showNotification("Incorrect email or password. Please try again.", "error");
         console.log("error");
       });*/
-
   };
 
   const signInWithGoogle = async () => {
@@ -91,6 +95,18 @@ const Login = () => {
       showNotification("Failed to sign in with Google.", "error");
     }
   };
+
+  const signInWithMicrosoft = async () => {
+    const signed = await doSignInWithMicrosoft();
+    console.log("hello microsoft");
+    localStorage.setItem("userEmail", email);
+    if (signed && !signedIn) {
+      setSignedIn(signed);
+      navigate("/calendar");
+    } else {
+      showNotification("Failed to sign in with Microsoft.", "error");
+    }
+  }
 
   const handleEmailChange = (e) => {
     const value = e.target.value;
@@ -128,7 +144,7 @@ const Login = () => {
             <div className="inputs-container">
               <div className="input-container">
                 <div className="icon-box">
-                  <MdOutlineEmail  className="input-icon" />
+                  <MdOutlineEmail className="input-icon" />
                   <input
                     type="email"
                     placeholder="Email"
@@ -171,7 +187,10 @@ const Login = () => {
               >
                 Continue with Google
               </button>
-              <button className="social-login microsoft login-buttons">
+              <button
+                className="social-login microsoft login-buttons"
+                onClick={signInWithMicrosoft}
+              >
                 Continue with Microsoft
               </button>
             </div>
@@ -184,8 +203,8 @@ const Login = () => {
           Our mission is to simplify your life with our innovative solutions.
         </p>
         <blockquote style={blockquoteStyle}>
-          "FlexiSpace has transformed the way we handle our daily tasks. It's truly a
-          game-changer!"
+          "FlexiSpace has transformed the way we handle our daily tasks. It's
+          truly a game-changer!"
           <footer style={footerStyle}>— Happy Customer</footer>
         </blockquote>
       </div>

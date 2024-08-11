@@ -1,29 +1,32 @@
-// src/components/BigCalendarComponent.js
 import React, { useState, useEffect } from 'react';
+import PropTypes from 'prop-types';
 import { Calendar, momentLocalizer } from 'react-big-calendar';
 import moment from 'moment';
 import 'react-big-calendar/lib/css/react-big-calendar.css';
 import './style.css';
 import EventModal from './EventModal';
+import ParentComp from './parentComp';
 
 const localizer = momentLocalizer(moment);
 
-const BigCalendarComponent = ({ events, requests, viewType }) => {
+const BigCalendarComponent = ({ events, requests, viewType, currentId }) => {
   const [allEvents, setAllEvents] = useState([]);
   const [selectedEvent, setSelectedEvent] = useState(null);
-  const [modalShow, setModalShow] = useState(false);
+  const [eventModalShow, setEventModalShow] = useState(false);
+  const [slotModalShow, setSlotModalShow] = useState(false);
+  const [selectedSlot, setSelectedSlot] = useState(null);
 
   useEffect(() => {
     const formattedRequests = requests.map((event) => ({
       ...event,
       start: new Date(event.start),
-      end: new Date(event.end)
+      end: new Date(event.end),
     }));
 
     const formattedEvents = events.map((event) => ({
       ...event,
       start: new Date(event.start),
-      end: new Date(event.end)
+      end: new Date(event.end),
     }));
 
     setAllEvents(viewType === 'requests' ? formattedRequests : formattedEvents);
@@ -31,60 +34,64 @@ const BigCalendarComponent = ({ events, requests, viewType }) => {
 
   const handleEventClick = (event) => {
     setSelectedEvent(event);
-    setModalShow(true);
+    setEventModalShow(true);
+  };
+
+  const handleSlotSelect = ({ start, end }) => {
+    setSelectedSlot({ start, end });
+    setSlotModalShow(true);
   };
 
   const handleCancel = (eventId) => {
-    setAllEvents((prevEvents) => prevEvents.map((event) =>
-      event.id === eventId ? { ...event, state: 'Cancelled' } : event
-    ));
+    setAllEvents((prevEvents) =>
+      prevEvents.map((event) =>
+        event.id === eventId ? { ...event, state: 'Cancelled' } : event
+      )
+    );
   };
 
   const eventPropGetter = (event) => {
     let style = {};
 
     switch (event.state) {
-      case "Pending":
+      case 'Pending':
         style = {
-          backgroundColor: "#fef3e7",
-          borderLeft: "6px solid #f39c12",
-          color: "#9c6612",
-          padding: "4%",
-
-          borderRadius: "4px",
-          fontSize: "0.875em",
+          backgroundColor: '#fef3e7',
+          borderLeft: '6px solid #f39c12',
+          color: '#9c6612',
+          padding: '4%',
+          borderRadius: '4px',
+          fontSize: '0.875em',
         };
         break;
-      case "Approved":
+      case 'Approved':
         style = {
-          backgroundColor: "#e7f7e7",
-          borderLeft: "6px solid #28a745",
-          color: "#155724",
-          padding: "4%",
-
-          borderRadius: "4px",
-          fontSize: "0.875em",
+          backgroundColor: '#e7f7e7',
+          borderLeft: '6px solid #28a745',
+          color: '#155724',
+          padding: '4%',
+          borderRadius: '4px',
+          fontSize: '0.875em',
         };
         break;
-      case "Rejected":
+      case 'Rejected':
         style = {
-          backgroundColor: "#f8d7da",
-          borderLeft: "6px solid #dc3545",
-          color: "#721c24",
-          padding: "4%",
-
-          borderRadius: "4px",
-          fontSize: "0.875em",
+          backgroundColor: '#f8d7da',
+          borderLeft: '6px solid #dc3545',
+          color: '#721c24',
+          padding: '4%',
+          borderRadius: '4px',
+          fontSize: '0.875em',
         };
         break;
-      case "Cancelled":
+      case 'Cancelled':
         style = {
-          backgroundColor: "#d3d3d3",
-          borderLeft: "6px solid #808080",
-          color: "#333333",
-          padding: "4%",
-          borderRadius: "4px",
-          fontSize: "0.875em",
+          backgroundColor: '#d3d3d3',
+          borderLeft: '6px solid #808080',
+          color: '#333333',
+          padding: '4%',
+          borderRadius: '4px',
+          fontSize: '0.875em',
         };
         break;
       default:
@@ -104,19 +111,36 @@ const BigCalendarComponent = ({ events, requests, viewType }) => {
         style={{ height: '100%', width: '100%' }}
         eventPropGetter={eventPropGetter}
         onSelectEvent={handleEventClick}
+        onSelectSlot={handleSlotSelect}
+        selectable
         resizable
         className="the-calendar"
       />
       {selectedEvent && (
         <EventModal
-          show={modalShow}
-          onHide={() => setModalShow(false)}
+          show={eventModalShow}
+          onHide={() => setEventModalShow(false)}
           eventDetails={selectedEvent}
           onCancel={handleCancel}
         />
       )}
+      {selectedSlot && slotModalShow && (
+        <ParentComp
+          isOpen={slotModalShow}
+          onRequestClose={() => setSlotModalShow(false)}
+          slotDetails={selectedSlot}
+          currentId = {currentId}
+        />
+      )}
     </div>
   );
+};
+
+BigCalendarComponent.propTypes = {
+  events: PropTypes.array.isRequired,
+  requests: PropTypes.array,
+  viewType: PropTypes.string.isRequired,
+  currentId: PropTypes.string.isRequired,
 };
 
 export default BigCalendarComponent;
