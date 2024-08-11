@@ -10,7 +10,7 @@ import ParentComp from './parentComp';
 
 const localizer = momentLocalizer(moment);
 
-const BigCalendarComponent = ({ events, requests, viewType }) => {
+const BigCalendarComponent = ({ events, requests, viewType, currentId }) => {
   const [allEvents, setAllEvents] = useState([]);
   const [selectedEvent, setSelectedEvent] = useState(null);
   const [eventModalShow, setEventModalShow] = useState(false);
@@ -130,6 +130,7 @@ const BigCalendarComponent = ({ events, requests, viewType }) => {
           isOpen={slotModalShow}
           onRequestClose={() => setSlotModalShow(false)}
           slotDetails={selectedSlot}
+          currentId = {currentId}
         />
       )}
     </div>

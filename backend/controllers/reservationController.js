@@ -95,7 +95,9 @@ export const addReservation = async (req, res) => {
       effective,
       materials,
       files,
+      currentId
     } = req.body;
+console.log("req body,", req.body);
 
     const reservation = await Reservation.create({
       facility,
@@ -109,6 +111,7 @@ export const addReservation = async (req, res) => {
       effective,
       materials,
       files,
+      entity: currentId
     });
 
     return res.status(201).json(reservation);

@@ -7,7 +7,7 @@ import axios from "axios";
 import { Dropdown } from "rsuite";
 import "rsuite/dist/rsuite.min.css";
 import { useNavigate } from "react-router-dom";
-import ParentComponent from "./parentComp"; // Import the parent component
+import ParentComponent from "./parentComp";
 
 const CalendarPage = ({currentId}) => {
   const [events, setEvents] = useState([]);
@@ -180,6 +180,7 @@ const CalendarPage = ({currentId}) => {
                 events={events}
                 requests={requests}
                 viewType={viewType}
+                currentId={currentId}
               />
             </div>
           </div>
@@ -188,6 +189,7 @@ const CalendarPage = ({currentId}) => {
       <ParentComponent
         isOpen={isParentModalOpen}
         onRequestClose={() => setParentModalOpen(false)}
+        currentId={currentId}
       />
     </div>
   );

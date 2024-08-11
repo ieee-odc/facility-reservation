@@ -5,11 +5,11 @@ import EquipmentReservationForm from "./reservationModal3";
 import ReservationDetails from "./reservationModal4";
 import Modal from "react-modal";
 import moment from "moment";
-import "./style.css"; // Ensure this is imported for the styles
+import "./style.css";
 
-Modal.setAppElement("#root"); // Set the app root element for accessibility
+Modal.setAppElement("#root"); 
 
-function ParentComp({ isOpen, onRequestClose, slotDetails, currentView }) {
+function ParentComp({ isOpen, onRequestClose, slotDetails, currentView, currentId }) {
   const [reserverTimeDateSubmitted, setReserverTimeDateSubmitted] =
     useState(false);
   const [reserverSalleFormSubmitted, setReserverSalleFormSubmitted] =
@@ -144,6 +144,8 @@ function ParentComp({ isOpen, onRequestClose, slotDetails, currentView }) {
           equipment={reservationDetails.equipment}
           onBack={handleBackToEquipmentForm}
           onQuit={() => onRequestClose()}
+          currentId={currentId}
+
         />
 
       </Modal>

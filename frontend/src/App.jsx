@@ -43,10 +43,23 @@ const AppRoutes = () => {
             element={<CalendarPage currentId={currentId} />}
           />
 
-          <Route exact path="/event" element={<EventForm />} />
-          <Route exact path="/profile" element={<Profile />} />
+          <Route
+            exact
+            path="/event"
+            element={<EventForm currentId={currentId} />}
+          />
+          <Route
+            exact
+            path="/profile"
+            element={<Profile currentId={currentId} />}
+          />
           <Route exact path="/navbar" element={<Navbar />} />
-          <Route exact path="/reserver" element={<ParentComponent />} />
+          <Route
+            exact
+            path="/reserver"
+            element={<ParentComponent currentId={currentId} />}
+          />
+                
           <Route exact path="/reservation" element={<ParentComp />} />
 
           <Route
