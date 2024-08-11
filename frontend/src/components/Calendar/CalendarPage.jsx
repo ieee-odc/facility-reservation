@@ -9,6 +9,7 @@ import { Dropdown } from "rsuite";
 import "rsuite/dist/rsuite.min.css";
 import { useNavigate } from "react-router-dom";
 import ParentComponent from "./parentComp";
+import EventModal1 from "./EventModal1";  // Import the EventModal1 component
 
 const CalendarPage = ({ currentId }) => {
   const [events, setEvents] = useState([]);
@@ -16,6 +17,8 @@ const CalendarPage = ({ currentId }) => {
   const [facilities, setFacilities] = useState({});
   const [viewType, setViewType] = useState("requests");
   const [isParentModalOpen, setIsParentModalOpen] = useState(false);
+  const [isEventModalOpen, setIsEventModalOpen] = useState(false);  // State to control EventModal1
+
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -126,7 +129,7 @@ const CalendarPage = ({ currentId }) => {
   };
 
   const handleNewEvent = () => {
-    navigate("/event");
+    setIsEventModalOpen(true);  // Open the EventModal1 when the button is clicked
   };
 
   useEffect(() => {
@@ -190,6 +193,11 @@ const CalendarPage = ({ currentId }) => {
         onRequestClose={() => setIsParentModalOpen(false)}
         currentId={currentId}
       />
+      <EventModal1
+        open={isEventModalOpen}  // Pass the open state to the EventModal1
+        onClose={() => setIsEventModalOpen(false)}  // Pass the onClose handler to close the modal
+        currentId={currentId}  // Pass any necessary props like currentId to EventModal1
+      />
     </div>
   );
 };
@@ -199,3 +207,4 @@ CalendarPage.propTypes = {
 };
 
 export default CalendarPage;
+  
