@@ -9,7 +9,8 @@
     "**/*.js"
   ],
   "exclude": [
-    "test/**/*.js"
-  ]
+    "test/*.js"
+  ],
+  "extension": [".js", ".jsx"]
 
 }

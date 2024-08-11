@@ -6,8 +6,14 @@
   "scripts": {
     "start": "nodemon --env-file=.env server.js",
     "test": "dotenv -e .env.test nyc ava --timeout=3m",
-    "coverage": "dotenv -e .env.test nyc ava",
+    "coverage": "dotenv -e .env.test nyc --reporter=html --reporter=text ava",
     "coverage:report": "dotenv -e .env.test nyc report --reporter=html"
+  },
+  "nyc": {
+    "extension": [".js", ".jsx"],
+    "reporter": ["html", "text"],
+    "include": ["**/*.js"],
+    "exclude": ["test/*.js"]
   },
   "keywords": [],
   "author": "",
