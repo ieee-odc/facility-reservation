@@ -11,7 +11,7 @@ const validData = {
   startTime: '10:00',
   endTime: '12:00',
   state: 'Pending',
-  entity: '507f1f77bcf86cd799439012',
+  currentId: '507f1f77bcf86cd799439012',
   event: null,
   effective: 10,
   materials: ['507f1f77bcf86cd299439011'],
@@ -54,7 +54,7 @@ test('POST /api/reservations should create a reservation', async t => {
   t.deepEqual(new Date(response.body.date).toISOString(), validData.date);
   t.deepEqual(response.body.time, validData.time);
   t.deepEqual(response.body.state, validData.state);
-  t.deepEqual(response.body.entity.toString(), validData.entity);
+  t.deepEqual(response.body.entity.toString(), validData.currentId);
   t.deepEqual(response.body.event, validData.event);
   t.deepEqual(response.body.effective, validData.effective);
   t.deepEqual(response.body.materials, validData.materials);
