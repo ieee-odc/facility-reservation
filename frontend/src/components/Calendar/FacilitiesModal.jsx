@@ -23,6 +23,8 @@ const FacilitiesForm = ({ open, onClose, numberOfFacilities, form1 }) => {
     Array(numberOfFacilities).fill("")
   );
   const [availableFacilities, setAvailableFacilities] = useState([]);
+  const [pendingFacilities, setPendingFacilities] = useState([]);
+
   const [availableEquipments, setAvailableEquipments] = useState([]);
   const navigate = useNavigate();
   const showNotification = useNotification();
@@ -30,12 +32,22 @@ const FacilitiesForm = ({ open, onClose, numberOfFacilities, form1 }) => {
   useEffect(() => {
     const fetchAvailableFacilities = async () => {
       try {
-        const response = await axios.get("http://localhost:3000/api/facilities");
-        setAvailableFacilities(response.data.data || []);
+        const response = await axios.get('http://localhost:3000/api/reservations/available-facilities', {
+          params: {
+            date: facilities[0]?.date,
+            startTime: facilities[0]?.startTime,
+            endTime: facilities[0]?.endTime
+          }
+        });
+        console.log(response);
+  
+        setAvailableFacilities(response.data.availableFacilities);
+        setPendingFacilities(response.data.pendingFacilities.map(facility => facility?.label));
       } catch (error) {
         console.error("Error fetching available facilities:", error);
       }
     };
+  
     const fetchAvailableEquipments = async () => {
       try {
         const response = await axios.get("http://localhost:3000/api/equipments");
@@ -48,10 +60,11 @@ const FacilitiesForm = ({ open, onClose, numberOfFacilities, form1 }) => {
         console.error("Error fetching available equipments:", error);
       }
     };
-
+  
     fetchAvailableFacilities();
     fetchAvailableEquipments();
-  }, []);
+  }, [facilities]);
+  
 
   const handleChange = (index, field, value) => {
     const updatedFacilities = [...facilities];

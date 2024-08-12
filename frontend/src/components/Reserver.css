@@ -1,6 +1,3 @@
-body {
-  background-color: #F7F7F8; /* Background color for the entire page */
-}
 
 .container1 ,.container3 {
   margin-top: 1%;
@@ -10,8 +7,6 @@ body {
   margin-right: auto;
   padding: 50px;
   align-items: center;
-  background-color: #fff;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   border-radius: 8px;
 }
 

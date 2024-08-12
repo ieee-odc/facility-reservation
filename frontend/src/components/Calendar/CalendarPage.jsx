@@ -38,7 +38,7 @@ const CalendarPage = ({ currentId }) => {
           console.error(
             "Unexpected response format for facilities",
             response.data
-          );
+          );  
         }
       } catch (error) {
         console.error("Error fetching facilities", error);
@@ -64,8 +64,10 @@ const CalendarPage = ({ currentId }) => {
             return {
               id: reservation._id,
               title: reservation.motive,
+              date: reservation.date,
+              participants: reservation.effective,
               start,
-              end,
+              end,  
               allDay: false,
               state: reservation.state,
               facility: facilities[reservation.facility] || "Unknown Facility",
@@ -98,7 +100,7 @@ const CalendarPage = ({ currentId }) => {
 
             return {
               id: reservation._id,
-              title: reservation.name,
+              title: reservation.motive,
               start,
               end,
               state: reservation.state,
