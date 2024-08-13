@@ -13,9 +13,10 @@ const EditReservationForm = ({ open, onClose, reservationData, onUpdate }) => {
   const [participants, setParticipants] = useState(reservationData.participants || "");
   const [facility, setFacility] = useState(reservationData.facility || "");
   const [motif, setMotif] = useState(reservationData.motif || "");
+  const showNotification = useNotification();
+
   const [equipment, setEquipment] = useState({});
 
-  const showNotification = useNotification();
 
   useEffect(() => {
     const fetchData = async () => {
