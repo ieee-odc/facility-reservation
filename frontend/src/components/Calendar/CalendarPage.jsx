@@ -9,7 +9,7 @@ import { Dropdown } from "rsuite";
 import "rsuite/dist/rsuite.min.css";
 import { useNavigate } from "react-router-dom";
 import ParentComponent from "./parentComp";
-import EventModal1 from "./EventModal1";  // Import the EventModal1 component
+import EventModal1 from "./EventModal1";  
 
 const CalendarPage = ({ currentId }) => {
   const [events, setEvents] = useState([]);
@@ -17,7 +17,7 @@ const CalendarPage = ({ currentId }) => {
   const [facilities, setFacilities] = useState({});
   const [viewType, setViewType] = useState("requests");
   const [isParentModalOpen, setIsParentModalOpen] = useState(false);
-  const [isEventModalOpen, setIsEventModalOpen] = useState(false);  // State to control EventModal1
+  const [isEventModalOpen, setIsEventModalOpen] = useState(false);  
 
   const navigate = useNavigate();
 
@@ -71,6 +71,8 @@ const CalendarPage = ({ currentId }) => {
               allDay: false,
               state: reservation.state,
               facility: facilities[reservation.facility] || "Unknown Facility",
+              equipment: reservation.equipment || [],
+              
             };
           });
 
@@ -100,9 +102,12 @@ const CalendarPage = ({ currentId }) => {
 
             return {
               id: reservation._id,
-              title: reservation.motive,
+              title: reservation.name,
+              description: reservation.description,
               start,
               end,
+              totalEffective: reservation.totalEffective,
+              organizer: reservation.organizer,
               state: reservation.state,
               facility: facilities[reservation.facility] || "Unknown Facility",
             };
