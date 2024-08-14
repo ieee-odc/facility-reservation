@@ -105,9 +105,12 @@ const ManageUsers = () => {
   };
 
   const handleFormSubmit = async (data) => {
+console.log("data", data);
+console.log("selectedInitiator", selectedInitiator);
+
     try {
-      if (selectedInitiator) {
-        await updateInitiator(selectedInitiator._id, data);
+      if (data && data._id) {
+        await updateInitiator(data._id, data);
       } else {
         createInitiator(data)
           .then((resp) => {
