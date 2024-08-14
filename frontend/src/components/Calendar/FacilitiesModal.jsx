@@ -201,14 +201,43 @@ const FacilitiesForm = ({ open, onClose, numberOfFacilities, form1 }) => {
                   </div>
                   {/* Motive */}
                   <div className="facility-form-group">
-                    <label>Motive</label>
-                    <textarea
-                      value={facility.motive}
-                      onChange={(e) => handleChange(index, "motive", e.target.value)}
-                      rows="3"
-                      required
-                    />
+                    <label htmlFor="motif" className="required-label">
+                      Reasons for reservation
+                    </label>
+                    <div className="facility-input-container">
+                      <select
+                        id="motif"
+                        className="event-input"
+                        value={facility.motive}
+                        onChange={(e) =>
+                          handleChange(index, "motive", e.target.value)
+                        }
+                      >
+                        <option value="">Select a reason</option>
+                        <option value="Club meeting">Club meeting</option>
+                        <option value="Workshop">Workshop</option>
+                        <option value="Conference">Conference</option>
+                        <option value="Special event">Special event</option>
+                      </select>
+                    </div>
                   </div>
+
+                  <div className="facility-form-group">
+                    <label>Other reasons (optional)</label>
+                    <div className="facility-input-container">
+                      <textarea
+                        id="otherMotif"
+                        type="text"
+                        className="event-input"
+                        value={facility.motive}
+                        onChange={(e) =>
+                          handleChange(index, "motive", e.target.value)
+                        }
+                        required
+                      />
+                    </div>
+                  </div>
+          
                   {/* Files */}
                   <div className="facility-form-group">
                 <label htmlFor={`file-input-${index}`}>Files</label>

@@ -38,7 +38,10 @@ const EquipmentReservationForm = ({ onSubmit, onBack }) => {
 
   return (
     <>
-      <div className="container1">
+      <div className="container3">
+      <button className="close-button" onClick={onClose}>
+        &times;
+      </button>
         <form className="form" onSubmit={handleFormSubmit}>
           <div className="button-group">
             <IoArrowBackOutline className="back" size={24} onClick={onBack} />

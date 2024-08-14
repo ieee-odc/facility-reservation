@@ -18,19 +18,17 @@ const schema = yup.object().shape({
     .required("Veuillez entrer le nombre de participants"),
 });
 
-function ReserverTimeDate({ onSubmit, initialData }) {
-  
+function ReserverTimeDate({ onSubmit, initialData, onClose }) {
   const [formData, setFormData] = useState({
     date: initialData.date || '',
     time: initialData.time || '',
     participants: 1,
   });
 
-  if (initialData.time=="12:00 AM - 12:00 AM") {
-    formData.time = "09:00 AM - 10:30 AM"
+  if (initialData.time === "12:00 AM - 12:00 AM") {
+    formData.time = "09:00 AM - 10:30 AM";
   }
 
-  
   const [errors, setErrors] = useState({});
 
   const handleInputChange = (e) => {
@@ -43,7 +41,11 @@ function ReserverTimeDate({ onSubmit, initialData }) {
 
   useEffect(() => {
     if (initialData) {
-      setFormData({date: initialData.date, time: initialData.time, participants: initialData.participants})
+      setFormData({
+        date: initialData.date,
+        time: initialData.time,
+        participants: initialData.participants,
+      });
     }
   }, [initialData]);
 
@@ -67,9 +69,12 @@ function ReserverTimeDate({ onSubmit, initialData }) {
         setErrors(newErrors);
       });
   };
-  
+
   return (
-    <div className="container1">
+    <div className="container3">
+      <button className="close-button" onClick={onClose}>
+        &times;
+      </button>
       <form className="form" onSubmit={handleFormSubmit}>
         <div className="form-title-container">
           <h4 className="form-title">Reservation</h4>

@@ -54,7 +54,9 @@ function ParentComp({ isOpen, onRequestClose, slotDetails, currentView, currentI
       participants,
     }));
   };
-
+  const handleClose = () => {
+    setIsModalOpen(false);
+  };
   const handleReservationSalleformSubmit = (facility, motif) => {
     setReserverSalleFormSubmitted(true);
     setReservationDetails((prevState) => ({ ...prevState, facility, motif }));
@@ -94,6 +96,7 @@ function ParentComp({ isOpen, onRequestClose, slotDetails, currentView, currentI
         <ReserverTimeDate
           onSubmit={handleReservationTimeDateSubmit}
           initialData={reservationDetails}
+          onClose={handleClose}
         />
       </Modal>
 
