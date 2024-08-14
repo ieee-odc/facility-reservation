@@ -71,12 +71,13 @@ export const findOneFacility = async (req, res) => {
 export const updateFacility = async (req, res) => {
   try {
     const { id } = req.params;
+    console.log("id", id);
+    
     const updateFields = req.body;
+    
+    console.log("updatedFields", updateFields);
 
-    const updatedFacility = await Facility.findByIdAndUpdate(id, updateFields, {
-      new: true,
-      runValidators: true,
-    });
+    const updatedFacility = await Facility.updateOne({label: updateFields.label}, {$set: {label: updateFields.label, state: updateFields.state, capacity:updateFields.capacity}});
 
     if (!updatedFacility) {
       return res.status(404).json({ message: "Facility not found" });
@@ -84,6 +85,8 @@ export const updateFacility = async (req, res) => {
 
     return res.status(200).json(updatedFacility);
   } catch (error) {
+    console.log(error);
+    
     return res.status(500).json({
       message: "An error occurred when updating the facility.",
     });

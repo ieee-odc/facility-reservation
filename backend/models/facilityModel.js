@@ -12,8 +12,10 @@ const facilitySchema = mongoose.Schema(
       required: true,
     },
     state: {
-      type: Boolean,
+      type: String,
+      enum: ["Bookable", "Forward"],
       required: true,
+      default: "Bookable"
     },
   },
   {
@@ -21,4 +23,5 @@ const facilitySchema = mongoose.Schema(
   }
 );
 
-export const Facility = mongoose.model('Facility', facilitySchema); // Ensure the model name is correct
+export const Facility = mongoose.model('Facility', facilitySchema);
+ 

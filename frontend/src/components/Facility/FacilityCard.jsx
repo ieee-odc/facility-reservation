@@ -12,7 +12,10 @@ const FacilityCard = ({ initiator, onEdit, onDelete, onConsult }) => {
         <b> Label:</b> {initiator.label}
       </p>
       <p>
-        <b> capacity:</b> {initiator.capacity}
+        <b> Capacity:</b> {initiator.capacity}
+      </p>
+      <p>
+        <b> State:</b> {initiator.state}
       </p>
       <div className="actions">
         <FaRegEdit onClick={() => onEdit(initiator)} className="icon" />
