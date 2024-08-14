@@ -122,6 +122,7 @@ const BigCalendarComponent = ({ events, requests, viewType, currentId }) => {
           onHide={() => setEventModalShow(false)}
           eventDetails={selectedEvent}
           onCancel={handleCancel}
+          viewType={viewType} 
         />
       )}
       {selectedSlot && slotModalShow && (

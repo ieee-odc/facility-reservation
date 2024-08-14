@@ -3,8 +3,9 @@ import "./EventModal.css";
 import axios from "axios";
 import EditReservationForm from "./EditReservationForm"; // Import the form component
 
-const EventModal = ({ show, onHide, eventDetails, onCancel }) => {
+const EventModal = ({ show, onHide, eventDetails, onCancel, viewType }) => {
   const [editFormOpen, setEditFormOpen] = useState(false);
+  const [showCancelConfirmation, setShowCancelConfirmation] = useState(false);
 
   const handleCancel = async () => {
     try {
@@ -23,6 +24,19 @@ const EventModal = ({ show, onHide, eventDetails, onCancel }) => {
     setEditFormOpen(true);
   };
 
+  const handleShowCancelConfirmation = () => {
+    setShowCancelConfirmation(true);
+  };
+
+  const handleCloseCancelConfirmation = () => {
+    setShowCancelConfirmation(false);
+  };
+
+  const handleConfirmCancel = () => {
+    handleCancel();
+    setShowCancelConfirmation(false);
+  };
+
   return (
     <>
       {show && (
@@ -31,15 +45,28 @@ const EventModal = ({ show, onHide, eventDetails, onCancel }) => {
             <span className="close-button" onClick={onHide}>
               &times;
             </span>
-            <h2>{eventDetails.title}</h2>
-            <p><strong>Start:</strong> {new Date(eventDetails.start).toLocaleString()}</p>
-            <p><strong>End:</strong> {new Date(eventDetails.end).toLocaleString()}</p>
-            <p><strong>Motive:</strong> {eventDetails.title}</p>
+            <h2>{viewType === "events" ? eventDetails.name : eventDetails.title}</h2>
+            {viewType === "events" ? (
+              <>
+                <p><strong>Description:</strong> {eventDetails.description}</p>
+                <p><strong>Start Date:</strong> {new Date(eventDetails.start).toLocaleString()}</p>
+                <p><strong>End Date:</strong> {new Date(eventDetails.end).toLocaleString()}</p>
+                <p><strong>Total Effective:</strong> {eventDetails.totalEffective}</p>
+                <p><strong>Organizer:</strong> {eventDetails.organizer}</p>
+              </>
+            ) : (
+              <>
+                <p><strong>Start:</strong> {new Date(eventDetails.start).toLocaleString()}</p>
+                <p><strong>End:</strong> {new Date(eventDetails.end).toLocaleString()}</p>
+                <p><strong>Motive:</strong> {eventDetails.title}</p>
+                <p><strong>Participants:</strong> {eventDetails.participants}</p>
+              </>
+            )}
             <p><strong>Facility:</strong> {eventDetails.facility}</p>
             <p><strong>State:</strong> {eventDetails.state}</p>
             {(eventDetails.state === 'Pending') && (
               <div className="button-group">
-                <button className="cancel-button" onClick={handleCancel}>
+                <button className="cancel-button" onClick={handleShowCancelConfirmation}>
                   Cancel Reservation
                 </button>
                 <button className="edit-button" onClick={handleEditClick}>
@@ -48,11 +75,26 @@ const EventModal = ({ show, onHide, eventDetails, onCancel }) => {
               </div>
             )}
           </div>
+
+          {showCancelConfirmation && (
+            <div className="confirmation-popup">
+              <p>Are you sure you want to cancel this reservation?</p>
+              <div className="confirmation-buttons">
+                <button className="yes-button" onClick={handleConfirmCancel}>
+                  Yes
+                </button>
+                <button className="no-button" onClick={handleCloseCancelConfirmation}>
+                  No
+                </button>
+              </div>
+            </div>
+          )}
+
           <EditReservationForm
             open={editFormOpen}
             onClose={() => setEditFormOpen(false)}
             reservationData={{
-              date: eventDetails.date, // Make sure these properties match the ones used in EditReservationForm
+              date: eventDetails.date,
               startTime: eventDetails.start,
               endTime: eventDetails.end,
               participants: eventDetails.participants,
@@ -61,7 +103,7 @@ const EventModal = ({ show, onHide, eventDetails, onCancel }) => {
               equipment: eventDetails.equipment
             }}
             onUpdate={(updatedReservation) => {
-              // Handle the update, e.g., refresh the data or update state
+              // Handle the update
             }}
           />
         </div>
