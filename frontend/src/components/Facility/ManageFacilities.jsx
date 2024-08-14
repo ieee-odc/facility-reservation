@@ -108,7 +108,7 @@ const ManageFacilities = () => {
 
   const handleFormSubmit = async (data) => {
     try {
-      console.log("initiat ors", initiators);
+      console.log("initiators", initiators);
       
       if (initiators) {
         
