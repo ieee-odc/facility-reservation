@@ -21,8 +21,8 @@ router.get('/', getAllReservationInitiators);
 
 router.get('/:id', getReservationInitiatorById);
 
-router.put('/:id', updateReservationInitiator);
-router.patch('/:id', updateReservationInitiatorPwd);
+router.patch('/:id', updateReservationInitiator);
+router.patch('/pwd/:id', updateReservationInitiatorPwd);
 
 router.get('/get-user-id/:email', getUserIdbyEmail);-
 

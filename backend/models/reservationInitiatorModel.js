@@ -25,6 +25,7 @@ const reservationInitiatorSchema = mongoose.Schema(
     password: {
       type: String,
       select: false,
+      required: false
     },
     nature: {
       type: String,
@@ -44,7 +45,7 @@ const reservationInitiatorSchema = mongoose.Schema(
   }
 );
 
-reservationInitiatorSchema.methods.matchPassword = async function (enteredPassword) {
+/*reservationInitiatorSchema.methods.matchPassword = async function (enteredPassword) {
   return await bcrypt.compare(enteredPassword, this.password);
 };
 
@@ -56,7 +57,7 @@ reservationInitiatorSchema.pre('save', async function (next) {
   this.password = bcrypt.hash(this.password, salt);
   next();
 });
-
+*/
 
 export const ReservationInitiator = mongoose.model(
   "ReservationInitiator",

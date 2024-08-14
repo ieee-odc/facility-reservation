@@ -5,7 +5,6 @@ export const createReservationInitiator = async (req, res) => {
   const {
     name,
     email,
-    password,
     phoneNumber,
     backupEmail,
     nature,
@@ -13,19 +12,18 @@ export const createReservationInitiator = async (req, res) => {
     organisation,
   } = req.body;
 
+  console.log("create", req.body);
+
   try {
     const existingInitiator = await ReservationInitiator.findOne({ email });
     if (existingInitiator) {
       return res.status(400).json({ message: "User already exists" });
     }
 
-    const hashedPassword = await bcrypt.hash(password, 10);
-
     const newInitiator = await ReservationInitiator.create({
       name,
       email,
       backupEmail,
-      password: hashedPassword,
       phoneNumber,
       nature,
       service,
@@ -68,7 +66,16 @@ export const getReservationInitiatorById = async (req, res) => {
 
 export const updateReservationInitiator = async (req, res) => {
   const { id } = req.params;
-  const { name, email, password, phoneNumber, backupEmail } = req.body;
+  const {
+    name,
+    email,
+    password,
+    phoneNumber,
+    backupEmail,
+    nature,
+    service,
+    organisation,
+  } = req.body;
 
   try {
     const initiator = await ReservationInitiator.findById(id);
@@ -80,6 +87,9 @@ export const updateReservationInitiator = async (req, res) => {
     if (email) initiator.email = email;
     if (backupEmail) initiator.backupEmail = backupEmail;
     if (phoneNumber) initiator.phoneNumber = phoneNumber;
+    if (nature) initiator.nature = nature;
+    if (service) initiator.service = service;
+    if (organisation) initiator.organisation = organisation;
     if (password) initiator.password = await bcrypt.hash(password, 10);
 
     const updatedInitiator = await initiator.save();
@@ -91,14 +101,16 @@ export const updateReservationInitiator = async (req, res) => {
 
 export const deleteReservationInitiator = async (req, res) => {
   const { id } = req.params;
+  console.log("id", id);
+  
 
   try {
-    const initiator = await ReservationInitiator.findById(id);
-    if (!initiator) {
-      return res.status(404).json({ message: "User not found" });
-    }
+    const deletedInitiator = await ReservationInitiator.findByIdAndDelete(id);
 
-    await initiator.remove();
+    if (!deletedInitiator) {
+      // If no initiator is found, return a 404 error
+      return res.status(404).json({ message: 'Initiator not found' });
+    }
     res.status(200).json({ message: "User deleted successfully" });
   } catch (error) {
     res.status(500).json({ message: "Error deleting user", error });

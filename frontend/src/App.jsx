@@ -14,6 +14,7 @@ import ParentComponent from "./components/ParentComponent";
 import EventForm from "./components/event/eventForm1";
 import CalendarPage from "./components/Calendar/CalendarPage";
 import ParentComp from "./components/Calendar/parentComp";
+import ManageUsers from "./components/User/ManageUsers";
 
 const AuthStatus = () => {
   const { currentUser, userLoggedIn, loading, currentId } = useAuth();
@@ -33,6 +34,7 @@ const AppRoutes = () => {
     <Routes>
       <Route path="/login" element={<Login />} />
       <Route path="/reset-password" element={<ResetPassword />} />
+      <Route path="/manage-users" element={<ManageUsers />} />
 
       {userLoggedIn ? (
         <>

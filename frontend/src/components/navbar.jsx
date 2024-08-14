@@ -10,6 +10,7 @@ import axios from 'axios';
 import logoutIcon from '../assets/signout.png';
 import settings from '../assets/settings.png';
 import profileIcon from '../assets/profile.png';
+import userIcon from '../assets/user/Customer.png'
 import reservationIcon from '../assets/reservation.png';
 import calendarIcon from '../assets/calendar.png';
 import homeIcon from '../assets/home.png';
@@ -101,6 +102,9 @@ const Navbar = () => {
   const event = async () => {
     navigate("/event");
   };
+  const userManagement = async () => {
+    navigate("/user-management");
+  };
 
 
   const handleChangePassword = () => {
@@ -126,6 +130,7 @@ const Navbar = () => {
 
 
     { icon: <img src={profileIcon} alt="Profile Icon" style={{ width: '30px', height: '30px' }} />, text: "Profile", handleClick: profile },
+    { icon: <img src={userIcon} alt="User Icon" style={{ width: '30px', height: '30px' }} />, text: "Manage User", handleClick: userManagement },
     { icon: <img src={logoutIcon} alt="Logout Icon" style={{ width: '30px', height: '30px' }} />, text: "Logout", handleClick: Logout },
     { icon: <img src={settings} alt="settings Icon" style={{ width: '30px', height: '30px' }} />, text: "Settings"},
   ];
