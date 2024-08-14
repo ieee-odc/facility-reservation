@@ -39,7 +39,15 @@ const reservationInitiatorSchema = mongoose.Schema(
       type: String,
       default: ""
     },
+    role: {
+      type: String,
+      enum: ['Admin', 'SuperAdmin', 'User'],
+      required: true
+
+     
+    },
   },
+  
   {
     timestamps: true,
   }

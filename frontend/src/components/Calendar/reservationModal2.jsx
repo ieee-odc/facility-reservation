@@ -116,7 +116,7 @@ const ReserverSalleform = ({ onSubmit, onBack, date, time }) => {
     
       <div className="container3">
         
-      <button className="close-button" onClick={handleClose}>
+      <button className="close-button" >
         &times;
       </button>
         <form className="form" onSubmit={handleFormSubmit}>

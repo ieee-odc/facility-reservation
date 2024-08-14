@@ -124,7 +124,7 @@ const ReservationDetails = ({
   return (
     <div>
       <div className="container3">
-      <button className="close-button" onClick={onClose}>
+      <button className="close-button">
         &times;
       </button>
         <div className="form">

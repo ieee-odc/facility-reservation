@@ -39,7 +39,7 @@ const EquipmentReservationForm = ({ onSubmit, onBack }) => {
   return (
     <>
       <div className="container3">
-      <button className="close-button" onClick={onClose}>
+      <button className="close-button" >
         &times;
       </button>
         <form className="form" onSubmit={handleFormSubmit}>

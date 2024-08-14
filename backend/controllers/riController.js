@@ -10,6 +10,7 @@ export const createReservationInitiator = async (req, res) => {
     nature,
     service,
     organisation,
+    role,
   } = req.body;
 
   console.log("create", req.body);
@@ -28,6 +29,7 @@ export const createReservationInitiator = async (req, res) => {
       nature,
       service,
       organisation,
+      role,
     });
 
     //const savedInitiator = await newInitiator.save();
@@ -75,6 +77,7 @@ export const updateReservationInitiator = async (req, res) => {
     nature,
     service,
     organisation,
+    role,
   } = req.body;
 
   try {
@@ -90,6 +93,8 @@ export const updateReservationInitiator = async (req, res) => {
     if (nature) initiator.nature = nature;
     if (service) initiator.service = service;
     if (organisation) initiator.organisation = organisation;
+    if (role) initiator.role = role;
+
     if (password) initiator.password = await bcrypt.hash(password, 10);
 
     const updatedInitiator = await initiator.save();

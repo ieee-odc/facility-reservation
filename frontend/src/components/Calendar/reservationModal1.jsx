@@ -72,7 +72,7 @@ function ReserverTimeDate({ onSubmit, initialData, onClose }) {
 
   return (
     <div className="container3">
-      <button className="close-button" onClick={onClose}>
+      <button className="close-button" >
         &times;
       </button>
       <form className="form" onSubmit={handleFormSubmit}>
