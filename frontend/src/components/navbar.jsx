@@ -10,7 +10,7 @@ import axios from 'axios';
 import logoutIcon from '../assets/signout.png';
 import settings from '../assets/settings.png';
 import profileIcon from '../assets/profile.png';
-import userIcon from '../assets/user/Customer.png'
+import userIcon from '../assets/user.png'
 import reservationIcon from '../assets/reservation.png';
 import calendarIcon from '../assets/calendar.png';
 import homeIcon from '../assets/home.png';

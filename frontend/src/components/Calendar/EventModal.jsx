@@ -5,6 +5,7 @@ import EditReservationForm from "./EditReservationForm"; // Import the form comp
 
 const EventModal = ({ show, onHide, eventDetails, onCancel, viewType }) => {
   const [editFormOpen, setEditFormOpen] = useState(false);
+  const [showCancelConfirmation, setShowCancelConfirmation] = useState(false);
 
   const handleCancel = async () => {
     try {
@@ -23,6 +24,19 @@ const EventModal = ({ show, onHide, eventDetails, onCancel, viewType }) => {
     setEditFormOpen(true);
   };
 
+  const handleShowCancelConfirmation = () => {
+    setShowCancelConfirmation(true);
+  };
+
+  const handleCloseCancelConfirmation = () => {
+    setShowCancelConfirmation(false);
+  };
+
+  const handleConfirmCancel = () => {
+    handleCancel();
+    setShowCancelConfirmation(false);
+  };
+
   return (
     <>
       {show && (
@@ -31,7 +45,7 @@ const EventModal = ({ show, onHide, eventDetails, onCancel, viewType }) => {
             <span className="close-button" onClick={onHide}>
               &times;
             </span>
-            <h2>{viewType === "events" ? eventDetails.name : eventDetails.title  }</h2>
+            <h2>{viewType === "events" ? eventDetails.name : eventDetails.title}</h2>
             {viewType === "events" ? (
               <>
                 <p><strong>Description:</strong> {eventDetails.description}</p>
@@ -39,7 +53,6 @@ const EventModal = ({ show, onHide, eventDetails, onCancel, viewType }) => {
                 <p><strong>End Date:</strong> {new Date(eventDetails.end).toLocaleString()}</p>
                 <p><strong>Total Effective:</strong> {eventDetails.totalEffective}</p>
                 <p><strong>Organizer:</strong> {eventDetails.organizer}</p>
-
               </>
             ) : (
               <>
@@ -53,7 +66,7 @@ const EventModal = ({ show, onHide, eventDetails, onCancel, viewType }) => {
             <p><strong>State:</strong> {eventDetails.state}</p>
             {(eventDetails.state === 'Pending') && (
               <div className="button-group">
-                <button className="cancel-button" onClick={handleCancel}>
+                <button className="cancel-button" onClick={handleShowCancelConfirmation}>
                   Cancel Reservation
                 </button>
                 <button className="edit-button" onClick={handleEditClick}>
@@ -62,11 +75,26 @@ const EventModal = ({ show, onHide, eventDetails, onCancel, viewType }) => {
               </div>
             )}
           </div>
+
+          {showCancelConfirmation && (
+            <div className="confirmation-popup">
+              <p>Are you sure you want to cancel this reservation?</p>
+              <div className="confirmation-buttons">
+                <button className="yes-button" onClick={handleConfirmCancel}>
+                  Yes
+                </button>
+                <button className="no-button" onClick={handleCloseCancelConfirmation}>
+                  No
+                </button>
+              </div>
+            </div>
+          )}
+
           <EditReservationForm
             open={editFormOpen}
             onClose={() => setEditFormOpen(false)}
             reservationData={{
-              date: eventDetails.date, 
+              date: eventDetails.date,
               startTime: eventDetails.start,
               endTime: eventDetails.end,
               participants: eventDetails.participants,
