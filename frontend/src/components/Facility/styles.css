@@ -1,0 +1,234 @@
+.manage-users-container {
+  padding: 2em;
+  background-color: #f9f9f9;
+  min-height: 100vh;
+}
+
+.user-modal::-webkit-scrollbar {
+  width: 12px;
+  background: #2e2ec400;
+}
+
+.user-modal::-webkit-scrollbar-track {
+  border-radius: 10px;
+  background: #2e2ec400;
+  position: relative;
+}
+
+.user-modal::-webkit-scrollbar-thumb {
+  background: #dbdada00;
+  border-radius: 10px;
+  cursor: grab;
+  max-height: 20px;
+}
+
+.user-modal::-webkit-scrollbar-thumb:active {
+  background: #dbdada;
+  border-radius: 10px;
+  cursor: grabbing;
+}
+
+.user-modal::-webkit-scrollbar-thumb:hover {
+  background: #bcbcbc;
+  transition: cursor 4s ease-in-out;
+}
+
+.manage-users-container h1 {
+  color: rgb(0, 70, 135);
+  margin-bottom: 1em;
+}
+
+.initiator-cards {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1em;
+  margin-top: 1rem;
+}
+
+.initiator-card {
+  background-color: #ffffff;
+  border: 1px solid #e0e0e0;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  border-radius: 5px;
+  padding: 1em;
+  width: max-content;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  transition: transform 0.2s;
+  min-width: 300px;
+}
+
+.initiator-card:hover {
+  transform: scale(1.02);
+}
+
+.initiator-card h2 {
+  margin: 0 0 0.5em 0;
+  color: rgb(0, 70, 135);
+}
+
+.initiator-card p {
+  margin: 0.5em 0;
+}
+
+.actions {
+  display: flex;
+  justify-content: space-around;
+  margin-top: 1em;
+}
+
+.actions button {
+  background-color: rgb(0, 70, 135);
+  border: none;
+  color: #ffffff;
+  padding: 0.5em 1em;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.actions button:hover {
+  background-color: #003d73;
+}
+
+.add-user-button {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.user-button {
+  margin-top: 1em;
+  background-color: rgb(0, 70, 135);
+  border: none;
+  color: #ffffff;
+  padding: 0.75em 1.5em;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.user-button:hover {
+  background-color: #003d73;
+}
+
+.user-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.75);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.user-modal {
+  background: #fff;
+  border-radius: 5px;
+  width: 500px;
+  max-width: 90%;
+  padding: 1em;
+  position: relative;
+}
+
+.user-modal-content {
+  margin-top: 1rem;
+  padding: 1em;
+}
+
+.user-close-button {
+  color: #ababab;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  position: absolute;
+  top: 10px;
+  right: 20px;
+  height: 20px;
+}
+
+/* src/components/ManageUsers.css */
+
+.icon {
+  margin: 0 0.5em;
+  cursor: pointer;
+  transition: transform 0.4s;
+}
+
+.icon:hover {
+  transform: scale(1.2);
+}
+
+.initiator-card .actions {
+  display: flex;
+  justify-content: space-around;
+  margin-top: 1em;
+}
+
+.user-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.7);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+.user-modal {
+  background: #fff;
+  border-radius: 5px;
+  width: 500px;
+  max-width: 90%;
+  padding: 1em;
+  position: relative;
+  max-height: 80%;
+  overflow: auto;
+}
+
+.user-management-input {
+  padding: 0.8rem;
+  margin-bottom: 0.5rem;
+  border: none;
+  box-shadow: 0px 2px 4px #00387467;
+}
+
+.user-delete-button {
+  margin-right: 1rem;
+  background-color: #9c0000;
+}
+
+.user-delete-button:hover {
+  background-color: #7b0101;
+}
+
+.user-cancel-delete-button {
+  margin-right: 1rem;
+  background-color: #696969;
+}
+.user-cancel-delete-button:hover {
+  background-color: #4a4a4a;
+}
+
+.manage-user-consult {
+  display: flex;
+  flex-direction: column;
+  row-gap: 1rem;
+  margin-top: 0.8rem;
+}
+
+.manage-user-consult p {
+  border-bottom: 1px solid #9f9f9f71;
+  padding-bottom: 10px;
+  margin-bottom: 10px;
+}
+
+.manage-user-consult p:last-of-type {
+  border-bottom: none;
+}
+

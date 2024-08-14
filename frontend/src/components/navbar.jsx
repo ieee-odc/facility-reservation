@@ -22,6 +22,8 @@ import modeIcon from '../assets/mode.png';
 import historyIcon from '../assets/history.png';
 import eventIcon from '../assets/event.png';
 
+import openDoor from "../assets/OpenDoor.png"
+
 import GiveFeedback from "./feedback";
 import ChangePasswordModal from './ChangePasswordModal'; 
 import webLogo from "./../assets/logo/Group3.svg";
@@ -103,7 +105,10 @@ const Navbar = () => {
     navigate("/event");
   };
   const userManagement = async () => {
-    navigate("/user-management");
+    navigate("/manage-users");
+  };
+  const facilityManagement = async () => {
+    navigate("/manage-facilities");
   };
 
 
@@ -130,7 +135,8 @@ const Navbar = () => {
 
 
     { icon: <img src={profileIcon} alt="Profile Icon" style={{ width: '30px', height: '30px' }} />, text: "Profile", handleClick: profile },
-    { icon: <img src={userIcon} alt="User Icon" style={{ width: '30px', height: '30px' }} />, text: "Manage User", handleClick: userManagement },
+    { icon: <img src={userIcon} alt="User Icon" style={{ width: '30px', height: '30px' }} />, text: "Manage Users", handleClick: userManagement },
+    { icon: <img src={openDoor} alt="Facility Icon" style={{ width: '30px', height: '30px' }} />, text: "Manage Facilities", handleClick: facilityManagement },
     { icon: <img src={logoutIcon} alt="Logout Icon" style={{ width: '30px', height: '30px' }} />, text: "Logout", handleClick: Logout },
     { icon: <img src={settings} alt="settings Icon" style={{ width: '30px', height: '30px' }} />, text: "Settings"},
   ];
