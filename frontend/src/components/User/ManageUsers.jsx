@@ -1,4 +1,3 @@
-// src/components/ManageUsers.js
 import React, { useEffect, useState } from "react";
 import {
   getAllInitiators,
