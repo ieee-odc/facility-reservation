@@ -1,47 +1,88 @@
+/* AdminView.css */
 .admin-view-container {
-  padding: 20px;
-  font-family: Arial, sans-serif;
-}
-
-.admin-table {
-  width: 100%;
-  border-collapse: collapse;
-  margin-top: 20px;
-}
-
-.admin-table th,
-.admin-table td {
-  border: 1px solid #ddd;
-  padding: 8px;
-  text-align: left;
-}
-
-.admin-table th {
-  background-color: #f2f2f2;
-  font-weight: bold;
-}
-
-.admin-table tr:nth-child(even) {
-  background-color: #f9f9f9;
-}
-
-.admin-table tr:hover {
-  background-color: #eaeaea;
-}
-
-.event-row {
-  background-color: #d9f2d9;
-}
-
-.reservation-row {
-  background-color: #fff;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #ffffff;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    overflow-x: auto;
 }
 
 .controls {
-  margin-bottom: 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.filter-sort {
+    display: flex;
+    gap: 20px;
+}
+
+.controls label {
+    font-weight: bold;
+    display: flex;
+    align-items: center;
 }
 
 .controls select {
-  padding: 5px;
-  margin-right: 10px;
+    margin-left: 10px;
+    padding: 5px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 14px;
+}
+
+.admin-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.admin-table th, .admin-table td {
+    padding: 10px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+}
+
+.admin-table thead {
+    background-color: #333;
+    color: #fff;
+}
+
+.admin-table th {
+    font-weight: normal;
+}
+
+.admin-table tr:nth-child(even) {
+    background-color: #f2f2f2;
+}
+
+.admin-table tr:hover {
+    background-color: #e0e0e0;
+}
+
+.event-row {
+    background-color: #d5f5e3;
+}
+
+.reservation-row {
+    background-color: #f9e79f;
+}
+
+@media (max-width: 768px) {
+    .controls {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .filter-sort {
+        flex-direction: column;
+    }
+
+    .controls label {
+        margin-bottom: 10px;
+    }
 }
