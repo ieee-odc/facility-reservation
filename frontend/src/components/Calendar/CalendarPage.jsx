@@ -136,7 +136,7 @@ const CalendarPage = ({ currentId }) => {
   };
 
   const handleNewEvent = () => {
-    setIsEventModalOpen(true);  // Open the EventModal1 when the button is clicked
+    setIsEventModalOpen(true);  
   };
 
   useEffect(() => {
@@ -201,9 +201,9 @@ const CalendarPage = ({ currentId }) => {
         currentId={currentId}
       />
       <EventModal1
-        open={isEventModalOpen}  // Pass the open state to the EventModal1
-        onClose={() => setIsEventModalOpen(false)}  // Pass the onClose handler to close the modal
-        currentId={currentId}  // Pass any necessary props like currentId to EventModal1
+        open={isEventModalOpen}  
+        onClose={() => setIsEventModalOpen(false)}
+        currentId={currentId} 
       />
     </div>
   );

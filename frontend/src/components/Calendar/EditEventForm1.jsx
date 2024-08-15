@@ -5,18 +5,31 @@ import "../event/event.css";
 import { useAuth } from "../../context/authContext/AuthProvider";
 import FacilitiesForm from "./FacilitiesModal.jsx"; // Adjust the path as needed
 
-const EventForm = ({ open, onClose, onSubmit, eventDetails }) => {
+const formatDateForInput = (dateString) => {
+  // Convert date string from 'M/D/YYYY, H:mm:ss AM/PM' to 'YYYY-MM-DD'
+  const date = new Date(dateString);
+  return date.toISOString().split('T')[0];
+};
+
+const EventForm = ({ open, onClose, onSubmit, eventData }) => {
   const { currentUser } = useAuth();
-  const [name, setName] = useState(eventDetails?.name || "");
-  const [description, setDescription] = useState(eventDetails?.description || "");
-  const [startDate, setStartDate] = useState(eventDetails?.startDate || new Date().toISOString().split("T")[0]);
-  const [endDate, setEndDate] = useState(eventDetails?.endDate || new Date().toISOString().split("T")[0]);
-  const [numberOfFacilities, setNumberOfFacilities] = useState(eventDetails?.numberOfFacilities || 1);
-  const [organizer, setOrganizer] = useState(eventDetails?.organizer || "");
+  const [name, setName] = useState("");
+  const [description, setDescription] = useState("");
+  const [startDate, setStartDate] = useState("");
+  const [endDate, setEndDate] = useState("");
+  const [numberOfFacilities, setNumberOfFacilities] = useState(1);
+  const [organizer, setOrganizer] = useState("");
   const [facilitiesModalOpen, setFacilitiesModalOpen] = useState(false);
 
   useEffect(() => {
-    if (!eventDetails) {
+    if (eventData) {
+      setName(eventData.name || "");
+      setDescription(eventData.description || "");
+      setStartDate(formatDateForInput(eventData.startDate) || new Date().toISOString().split("T")[0]);
+      setEndDate(formatDateForInput(eventData.endDate) || new Date().toISOString().split("T")[0]);
+      setNumberOfFacilities(eventData.numberOfFacilities || 1);
+      setOrganizer(eventData.organizer || "");
+    } else {
       const fetchUser = async () => {
         try {
           const response = await axios.get(
@@ -29,7 +42,7 @@ const EventForm = ({ open, onClose, onSubmit, eventDetails }) => {
       };
       fetchUser();
     }
-  }, [currentUser, eventDetails]);
+  }, [eventData, currentUser]);
 
   const handleStartDateChange = (e) => {
     setStartDate(e.target.value);
@@ -59,7 +72,7 @@ const EventForm = ({ open, onClose, onSubmit, eventDetails }) => {
     <>
       <Modal open={open} onClose={onClose} size="md">
         <Modal.Header>
-          <Modal.Title>{eventDetails ? "Edit Event" : "Event Form"}</Modal.Title>
+          <Modal.Title>{eventData ? "Edit Event" : "Event Form"}</Modal.Title>
         </Modal.Header>
         <Modal.Body>
           <form className="event-form" onSubmit={handleSubmit}>
@@ -128,7 +141,7 @@ const EventForm = ({ open, onClose, onSubmit, eventDetails }) => {
           </form>
         </Modal.Body>
         <Modal.Footer>
-          <Button onClick={handleNext} appearance="primary">{eventDetails ? "Next" : "Next"}</Button>
+          <Button onClick={handleNext} appearance="primary">{eventData ? "Next" : "Next"}</Button>
           <Button onClick={onClose} appearance="subtle">Cancel</Button>
         </Modal.Footer>
       </Modal>
@@ -138,7 +151,7 @@ const EventForm = ({ open, onClose, onSubmit, eventDetails }) => {
         onClose={() => setFacilitiesModalOpen(false)}
         numberOfFacilities={numberOfFacilities}
         form1={{ name, description, startDate, endDate, organizer }}
-        facilitiesData={eventDetails?.facilities} // Pass facilities data for pre-filling
+        facilitiesData={eventData?.facilities} // Pass facilities data for pre-filling
       />
     </>
   );

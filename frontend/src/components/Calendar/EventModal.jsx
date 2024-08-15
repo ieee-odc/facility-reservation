@@ -1,7 +1,8 @@
 import React, { useState } from "react";
 import "./EventModal.css";
 import axios from "axios";
-import EditReservationForm from "./EditReservationForm"; // Import the form component
+import EditReservationForm from "./EditReservationForm"; // Import the reservation form component
+import EventForm from "./EditEventForm1"; // Import the event form component
 
 const EventModal = ({ show, onHide, eventDetails, onCancel, viewType }) => {
   const [editFormOpen, setEditFormOpen] = useState(false);
@@ -45,7 +46,7 @@ const EventModal = ({ show, onHide, eventDetails, onCancel, viewType }) => {
             <span className="close-button" onClick={onHide}>
               &times;
             </span>
-            <h2>{viewType === "events" ? eventDetails.name : eventDetails.title}</h2>
+            <h2>{viewType === "events" ? eventDetails.title : eventDetails.title}</h2>
             {viewType === "events" ? (
               <>
                 <p><strong>Description:</strong> {eventDetails.description}</p>
@@ -60,9 +61,9 @@ const EventModal = ({ show, onHide, eventDetails, onCancel, viewType }) => {
                 <p><strong>End:</strong> {new Date(eventDetails.end).toLocaleString()}</p>
                 <p><strong>Motive:</strong> {eventDetails.title}</p>
                 <p><strong>Participants:</strong> {eventDetails.participants}</p>
+                <p><strong>Facility:</strong> {eventDetails.facility}</p>
               </>
             )}
-            <p><strong>Facility:</strong> {eventDetails.facility}</p>
             <p><strong>State:</strong> {eventDetails.state}</p>
             {(eventDetails.state === 'Pending') && (
               <div className="button-group">
@@ -70,7 +71,7 @@ const EventModal = ({ show, onHide, eventDetails, onCancel, viewType }) => {
                   Cancel Reservation
                 </button>
                 <button className="edit-button" onClick={handleEditClick}>
-                  Edit Reservation
+                  {viewType === "events" ? "Edit Event" : "Edit Reservation"}
                 </button>
               </div>
             )}
@@ -90,22 +91,41 @@ const EventModal = ({ show, onHide, eventDetails, onCancel, viewType }) => {
             </div>
           )}
 
-          <EditReservationForm
-            open={editFormOpen}
-            onClose={() => setEditFormOpen(false)}
-            reservationData={{
-              date: eventDetails.date,
-              startTime: eventDetails.start,
-              endTime: eventDetails.end,
-              participants: eventDetails.participants,
-              facility: eventDetails.facility,
-              motif: eventDetails.title,
-              equipment: eventDetails.equipment
-            }}
-            onUpdate={(updatedReservation) => {
-              // Handle the update
-            }}
-          />
+          {viewType === "requests" ? (
+            <EditReservationForm
+              open={editFormOpen}
+              onClose={() => setEditFormOpen(false)}
+              reservationData={{
+                date: eventDetails.date,
+                startTime: eventDetails.start,
+                endTime: eventDetails.end,
+                participants: eventDetails.participants,
+                facility: eventDetails.facility,
+                motive: eventDetails.title,
+                equipment: eventDetails.equipment,
+              }}
+              onUpdate={(updatedReservation) => {
+                // Handle the update
+              }}
+            />
+          ) : (
+            <EventForm
+              open={editFormOpen}
+              onClose={() => setEditFormOpen(false)}
+              eventData={{
+                name: eventDetails.title,
+                description: eventDetails.description,
+                startDate: eventDetails.start,
+                endDate: eventDetails.end,
+                totalEffective: eventDetails.totalEffective,
+                numberOfFacilities: eventDetails.numberOfFacilities,
+                organizer: eventDetails.organizer,
+              }}
+              onUpdate={(updatedEvent) => {
+                // Handle the update
+              }}
+            />
+          )}
         </div>
       )}
     </>
