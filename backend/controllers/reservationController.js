@@ -146,7 +146,7 @@ export const getAvailableFacilities = async (req, res) => {
       .filter((reservation) => reservation.state === "Pending")
       .map((reservation) => reservation.facility);
 
-    const allFacilities = await Facility.find();
+    const allFacilities = await Facility.find({state: "Bookable"});
     const availableFacilities = allFacilities.filter(
       (facility) => !occupiedFacilities.includes(facility._id.toString())
     );

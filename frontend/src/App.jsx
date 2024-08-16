@@ -16,6 +16,7 @@ import CalendarPage from "./components/Calendar/CalendarPage";
 import ParentComp from "./components/Calendar/parentComp";
 import ManageUsers from "./components/User/ManageUsers";
 import ManageFacilities from "./components/Facility/ManageFacilities";
+import AdminView from "./components/adminDashboard/AdminView";
 
 const AuthStatus = () => {
   const { currentUser, userLoggedIn, loading, currentId ,currentRole} = useAuth();
@@ -37,6 +38,7 @@ const AppRoutes = () => {
       <Route path="/reset-password" element={<ResetPassword />} />
       <Route path="/manage-users" element={<ManageUsers />} />
       <Route path="/manage-facilities" element={<ManageFacilities/>} />
+      <Route path="/manage-requests" element={<AdminView/>} />
 
       {userLoggedIn ? (
         <>

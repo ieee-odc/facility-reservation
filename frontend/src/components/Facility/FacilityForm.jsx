@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { Toggle } from 'rsuite';
 
 const FacilityForm = ({ initiator, onSubmit }) => {
   const [formData, setFormData] = useState({
@@ -14,11 +15,20 @@ const FacilityForm = ({ initiator, onSubmit }) => {
   }, [initiator]);
 
   const handleChange = (e) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
+    const { name, value } = e.target;
+    setFormData({ ...formData, [name]: value });
+  };
+
+  const handleToggleChange = (checked) => {
+    console.log("checked", checked);
+    
+    setFormData({ ...formData, state: checked ? "Bookable" : "Forward" });
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    console.log("formData", formData);
+    
     onSubmit(formData);
   };
 
@@ -54,12 +64,12 @@ const FacilityForm = ({ initiator, onSubmit }) => {
         <label htmlFor="event-name">State</label>
 
         <div className="event-input-container">
-          <input
-            className="event-input"
-            name="state"
-            value={formData.state}
-            onChange={handleChange}
-            placeholder="State"
+          <Toggle
+            checked={formData.state==="Bookable"}
+            onChange={handleToggleChange}
+            checkedChildren="Bookable"
+            unCheckedChildren="Forward"
+            size="lg"
           />
         </div>
       </div>

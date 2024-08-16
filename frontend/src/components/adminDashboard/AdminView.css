@@ -1,0 +1,144 @@
+.admin-view-container {
+ padding: 20px;
+}
+
+.admin-table{
+    margin: 0 auto;
+    padding: 20px;
+    max-width: 1200px;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #f9f9f9;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+}
+
+.admin-view-container::-webkit-scrollbar {
+  height: 15px;
+  background: #2e2ec400;
+}
+
+.admin-view-container::-webkit-scrollbar-track {
+  border-radius: 10px;
+  background: #2e2ec400;
+  position: relative;
+  margin-top: 70px;
+}
+
+.admin-view-container::-webkit-scrollbar-thumb {
+  background: #dbdada92;
+  background: #dbdada00;
+  border-radius: 10px;
+  cursor: grab;
+  max-height: 20px;
+}
+.admin-view-container::-webkit-scrollbar-thumb:active {
+  background: #dbdada;
+  border-radius: 10px;
+  cursor: grabbing;
+}
+
+.admin-view-container::-webkit-scrollbar-thumb:hover {
+  background: #bcbcbc;
+  transition: cursor 4s ease-in-out;
+}
+
+.controls {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+  padding: 10px;
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  position: sticky;
+}
+
+.filter-sort {
+  display: flex;
+  gap: 20px;
+}
+
+.controls label {
+  font-weight: bold;
+  display: flex;
+  align-items: center;
+  color: #444;
+}
+
+.controls select {
+  margin-left: 10px;
+  padding: 5px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 14px;
+  background-color: #fff;
+  color: #333;
+  cursor: pointer;
+  transition: border-color 0.3s;
+}
+
+.controls select:hover,
+.controls select:focus {
+  border-color: #888;
+}
+
+.admin-table {
+  width: 100%;
+  border-collapse: collapse;
+  background-color: #fff;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.admin-table th,
+.admin-table td {
+  padding: 12px 15px;
+  text-align: left;
+  border-bottom: 1px solid #ddd;
+}
+
+.admin-table thead {
+  background-color: #343a40;
+  color: #fff;
+}
+
+.admin-table th {
+  font-weight: normal;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.admin-table tr:nth-child(even) {
+  background-color: #f8f9fa;
+}
+
+.admin-table tr:hover {
+  background-color: #e9ecef;
+  transition: background-color 0.3s;
+}
+
+.event-row {
+  background-color: #d1ecf1;
+}
+
+.reservation-row {
+  background-color: #fefefe;
+}
+
+@media (max-width: 768px) {
+  .controls {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .filter-sort {
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .controls label {
+    margin-bottom: 10px;
+  }
+}

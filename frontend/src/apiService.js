@@ -11,5 +11,9 @@ export const deleteInitiator = (id) => axios.delete(`${API_BASE_URL}/api/reserva
 export const getAllFacilities = () => axios.get(`${API_BASE_URL}/api/facilities`);
 export const getFacilityId = (id) => axios.get(`${API_BASE_URL}/api/facilities/${id}`);
 export const createFacility = (data) => axios.post(`${API_BASE_URL}/api/facilities`, data);
-export const updateFacility = (id, data) => axios.patch(`${API_BASE_URL}/api/facilities/${id}`, data);
+export const updateFacility = (id, updateFields) => axios.patch(`${API_BASE_URL}/api/facilities/${id}`, updateFields);
 export const deleteFacility = (id) => axios.delete(`${API_BASE_URL}/api/facilities/${id}`);
+
+export const getAllPureReservations = () => axios.get(`${API_BASE_URL}/api/reservations/pure`);
+
+export const getAllEvents = () => axios.get(`${API_BASE_URL}/api/events/reservations`);

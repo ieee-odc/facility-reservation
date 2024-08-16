@@ -55,11 +55,15 @@ const ManageFacilities = () => {
   };
 
   const handleAdd = () => {
+    console.log("i am here in add");
+
     setSelectedInitiator(null);
     openModal(<FacilityForm onSubmit={handleFormSubmit} />);
   };
 
   const handleEdit = (initiator) => {
+    console.log("i am here in edit");
+    
     setSelectedInitiator(initiator);
     openModal(
       <FacilityForm initiator={initiator} onSubmit={handleFormSubmit} />
@@ -104,9 +108,14 @@ const ManageFacilities = () => {
 
   const handleFormSubmit = async (data) => {
     try {
-      if (selectedInitiator) {
-        await updateFacility(selectedInitiator._id, data);
+      console.log("initiators", initiators);
+      
+      if (initiators) {
+        
+        await updateFacility(data._id, data);
       } else {
+        console.log("selectedInitiator", selectedInitiator);
+        
         createFacility(data)
           .then((resp) => {
             console.log("done --------", resp);
