@@ -32,7 +32,7 @@ export const verifyUser = async (req, res) => {
     );
     console.log("user", user);
 
-    return res.status(201).json({ isValid: (user!==null && user!==undefined), id :user._id });
+    return res.status(201).json({ isValid: (user!==null && user!==undefined), id :user._id , role:user.role });
   } catch (error) {
     console.log(error);
     res.status(500).json({ message: "Server error", error });

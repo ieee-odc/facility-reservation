@@ -42,6 +42,8 @@ export const verifyAuth = async (email,password, method) => {
 
 const AuthProvider = ({ children }) => {
   const [currentUser, setCurrentUser] = useState(null);
+  const [currentRole, setCurrentRole] = useState(null);
+
   const [currentId, setCurrentId] = useState(null);
   const [userLoggedIn, setUserLoggedIn] = useState(false);
   const [loading, setLoading] = useState(true);
@@ -49,11 +51,13 @@ const AuthProvider = ({ children }) => {
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, async (user) => {
       if (user) {
-        const {isValid, id} = await verifyAuth(user.email,'' ,'any');
+        const {isValid, id ,role} = await verifyAuth(user.email,'' ,'any');
         console.log("the id", id);
         
         if (isValid) {
-          setCurrentId(id)
+          setCurrentId(id);
+          setCurrentRole(role);
+
           setCurrentUser(user);
           setUserLoggedIn(true);
         } else {
@@ -61,6 +65,8 @@ const AuthProvider = ({ children }) => {
           setUserLoggedIn(false);
         }
       } else {
+        setCurrentRole(null);
+
         setCurrentId(null)
         setCurrentUser(null);
         setUserLoggedIn(false);
@@ -72,10 +78,11 @@ const AuthProvider = ({ children }) => {
 
   const value = useMemo(() => ({
     currentUser,
+    currentRole,
     currentId,
     userLoggedIn,
     loading,
-  }), [currentUser, currentId, userLoggedIn, loading]);
+  }), [currentUser, currentId, userLoggedIn, loading ,currentRole]);
 
   return (
     <AuthContext.Provider value={value}>

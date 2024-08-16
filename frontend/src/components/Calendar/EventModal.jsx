@@ -1,12 +1,14 @@
 import React, { useState } from "react";
 import "./EventModal.css";
 import axios from "axios";
-import EditReservationForm from "./EditReservationForm"; // Import the reservation form component
-import EventForm from "./EditEventForm1"; // Import the event form component
+import EditReservationForm from "./EditReservationForm";
+import EventForm from "./EditEventForm1";
+import { useAuth } from "../../context/authContext/AuthProvider";
 
 const EventModal = ({ show, onHide, eventDetails, onCancel, viewType }) => {
   const [editFormOpen, setEditFormOpen] = useState(false);
   const [showCancelConfirmation, setShowCancelConfirmation] = useState(false);
+  const { userLoggedIn, currentId, currentRole } = useAuth();
 
   const handleCancel = async () => {
     try {
@@ -38,6 +40,32 @@ const EventModal = ({ show, onHide, eventDetails, onCancel, viewType }) => {
     setShowCancelConfirmation(false);
   };
 
+  const handleApprove = async () => {
+    try {
+      await axios.patch(
+        `http://localhost:3000/api/reservations/${eventDetails.id}`,
+        { state: "Approved" }
+      );
+      onCancel(eventDetails.id);
+      onHide();
+    } catch (error) {
+      console.error("Error approving reservation", error);
+    }
+  };
+
+  const handleReject = async () => {
+    try {
+      await axios.patch(
+        `http://localhost:3000/api/reservations/${eventDetails.id}`,
+        { state: "Rejected" }
+      );
+      onCancel(eventDetails.id);
+      onHide();
+    } catch (error) {
+      console.error("Error rejecting reservation", error);
+    }
+  };
+
   return (
     <>
       {show && (
@@ -65,14 +93,27 @@ const EventModal = ({ show, onHide, eventDetails, onCancel, viewType }) => {
               </>
             )}
             <p><strong>State:</strong> {eventDetails.state}</p>
-            {(eventDetails.state === 'Pending') && (
+            {eventDetails.state === "Pending" && (
               <div className="button-group">
-                <button className="cancel-button" onClick={handleShowCancelConfirmation}>
-                  Cancel Reservation
-                </button>
-                <button className="edit-button" onClick={handleEditClick}>
-                  {viewType === "events" ? "Edit Event" : "Edit Reservation"}
-                </button>
+                {currentRole === "Admin" ? (
+                  <>
+                    <button className="approve-button" onClick={handleApprove}>
+                      Approve
+                    </button>
+                    <button className="reject-button" onClick={handleReject}>
+                      Reject
+                    </button>
+                  </>
+                ) : (
+                  <>
+                    <button className="cancel-button" onClick={handleShowCancelConfirmation}>
+                      Cancel Reservation
+                    </button>
+                    <button className="edit-button" onClick={handleEditClick}>
+                      {viewType === "events" ? "Edit Event" : "Edit Reservation"}
+                    </button>
+                  </>
+                )}
               </div>
             )}
           </div>

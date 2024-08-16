@@ -18,18 +18,18 @@ import ManageUsers from "./components/User/ManageUsers";
 import ManageFacilities from "./components/Facility/ManageFacilities";
 
 const AuthStatus = () => {
-  const { currentUser, userLoggedIn, loading, currentId } = useAuth();
+  const { currentUser, userLoggedIn, loading, currentId ,currentRole} = useAuth();
 
   useEffect(() => {
-    console.log(currentUser, userLoggedIn, loading, currentId);
-    console.log("currentUser, userLoggedIn, loading,", currentId);
+    console.log(currentUser, userLoggedIn, loading, currentId,currentRole);
+    console.log("currentUser, userLoggedIn, loading,", currentRole);
   }, [currentUser, userLoggedIn, loading, currentId]);
 
   return null;
 };
 
 const AppRoutes = () => {
-  const { userLoggedIn, currentId } = useAuth();
+  const { userLoggedIn, currentId, currentRole } = useAuth();
 
   return (
     <Routes>
