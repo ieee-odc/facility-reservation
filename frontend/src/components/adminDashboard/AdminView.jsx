@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import "./AdminView.css";
 import { getAllEvents, getAllPureReservations } from "../../apiService";
+import Navbar from "../navbar";
 
 const AdminView = () => {
   const [filter, setFilter] = useState("mix");
@@ -154,6 +155,8 @@ const AdminView = () => {
   };
 
   return (
+  <div>
+    <Navbar/>
     <div className="admin-view-container">
       <div className="controls">
         <div className="filter-sort">
@@ -175,6 +178,7 @@ const AdminView = () => {
         </div>
       </div>
       <div className="table">{renderTable()}</div>
+    </div>
     </div>
   );
 };

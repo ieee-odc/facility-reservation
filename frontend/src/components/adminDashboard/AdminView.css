@@ -2,6 +2,16 @@
  padding: 20px;
 }
 
+.admin-table{
+    margin: 0 auto;
+    padding: 20px;
+    max-width: 1200px;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #f9f9f9;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+}
+
 .admin-view-container::-webkit-scrollbar {
   height: 15px;
   background: #2e2ec400;
@@ -41,6 +51,7 @@
   background-color: #fff;
   border-radius: 8px;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  position: sticky;
 }
 
 .filter-sort {
