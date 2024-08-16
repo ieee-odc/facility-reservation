@@ -44,14 +44,20 @@ const AdminView = () => {
       combinedData.push({ ...event, type: "event" });
       if (event.reservations && event.reservations.length > 0) {
         event.reservations.forEach((reservation) =>
-          combinedData.push({ ...reservation, type: "reservation", parentEvent: event._id })
+          combinedData.push({
+            ...reservation,
+            type: "reservation",
+            parentEvent: event._id,
+          })
         );
       }
     });
 
     reservations
       .filter((reservation) => !reservation.event)
-      .forEach((reservation) => combinedData.push({ ...reservation, type: "reservation" }));
+      .forEach((reservation) =>
+        combinedData.push({ ...reservation, type: "reservation" })
+      );
 
     return combinedData;
   };
@@ -61,7 +67,9 @@ const AdminView = () => {
 
     if (filter === "events") {
       filtered = filtered.filter(
-        (item) => item.type === "event" || (item.type === "reservation" && item.parentEvent)
+        (item) =>
+          item.type === "event" ||
+          (item.type === "reservation" && item.parentEvent)
       );
     } else if (filter === "reservations") {
       filtered = filtered.filter(
@@ -71,7 +79,9 @@ const AdminView = () => {
 
     filtered.sort((a, b) => {
       if (sort === "startDate") {
-        return new Date(a.startDate || a.date) - new Date(b.startDate || b.date);
+        return (
+          new Date(a.startDate || a.date) - new Date(b.startDate || b.date)
+        );
       } else if (sort === "endDate") {
         return new Date(a.endDate || a.date) - new Date(b.endDate || b.date);
       }
@@ -107,13 +117,25 @@ const AdminView = () => {
           {dataToDisplay.map((item, index) => (
             <tr
               key={index}
-              className={item.type === "event" ? "event-row" : "reservation-row"}
+              className={
+                item.type === "event" ? "event-row" : "reservation-row"
+              }
             >
               <td>{item.name || " "}</td>
-              <td>{item.description || " "}</td>
+              <td title={item.description || ""}>{item.description || " "}</td>
               <td>{item.organizer || item.entity || " "}</td>
-              <td>{item.startDate ? new Date(item.startDate).toLocaleDateString() : item.date ? new Date(item.date).toLocaleDateString() : " "}</td>
-              <td>{item.endDate ? new Date(item.endDate).toLocaleDateString() : " "}</td>
+              <td>
+                {item.startDate
+                  ? new Date(item.startDate).toLocaleDateString()
+                  : item.date
+                  ? new Date(item.date).toLocaleDateString()
+                  : " "}
+              </td>
+              <td>
+                {item.endDate
+                  ? new Date(item.endDate).toLocaleDateString()
+                  : " "}
+              </td>
               <td>{item.totalEffective || item.effective || " "}</td>
               <td>{item.startTime || " "}</td>
               <td>{item.endTime || " "}</td>
@@ -121,7 +143,11 @@ const AdminView = () => {
               <td>{item.materials || " "}</td>
               <td>{item.motive || " "}</td>
               <td>{item.state || " "}</td>
-              <td>{item.updatedAt ? new Date(item.updatedAt).toLocaleDateString() : " "}</td>
+              <td>
+                {item.updatedAt
+                  ? new Date(item.updatedAt).toLocaleDateString()
+                  : " "}
+              </td>
             </tr>
           ))}
         </tbody>
@@ -150,7 +176,9 @@ const AdminView = () => {
           </label>
         </div>
       </div>
-      {renderTable()}
+      <div>
+        <div className="table">{renderTable()}</div>
+      </div>
     </div>
   );
 };
