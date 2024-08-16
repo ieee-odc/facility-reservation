@@ -25,13 +25,13 @@ test.after.always(async (t) => {
 const validFacility = {
   label: "Conference Room A",
   capacity: 50,
-  state: true,
+  state: "Bookable",
 };
 
 const invalidFacility = {
   label: "",
   capacity: 0,
-  state: true,
+  state: "Bookab",
 };
 
 test.serial("POST /api/facilities should create a facility", async (t) => {
