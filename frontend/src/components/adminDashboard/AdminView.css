@@ -1,12 +1,5 @@
 .admin-view-container {
-  max-width: 95vw;
-  margin: 0 auto;
-  padding: 20px;
-  background-color: #ffffff;
-  border-radius: 8px;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
-  overflow-x: auto;
+ padding: 20px;
 }
 
 .admin-view-container::-webkit-scrollbar {

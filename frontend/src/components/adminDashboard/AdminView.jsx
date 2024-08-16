@@ -97,21 +97,19 @@ const AdminView = () => {
     return (
       <table className="admin-table">
         <thead>
-          <tr>
-            <th>Name</th>
-            <th>Description</th>
-            <th>Organizer</th>
-            <th>Start Date</th>
-            <th>End Date</th>
-            <th>Effective</th>
-            <th>Start Time</th>
-            <th>End Time</th>
-            <th>Facility</th>
-            <th>Materials</th>
-            <th>Motive</th>
-            <th>State</th>
-            <th>Last Updated</th>
-          </tr>
+          <th>Name</th>
+          <th>Description</th>
+          <th>Organizer</th>
+          <th>Start Date</th>
+          <th>End Date</th>
+          <th>Effective</th>
+          <th>Start Time</th>
+          <th>End Time</th>
+          <th>Facility</th>
+          <th>Materials</th>
+          <th>Motive</th>
+          <th>State</th>
+          <th>Last Updated</th>
         </thead>
         <tbody>
           {dataToDisplay.map((item, index) => (
@@ -176,9 +174,7 @@ const AdminView = () => {
           </label>
         </div>
       </div>
-      <div>
-        <div className="table">{renderTable()}</div>
-      </div>
+      <div className="table">{renderTable()}</div>
     </div>
   );
 };
