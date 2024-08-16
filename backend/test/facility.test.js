@@ -111,6 +111,9 @@ test.serial("PATCH /api/facilities/:id should update a facility", async (t) => {
     .send(updateData)
     .expect(200);
 
+    console.log("-------------------", updateResponse);
+    
+
   t.is(updateResponse.status, 200);
   t.is(updateResponse.body._id, id);
   t.is(updateResponse.body.label, updateData.label);
@@ -121,7 +124,7 @@ test.serial("PATCH /api/facilities/:id should update a facility", async (t) => {
 test.serial(
   "PATCH /api/facilities/:id should return 404 for non-existent facility",
   async (t) => {
-    const invalidId = "605c72efbcf86cd799439011";
+    const invalidId = "605c72efbcf86cd700009011";
 
     const response = await request(app)
       .patch(`/api/facilities/${invalidId}`)
