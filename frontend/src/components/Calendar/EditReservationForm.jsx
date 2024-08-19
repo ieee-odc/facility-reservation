@@ -7,14 +7,16 @@ import "../event/event.css";
 const EditReservationForm = ({ open, onClose, reservationData, onUpdate }) => {
   const [facilities, setFacilities] = useState([]);
   const [equipments, setEquipments] = useState([]);
-  const [date, setDate] = useState("");
-  const [startTime, setStartTime] = useState("");
-  const [endTime, setEndTime] = useState("");
-  const [participants, setParticipants] = useState("");
-  const [facility, setFacility] = useState("");
-  const [motif, setMotif] = useState("");
-  const [equipment, setEquipment] = useState({});
-  const [otherMotif, setOtherMotif] = useState("");
+  const [formData, setFormData] = useState({
+    date: "",
+    startTime: "",
+    endTime: "",
+    participants: "",
+    facility: "",
+    motif: "",
+    otherMotif: "",
+    equipment: {}
+  });
 
   const showNotification = useNotification();
 
@@ -27,26 +29,6 @@ const EditReservationForm = ({ open, onClose, reservationData, onUpdate }) => {
         const equipmentResponse = await axios.get("http://localhost:3000/api/equipments");
         const fetchedEquipments = equipmentResponse.data.data || [];
         setEquipments(fetchedEquipments);
-
-        if (reservationData) {
-          const reservationDate = new Date(reservationData.startTime);
-          setDate(reservationDate.toISOString().split('T')[0]);
-          setStartTime(reservationDate.toTimeString().split(' ')[0].substring(0, 5)); // HH:MM
-          const endDate = new Date(reservationData.endTime);
-          setEndTime(endDate.toTimeString().split(' ')[0].substring(0, 5)); // HH:MM
-
-          setParticipants(reservationData.participants || "");
-          setFacility(reservationData.facility || "");
-          setMotif(reservationData.motive || "");
-          setOtherMotif(reservationData.otherMotif || "");
-
-          const initialEquipment = reservationData.materials || [];
-          const equipmentState = fetchedEquipments.reduce((acc, equip) => {
-            acc[equip.label] = initialEquipment.includes(equip._id);
-            return acc;
-          }, {});
-          setEquipment(equipmentState);
-        }
       } catch (error) {
         console.error("Error fetching data:", error);
         showNotification("Failed to fetch facilities or equipment data.", "error");
@@ -54,48 +36,91 @@ const EditReservationForm = ({ open, onClose, reservationData, onUpdate }) => {
     };
 
     fetchData();
-  }, [reservationData, showNotification]);
+  }, [showNotification]);
 
-  const today = new Date().toISOString().split('T')[0];
+  useEffect(() => {
+    if (reservationData) {
+      const reservationDate = new Date(reservationData.startTime);
+      const date = reservationDate.toISOString().split('T')[0];
+      const startTime = reservationDate.toTimeString().split(' ')[0].substring(0, 5); // HH:MM
+      const endDate = new Date(reservationData.endTime);
+      const endTime = endDate.toTimeString().split(' ')[0].substring(0, 5); // HH:MM
+
+      const initialEquipment = reservationData.materials || [];
+      const equipmentState = equipments.reduce((acc, equip) => {
+        acc[equip.label] = initialEquipment.includes(equip._id);
+        return acc;
+      }, {});
+
+      setFormData({
+        date,
+        startTime,
+        endTime,
+        participants: reservationData.participants || "",
+        facility: reservationData.facility || "",
+        motif: reservationData.motive || "",
+        otherMotif: reservationData.otherMotif || "",
+        equipment: equipmentState
+      });
+    }
+  }, [reservationData, equipments]);
+
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setFormData((prevData) => ({
+      ...prevData,
+      [name]: value,
+    }));
+  };
+
+  const handleCheckboxChange = (e, label) => {
+    setFormData((prevData) => ({
+      ...prevData,
+      equipment: {
+        ...prevData.equipment,
+        [label]: e.target.checked,
+      },
+    }));
+  };
 
   const handleSave = async () => {
     try {
-      const selectedFacility = facilities.find((f) => f.label === facility);
+      const selectedFacility = facilities.find((f) => f.label === formData.facility);
       const facilityId = selectedFacility ? selectedFacility._id : null;
-  
-      const equipmentIds = Object.entries(equipment)
+
+      const equipmentIds = Object.entries(formData.equipment)
         .filter(([, checked]) => checked)
         .map(([label]) => {
           const matchedEquipment = equipments.find((e) => e.label === label);
           return matchedEquipment ? matchedEquipment._id : null;
         })
         .filter((id) => id !== null);
-  
+
       if (!facilityId) {
         throw new Error("Invalid facility selected");
       }
-  
+
       if (equipmentIds.includes(null)) {
         throw new Error("Some equipment could not be matched to IDs");
       }
-  
-      if (!startTime || !endTime) {
+
+      if (!formData.startTime || !formData.endTime) {
         throw new Error("Start time and end time are required");
       }
-  
+
       const updatedReservation = {
-        date,
-        startTime: `${date}T${startTime}:00`,
-        endTime: `${date}T${endTime}:00`,
-        participants,
+        date: formData.date,
+        startTime: `${formData.date}T${formData.startTime}:00`,
+        endTime: `${formData.date}T${formData.endTime}:00`,
+        participants: formData.participants,
         facility: facilityId,
-        motif,
+        motif: formData.motif,
         materials: equipmentIds,
         id: reservationData.currentId,
       };
-  
+
       await axios.patch(`http://localhost:3000/api/reservations/${reservationData.currentId}`, updatedReservation);
-  
+
       showNotification("Reservation updated successfully!", "success");
       onUpdate(updatedReservation);
       onClose();
@@ -104,7 +129,8 @@ const EditReservationForm = ({ open, onClose, reservationData, onUpdate }) => {
       showNotification("Failed to update reservation. Please try again.", "error");
     }
   };
-  
+
+  const today = new Date().toISOString().split('T')[0];
 
   return (
     <Modal open={open} onClose={onClose} size="md">
@@ -119,34 +145,37 @@ const EditReservationForm = ({ open, onClose, reservationData, onUpdate }) => {
           <input
             type="date"
             id="date"
+            name="date"
             className="event-input"
-            value={date}
-            min={today} // Set minimum date to today
-            onChange={(e) => setDate(e.target.value)}
+            value={formData.date}
+            min={today}
+            onChange={handleInputChange}
           />
         </div>
         <div className="event-form-group">
-          <label htmlFor="start-time" className="event-form-label">
+          <label htmlFor="startTime" className="event-form-label">
             Start Time
           </label>
           <input
             type="time"
-            id="start-time"
+            id="startTime"
+            name="startTime"
             className="event-input"
-            value={startTime}
-            onChange={(e) => setStartTime(e.target.value)}
+            value={formData.startTime}
+            onChange={handleInputChange}
           />
         </div>
         <div className="event-form-group">
-          <label htmlFor="end-time" className="event-form-label">
+          <label htmlFor="endTime" className="event-form-label">
             End Time
           </label>
           <input
             type="time"
-            id="end-time"
+            id="endTime"
+            name="endTime"
             className="event-input"
-            value={endTime}
-            onChange={(e) => setEndTime(e.target.value)}
+            value={formData.endTime}
+            onChange={handleInputChange}
           />
         </div>
         <div className="event-form-group">
@@ -156,9 +185,10 @@ const EditReservationForm = ({ open, onClose, reservationData, onUpdate }) => {
           <input
             type="text"
             id="participants"
+            name="participants"
             className="event-input"
-            value={participants}
-            onChange={(e) => setParticipants(e.target.value)}
+            value={formData.participants}
+            onChange={handleInputChange}
           />
         </div>
         <div className="event-form-group">
@@ -167,9 +197,10 @@ const EditReservationForm = ({ open, onClose, reservationData, onUpdate }) => {
           </label>
           <select
             id="facility"
+            name="facility"
             className="event-input"
-            value={facility}
-            onChange={(e) => setFacility(e.target.value)}
+            value={formData.facility}
+            onChange={handleInputChange}
           >
             {facilities.map((f) => (
               <option key={f._id} value={f.label}>
@@ -185,9 +216,10 @@ const EditReservationForm = ({ open, onClose, reservationData, onUpdate }) => {
           </label>
           <select
             id="motif"
+            name="motif"
             className="event-input"
-            value={motif}
-            onChange={(e) => setMotif(e.target.value)}
+            value={formData.motif}
+            onChange={handleInputChange}
           >
             <option value="">Select a reason</option>
             <option value="Club meeting">Club meeting</option>
@@ -202,13 +234,14 @@ const EditReservationForm = ({ open, onClose, reservationData, onUpdate }) => {
           </label>
           <textarea
             id="otherMotif"
+            name="otherMotif"
             className="event-input"
-            value={otherMotif}
-            onChange={(e) => setOtherMotif(e.target.value)}
+            value={formData.otherMotif}
+            onChange={handleInputChange}
             rows="3"
           ></textarea>
         </div>
-    
+
         <div className="event-form-group">
           <label className="event-form-label">Reserved Equipments</label>
           <ul className="event-equipment-list">
@@ -216,13 +249,8 @@ const EditReservationForm = ({ open, onClose, reservationData, onUpdate }) => {
               <li key={equip._id} className="event-equipment-item">
                 <input
                   type="checkbox"
-                  checked={!!equipment[equip.label]}
-                  onChange={(e) =>
-                    setEquipment((prev) => ({
-                      ...prev,
-                      [equip.label]: e.target.checked,
-                    }))
-                  }
+                  checked={!!formData.equipment[equip.label]}
+                  onChange={(e) => handleCheckboxChange(e, equip.label)}
                 />
                 {equip.label}
               </li>

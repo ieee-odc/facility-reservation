@@ -27,8 +27,24 @@ const EventForm = ({ open, onClose, onSubmit, eventData }) => {
       setDescription(eventData.description || "");
       setStartDate(formatDateForInput(eventData.startDate) || new Date().toISOString().split("T")[0]);
       setEndDate(formatDateForInput(eventData.endDate) || new Date().toISOString().split("T")[0]);
-      setNumberOfFacilities(eventData.numberOfFacilities || 1);
       setOrganizer(eventData.organizer || "");
+
+      
+      const fetchReservations = async () => {
+        try {
+          const response = await axios.get(
+            `http://localhost:3000/api/reservations/event/${eventData.id}`
+          );
+          setNumberOfFacilities(response.data.length);
+          console.log(response.data);
+              console.log(response.data.length); 
+
+        } catch (error) {
+          console.error("Error fetching reservations:", error);
+        }
+      };
+
+      fetchReservations();
     } else {
       const fetchUser = async () => {
         try {

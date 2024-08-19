@@ -154,6 +154,7 @@ const EventModal = ({ show, onHide, eventDetails, onCancel, viewType }) => {
               open={editFormOpen}
               onClose={() => setEditFormOpen(false)}
               eventData={{
+                id: eventDetails.id,
                 name: eventDetails.title,
                 description: eventDetails.description,
                 startDate: eventDetails.start,
