@@ -7,7 +7,7 @@ import Modal from "react-modal";
 import moment from "moment";
 import "./style.css";
 
-Modal.setAppElement("#root"); 
+Modal.setAppElement("#root");
 
 function ParentComp({ isOpen, onRequestClose, slotDetails, currentView, currentId }) {
   const [reserverTimeDateSubmitted, setReserverTimeDateSubmitted] =
@@ -54,9 +54,7 @@ function ParentComp({ isOpen, onRequestClose, slotDetails, currentView, currentI
       participants,
     }));
   };
-  const handleClose = () => {
-    setIsModalOpen(false);
-  };
+
   const handleReservationSalleformSubmit = (facility, motif) => {
     setReserverSalleFormSubmitted(true);
     setReservationDetails((prevState) => ({ ...prevState, facility, motif }));
@@ -82,16 +80,22 @@ function ParentComp({ isOpen, onRequestClose, slotDetails, currentView, currentI
     setEquipmentFormSubmitted(false);
   };
 
+  const handleClose = () => {
+    onRequestClose();
+    setReserverTimeDateSubmitted(false);
+    setReserverSalleFormSubmitted(false);
+    setEquipmentFormSubmitted(false);
+  };
+
   return (
     <div>
       <Modal
         isOpen={isOpen && !reserverTimeDateSubmitted}
-        onRequestClose={onRequestClose}
+        onRequestClose={handleClose}
         contentLabel="Reserver Time Date Modal"
         overlayClassName="custom-modal-overlay"
         className="custom-modal-content"
-        shouldCloseOnOverlayClick={true} // Add this line
-
+        shouldCloseOnOverlayClick={true}
       >
         <ReserverTimeDate
           onSubmit={handleReservationTimeDateSubmit}
@@ -111,8 +115,7 @@ function ParentComp({ isOpen, onRequestClose, slotDetails, currentView, currentI
         contentLabel="Reserver Salle Form Modal"
         overlayClassName="custom-modal-overlay"
         className="custom-modal-content"
-        shouldCloseOnOverlayClick={true} // Add this line 
-
+        shouldCloseOnOverlayClick={true}
       >
         <ReserverSalleform
           onSubmit={handleReservationSalleformSubmit}
@@ -127,8 +130,7 @@ function ParentComp({ isOpen, onRequestClose, slotDetails, currentView, currentI
         contentLabel="Equipment Reservation Form Modal"
         overlayClassName="custom-modal-overlay"
         className="custom-modal-content"
-        shouldCloseOnOverlayClick={true} // Add this line
-
+        shouldCloseOnOverlayClick={true}
       >
         <EquipmentReservationForm
           onSubmit={handleEquipmentReservationSubmit}
@@ -142,10 +144,9 @@ function ParentComp({ isOpen, onRequestClose, slotDetails, currentView, currentI
         contentLabel="Reservation Details Modal"
         overlayClassName="custom-modal-overlay"
         className="custom-modal-content"
-        shouldCloseOnOverlayClick={true} // Add this line
-
+        shouldCloseOnOverlayClick={true}
       >
-         <ReservationDetails
+        <ReservationDetails
           date={reservationDetails.date}
           time={reservationDetails.time}
           facility={reservationDetails.facility}
@@ -153,11 +154,9 @@ function ParentComp({ isOpen, onRequestClose, slotDetails, currentView, currentI
           motif={reservationDetails.motif}
           equipment={reservationDetails.equipment}
           onBack={handleBackToEquipmentForm}
-          onQuit={() => onRequestClose()}
+          onQuit={handleClose}
           currentId={currentId}
-
         />
-
       </Modal>
     </div>
   );

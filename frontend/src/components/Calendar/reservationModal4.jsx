@@ -124,9 +124,7 @@ const ReservationDetails = ({
   return (
     <div>
       <div className="container3">
-      <button className="close-button">
-        &times;
-      </button>
+
         <div className="form">
           <div className="button-group">
             <IoArrowBackOutline className="back" size={24} onClick={onBack} />
