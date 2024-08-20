@@ -18,6 +18,8 @@ const CalendarPage = ({ currentId }) => {
   const [viewType, setViewType] = useState("requests");
   const [isParentModalOpen, setIsParentModalOpen] = useState(false);
   const [isEventModalOpen, setIsEventModalOpen] = useState(false);  
+  const [filterState, setFilterState] = useState("All");
+
 
   const navigate = useNavigate();
 
@@ -175,6 +177,28 @@ const CalendarPage = ({ currentId }) => {
                   Events
                 </Dropdown.Item>
               </Dropdown>
+              <Dropdown
+    className="the-button"
+    title="Filter by State"
+    activeKey={filterState}
+    onSelect={(key) => setFilterState(key)}
+  >
+    <Dropdown.Item className="the-item" eventKey="All">
+      All
+    </Dropdown.Item>
+    <Dropdown.Item className="the-item" eventKey="Pending">
+      Pending
+    </Dropdown.Item>
+    <Dropdown.Item className="the-item" eventKey="Approved">
+      Approved
+    </Dropdown.Item>
+    <Dropdown.Item className="the-item" eventKey="Rejected">
+      Rejected
+    </Dropdown.Item>
+    <Dropdown.Item className="the-item" eventKey="Cancelled">
+      Cancelled
+    </Dropdown.Item>
+  </Dropdown>
               <div className="add-button">
                 <button type="button" onClick={handleNewReservation}>
                   + Add reservation

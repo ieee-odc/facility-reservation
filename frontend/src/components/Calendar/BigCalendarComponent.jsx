@@ -15,22 +15,30 @@ const BigCalendarComponent = ({ events, requests, viewType, currentId }) => {
   const [eventModalShow, setEventModalShow] = useState(false);
   const [slotModalShow, setSlotModalShow] = useState(false);
   const [selectedSlot, setSelectedSlot] = useState(null);
+  const [filterState, setFilterState] = useState("All");
+
 
   useEffect(() => {
-    const formattedRequests = requests.map((event) => ({
+    const filterEventsByState = (events) => {
+      if (filterState === "All") return events;
+      return events.filter(event => event.state === filterState);
+    };
+  
+    const formattedRequests = filterEventsByState(requests.map((event) => ({
       ...event,
       start: new Date(event.start),
       end: new Date(event.end),
-    }));
-
-    const formattedEvents = events.map((event) => ({
+    })));
+  
+    const formattedEvents = filterEventsByState(events.map((event) => ({
       ...event,
       start: new Date(event.start),
       end: new Date(event.end),
-    }));
-
+    })));
+  
     setAllEvents(viewType === 'requests' ? formattedRequests : formattedEvents);
-  }, [events, requests, viewType]);
+  }, [events, requests, viewType, filterState]);
+  
 
   const handleEventClick = (event) => {
     setSelectedEvent(event);
