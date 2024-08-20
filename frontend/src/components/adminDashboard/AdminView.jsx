@@ -1,7 +1,12 @@
 import React, { useEffect, useState } from "react";
 import { Panel } from "rsuite";
 import "./AdminView.css";
-import { getAllEvents, getAllPureReservations, getAllOrganizers, getAllFacilities } from "../../apiService";
+import {
+  getAllEvents,
+  getAllPureReservations,
+  getAllOrganizers,
+  getAllFacilities,
+} from "../../apiService";
 import Navbar from "../navbar";
 
 const AdminView = () => {
@@ -21,6 +26,8 @@ const AdminView = () => {
     try {
       const response = await getAllPureReservations();
       setReservations(response.data);
+      console.log("reservations", reservations);
+      
     } catch (error) {
       console.error("Error fetching reservations", error);
     }
@@ -37,13 +44,13 @@ const AdminView = () => {
 
   const fetchOrganizers = async () => {
     try {
-      const response = await getAllOrganizers(); // Fetch all organizers
-      console.log("Fetched organizers:", response.data); // Debugging line
+      const response = await getAllOrganizers(); 
+      console.log("Fetched organizers:", response.data); 
       const organizersData = response.data.reduce((acc, organizer) => {
-        acc[organizer._id] = organizer.name; // Map organizer ID to name
+        acc[organizer._id] = organizer.name; 
         return acc;
       }, {});
-      console.log("Organizers mapped:", organizersData); // Debugging line
+      console.log("Organizers mapped:", organizersData); 
       setOrganizers(organizersData);
     } catch (error) {
       console.error("Error fetching organizers", error);
@@ -65,6 +72,21 @@ const AdminView = () => {
     }
   };
 
+  const getStateClass = (state) => {
+    switch (state) {
+      case "Pending":
+        return `state-pending`;
+      case "Approved":
+        return `state-approved`;
+      case "Cancelled":
+        return `state-cancelled`;
+      case "Rejected":
+        return `state-rejected`;
+      default:
+        return "";
+    }
+  };
+
   return (
     <div>
       <Navbar />
@@ -74,10 +96,12 @@ const AdminView = () => {
             <h2>Events</h2>
             {events.map((event) => (
               <Panel
-              key={event._id}
+                key={event._id}
                 header={
                   <div className="event-header">
-                    <h5>{organizers[event.organizer] || "Unknown Organizer"}</h5>
+                    <h5>
+                      {organizers[event.organizer] || "Unknown Organizer"}
+                    </h5>
                     <h6>{event.name}</h6>
                   </div>
                 }
@@ -85,7 +109,7 @@ const AdminView = () => {
                 collapsible
                 bordered
               >
-                <div >
+                <div>
                   <div className="event-details">
                     <p>
                       <strong>Description:</strong> {event.description}
@@ -98,7 +122,7 @@ const AdminView = () => {
                       <strong>End Date:</strong>{" "}
                       {new Date(event.endDate).toLocaleDateString()}
                     </p>
-                    <p>
+                    <p className={getStateClass(event.state)}>
                       <strong>State:</strong> {event.state}
                     </p>
                     <p>
@@ -110,7 +134,10 @@ const AdminView = () => {
 
                     <div className="event-reservations">
                       {event.reservations.map((reservation) => (
-                        <div className="event-reservation-item" key={reservation._id}>
+                        <div
+                          className="event-reservation-item"
+                          key={reservation._id}
+                        >
                           <p>
                             <strong>Date:</strong>{" "}
                             {new Date(reservation.date).toLocaleDateString()}
@@ -123,12 +150,14 @@ const AdminView = () => {
                             <strong>Motive:</strong> {reservation.motive}
                           </p>
                           <p>
-                            <strong>Facility:</strong> {facilities[reservation.facility] || "Unknown Facility"}
+                            <strong>Facility:</strong>{" "}
+                            {facilities[reservation.facility] ||
+                              "Unknown Facility"}
                           </p>
                           <p>
                             <strong>Effective:</strong> {reservation.effective}
                           </p>
-                          <p>
+                          <p className={getStateClass(reservation.state)}>
                             <strong>State:</strong> {reservation.state}
                           </p>
                         </div>
@@ -144,6 +173,12 @@ const AdminView = () => {
             <h2>Reservations</h2>
             {reservations.map((reservation) => (
               <div key={reservation._id} className="reservation-item">
+                <h3>
+                  {organizers[reservation.entity] || "Unknown Organizer"}
+                </h3>
+                <p>
+                  <strong>Motive:</strong> {reservation.motive}
+                </p>
                 <p>
                   <strong>Date:</strong>{" "}
                   {new Date(reservation.date).toLocaleDateString()}
@@ -152,16 +187,15 @@ const AdminView = () => {
                   <strong>Time:</strong> {reservation.startTime} -{" "}
                   {reservation.endTime}
                 </p>
+                
                 <p>
-                  <strong>Motive:</strong> {reservation.motive}
-                </p>
-                <p>
-                  <strong>Facility:</strong> {facilities[reservation.facility] || "Unknown Facility"}
+                  <strong>Facility:</strong>{" "}
+                  {facilities[reservation.facility] || "Unknown Facility"}
                 </p>
                 <p>
                   <strong>Effective:</strong> {reservation.effective}
                 </p>
-                <p>
+                <p className={getStateClass(reservation.state)}>
                   <strong>State:</strong> {reservation.state}
                 </p>
               </div>
