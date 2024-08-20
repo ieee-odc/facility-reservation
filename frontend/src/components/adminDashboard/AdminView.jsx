@@ -1,23 +1,26 @@
 import React, { useEffect, useState } from "react";
 import { Panel } from "rsuite";
 import "./AdminView.css";
-import { getAllEvents, getAllPureReservations } from "../../apiService";
+import { getAllEvents, getAllPureReservations, getAllOrganizers, getAllFacilities } from "../../apiService";
 import Navbar from "../navbar";
 
 const AdminView = () => {
   const [reservations, setReservations] = useState([]);
   const [events, setEvents] = useState([]);
+  const [organizers, setOrganizers] = useState({});
+  const [facilities, setFacilities] = useState({});
 
   useEffect(() => {
     fetchReservations();
     fetchEvents();
+    fetchOrganizers();
+    fetchFacilities();
   }, []);
 
   const fetchReservations = async () => {
     try {
       const response = await getAllPureReservations();
       setReservations(response.data);
-      console.log("reservations", response.data);
     } catch (error) {
       console.error("Error fetching reservations", error);
     }
@@ -27,9 +30,38 @@ const AdminView = () => {
     try {
       const response = await getAllEvents();
       setEvents(response.data);
-      console.log("events", response.data);
     } catch (error) {
       console.error("Error fetching events", error);
+    }
+  };
+
+  const fetchOrganizers = async () => {
+    try {
+      const response = await getAllOrganizers(); // Fetch all organizers
+      console.log("Fetched organizers:", response.data); // Debugging line
+      const organizersData = response.data.reduce((acc, organizer) => {
+        acc[organizer._id] = organizer.name; // Map organizer ID to name
+        return acc;
+      }, {});
+      console.log("Organizers mapped:", organizersData); // Debugging line
+      setOrganizers(organizersData);
+    } catch (error) {
+      console.error("Error fetching organizers", error);
+    }
+  };
+
+  const fetchFacilities = async () => {
+    try {
+      const response = await getAllFacilities(); // Fetch all facilities
+      console.log("Fetched facilities:", response.data.data); // Debugging line
+      const facilitiesData = response.data.data.reduce((acc, facility) => {
+        acc[facility._id] = facility.label; // Map facility ID to name
+        return acc;
+      }, {});
+      console.log("Facilities mapped:", facilitiesData); // Debugging line
+      setFacilities(facilitiesData);
+    } catch (error) {
+      console.error("Error fetching facilities", error);
     }
   };
 
@@ -42,9 +74,10 @@ const AdminView = () => {
             <h2>Events</h2>
             {events.map((event) => (
               <Panel
+              key={event._id}
                 header={
                   <div className="event-header">
-                    <h5 >{event.organizer}</h5>
+                    <h5>{organizers[event.organizer] || "Unknown Organizer"}</h5>
                     <h6>{event.name}</h6>
                   </div>
                 }
@@ -52,11 +85,10 @@ const AdminView = () => {
                 collapsible
                 bordered
               >
-                <div key={event._id}>
+                <div >
                   <div className="event-details">
                     <p>
                       <strong>Description:</strong> {event.description}
-                      
                     </p>
                     <p>
                       <strong>Start Date:</strong>{" "}
@@ -91,7 +123,7 @@ const AdminView = () => {
                             <strong>Motive:</strong> {reservation.motive}
                           </p>
                           <p>
-                            <strong>Facility:</strong> {reservation.facility}
+                            <strong>Facility:</strong> {facilities[reservation.facility] || "Unknown Facility"}
                           </p>
                           <p>
                             <strong>Effective:</strong> {reservation.effective}
@@ -124,7 +156,7 @@ const AdminView = () => {
                   <strong>Motive:</strong> {reservation.motive}
                 </p>
                 <p>
-                  <strong>Facility:</strong> {reservation.facility}
+                  <strong>Facility:</strong> {facilities[reservation.facility] || "Unknown Facility"}
                 </p>
                 <p>
                   <strong>Effective:</strong> {reservation.effective}
