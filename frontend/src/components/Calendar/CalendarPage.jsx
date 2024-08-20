@@ -9,7 +9,7 @@ import { Dropdown } from "rsuite";
 import "rsuite/dist/rsuite.min.css";
 import { useNavigate } from "react-router-dom";
 import ParentComponent from "./parentComp";
-import EventModal1 from "./EventModal1";  
+import EventModal1 from "./EventModal1";
 
 const CalendarPage = ({ currentId }) => {
   const [events, setEvents] = useState([]);
@@ -17,9 +17,8 @@ const CalendarPage = ({ currentId }) => {
   const [facilities, setFacilities] = useState({});
   const [viewType, setViewType] = useState("requests");
   const [isParentModalOpen, setIsParentModalOpen] = useState(false);
-  const [isEventModalOpen, setIsEventModalOpen] = useState(false);  
+  const [isEventModalOpen, setIsEventModalOpen] = useState(false);
   const [filterState, setFilterState] = useState("All");
-
 
   const navigate = useNavigate();
 
@@ -40,7 +39,7 @@ const CalendarPage = ({ currentId }) => {
           console.error(
             "Unexpected response format for facilities",
             response.data
-          );  
+          );
         }
       } catch (error) {
         console.error("Error fetching facilities", error);
@@ -69,12 +68,11 @@ const CalendarPage = ({ currentId }) => {
               date: reservation.date,
               participants: reservation.effective,
               start,
-              end,  
+              end,
               allDay: false,
               state: reservation.state,
               facility: facilities[reservation.facility] || "Unknown Facility",
               equipment: reservation.equipment || [],
-              
             };
           });
 
@@ -127,7 +125,7 @@ const CalendarPage = ({ currentId }) => {
     fetchFacilities();
     fetchEvents();
     fetchReservations();
-  }, [facilities]);
+  }, [currentId, facilities]);
 
   const handleDropdownChange = (key) => {
     setViewType(key);
@@ -141,7 +139,7 @@ const CalendarPage = ({ currentId }) => {
   };
 
   const handleNewEvent = () => {
-    setIsEventModalOpen(true);  
+    setIsEventModalOpen(true);
   };
 
   useEffect(() => {
@@ -152,6 +150,15 @@ const CalendarPage = ({ currentId }) => {
     };
   }, []);
 
+  // Apply the filter before passing the data to BigCalendarComponent
+  const filteredRequests = requests.filter((request) => {
+    return filterState === "All" || request.state === filterState;
+  });
+
+  const filteredEvents = events.filter((event) => {
+    return filterState === "All" || event.state === filterState;
+  });
+
   return (
     <div>
       <Navbar />
@@ -160,8 +167,8 @@ const CalendarPage = ({ currentId }) => {
           <div className="calendar-page__sidebar">
             <CalendarSidebar
               setViewType={setViewType}
-              events={events}
-              requests={requests}
+              events={filteredEvents}
+              requests={filteredRequests}
             />
           </div>
 
@@ -181,27 +188,27 @@ const CalendarPage = ({ currentId }) => {
                 </Dropdown.Item>
               </Dropdown>
               <Dropdown
-    className="the-button"
-    title="Filter by State"
-    activeKey={filterState}
-    onSelect={handleDropdownChangeState}
-  >
-    <Dropdown.Item className="the-item" eventKey="All">
-      All
-    </Dropdown.Item>
-    <Dropdown.Item className="the-item" eventKey="Pending">
-      Pending
-    </Dropdown.Item>
-    <Dropdown.Item className="the-item" eventKey="Approved">
-      Approved
-    </Dropdown.Item>
-    <Dropdown.Item className="the-item" eventKey="Rejected">
-      Rejected
-    </Dropdown.Item>
-    <Dropdown.Item className="the-item" eventKey="Cancelled">
-      Cancelled
-    </Dropdown.Item>
-  </Dropdown>
+                className="the-button"
+                title="Filter by State"
+                activeKey={filterState}
+                onSelect={handleDropdownChangeState}
+              >
+                <Dropdown.Item className="the-item" eventKey="All">
+                  All
+                </Dropdown.Item>
+                <Dropdown.Item className="the-item" eventKey="Pending">
+                  Pending
+                </Dropdown.Item>
+                <Dropdown.Item className="the-item" eventKey="Approved">
+                  Approved
+                </Dropdown.Item>
+                <Dropdown.Item className="the-item" eventKey="Rejected">
+                  Rejected
+                </Dropdown.Item>
+                <Dropdown.Item className="the-item" eventKey="Cancelled">
+                  Cancelled
+                </Dropdown.Item>
+              </Dropdown>
               <div className="add-button">
                 <button type="button" onClick={handleNewReservation}>
                   + Add reservation
@@ -213,9 +220,10 @@ const CalendarPage = ({ currentId }) => {
             </div>
             <div className="main-calendar">
               <BigCalendarComponent
-                events={events}
-                requests={requests}
+                events={filteredEvents}
+                requests={filteredRequests}
                 viewType={viewType}
+                filterState={filterState}
                 currentId={currentId}
               />
             </div>
@@ -228,9 +236,9 @@ const CalendarPage = ({ currentId }) => {
         currentId={currentId}
       />
       <EventModal1
-        open={isEventModalOpen}  
+        open={isEventModalOpen}
         onClose={() => setIsEventModalOpen(false)}
-        currentId={currentId} 
+        currentId={currentId}
       />
     </div>
   );
@@ -241,4 +249,3 @@ CalendarPage.propTypes = {
 };
 
 export default CalendarPage;
-  
