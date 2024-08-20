@@ -263,7 +263,7 @@
 }
 
 .custom-dropdown .rs-dropdown-toggle {
-  padding: 10px 20px;
+  padding: 20px 20px;
   font-size: 1rem;
   background-color: #f0f0f0;
   border-radius: 4px;
@@ -289,7 +289,7 @@
 .new-reservation-button,
 .custom-dropdown .rs-dropdown-toggle {
   height: 40px;
-  width: 150px;
+  width: 170px;
   margin-left: 10px;
 }
 .add-button button {

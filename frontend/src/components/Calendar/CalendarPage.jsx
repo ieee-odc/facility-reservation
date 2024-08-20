@@ -132,6 +132,9 @@ const CalendarPage = ({ currentId }) => {
   const handleDropdownChange = (key) => {
     setViewType(key);
   };
+  const handleDropdownChangeState = (key) => {
+    setFilterState(key);
+  };
 
   const handleNewReservation = () => {
     setIsParentModalOpen(true);
@@ -181,7 +184,7 @@ const CalendarPage = ({ currentId }) => {
     className="the-button"
     title="Filter by State"
     activeKey={filterState}
-    onSelect={(key) => setFilterState(key)}
+    onSelect={handleDropdownChangeState}
   >
     <Dropdown.Item className="the-item" eventKey="All">
       All

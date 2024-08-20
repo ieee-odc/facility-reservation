@@ -12,18 +12,51 @@ const EventModal = ({ show, onHide, eventDetails, onCancel, viewType }) => {
 
   const handleCancel = async () => {
     try {
+      const route = viewType === "events" ? "events/state" : "reservations";
+      console.log(`Cancelling ${viewType}:`, eventDetails.id);
       await axios.patch(
-        `http://localhost:3000/api/reservations/${eventDetails.id}`,
+        `http://localhost:3000/api/${route}/${eventDetails.id}`,
         { state: "Cancelled" }
       );
       onCancel(eventDetails.id);
       onHide();
     } catch (error) {
-      console.error("Error cancelling reservation", error);
+      console.error(`Error cancelling ${viewType}:`, error);
+    }
+  };
+
+  const handleApprove = async () => {
+    try {
+      const route = viewType === "events" ? "events/state" : "reservations";
+      console.log(`Approving ${viewType}:`, eventDetails.id);
+      await axios.patch(
+        `http://localhost:3000/api/${route}/${eventDetails.id}`,
+        { state: "Approved" }
+      );
+      onCancel(eventDetails.id);
+      onHide();
+    } catch (error) {
+      console.error(`Error approving ${viewType}:`, error);
+    }
+  };
+
+  const handleReject = async () => {
+    try {
+      const route = viewType === "events" ? "events/state" : "reservations";
+      console.log(`Rejecting ${viewType}:`, eventDetails.id);
+      await axios.patch(
+        `http://localhost:3000/api/${route}/${eventDetails.id}`,
+        { state: "Rejected" }
+      );
+      onCancel(eventDetails.id);
+      onHide();
+    } catch (error) {
+      console.error(`Error rejecting ${viewType}:`, error);
     }
   };
 
   const handleEditClick = () => {
+    console.log(`Editing ${viewType}:`, eventDetails.id);
     setEditFormOpen(true);
   };
 
@@ -40,32 +73,6 @@ const EventModal = ({ show, onHide, eventDetails, onCancel, viewType }) => {
     setShowCancelConfirmation(false);
   };
 
-  const handleApprove = async () => {
-    try {
-      await axios.patch(
-        `http://localhost:3000/api/reservations/${eventDetails.id}`,
-        { state: "Approved" }
-      );
-      onCancel(eventDetails.id);
-      onHide();
-    } catch (error) {
-      console.error("Error approving reservation", error);
-    }
-  };
-
-  const handleReject = async () => {
-    try {
-      await axios.patch(
-        `http://localhost:3000/api/reservations/${eventDetails.id}`,
-        { state: "Rejected" }
-      );
-      onCancel(eventDetails.id);
-      onHide();
-    } catch (error) {
-      console.error("Error rejecting reservation", error);
-    }
-  };
-
   return (
     <>
       {show && (
@@ -74,7 +81,7 @@ const EventModal = ({ show, onHide, eventDetails, onCancel, viewType }) => {
             <span className="close-button" onClick={onHide}>
               &times;
             </span>
-            <h2>{viewType === "events" ? eventDetails.title : eventDetails.title}</h2>
+            <h2>{eventDetails.title}</h2>
             {viewType === "events" ? (
               <>
                 <p><strong>Description:</strong> {eventDetails.description}</p>
@@ -107,7 +114,7 @@ const EventModal = ({ show, onHide, eventDetails, onCancel, viewType }) => {
                 ) : (
                   <>
                     <button className="cancel-button" onClick={handleShowCancelConfirmation}>
-                      Cancel Reservation
+                      Cancel {viewType === "events" ? "Event" : "Reservation"}
                     </button>
                     <button className="edit-button" onClick={handleEditClick}>
                       {viewType === "events" ? "Edit Event" : "Edit Reservation"}
@@ -120,7 +127,7 @@ const EventModal = ({ show, onHide, eventDetails, onCancel, viewType }) => {
 
           {showCancelConfirmation && (
             <div className="confirmation-popup">
-              <p>Are you sure you want to cancel this reservation?</p>
+              <p>Are you sure you want to cancel this {viewType === "events" ? "event" : "reservation"}?</p>
               <div className="confirmation-buttons">
                 <button className="yes-button" onClick={handleConfirmCancel}>
                   Yes

@@ -30,21 +30,7 @@ const EventForm = ({ open, onClose, onSubmit, eventData }) => {
       setOrganizer(eventData.organizer || "");
 
       
-      const fetchReservations = async () => {
-        try {
-          const response = await axios.get(
-            `http://localhost:3000/api/reservations/event/${eventData.id}`
-          );
-          setNumberOfFacilities(response.data.length);
-          console.log(response.data);
-              console.log(response.data.length); 
-
-        } catch (error) {
-          console.error("Error fetching reservations:", error);
-        }
-      };
-
-      fetchReservations();
+  
     } else {
       const fetchUser = async () => {
         try {
