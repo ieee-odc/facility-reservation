@@ -251,7 +251,7 @@ const Profile = () => {
                       <div className="event-items">
                         <ul>
                           {events.map((event) => (
-                            <li key={event.id}>{event.name}</li>
+                            <li key={event._id}>{event.name}</li>
                           ))}
                         </ul>
                       </div>
