@@ -1,22 +1,27 @@
-import React, { useState } from 'react';
-import { auth } from '../config/firebase-config';
-import { updatePassword, reauthenticateWithCredential, EmailAuthProvider } from 'firebase/auth';
-import './ChangePasswordModal.css'; 
+import React, { useState } from "react";
+import { auth } from "../config/firebase-config";
+import {
+  updatePassword,
+  reauthenticateWithCredential,
+  EmailAuthProvider,
+} from "firebase/auth";
+import { useNotification } from "../context/NotificationContext"; 
+import "./ChangePasswordModal.css";
 
 const ChangePasswordModal = ({ isOpen, onClose }) => {
-  const [oldPassword, setOldPassword] = useState('');
-  const [newPassword, setNewPassword] = useState('');
-  const [confirmPassword, setConfirmPassword] = useState('');
-  const [error, setError] = useState('');
-  const [success, setSuccess] = useState('');
+  const [oldPassword, setOldPassword] = useState("");
+  const [newPassword, setNewPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+
+  const showNotification = useNotification(); 
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    
+
     if (newPassword !== confirmPassword) {
-      setError('Passwords do  not match ');
+      showNotification("Passwords do not match", "error");
       return;
-    }        
+    }
 
     try {
       const user = auth.currentUser;
@@ -24,36 +29,28 @@ const ChangePasswordModal = ({ isOpen, onClose }) => {
 
       await reauthenticateWithCredential(user, credential);
       await updatePassword(user, newPassword);
-      const email = localStorage.getItem('userEmail');
+
+      const email = localStorage.getItem("userEmail");
       if (!email) {
-        throw new Error('Email not found in local storage');
+        throw new Error("Email not found in local storage");
       }
 
-      
-      const userIdResponse = await fetch(`/api/get-user-id/${email}`);
+      const userIdResponse = await fetch(
+        `http://localhost:3000/api/reservationInitiators/get-user-id/${email}`
+      );
       if (!userIdResponse.ok) {
-        throw new Error('Failed to fetch user ID from MongoDB');
+        throw new Error("Failed to fetch user ID from MongoDB");
       }
       const { id: userId } = await userIdResponse.json();
-      
-     /* const response = await fetch(`http://localhost:5000/api/reservationInitiators/${userId}`, {
-        method: 'PATCH',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({newPassword }),
-      });
 
-      if (!response.ok) {
-        throw new Error('Failed to update password in MongoDB');
-      }*/
-
-      setSuccess('Password changed successfully');
-      setError('');
-      onClose(); 
+      showNotification("Password changed successfully", "success");
+      onClose();
+      setOldPassword("");
+      setNewPassword("");
+      setConfirmPassword("");
     } catch (err) {
-      setError('Unable to update password');
-      setSuccess('');
+      showNotification("Unable to update password", "error");
+      console.error(err);
     }
   };
 
@@ -64,8 +61,6 @@ const ChangePasswordModal = ({ isOpen, onClose }) => {
       <div className="modal-content">
         <h2>Change Password</h2>
         <form onSubmit={handleSubmit}>
-          {error && <p className="error-message">{error}</p>}
-          {success && <p className="success-message">{success}</p>}
           <div className="form-group">
             <label htmlFor="oldPassword">Old Password</label>
             <input
@@ -97,8 +92,16 @@ const ChangePasswordModal = ({ isOpen, onClose }) => {
             />
           </div>
           <div className="modal-buttons">
-            <button type="submit" className="modal-buttons-submit">Change Password</button>
-            <button type="button" className="modal-buttons-cancel" onClick={onClose}>Cancel</button>
+            <button type="submit" className="modal-buttons-submit">
+              Change Password
+            </button>
+            <button
+              type="button"
+              className="modal-buttons-cancel"
+              onClick={onClose}
+            >
+              Cancel
+            </button>
           </div>
         </form>
       </div>
