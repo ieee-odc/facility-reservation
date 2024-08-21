@@ -60,7 +60,7 @@ const BigCalendarComponent = ({ events, requests, viewType, currentId }) => {
 
   const eventPropGetter = (event) => {
     let style = {};
-
+  
     switch (event.state) {
       case 'Pending':
         style = {
@@ -105,10 +105,18 @@ const BigCalendarComponent = ({ events, requests, viewType, currentId }) => {
       default:
         break;
     }
-
+  
     return { style };
   };
-
+  
+  const eventComponent = ({ event }) => (
+    <div>
+      <strong>{event.facility}</strong>
+      <br />
+      <span style={{ fontSize: '0.75em' }}>{event.motive}</span>
+    </div>
+  );
+  
   return (
     <div className="big-calendar">
       <Calendar
@@ -122,6 +130,9 @@ const BigCalendarComponent = ({ events, requests, viewType, currentId }) => {
         onSelectSlot={handleSlotSelect}
         selectable
         resizable
+        components={{
+          event: eventComponent,
+        }}
         className="the-calendar"
       />
       {selectedEvent && (
@@ -130,7 +141,7 @@ const BigCalendarComponent = ({ events, requests, viewType, currentId }) => {
           onHide={() => setEventModalShow(false)}
           eventDetails={selectedEvent}
           onCancel={handleCancel}
-          viewType={viewType} 
+          viewType={viewType}
         />
       )}
       {selectedSlot && slotModalShow && (
@@ -138,11 +149,14 @@ const BigCalendarComponent = ({ events, requests, viewType, currentId }) => {
           isOpen={slotModalShow}
           onRequestClose={() => setSlotModalShow(false)}
           slotDetails={selectedSlot}
-          currentId = {currentId}
+          currentId={currentId}
         />
       )}
     </div>
   );
+  
+
+
 };
 
 BigCalendarComponent.propTypes = {

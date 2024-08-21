@@ -46,13 +46,15 @@ const CalendarPage = ({ currentId }) => {
       }
     };
 
+  
+
     const fetchReservations = async () => {
       try {
         const response = await axios.get(
           `http://localhost:3000/api/reservations/pure/${currentId}`
         );
         const reservations = response.data;
-
+    
         if (Array.isArray(reservations)) {
           const formattedRequests = reservations.map((reservation) => {
             const start = new Date(
@@ -61,10 +63,10 @@ const CalendarPage = ({ currentId }) => {
             const end = new Date(
               `${reservation.date.split("T")[0]} ${reservation.endTime}`
             );
-
+    
             return {
               id: reservation._id,
-              title: reservation.motive,
+              title: `${facilities[reservation.facility] || "Unknown Facility"} - ${reservation.motive}`,
               date: reservation.date,
               participants: reservation.effective,
               start,
@@ -72,10 +74,11 @@ const CalendarPage = ({ currentId }) => {
               allDay: false,
               state: reservation.state,
               facility: facilities[reservation.facility] || "Unknown Facility",
+              motive: reservation.motive,
               equipment: reservation.equipment || [],
             };
           });
-
+    
           setRequests(formattedRequests);
         } else {
           console.error("Unexpected response format", reservations);
@@ -84,7 +87,7 @@ const CalendarPage = ({ currentId }) => {
         console.error("Error fetching reservations from calendar page", error);
       }
     };
-
+    
     const fetchEvents = async () => {
       try {
         const response = await axios.get(
@@ -99,10 +102,10 @@ const CalendarPage = ({ currentId }) => {
             const end = new Date(reservation.endDate)
               .toISOString()
               .split("T")[0];
-
+    
             return {
               id: reservation._id,
-              title: reservation.name,
+              title: `${facilities[reservation.facility] || "Unknown Facility"} - ${reservation.name}`,
               description: reservation.description,
               start,
               end,
@@ -110,9 +113,10 @@ const CalendarPage = ({ currentId }) => {
               organizer: reservation.organizer,
               state: reservation.state,
               facility: facilities[reservation.facility] || "Unknown Facility",
+              motive: reservation.name,
             };
           });
-
+    
           setEvents(formattedEvents);
         } else {
           console.error("Unexpected response format", reservations);
@@ -121,7 +125,7 @@ const CalendarPage = ({ currentId }) => {
         console.error("Error fetching reservations from calendar page", error);
       }
     };
-
+    
     fetchFacilities();
     fetchEvents();
     fetchReservations();
