@@ -40,7 +40,7 @@ const AppRoutes = () => {
       <Route path="/manage-facilities" element={<ManageFacilities/>} />
       <Route path="/manage-requests" element={<AdminView/>} />
 
-      {userLoggedIn ? (
+      {currentId ? (
         <>
           <Route exact path="/feedback" element={<GiveFeedback />} />
           <Route
@@ -84,7 +84,7 @@ const AppRoutes = () => {
             element={<ReservationDetails />}
           />
 
-          <Route path="*" element={<Navigate to="/calendar" />} />
+          <Route path="*" element={<Navigate to="/profile" />} />
         </>
       ) : (
         <Route path="*" element={<Navigate to="/login" />} />

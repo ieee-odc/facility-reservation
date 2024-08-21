@@ -65,7 +65,7 @@ const Login = () => {
     localStorage.setItem("userEmail", email);
     if (signed && !signedIn) {
       setSignedIn(signed);
-      navigate("/calendar");
+      navigate("/profile");
     } else {
       showNotification(
         "Incorrect email or password. Please try again.",
@@ -75,7 +75,7 @@ const Login = () => {
     /*.then((signedIn) => {
         console.log("signed in ", signedIn);
         localStorage.setItem("userEmail", email);
-        navigate("/calendar");
+        navigate("/profile");
       })  
       .catch((error) => {
         console.log(error);
@@ -90,7 +90,7 @@ const Login = () => {
     localStorage.setItem("userEmail", email);
     if (signed && !signedIn) {
       setSignedIn(signed);
-      navigate("/calendar");
+      navigate("/profile");
     } else {
       showNotification("Failed to sign in with Google.", "error");
     }
@@ -102,7 +102,7 @@ const Login = () => {
     localStorage.setItem("userEmail", email);
     if (signed && !signedIn) {
       setSignedIn(signed);
-      navigate("/calendar");
+      navigate("/profile");
     } else {
       showNotification("Failed to sign in with Microsoft.", "error");
     }

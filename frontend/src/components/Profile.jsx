@@ -10,7 +10,7 @@ import {
   Line,
   ResponsiveContainer,
 } from "recharts";
-import logo from "./../assets/logo/Group8.svg";
+import logo from "./../assets/logo/flexispace-favicon-black.png";
 import banner from "./../assets/banner1.jpg";
 import "./Profile.css";
 import Navbar from "./navbar";

@@ -377,7 +377,7 @@ p.about-content-element-two:hover {
   height: 50px;
   width: 50px;
   object-fit: cover;
-  margin-right: 15px;
+  margin-left: 15px;
   border-radius: 50%;
 }
 
