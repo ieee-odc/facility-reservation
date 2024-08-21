@@ -15,5 +15,5 @@ export const updateFacility = (id, updateFields) => axios.patch(`${API_BASE_URL}
 export const deleteFacility = (id) => axios.delete(`${API_BASE_URL}/api/facilities/${id}`);
 
 export const getAllPureReservations = () => axios.get(`${API_BASE_URL}/api/reservations/pure`);
-
 export const getAllEvents = () => axios.get(`${API_BASE_URL}/api/events/reservations`);
+export const getAllOrganizers = () => axios.get(`${API_BASE_URL}/api/reservationInitiators`);

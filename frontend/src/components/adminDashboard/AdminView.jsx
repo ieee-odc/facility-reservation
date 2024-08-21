@@ -1,18 +1,36 @@
 import React, { useEffect, useState } from "react";
+import { Panel, SelectPicker, DatePicker, Checkbox, Button, TagPicker } from "rsuite";
 import "./AdminView.css";
-import { getAllEvents, getAllPureReservations } from "../../apiService";
+import {
+  getAllEvents,
+  getAllPureReservations,
+  getAllOrganizers,
+  getAllFacilities,
+} from "../../apiService";
 import Navbar from "../navbar";
 
 const AdminView = () => {
-  const [filter, setFilter] = useState("mix");
-  const [sort, setSort] = useState("startDate");
   const [reservations, setReservations] = useState([]);
   const [events, setEvents] = useState([]);
-  const [data, setData] = useState([]);
+  const [organizers, setOrganizers] = useState({});
+  const [facilities, setFacilities] = useState({});
+  
+  const [filter, setFilter] = useState({
+    state: [],
+    organizer: [],
+    facility: [],
+    startDate: null,
+    endDate: null,
+    day: '',
+    motive: ''
+  });
+  const [sort, setSort] = useState('startDate');
 
   useEffect(() => {
     fetchReservations();
     fetchEvents();
+    fetchOrganizers();
+    fetchFacilities();
   }, []);
 
   const fetchReservations = async () => {
@@ -33,152 +51,250 @@ const AdminView = () => {
     }
   };
 
-  useEffect(() => {
-    const combinedData = mergeData(events, reservations);
-    setData(combinedData);
-  }, [events, reservations, filter, sort]);
-
-  const mergeData = (events, reservations) => {
-    let combinedData = [];
-
-    events.forEach((event) => {
-      combinedData.push({ ...event, type: "event" });
-      if (event.reservations && event.reservations.length > 0) {
-        event.reservations.forEach((reservation) =>
-          combinedData.push({
-            ...reservation,
-            type: "reservation",
-            parentEvent: event._id,
-          })
-        );
-      }
-    });
-
-    reservations
-      .filter((reservation) => !reservation.event)
-      .forEach((reservation) =>
-        combinedData.push({ ...reservation, type: "reservation" })
-      );
-
-    return combinedData;
+  const fetchOrganizers = async () => {
+    try {
+      const response = await getAllOrganizers();
+      const organizersData = response.data.reduce((acc, organizer) => {
+        acc[organizer._id] = organizer.name;
+        return acc;
+      }, {});
+      setOrganizers(organizersData);
+    } catch (error) {
+      console.error("Error fetching organizers", error);
+    }
   };
 
-  const filteredData = () => {
-    let filtered = data;
-
-    if (filter === "events") {
-      filtered = filtered.filter(
-        (item) =>
-          item.type === "event" ||
-          (item.type === "reservation" && item.parentEvent)
-      );
-    } else if (filter === "reservations") {
-      filtered = filtered.filter(
-        (item) => item.type === "reservation" && !item.parentEvent
-      );
+  const fetchFacilities = async () => {
+    try {
+      const response = await getAllFacilities();
+      const facilitiesData = response.data.data.reduce((acc, facility) => {
+        acc[facility._id] = facility.label;
+        return acc;
+      }, {});
+      setFacilities(facilitiesData);
+    } catch (error) {
+      console.error("Error fetching facilities", error);
     }
+  };
 
-    filtered.sort((a, b) => {
-      if (sort === "startDate") {
-        return (
-          new Date(a.startDate || a.date) - new Date(b.startDate || b.date)
-        );
-      } else if (sort === "endDate") {
-        return new Date(a.endDate || a.date) - new Date(b.endDate || b.date);
+  const getStateClass = (state) => {
+    switch (state) {
+      case "Pending":
+        return `state-pending`;
+      case "Approved":
+        return `state-approved`;
+      case "Cancelled":
+        return `state-cancelled`;
+      case "Rejected":
+        return `state-rejected`;
+      default:
+        return "";
+    }
+  };
+
+  const filteredEvents = events
+    .filter(event => (
+      (filter.state.length === 0 || filter.state.includes(event.state)) &&
+      (filter.organizer.length === 0 || filter.organizer.includes(event.organizer)) &&
+      (filter.startDate === null || new Date(event.startDate) >= new Date(filter.startDate)) &&
+      (filter.endDate === null || new Date(event.endDate) <= new Date(filter.endDate)) &&
+      (filter.motive === '' || event.reservations.some(r => r.motive.includes(filter.motive)))
+    ))
+    .sort((a, b) => {
+      if (sort === 'startDate') {
+        return new Date(a.startDate) - new Date(b.startDate);
+      }
+      if (sort === 'endDate') {
+        return new Date(a.endDate) - new Date(b.endDate);
       }
       return 0;
     });
 
-    return filtered;
-  };
 
-  const renderTable = () => {
-    const dataToDisplay = filteredData();
-
-    return (
-      <table className="admin-table">
-        <thead>
-          <th>Name</th>
-          <th>Description</th>
-          <th>Organizer</th>
-          <th>Start Date</th>
-          <th>End Date</th>
-          <th>Effective</th>
-          <th>Start Time</th>
-          <th>End Time</th>
-          <th>Facility</th>
-          <th>Materials</th>
-          <th>Motive</th>
-          <th>State</th>
-          <th>Last Updated</th>
-        </thead>
-        <tbody>
-          {dataToDisplay.map((item, index) => (
-            <tr
-              key={index}
-              className={
-                item.type === "event" ? "event-row" : "reservation-row"
-              }
-            >
-              <td>{item.name || " "}</td>
-              <td title={item.description || ""}>{item.description || " "}</td>
-              <td>{item.organizer || item.entity || " "}</td>
-              <td>
-                {item.startDate
-                  ? new Date(item.startDate).toLocaleDateString()
-                  : item.date
-                  ? new Date(item.date).toLocaleDateString()
-                  : " "}
-              </td>
-              <td>
-                {item.endDate
-                  ? new Date(item.endDate).toLocaleDateString()
-                  : " "}
-              </td>
-              <td>{item.totalEffective || item.effective || " "}</td>
-              <td>{item.startTime || " "}</td>
-              <td>{item.endTime || " "}</td>
-              <td>{item.facility || " "}</td>
-              <td>{item.materials || " "}</td>
-              <td>{item.motive || " "}</td>
-              <td>{item.state || " "}</td>
-              <td>
-                {item.updatedAt
-                  ? new Date(item.updatedAt).toLocaleDateString()
-                  : " "}
-              </td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
-    );
-  };
+    const filteredReservations = reservations
+    .filter(reservation => (
+      (filter.state.length === 0 || filter.state.includes(reservation.state)) &&
+      (filter.organizer.length === 0 || filter.organizer.includes(reservation.entity)) &&
+      (filter.facility.length === 0 || filter.facility.includes(reservation.facility)) &&
+      (filter.startDate === null || new Date(reservation.date) >= new Date(filter.startDate)) &&
+      (filter.endDate === null || new Date(reservation.date) <= new Date(filter.endDate)) &&
+      (filter.motive === '' || reservation.motive.includes(filter.motive))
+    ))
+    .sort((a, b) => {
+      if (sort === 'date') {
+        return new Date(a.date) - new Date(b.date);
+      }
+      if (sort === 'time') {
+        return new Date(`1970-01-01T${a.startTime}`) - new Date(`1970-01-01T${b.startTime}`);
+      }
+      return 0;
+    });
 
   return (
-  <div>
-    <Navbar/>
-    <div className="admin-view-container">
-      <div className="controls">
-        <div className="filter-sort">
-          <label>
-            Filter:
-            <select value={filter} onChange={(e) => setFilter(e.target.value)}>
-              <option value="mix">Mix</option>
-              <option value="events">Events</option>
-              <option value="reservations">Reservations</option>
-            </select>
-          </label>
-          <label>
-            Sort:
-            <select value={sort} onChange={(e) => setSort(e.target.value)}>
-              <option value="startDate">Start Date</option>
-              <option value="endDate">End Date</option>
-            </select>
-          </label>
+    <div>
+      <Navbar />
+      <div className="admin-view">
+          <div className="filters">
+            <TagPicker
+              placeholder="State"
+              data={['Pending', 'Approved', 'Cancelled', 'Rejected'].map(state => ({ label: state, value: state }))}
+              value={filter.state}
+              onChange={(value) => setFilter(prev => ({ ...prev, state: value }))}
+              
+            />
+            <TagPicker
+              placeholder="Organizer"
+              data={Object.keys(organizers).map(id => ({ label: organizers[id], value: id }))}
+              value={filter.organizer}
+              onChange={(value) => setFilter(prev => ({ ...prev, organizer: value }))}
+            />
+            <TagPicker
+              placeholder="Facility"
+              data={Object.keys(facilities).map(id => ({ label: facilities[id], value: id }))}
+              value={filter.facility}
+              onChange={(value) => setFilter(prev => ({ ...prev, facility: value }))}
+            />
+            <DatePicker
+              placeholder="Start Date"
+              value={filter.startDate ? new Date(filter.startDate) : null}
+              onChange={(date) => setFilter(prev => ({ ...prev, startDate: date ? date.toISOString() : null }))}
+            />
+            <DatePicker
+              placeholder="End Date"
+              value={filter.endDate ? new Date(filter.endDate) : null}
+              onChange={(date) => setFilter(prev => ({ ...prev, endDate: date ? date.toISOString() : null }))}
+            />
+            <TagPicker
+              placeholder="Day"
+              data={['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'].map(day => ({ label: day, value: day }))}
+              value={filter.day}
+              onChange={(value) => setFilter(prev => ({ ...prev, day: value }))}
+            />
+           
+            <SelectPicker
+              placeholder="Sort By"
+              data={[
+                { label: 'Start Date', value: 'startDate' },
+                { label: 'End Date', value: 'endDate' },
+                { label: 'Date', value: 'date' },
+                { label: 'Time', value: 'time' }
+              ]}
+              value={sort}
+              onChange={(value) => setSort(value)}
+            />
+          </div>
+        <div className="content-container">
+
+          <div className="section events-section">
+            <h2>Events</h2>
+            {filteredEvents.map((event) => (
+              <Panel
+                key={event._id}
+                header={
+                  <div className="event-header">
+                    <h5>
+                      {organizers[event.organizer] || "Unknown Organizer"}
+                    </h5>
+                    <h6>{event.name}</h6>
+                  </div>
+                }
+                className="event-panel"
+                collapsible
+                bordered
+              >
+                <div>
+                  <div className="event-details">
+                    <p>
+                      <strong>Description:</strong> {event.description}
+                    </p>
+                    <p>
+                      <strong>Start Date:</strong>{" "}
+                      {new Date(event.startDate).toLocaleDateString()}
+                    </p>
+                    <p>
+                      <strong>End Date:</strong>{" "}
+                      {new Date(event.endDate).toLocaleDateString()}
+                    </p>
+                    <p className={getStateClass(event.state)}>
+                      <strong>State:</strong> {event.state}
+                    </p>
+                    <p>
+                      <strong>Total Effective:</strong> {event.totalEffective}
+                    </p>
+                    <p>
+                      <strong>Reservations:</strong>
+                    </p>
+
+                    <div className="event-reservations">
+                      {event.reservations.map((reservation) => (
+                        <div
+                          className="event-reservation-item"
+                          key={reservation._id}
+                        >
+                          <p>
+                            <strong>Date:</strong>{" "}
+                            {new Date(reservation.date).toLocaleDateString()}
+                          </p>
+                          <p>
+                            <strong>Time:</strong> {reservation.startTime} -{" "}
+                            {reservation.endTime}
+                          </p>
+                          <p>
+                            <strong>Motive:</strong> {reservation.motive}
+                          </p>
+                          <p>
+                            <strong>Facility:</strong>{" "}
+                            {facilities[reservation.facility] ||
+                              "Unknown Facility"}
+                          </p>
+                          <p>
+                            <strong>Effective:</strong> {reservation.effective}
+                          </p>
+                          <p className={getStateClass(reservation.state)}>
+                            <strong>State:</strong> {reservation.state}
+                          </p>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+              </Panel>
+            ))}
+          </div>
+
+          <div className="section reservations-section">
+            <h2>Reservations</h2>
+            {filteredReservations.map((reservation) => (
+              <div key={reservation._id} className="reservation-item">
+                <h3>
+                  {organizers[reservation.entity] || "Unknown Organizer"}
+                </h3>
+                <p>
+                  <strong>Motive:</strong> {reservation.motive}
+                </p>
+                <p>
+                  <strong>Date:</strong>{" "}
+                  {new Date(reservation.date).toLocaleDateString()}
+                </p>
+                <p>
+                  <strong>Time:</strong> {reservation.startTime} -{" "}
+                  {reservation.endTime}
+                </p>
+                <p>
+                  <strong>Facility:</strong>{" "}
+                  {facilities[reservation.facility] || "Unknown Facility"}
+                </p>
+                <p>
+                  <strong>Effective:</strong> {reservation.effective}
+                </p>
+                <p className={getStateClass(reservation.state)}>
+                  <strong>State:</strong> {reservation.state}
+                </p>
+              </div>
+            ))}
+          </div>
         </div>
       </div>
-      <div className="table">{renderTable()}</div>
-    </div>
     </div>
   );
 };
