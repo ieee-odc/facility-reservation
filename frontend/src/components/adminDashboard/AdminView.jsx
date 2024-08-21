@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Panel, SelectPicker, DatePicker, Checkbox, Button, TagPicker } from "rsuite";
+import { Panel, SelectPicker, DatePicker, TagPicker } from "rsuite";
 import "./AdminView.css";
 import {
   getAllEvents,
@@ -21,7 +21,7 @@ const AdminView = () => {
     facility: [],
     startDate: null,
     endDate: null,
-    day: '',
+    day: [],
     motive: ''
   });
   const [sort, setSort] = useState('startDate');
@@ -92,6 +92,12 @@ const AdminView = () => {
     }
   };
 
+  const getWeekdayFromDate = (dateString) => {
+    const date = new Date(dateString);
+    const daysOfWeek = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+    return daysOfWeek[date.getUTCDay()];
+  };
+
   const filteredEvents = events
     .filter(event => (
       (filter.state.length === 0 || filter.state.includes(event.state)) &&
@@ -118,6 +124,7 @@ const AdminView = () => {
       (filter.facility.length === 0 || filter.facility.includes(reservation.facility)) &&
       (filter.startDate === null || new Date(reservation.date) >= new Date(filter.startDate)) &&
       (filter.endDate === null || new Date(reservation.date) <= new Date(filter.endDate)) &&
+      (filter.day.length === 0 || filter.day.includes(getWeekdayFromDate(reservation.date))) &&
       (filter.motive === '' || reservation.motive.includes(filter.motive))
     ))
     .sort((a, b) => {
