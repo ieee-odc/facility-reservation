@@ -19,6 +19,7 @@ const CalendarPage = ({ currentId }) => {
   const [isParentModalOpen, setIsParentModalOpen] = useState(false);
   const [isEventModalOpen, setIsEventModalOpen] = useState(false);
   const [filterState, setFilterState] = useState("All");
+  const [selectedFacility, setSelectedFacility] = useState("All");
 
   const navigate = useNavigate();
 
@@ -46,15 +47,13 @@ const CalendarPage = ({ currentId }) => {
       }
     };
 
-  
-
     const fetchReservations = async () => {
       try {
         const response = await axios.get(
           `http://localhost:3000/api/reservations/pure/${currentId}`
         );
         const reservations = response.data;
-    
+
         if (Array.isArray(reservations)) {
           const formattedRequests = reservations.map((reservation) => {
             const start = new Date(
@@ -63,7 +62,7 @@ const CalendarPage = ({ currentId }) => {
             const end = new Date(
               `${reservation.date.split("T")[0]} ${reservation.endTime}`
             );
-    
+
             return {
               id: reservation._id,
               title: `${facilities[reservation.facility] || "Unknown Facility"} - ${reservation.motive}`,
@@ -78,7 +77,7 @@ const CalendarPage = ({ currentId }) => {
               equipment: reservation.equipment || [],
             };
           });
-    
+
           setRequests(formattedRequests);
         } else {
           console.error("Unexpected response format", reservations);
@@ -87,7 +86,7 @@ const CalendarPage = ({ currentId }) => {
         console.error("Error fetching reservations from calendar page", error);
       }
     };
-    
+
     const fetchEvents = async () => {
       try {
         const response = await axios.get(
@@ -102,7 +101,7 @@ const CalendarPage = ({ currentId }) => {
             const end = new Date(reservation.endDate)
               .toISOString()
               .split("T")[0];
-    
+
             return {
               id: reservation._id,
               title: `${facilities[reservation.facility] || "Unknown Facility"} - ${reservation.name}`,
@@ -116,7 +115,7 @@ const CalendarPage = ({ currentId }) => {
               motive: reservation.name,
             };
           });
-    
+
           setEvents(formattedEvents);
         } else {
           console.error("Unexpected response format", reservations);
@@ -125,7 +124,7 @@ const CalendarPage = ({ currentId }) => {
         console.error("Error fetching reservations from calendar page", error);
       }
     };
-    
+
     fetchFacilities();
     fetchEvents();
     fetchReservations();
@@ -136,6 +135,9 @@ const CalendarPage = ({ currentId }) => {
   };
   const handleDropdownChangeState = (key) => {
     setFilterState(key);
+  };
+  const handleFacilityFilterChange = (key) => {
+    setSelectedFacility(key);
   };
 
   const handleNewReservation = () => {
@@ -156,7 +158,9 @@ const CalendarPage = ({ currentId }) => {
 
   // Apply the filter before passing the data to BigCalendarComponent
   const filteredRequests = requests.filter((request) => {
-    return filterState === "All" || request.state === filterState;
+    const facilityMatch =
+      selectedFacility === "All" || request.facility === selectedFacility;
+    return facilityMatch && (filterState === "All" || request.state === filterState);
   });
 
   const filteredEvents = events.filter((event) => {
@@ -212,6 +216,21 @@ const CalendarPage = ({ currentId }) => {
                 <Dropdown.Item className="the-item" eventKey="Cancelled">
                   Cancelled
                 </Dropdown.Item>
+              </Dropdown>
+              <Dropdown
+                className="the-button"
+                title="Filter by Facility"
+                activeKey={selectedFacility}
+                onSelect={handleFacilityFilterChange}
+              >
+                <Dropdown.Item className="the-item" eventKey="All">
+                  All Facilities
+                </Dropdown.Item>
+                {Object.keys(facilities).map((facilityId) => (
+                  <Dropdown.Item key={facilityId} className="the-item" eventKey={facilities[facilityId]}>
+                    {facilities[facilityId]}
+                  </Dropdown.Item>
+                ))}
               </Dropdown>
               <div className="add-button">
                 <button type="button" onClick={handleNewReservation}>
