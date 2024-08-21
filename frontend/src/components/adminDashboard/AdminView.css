@@ -5,6 +5,11 @@
   font-family: "Roboto", sans-serif;
 }
 
+.filters > *{
+  margin-right: 10px;
+  margin-top: 4px;
+}
+
 .content-container {
   display: flex;
   gap: 30px;

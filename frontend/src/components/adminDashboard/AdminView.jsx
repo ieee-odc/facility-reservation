@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Panel, SelectPicker, DatePicker, Checkbox, Button } from "rsuite";
+import { Panel, SelectPicker, DatePicker, Checkbox, Button, TagPicker } from "rsuite";
 import "./AdminView.css";
 import {
   getAllEvents,
@@ -16,9 +16,9 @@ const AdminView = () => {
   const [facilities, setFacilities] = useState({});
   
   const [filter, setFilter] = useState({
-    state: '',
-    organizer: '',
-    facility: '',
+    state: [],
+    organizer: [],
+    facility: [],
     startDate: null,
     endDate: null,
     day: '',
@@ -94,11 +94,11 @@ const AdminView = () => {
 
   const filteredEvents = events
     .filter(event => (
-      (!filter.state || event.state === filter.state) &&
-      (!filter.organizer || event.organizer === filter.organizer) &&
-      (!filter.startDate || new Date(event.startDate) >= new Date(filter.startDate)) &&
-      (!filter.endDate || new Date(event.endDate) <= new Date(filter.endDate)) &&
-      (!filter.motive || event.reservations.some(r => r.motive.includes(filter.motive)))
+      (filter.state.length === 0 || filter.state.includes(event.state)) &&
+      (filter.organizer.length === 0 || filter.organizer.includes(event.organizer)) &&
+      (filter.startDate === null || new Date(event.startDate) >= new Date(filter.startDate)) &&
+      (filter.endDate === null || new Date(event.endDate) <= new Date(filter.endDate)) &&
+      (filter.motive === '' || event.reservations.some(r => r.motive.includes(filter.motive)))
     ))
     .sort((a, b) => {
       if (sort === 'startDate') {
@@ -110,14 +110,15 @@ const AdminView = () => {
       return 0;
     });
 
-  const filteredReservations = reservations
+
+    const filteredReservations = reservations
     .filter(reservation => (
-      (!filter.state || reservation.state === filter.state) &&
-      (!filter.organizer || reservation.entity === filter.organizer) &&
-      (!filter.facility || reservation.facility === filter.facility) &&
-      (!filter.startDate || new Date(reservation.date) >= new Date(filter.startDate)) &&
-      (!filter.endDate || new Date(reservation.date) <= new Date(filter.endDate)) &&
-      (!filter.motive || reservation.motive.includes(filter.motive))
+      (filter.state.length === 0 || filter.state.includes(reservation.state)) &&
+      (filter.organizer.length === 0 || filter.organizer.includes(reservation.entity)) &&
+      (filter.facility.length === 0 || filter.facility.includes(reservation.facility)) &&
+      (filter.startDate === null || new Date(reservation.date) >= new Date(filter.startDate)) &&
+      (filter.endDate === null || new Date(reservation.date) <= new Date(filter.endDate)) &&
+      (filter.motive === '' || reservation.motive.includes(filter.motive))
     ))
     .sort((a, b) => {
       if (sort === 'date') {
@@ -134,21 +135,21 @@ const AdminView = () => {
       <Navbar />
       <div className="admin-view">
           <div className="filters">
-            <h2>Filters</h2>
-            <SelectPicker
-              placeholder="Select State"
+            <TagPicker
+              placeholder="State"
               data={['Pending', 'Approved', 'Cancelled', 'Rejected'].map(state => ({ label: state, value: state }))}
               value={filter.state}
               onChange={(value) => setFilter(prev => ({ ...prev, state: value }))}
+              
             />
-            <SelectPicker
-              placeholder="Select Organizer"
+            <TagPicker
+              placeholder="Organizer"
               data={Object.keys(organizers).map(id => ({ label: organizers[id], value: id }))}
               value={filter.organizer}
               onChange={(value) => setFilter(prev => ({ ...prev, organizer: value }))}
             />
-            <SelectPicker
-              placeholder="Select Facility"
+            <TagPicker
+              placeholder="Facility"
               data={Object.keys(facilities).map(id => ({ label: facilities[id], value: id }))}
               value={filter.facility}
               onChange={(value) => setFilter(prev => ({ ...prev, facility: value }))}
@@ -163,18 +164,13 @@ const AdminView = () => {
               value={filter.endDate ? new Date(filter.endDate) : null}
               onChange={(date) => setFilter(prev => ({ ...prev, endDate: date ? date.toISOString() : null }))}
             />
-            <SelectPicker
-              placeholder="Select Day"
+            <TagPicker
+              placeholder="Day"
               data={['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'].map(day => ({ label: day, value: day }))}
               value={filter.day}
               onChange={(value) => setFilter(prev => ({ ...prev, day: value }))}
             />
-            <input
-              type="text"
-              placeholder="Motive"
-              value={filter.motive}
-              onChange={(e) => setFilter(prev => ({ ...prev, motive: e.target.value }))}
-            />
+           
             <SelectPicker
               placeholder="Sort By"
               data={[
