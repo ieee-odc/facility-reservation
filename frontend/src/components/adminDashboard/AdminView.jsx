@@ -25,7 +25,7 @@ const AdminView = () => {
     motive: ''
   });
   const [sort, setSort] = useState('startDate');
-  const [viewType, setViewType] = useState('both');
+  const [viewType, setViewType] = useState('Event&Reservations');
 
   useEffect(() => {
     fetchReservations();
@@ -192,9 +192,9 @@ const AdminView = () => {
             <SelectPicker
               placeholder="View"
               data={[
-                { label: 'Both', value: 'both' },
                 { label: 'Events', value: 'events' },
-                { label: 'Reservations', value: 'reservations' }
+                { label: 'Reservations', value: 'reservations' },
+                { label: 'Event&Reservations', value: 'Event&Reservations' }
               ]}
               value={viewType}
               onChange={(value) => setViewType(value)}
