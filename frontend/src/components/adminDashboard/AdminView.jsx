@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Panel } from "rsuite";
+import { Panel, SelectPicker, DatePicker, Checkbox, Button } from "rsuite";
 import "./AdminView.css";
 import {
   getAllEvents,
@@ -14,6 +14,17 @@ const AdminView = () => {
   const [events, setEvents] = useState([]);
   const [organizers, setOrganizers] = useState({});
   const [facilities, setFacilities] = useState({});
+  
+  const [filter, setFilter] = useState({
+    state: '',
+    organizer: '',
+    facility: '',
+    startDate: null,
+    endDate: null,
+    day: '',
+    motive: ''
+  });
+  const [sort, setSort] = useState('startDate');
 
   useEffect(() => {
     fetchReservations();
@@ -26,8 +37,6 @@ const AdminView = () => {
     try {
       const response = await getAllPureReservations();
       setReservations(response.data);
-      console.log("reservations", reservations);
-      
     } catch (error) {
       console.error("Error fetching reservations", error);
     }
@@ -44,13 +53,11 @@ const AdminView = () => {
 
   const fetchOrganizers = async () => {
     try {
-      const response = await getAllOrganizers(); 
-      console.log("Fetched organizers:", response.data); 
+      const response = await getAllOrganizers();
       const organizersData = response.data.reduce((acc, organizer) => {
-        acc[organizer._id] = organizer.name; 
+        acc[organizer._id] = organizer.name;
         return acc;
       }, {});
-      console.log("Organizers mapped:", organizersData); 
       setOrganizers(organizersData);
     } catch (error) {
       console.error("Error fetching organizers", error);
@@ -59,13 +66,11 @@ const AdminView = () => {
 
   const fetchFacilities = async () => {
     try {
-      const response = await getAllFacilities(); // Fetch all facilities
-      console.log("Fetched facilities:", response.data.data); // Debugging line
+      const response = await getAllFacilities();
       const facilitiesData = response.data.data.reduce((acc, facility) => {
-        acc[facility._id] = facility.label; // Map facility ID to name
+        acc[facility._id] = facility.label;
         return acc;
       }, {});
-      console.log("Facilities mapped:", facilitiesData); // Debugging line
       setFacilities(facilitiesData);
     } catch (error) {
       console.error("Error fetching facilities", error);
@@ -87,14 +92,106 @@ const AdminView = () => {
     }
   };
 
+  const filteredEvents = events
+    .filter(event => (
+      (!filter.state || event.state === filter.state) &&
+      (!filter.organizer || event.organizer === filter.organizer) &&
+      (!filter.startDate || new Date(event.startDate) >= new Date(filter.startDate)) &&
+      (!filter.endDate || new Date(event.endDate) <= new Date(filter.endDate)) &&
+      (!filter.motive || event.reservations.some(r => r.motive.includes(filter.motive)))
+    ))
+    .sort((a, b) => {
+      if (sort === 'startDate') {
+        return new Date(a.startDate) - new Date(b.startDate);
+      }
+      if (sort === 'endDate') {
+        return new Date(a.endDate) - new Date(b.endDate);
+      }
+      return 0;
+    });
+
+  const filteredReservations = reservations
+    .filter(reservation => (
+      (!filter.state || reservation.state === filter.state) &&
+      (!filter.organizer || reservation.entity === filter.organizer) &&
+      (!filter.facility || reservation.facility === filter.facility) &&
+      (!filter.startDate || new Date(reservation.date) >= new Date(filter.startDate)) &&
+      (!filter.endDate || new Date(reservation.date) <= new Date(filter.endDate)) &&
+      (!filter.motive || reservation.motive.includes(filter.motive))
+    ))
+    .sort((a, b) => {
+      if (sort === 'date') {
+        return new Date(a.date) - new Date(b.date);
+      }
+      if (sort === 'time') {
+        return new Date(`1970-01-01T${a.startTime}`) - new Date(`1970-01-01T${b.startTime}`);
+      }
+      return 0;
+    });
+
   return (
     <div>
       <Navbar />
       <div className="admin-view">
+          <div className="filters">
+            <h2>Filters</h2>
+            <SelectPicker
+              placeholder="Select State"
+              data={['Pending', 'Approved', 'Cancelled', 'Rejected'].map(state => ({ label: state, value: state }))}
+              value={filter.state}
+              onChange={(value) => setFilter(prev => ({ ...prev, state: value }))}
+            />
+            <SelectPicker
+              placeholder="Select Organizer"
+              data={Object.keys(organizers).map(id => ({ label: organizers[id], value: id }))}
+              value={filter.organizer}
+              onChange={(value) => setFilter(prev => ({ ...prev, organizer: value }))}
+            />
+            <SelectPicker
+              placeholder="Select Facility"
+              data={Object.keys(facilities).map(id => ({ label: facilities[id], value: id }))}
+              value={filter.facility}
+              onChange={(value) => setFilter(prev => ({ ...prev, facility: value }))}
+            />
+            <DatePicker
+              placeholder="Start Date"
+              value={filter.startDate ? new Date(filter.startDate) : null}
+              onChange={(date) => setFilter(prev => ({ ...prev, startDate: date ? date.toISOString() : null }))}
+            />
+            <DatePicker
+              placeholder="End Date"
+              value={filter.endDate ? new Date(filter.endDate) : null}
+              onChange={(date) => setFilter(prev => ({ ...prev, endDate: date ? date.toISOString() : null }))}
+            />
+            <SelectPicker
+              placeholder="Select Day"
+              data={['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'].map(day => ({ label: day, value: day }))}
+              value={filter.day}
+              onChange={(value) => setFilter(prev => ({ ...prev, day: value }))}
+            />
+            <input
+              type="text"
+              placeholder="Motive"
+              value={filter.motive}
+              onChange={(e) => setFilter(prev => ({ ...prev, motive: e.target.value }))}
+            />
+            <SelectPicker
+              placeholder="Sort By"
+              data={[
+                { label: 'Start Date', value: 'startDate' },
+                { label: 'End Date', value: 'endDate' },
+                { label: 'Date', value: 'date' },
+                { label: 'Time', value: 'time' }
+              ]}
+              value={sort}
+              onChange={(value) => setSort(value)}
+            />
+          </div>
         <div className="content-container">
+
           <div className="section events-section">
             <h2>Events</h2>
-            {events.map((event) => (
+            {filteredEvents.map((event) => (
               <Panel
                 key={event._id}
                 header={
@@ -171,7 +268,7 @@ const AdminView = () => {
 
           <div className="section reservations-section">
             <h2>Reservations</h2>
-            {reservations.map((reservation) => (
+            {filteredReservations.map((reservation) => (
               <div key={reservation._id} className="reservation-item">
                 <h3>
                   {organizers[reservation.entity] || "Unknown Organizer"}
@@ -187,7 +284,6 @@ const AdminView = () => {
                   <strong>Time:</strong> {reservation.startTime} -{" "}
                   {reservation.endTime}
                 </p>
-                
                 <p>
                   <strong>Facility:</strong>{" "}
                   {facilities[reservation.facility] || "Unknown Facility"}
