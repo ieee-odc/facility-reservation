@@ -25,6 +25,7 @@ const AdminView = () => {
     motive: ''
   });
   const [sort, setSort] = useState('startDate');
+  const [viewType, setViewType] = useState('both');
 
   useEffect(() => {
     fetchReservations();
@@ -146,8 +147,7 @@ const AdminView = () => {
               placeholder="State"
               data={['Pending', 'Approved', 'Cancelled', 'Rejected'].map(state => ({ label: state, value: state }))}
               value={filter.state}
-              onChange={(value) => setFilter(prev => ({ ...prev, state: value }))}
-              
+              onChange={(value) => setFilter(prev => ({ ...prev, state: value }))}              
             />
             <TagPicker
               placeholder="Organizer"
@@ -189,9 +189,20 @@ const AdminView = () => {
               value={sort}
               onChange={(value) => setSort(value)}
             />
+            <SelectPicker
+              placeholder="View"
+              data={[
+                { label: 'Both', value: 'both' },
+                { label: 'Events', value: 'events' },
+                { label: 'Reservations', value: 'reservations' }
+              ]}
+              value={viewType}
+              onChange={(value) => setViewType(value)}
+              
+            />
           </div>
         <div className="content-container">
-
+        {viewType !== 'reservations' && (
           <div className="section events-section">
             <h2>Events</h2>
             {filteredEvents.map((event) => (
@@ -268,7 +279,8 @@ const AdminView = () => {
               </Panel>
             ))}
           </div>
-
+        )}
+         {viewType !== 'events' && (
           <div className="section reservations-section">
             <h2>Reservations</h2>
             {filteredReservations.map((reservation) => (
@@ -299,7 +311,7 @@ const AdminView = () => {
                 </p>
               </div>
             ))}
-          </div>
+          </div>)}
         </div>
       </div>
     </div>
