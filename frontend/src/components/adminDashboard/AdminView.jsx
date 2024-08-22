@@ -290,7 +290,7 @@ const AdminView = () => {
                         <strong>State:</strong> {event.state}
                       </p>
                       <p>
-                        <strong>Total Effective:</strong> {event.totalEffective}
+                        <strong>Total Participants:</strong> {event.totalEffective}
                       </p>
                       <p>
                         <strong>Reservations:</strong>

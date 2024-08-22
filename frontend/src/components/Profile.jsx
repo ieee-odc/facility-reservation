@@ -181,8 +181,7 @@ const Profile = ({ currentId, currentUser }) => {
         })
       );
 
-      console.log("facilitycountarray", facilityCountArray);
-      
+      console.log("facilitycountarray", facilityCountArray);      
       setDataFacilities(facilityCountArray)
       return facilityCountArray;
     };
@@ -417,7 +416,7 @@ const Profile = ({ currentId, currentUser }) => {
                                   <strong>State:</strong> {event.state}
                                 </p>
                                 <p>
-                                  <strong>Total Effective:</strong>{" "}
+                                  <strong>Total Participants:</strong>{" "}
                                   {event.totalEffective}
                                 </p>
                                 <p>
