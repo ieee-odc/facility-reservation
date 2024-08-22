@@ -8,6 +8,7 @@ import {
 import InitiatorCard from "./InitiatorCard";
 import InitiatorForm from "./InitiatorForm";
 import InitiatorModal from "./InitiatorModal";
+import UploadCSV from "./UploadCSV";
 import { FaTimes } from "react-icons/fa";
 import "./styles.css";
 import Navbar from "../navbar";
@@ -104,8 +105,8 @@ const ManageUsers = () => {
   };
 
   const handleFormSubmit = async (data) => {
-console.log("data", data);
-console.log("selectedInitiator", selectedInitiator);
+    console.log("data", data);
+    console.log("selectedInitiator", selectedInitiator);
 
     try {
       if (data && data._id) {
@@ -130,6 +131,10 @@ console.log("selectedInitiator", selectedInitiator);
     <div>
       <Navbar />
       <div className="manage-users-container">
+        <div className="upload-csv-container">
+          <UploadCSV />
+          
+        </div>
         <div className="add-user-button">
           <button className="user-button" onClick={handleAdd}>
             Add New Initiator

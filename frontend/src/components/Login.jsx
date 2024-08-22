@@ -1,12 +1,19 @@
 import React, { useState, useEffect } from "react";
-import { MdLockOutline, MdInfoOutline, MdClose, MdOutlineEmail } from "react-icons/md";
+import {
+  MdLockOutline,
+  MdVisibility,
+  MdVisibilityOff,
+  MdInfoOutline,
+  MdClose,
+  MdOutlineEmail,
+} from "react-icons/md";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useNotification } from ".././context/NotificationContext";
 import "./styles.css";
 import {
   doSignInWithEmailAndPassword,
   doSignInWithGoogle,
-  doSignInWithMicrosoft
+  doSignInWithMicrosoft,
 } from "../config/auth";
 import logo from "./../assets/logo/Group3.svg";
 
@@ -27,6 +34,7 @@ const Login = () => {
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
   const location = useLocation();
   const [signedIn, setSignedIn] = useState("");
   const myProp = location.state?.myProp;
@@ -65,7 +73,7 @@ const Login = () => {
     localStorage.setItem("userEmail", email);
     if (signed && !signedIn) {
       setSignedIn(signed);
-      navigate("/calendar");
+      navigate("/profile");
     } else {
       showNotification(
         "Incorrect email or password. Please try again.",
@@ -75,7 +83,7 @@ const Login = () => {
     /*.then((signedIn) => {
         console.log("signed in ", signedIn);
         localStorage.setItem("userEmail", email);
-        navigate("/calendar");
+        navigate("/profile");
       })  
       .catch((error) => {
         console.log(error);
@@ -90,7 +98,7 @@ const Login = () => {
     localStorage.setItem("userEmail", email);
     if (signed && !signedIn) {
       setSignedIn(signed);
-      navigate("/calendar");
+      navigate("/profile");
     } else {
       showNotification("Failed to sign in with Google.", "error");
     }
@@ -102,11 +110,11 @@ const Login = () => {
     localStorage.setItem("userEmail", email);
     if (signed && !signedIn) {
       setSignedIn(signed);
-      navigate("/calendar");
+      navigate("/profile");
     } else {
       showNotification("Failed to sign in with Microsoft.", "error");
     }
-  }
+  };
 
   const handleEmailChange = (e) => {
     const value = e.target.value;
@@ -158,12 +166,19 @@ const Login = () => {
                 <div className="icon-box">
                   <MdLockOutline className="input-icon" />
                   <input
-                    type="password"
+                    type={showPassword ? "text" : "password"}
                     placeholder="Password"
                     required
                     className="input-with-icon"
                     onChange={(e) => setPassword(e.target.value)}
                   />
+                  <button
+                    type="button"
+                    className="password-toggle"
+                    onClick={() => setShowPassword(!showPassword)}
+                  >
+                    {showPassword ? <MdVisibilityOff /> : <MdVisibility />}
+                  </button>
                 </div>
               </div>
               <div className="forgot-password-link">

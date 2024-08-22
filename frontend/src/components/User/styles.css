@@ -2,6 +2,8 @@
   padding: 2em;
   background-color: #f9f9f9;
   min-height: 100vh;
+  display: flex;
+  flex-direction: column;
 }
 
 .user-modal::-webkit-scrollbar {
@@ -232,3 +234,80 @@
   border-bottom: none;
 }
 
+.upload-csv-container{
+  
+   position: relative;
+  right: 0 !important;
+  align-self: self-end;
+}
+
+.upload-csv{
+  background-color: #7b010100;
+  padding-bottom: 20px;
+  border-bottom: solid rgba(0, 0, 0, 0.092) 1px !important;
+  position: relative;
+  display: flex;
+ flex-direction: column;
+ 
+}
+
+.upload-csv button {
+  min-width: 155px;
+  align-self: end;
+}
+
+.csv-input{
+  display: flex;
+  flex-direction: row;
+  
+}
+
+.or{
+  position: absolute !important;
+  bottom: -20px !important;
+  right: 50% !important;
+  background: #aeafb000;
+  z-index: 100;
+}
+.csv-input {
+  font-size: 16px;
+  color: #131313;
+  background-color: #007bff00;
+  border: 2px solid #007bff00;
+  border-radius: 5px;
+  cursor: pointer;
+  width: 100%; /* Make the input take up full width */
+  max-width: 400px; /* Limit the maximum width to 400px */
+  box-sizing: border-box; /* Ensure padding doesn't increase width */
+  overflow: hidden;
+  text-overflow: ellipsis; /* Truncate long file names */
+  display: flex !important;
+  flex-direction: row !important;
+  justify-content: flex-start;
+}
+
+.csv-input::before {
+  content: 'Choose a file';
+  background-color: #02254c2c;
+  color: white;
+  border: none;
+  padding: 2px 7px;
+  outline: none;
+  white-space: nowrap;
+  cursor: pointer;
+  font-size: 16px;
+  position: absolute;
+}
+
+/*.csv-input:hover::before {
+  background-color: #0057b300;
+  padding-right: 1px;
+}
+*/
+.csv-input::-webkit-file-upload-button {
+  visibility: hidden;
+}
+
+.csv-input::-ms-browse {
+  visibility: hidden;
+}

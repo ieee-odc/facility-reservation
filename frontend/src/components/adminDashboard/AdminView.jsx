@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Panel, SelectPicker, DatePicker, Checkbox, Button, TagPicker } from "rsuite";
+import { Panel, SelectPicker, DatePicker, TagPicker } from "rsuite";
 import "./AdminView.css";
 import {
   getAllEvents,
@@ -21,10 +21,11 @@ const AdminView = () => {
     facility: [],
     startDate: null,
     endDate: null,
-    day: '',
+    day: [],
     motive: ''
   });
   const [sort, setSort] = useState('startDate');
+  const [viewType, setViewType] = useState('Event&Reservations');
 
   useEffect(() => {
     fetchReservations();
@@ -92,6 +93,12 @@ const AdminView = () => {
     }
   };
 
+  const getWeekdayFromDate = (dateString) => {
+    const date = new Date(dateString);
+    const daysOfWeek = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+    return daysOfWeek[date.getUTCDay()];
+  };
+
   const filteredEvents = events
     .filter(event => (
       (filter.state.length === 0 || filter.state.includes(event.state)) &&
@@ -118,6 +125,7 @@ const AdminView = () => {
       (filter.facility.length === 0 || filter.facility.includes(reservation.facility)) &&
       (filter.startDate === null || new Date(reservation.date) >= new Date(filter.startDate)) &&
       (filter.endDate === null || new Date(reservation.date) <= new Date(filter.endDate)) &&
+      (filter.day.length === 0 || filter.day.includes(getWeekdayFromDate(reservation.date))) &&
       (filter.motive === '' || reservation.motive.includes(filter.motive))
     ))
     .sort((a, b) => {
@@ -139,8 +147,7 @@ const AdminView = () => {
               placeholder="State"
               data={['Pending', 'Approved', 'Cancelled', 'Rejected'].map(state => ({ label: state, value: state }))}
               value={filter.state}
-              onChange={(value) => setFilter(prev => ({ ...prev, state: value }))}
-              
+              onChange={(value) => setFilter(prev => ({ ...prev, state: value }))}              
             />
             <TagPicker
               placeholder="Organizer"
@@ -182,9 +189,20 @@ const AdminView = () => {
               value={sort}
               onChange={(value) => setSort(value)}
             />
+            <SelectPicker
+              placeholder="View"
+              data={[
+                { label: 'Events', value: 'events' },
+                { label: 'Reservations', value: 'reservations' },
+                { label: 'Event&Reservations', value: 'Event&Reservations' }
+              ]}
+              value={viewType}
+              onChange={(value) => setViewType(value)}
+              
+            />
           </div>
         <div className="content-container">
-
+        {viewType !== 'reservations' && (
           <div className="section events-section">
             <h2>Events</h2>
             {filteredEvents.map((event) => (
@@ -261,7 +279,8 @@ const AdminView = () => {
               </Panel>
             ))}
           </div>
-
+        )}
+         {viewType !== 'events' && (
           <div className="section reservations-section">
             <h2>Reservations</h2>
             {filteredReservations.map((reservation) => (
@@ -292,7 +311,7 @@ const AdminView = () => {
                 </p>
               </div>
             ))}
-          </div>
+          </div>)}
         </div>
       </div>
     </div>

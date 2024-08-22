@@ -9,10 +9,21 @@
     "test:coverage": "dotenv -e .env.test nyc ava --timeout=3m"
   },
   "nyc": {
-    "reporter": ["text", "lcov"],
-    "extension": [".js"],
-    "include": ["controllers/**/*.js", "models/**/*.js"],
-    "exclude": ["**/node_modules/**", "**/test/**"]
+    "reporter": [
+      "text",
+      "lcov"
+    ],
+    "extension": [
+      ".js"
+    ],
+    "include": [
+      "controllers/**/*.js",
+      "models/**/*.js"
+    ],
+    "exclude": [
+      "**/node_modules/**",
+      "**/test/**"
+    ]
   },
   "keywords": [],
   "author": "",
@@ -23,6 +34,7 @@
     "bcrypt": "^5.1.1",
     "bcryptjs": "^2.4.3",
     "cors": "^2.8.5",
+    "csv-parser": "^3.0.0",
     "dotenv": "^16.4.5",
     "dotenv-cli": "^7.4.2",
     "express": "^4.19.2",
@@ -34,6 +46,7 @@
     "mongodb": "^6.8.0",
     "mongodb-memory-server": "^10.0.0",
     "mongoose": "^8.4.4",
+    "multer": "^1.4.5-lts.1",
     "nodemailer": "^6.9.14",
     "nodemon": "^3.1.4",
     "react-tooltip": "^5.27.1",

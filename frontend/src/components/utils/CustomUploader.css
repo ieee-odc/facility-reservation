@@ -1,0 +1,52 @@
+.custom-uploader {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.upload-button {
+  background-color: #007bff39;
+  color: white;
+  padding: 10px 20px;
+  border-radius: 4px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  max-width: 40%;
+  align-self: self-start;
+}
+
+.camera-icon {
+  margin-right: 8px;
+}
+
+.file-preview-container {
+  position: relative;
+  display: inline-block;
+  margin-top: 10px;
+  align-self: self-start;
+
+}
+
+.file-preview {
+  max-width: 200px;
+  max-height: 200px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.remove-button {
+  position: absolute;
+  top: -10px;
+  right: -10px;
+  background: rgba(0, 0, 0, 0.5);
+  color: white;
+  border: none;
+  border-radius: 50%;
+  width: 25px;
+  height: 25px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}

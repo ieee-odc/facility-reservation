@@ -3,4 +3,5 @@ node_modules
 package-lock.json
 .env.test
 .env.*
-.env.test
+.env.test*
+firebase.json

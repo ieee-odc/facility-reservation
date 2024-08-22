@@ -1,4 +1,7 @@
 import { ReservationInitiator } from "../models/reservationInitiatorModel.js";
+import admin from "../config/firebase-config.js";
+import { sendSetupEmail } from "../utils/emailService.js";
+import crypto from "crypto";
 import bcrypt from "bcryptjs";
 
 export const createReservationInitiator = async (req, res) => {
@@ -20,6 +23,14 @@ export const createReservationInitiator = async (req, res) => {
     if (existingInitiator) {
       return res.status(400).json({ message: "User already exists" });
     }
+    const defaultPassword = crypto.randomBytes(12).toString('hex');
+
+    const userRecord = await admin.auth().createUser({
+      email,
+      emailVerified: false,
+      password: defaultPassword,
+      displayName: name,
+    });
 
     const newInitiator = await ReservationInitiator.create({
       name,
@@ -29,10 +40,12 @@ export const createReservationInitiator = async (req, res) => {
       nature,
       service,
       organisation,
-      role,
+      role: role ? role:"User",
     });
 
-    //const savedInitiator = await newInitiator.save();
+    const setupUrl = `https://flexyspace.loca.lt/setup-account?uid=${userRecord.uid}`;
+    await sendSetupEmail(email, 'Set up your account', `Please set up your account and make sure to update your password. Here is your default password: ${defaultPassword}`);
+
 
     return res.status(201).json(newInitiator);
   } catch (error) {
@@ -160,6 +173,7 @@ export const updateReservationInitiatorPwd = async (req, res) => {
 
 export const getUserIdbyEmail = async (req, res) => {
   const { email } = req.params;
+console.log("maio",email);
 
   try {
     const initiator = await ReservationInitiator.findOne({ email });
