@@ -50,6 +50,18 @@ export const updateNotification = async (req, res) => {
   }
 };
 
+export const getNotificationsByRecipientId = async (req, res) => {
+  try {
+    const recipientId = req.params.recipientId;
+    const notifications = await Notification.find({ recipient: recipientId }).populate('recipient');
+    if (notifications.length === 0) {
+      return res.status(404).json({ message: 'No notifications found for this recipient' });
+    }
+    res.status(200).json(notifications);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
 export const deleteNotification = async (req, res) => {
   try {
     const deletedNotification = await Notification.findByIdAndDelete(req.params.id);

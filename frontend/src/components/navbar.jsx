@@ -44,7 +44,9 @@ const Navbar = () => {
   const [showChangePasswordModal, setShowChangePasswordModal] = useState(false); 
   const [userDetails, setUserDetails] = useState({});
   const [showFeedbackModal, setShowFeedbackModal] = useState(false);
-
+  const [showNotificationsCard, setShowNotificationsCard] = useState(false);
+  const [notifications, setNotifications] = useState([]);
+  
   const navigate = useNavigate();
   const email = localStorage.getItem('userEmail');
   
@@ -66,6 +68,21 @@ const Navbar = () => {
     fetchUserDetails();
   }, [email]);
 
+  useEffect(() => {
+    const fetchNotifications = async () => {
+      try {
+        const response = await axios.get('http://localhost:3000/api/notifications');
+        console.log('Fetched notifications:', response.data); // Log the response
+        setNotifications(Array.isArray(response.data) ? response.data : []);
+      } catch (error) {
+        console.error('Error fetching notifications:', error);
+        setNotifications([]); // Ensure notifications is always an array
+      }
+    };
+  
+    fetchNotifications();
+  }, []);
+  
   useEffect(() => {
     const handleClickOutside = (event) => {
       if (profileCardRef.current && !profileCardRef.current.contains(event.target)) {
@@ -126,6 +143,10 @@ const Navbar = () => {
   const toggleProfileCard = () => {
     setShowProfileCard(!showProfileCard);
   };
+  const toggleNotificationsCard = () => {
+    setShowNotificationsCard(!showNotificationsCard);
+  };
+  
 
   const menuItems = [
     { icon: <img src={homeIcon} alt="home Icon" style={{ width: '30px', height: '30px'  }} />, text: "Dashboard"},
@@ -152,8 +173,29 @@ const Navbar = () => {
 
       <div className="profile-icons">
         <img src={settings} alt="settings" style={{ width: '26px', height: '26px' }} onClick={toggleSettingsCard} />
-        <img src={bellIcon} alt="notifications" style={{ width: '26px', height: '26px' }}  />
+  <img src={bellIcon} alt="notifications" style={{ width: '26px', height: '26px' }} onClick={toggleNotificationsCard} />
         <img src={profileIcon} alt="User" style={{ width: '26px', height: '26px' }} onClick={toggleProfileCard} />
+        {showNotificationsCard && (
+    <div className="notifications-card">
+      <div className="notifications-card-header">
+      <img src={bellIcon} alt="notifications"className="button-icon" style={{ width: '70px', height: '70px' }} /> 
+      <h3 className="card-title">Notifications</h3>
+      </div>
+      <div className="notifications-card-body">
+  {Array.isArray(notifications) && notifications.length > 0 ? (
+    notifications.map((notification) => (
+      <div key={notification._id} className="notification-item">
+        <h4>{notification.title}</h4>
+        <p>{notification.message}</p>
+      </div>
+    ))
+  ) : (
+    <p>No notifications</p>
+  )}
+</div>
+
+    </div>
+  )}
         {showProfileCard && (
           <div ref={profileCardRef} className="profile-card">
             <div className="profile-card-header">

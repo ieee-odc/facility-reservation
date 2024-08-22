@@ -265,7 +265,7 @@
 .custom-dropdown .rs-dropdown-toggle {
   padding: 20px 20px;
   font-size: 1rem;
-  background-color: #f0f0f0;
+  background-color: #FFFFFF;
   border-radius: 4px;
   margin-right: 10px;
 }
@@ -357,4 +357,57 @@
 
 .rbc-event.rbc-event-allday {
   padding: 4px !important;
+}
+.custom-dropdown {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  margin-right: 20px;
+  margin-bottom: 20px;
+}
+
+.custom-dropdown .rs-dropdown-toggle {
+  padding: 10px 16px; /* Adjust padding for a more compact look */
+  font-size: 0.875rem; /* Match RSuite font size */
+  background-color: #fff; /* Background color for dropdown toggle */
+  border: 1px solid #dcdcdc; /* Border to match RSuite filter look */
+  border-radius: 4px; /* Rounded corners for dropdown toggle */
+  color: #333; /* Text color for dropdown toggle */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
+  cursor: pointer; /* Pointer cursor for better UX */
+  transition: background-color 0.2s ease, box-shadow 0.2s ease; /* Smooth transition for hover effects */
+}
+
+.custom-dropdown .rs-dropdown-toggle:hover {
+  background-color: #f5f5f5; /* Light hover background color */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15); /* Enhanced shadow on hover */
+}
+
+.custom-dropdown .rs-dropdown-toggle:focus {
+  outline: none; /* Remove default outline */
+  box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.5); /* Focus outline with RSuite color */
+}
+
+.rs-dropdown-menu {
+  border-radius: 4px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15); /* Shadow for dropdown menu */
+  border: 1px solid #dcdcdc; /* Border matching RSuite design */
+  background-color: #fff; /* Background color for dropdown menu */
+  padding: 0; /* Remove default padding */
+}
+
+.rs-dropdown-menu .rs-dropdown-item {
+  padding: 10px 16px; /* Padding for dropdown items */
+  font-size: 0.875rem; /* Font size matching RSuite filters */
+  color: #333; /* Text color for items */
+  border-bottom: 1px solid #dcdcdc; /* Border between items */
+}
+
+.rs-dropdown-menu .rs-dropdown-item:hover {
+  background-color: #f5f5f5; /* Hover background color for items */
+}
+
+.rs-dropdown-menu .rs-dropdown-item:last-child {
+  border-bottom: none; /* Remove bottom border for last item */
 }

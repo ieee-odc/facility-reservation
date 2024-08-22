@@ -143,35 +143,21 @@ const CalendarPage = ({ currentId }) => {
     };
   }, []);
 
+  // Apply the filter before passing the data to BigCalendarComponent
   const filteredRequests = requests.filter((request) => {
     const facilityMatch = selectedFacility === "All" || request.facility === selectedFacility;
-    
-    // Extract time from start and end Date objects
-    const startTime = new Date(request.start).getTime();
-    const endTime = new Date(request.end).getTime();
-  
-    const filterStart = filterStartTime ? filterStartTime.getTime() : null;
-    const filterEnd = filterEndTime ? filterEndTime.getTime() : null;
-  
-    const timeMatch = (!filterStart || startTime >= filterStart) &&
-                      (!filterEnd || endTime <= filterEnd);
-  
+    const timeMatch = (!filterStartTime || new Date(request.start) >= filterStartTime) &&
+                      (!filterEndTime || new Date(request.end) <= filterEndTime);
+
     return facilityMatch && timeMatch && (filterState === "All" || request.state === filterState);
   });
-  
+
   const filteredEvents = events.filter((event) => {
-    const startTime = new Date(event.start).getTime();
-    const endTime = new Date(event.end).getTime();
-  
-    const filterStart = filterStartTime ? filterStartTime.getTime() : null;
-    const filterEnd = filterEndTime ? filterEndTime.getTime() : null;
-  
-    const timeMatch = (!filterStart || startTime >= filterStart) &&
-                      (!filterEnd || endTime <= filterEnd);
-  
+    const timeMatch = (!filterStartTime || new Date(event.start) >= filterStartTime) &&
+                      (!filterEndTime || new Date(event.end) <= filterEndTime);
+
     return timeMatch && (filterState === "All" || event.state === filterState);
   });
-  
 
   return (
     <div>
