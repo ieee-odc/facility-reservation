@@ -345,14 +345,14 @@ p.about-content-element-two:hover {
 }
 
 .vav-person::-webkit-scrollbar {
-  width: 12px;
+  height: 10px;
 }
 
 /* Track */
 .vav-person::-webkit-scrollbar-track {
   box-shadow: inset 0 0 5px rgb(255, 255, 255);
   border-radius: 10px;
-  background: #f1f1f1;
+  background: #8f8f8f14;
 }
 
 /* Handle */
@@ -360,6 +360,7 @@ p.about-content-element-two:hover {
   background: #dbdada;
   border-radius: 10px;
   cursor: grab;
+  
 }
 .vav-person::-webkit-scrollbar-thumb:active {
   background: #dbdada;

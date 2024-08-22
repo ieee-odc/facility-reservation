@@ -1,6 +1,7 @@
-import React, { useState, useEffect } from "react";
-import "./Modal.css"; // Ensure this is the correct path to your CSS file
-import axios from "axios";
+import React, { useState, useEffect } from 'react';
+import CustomUploader from './utils/CustomUploader';
+import axios from 'axios';
+import './Modal.css';
 
 const Modal = ({ rep, onSave, onClose }) => {
   const [formData, setFormData] = useState({
@@ -24,25 +25,35 @@ const Modal = ({ rep, onSave, onClose }) => {
     setFormData({ ...formData, [name]: value });
   };
 
+  const handleFileSelect = (file) => {
+    setFormData({ ...formData, picture: file });
+  };
+
+  const handleFileRemove = () => {
+    setFormData({ ...formData, picture: null });
+  };
+
   const handleSubmit = async(e) => {
     e.preventDefault();
-    onSave(formData);
-    const data = {
-      firstName: formData.firstName,
-      lastName: formData.lastName,
-      contactEmail: formData.email,
-      contactPhoneNumber: formData.phone,
-      position: formData.position,
-      picture: formData.picture || ''
+
+    const formDataToSend = new FormData();
+    formDataToSend.append('firstName', formData.firstName);
+    formDataToSend.append('lastName', formData.lastName);
+    formDataToSend.append('position', formData.position);
+    formDataToSend.append('email', formData.email);
+    formDataToSend.append('phone', formData.phone);
+    if (formData.picture) {
+      formDataToSend.append('file', formData.picture);
     }
-    if (!rep){
-      axios.post("http://localhost:3000/api/responsibles", data)
-      .then((resp)=>{
-        console.log(resp);
-      })
-      .catch((error)=>{
-        console.log(error);
-      })
+
+    try {
+      const response = await axios.post("http://localhost:3000/api/upload", formDataToSend, {
+        headers: { 'Content-Type': 'multipart/form-data' },
+      });
+      console.log(response.data);
+      onSave(response.data.representative);
+    } catch (error) {
+      console.error(error);
     }
   };
 
@@ -101,10 +112,15 @@ const Modal = ({ rep, onSave, onClose }) => {
               required
             />
           </div>
+          <div className="form-group">
+            <label>Picture:</label>
+            <CustomUploader
+              onFileSelect={handleFileSelect}
+              onFileRemove={handleFileRemove}
+            />
+          </div>
           <div className="modal-buttons">
-            <button type="button" onClick={onClose}>
-              Cancel
-            </button>
+            <button type="button" onClick={onClose}>Cancel</button>
             <button type="submit">Save</button>
           </div>
         </form>
