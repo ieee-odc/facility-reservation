@@ -296,7 +296,9 @@
   background-color: #f1f1f1;
   border-bottom: 1px solid #ddd;
 }
-
+.notifications-card-header h3{
+  color: black;
+}
 .notifications-card-body {
   padding: 10px;
 }
@@ -313,6 +315,7 @@
 .notification-item h4 {
   margin: 0;
   font-size: 16px;
+  color: black;
 }
 
 .notification-item p {
