@@ -136,7 +136,9 @@ export const deleteReservationInitiator = async (req, res) => {
 };
 
 export const getReservationInitiatorByEmail = async (req, res) => {
-  const { email } = req.query;
+  const { email } = req.params;
+  console.log("email ---- ", email);
+  
 
   try {
     const initiator = await ReservationInitiator.findOne({ email }).select(
