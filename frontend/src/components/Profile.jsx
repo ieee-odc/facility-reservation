@@ -28,15 +28,15 @@ import { useAuth } from "../context/authContext/AuthProvider";
 import { getAllFacilities } from "../apiService";
 import { Panel } from "rsuite";
 
-const dataFacilities = [
+/*const dataFacilities = [
   { name: "ODC", count: 10 },
   { name: "239", count: 14 },
   { name: "243", count: 19 },
   { name: "A7", count: 8 },
   { name: "Auditorium", count: 23 },
-];
+];*/
 
-const dataAttendance = [
+/*const dataAttendance = [
   { name: "Event 1", attendees: 20 },
   { name: "Event 2", attendees: 22 },
   { name: "Event 3", attendees: 30 },
@@ -44,7 +44,7 @@ const dataAttendance = [
   { name: "Event 5", attendees: 28 },
   { name: "Event 6", attendees: 32 },
   { name: "Event 7", attendees: 20 },
-];
+];*/
 
 const Profile = ({ currentId, currentUser }) => {
   const [activeTab, setActiveTab] = useState("Overview");
@@ -60,24 +60,36 @@ const Profile = ({ currentId, currentUser }) => {
   const [profileImage, setProfileImage] = useState(logo);
   const [bannerImage, setBannerImage] = useState(banner);
   const [events, setEvents] = useState([]);
-
+  const [allEvents, setAllEvents] = useState([]);
+  const [dataAttendance, setDataAttendance] = useState([]);
+  const [dataFacilities, setDataFacilities] = useState([]);
+  
   const [reservations, setReservations] = useState([]);
   const [organizers, setOrganizers] = useState({});
   const [facilities, setFacilities] = useState({});
 
   useEffect(() => {
+    
     const fetchEvents = async () => {
       try {
         const response = await axios.get(
           `http://localhost:3000/api/events/reservation/${currentId}`
         );
         console.log("events", response.data);
+        setAllEvents(response.data)
         const filteredEvents = response.data.filter(
           (event) =>
             event.state === "Approved" || event.state === "PartiallyApproved"
         );
         console.log("events filtered", filteredEvents);
+        const attendance = filteredEvents.map((event) => ({
+          name: event.name, // Assuming the event object has a 'name' property
+          attendees: event.totalEffective, // Assuming the event object has a 'totalEffective' property
+        }));
 
+        console.log("attendance", attendance);
+
+        setDataAttendance(attendance);
         setEvents(filteredEvents);
       } catch (error) {
         console.error("Error fetching events:", error);
@@ -115,7 +127,6 @@ const Profile = ({ currentId, currentUser }) => {
           `http://localhost:3000/api/reservations/pure/${currentId}`
         );
         console.log("reservations", response.data);
-
         setReservations(response.data);
       } catch (error) {
         console.error("Error fetching reservations", error);
@@ -127,6 +138,56 @@ const Profile = ({ currentId, currentUser }) => {
     fetchReservationInitiator();
     fetchEvents();
   }, []);
+
+  useEffect(() => {
+    const combineFacilityCounts = (events, reservations) => {
+      const facilityCountMap = new Map();
+      console.log("-------", events, "requests", reservations);
+
+      events?.forEach((event) => {
+        event?.reservations?.forEach((reservation) => {
+          const facilityId = reservation.facility.toString();
+          if (facilityCountMap.has(facilityId)) {
+            facilityCountMap.set(
+              facilityId,
+              facilityCountMap.get(facilityId) + 1
+            );
+          } else {
+            facilityCountMap.set(facilityId, 1);
+          }
+        });
+      });
+
+      reservations?.forEach((reservation) => {
+        const facilityId = reservation.facility.toString();
+        if (facilityCountMap.has(facilityId)) {
+          facilityCountMap.set(
+            facilityId,
+            facilityCountMap.get(facilityId) + 1
+          );
+        } else {
+          facilityCountMap.set(facilityId, 1);
+        }
+      });
+
+      console.log("facilitycountmap", facilityCountMap);
+      
+
+      const facilityCountArray = Array.from(
+        facilityCountMap,
+        ([facilityId, count]) => ({
+          name:facilities[facilityId],
+          count,
+        })
+      );
+
+      console.log("facilitycountarray", facilityCountArray);
+      
+      setDataFacilities(facilityCountArray)
+      return facilityCountArray;
+    };
+    combineFacilityCounts(allEvents, reservations);
+  }, [allEvents,reservations]);
 
   const handleEdit = (field) => {
     setEditingField(field);
