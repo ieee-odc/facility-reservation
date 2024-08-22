@@ -14,7 +14,7 @@ const AdminView = () => {
   const [events, setEvents] = useState([]);
   const [organizers, setOrganizers] = useState({});
   const [facilities, setFacilities] = useState({});
-  
+
   const [filter, setFilter] = useState({
     state: [],
     organizer: [],
@@ -22,10 +22,10 @@ const AdminView = () => {
     startDate: null,
     endDate: null,
     day: [],
-    motive: ''
+    motive: "",
   });
-  const [sort, setSort] = useState('startDate');
-  const [viewType, setViewType] = useState('Event&Reservations');
+  const [sort, setSort] = useState("startDate");
+  const [viewType, setViewType] = useState("Event&Reservations");
 
   useEffect(() => {
     fetchReservations();
@@ -95,45 +95,67 @@ const AdminView = () => {
 
   const getWeekdayFromDate = (dateString) => {
     const date = new Date(dateString);
-    const daysOfWeek = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+    const daysOfWeek = [
+      "Sunday",
+      "Monday",
+      "Tuesday",
+      "Wednesday",
+      "Thursday",
+      "Friday",
+      "Saturday",
+    ];
     return daysOfWeek[date.getUTCDay()];
   };
 
   const filteredEvents = events
-    .filter(event => (
-      (filter.state.length === 0 || filter.state.includes(event.state)) &&
-      (filter.organizer.length === 0 || filter.organizer.includes(event.organizer)) &&
-      (filter.startDate === null || new Date(event.startDate) >= new Date(filter.startDate)) &&
-      (filter.endDate === null || new Date(event.endDate) <= new Date(filter.endDate)) &&
-      (filter.motive === '' || event.reservations.some(r => r.motive.includes(filter.motive)))
-    ))
+    .filter(
+      (event) =>
+        (filter.state.length === 0 || filter.state.includes(event.state)) &&
+        (filter.organizer.length === 0 ||
+          filter.organizer.includes(event.organizer)) &&
+        (filter.startDate === null ||
+          new Date(event.startDate) >= new Date(filter.startDate)) &&
+        (filter.endDate === null ||
+          new Date(event.endDate) <= new Date(filter.endDate)) &&
+        (filter.motive === "" ||
+          event.reservations.some((r) => r.motive.includes(filter.motive)))
+    )
     .sort((a, b) => {
-      if (sort === 'startDate') {
+      if (sort === "startDate") {
         return new Date(a.startDate) - new Date(b.startDate);
       }
-      if (sort === 'endDate') {
+      if (sort === "endDate") {
         return new Date(a.endDate) - new Date(b.endDate);
       }
       return 0;
     });
 
-
-    const filteredReservations = reservations
-    .filter(reservation => (
-      (filter.state.length === 0 || filter.state.includes(reservation.state)) &&
-      (filter.organizer.length === 0 || filter.organizer.includes(reservation.entity)) &&
-      (filter.facility.length === 0 || filter.facility.includes(reservation.facility)) &&
-      (filter.startDate === null || new Date(reservation.date) >= new Date(filter.startDate)) &&
-      (filter.endDate === null || new Date(reservation.date) <= new Date(filter.endDate)) &&
-      (filter.day.length === 0 || filter.day.includes(getWeekdayFromDate(reservation.date))) &&
-      (filter.motive === '' || reservation.motive.includes(filter.motive))
-    ))
+  const filteredReservations = reservations
+    .filter(
+      (reservation) =>
+        (filter.state.length === 0 ||
+          filter.state.includes(reservation.state)) &&
+        (filter.organizer.length === 0 ||
+          filter.organizer.includes(reservation.entity)) &&
+        (filter.facility.length === 0 ||
+          filter.facility.includes(reservation.facility)) &&
+        (filter.startDate === null ||
+          new Date(reservation.date) >= new Date(filter.startDate)) &&
+        (filter.endDate === null ||
+          new Date(reservation.date) <= new Date(filter.endDate)) &&
+        (filter.day.length === 0 ||
+          filter.day.includes(getWeekdayFromDate(reservation.date))) &&
+        (filter.motive === "" || reservation.motive.includes(filter.motive))
+    )
     .sort((a, b) => {
-      if (sort === 'date') {
+      if (sort === "date") {
         return new Date(a.date) - new Date(b.date);
       }
-      if (sort === 'time') {
-        return new Date(`1970-01-01T${a.startTime}`) - new Date(`1970-01-01T${b.startTime}`);
+      if (sort === "time") {
+        return (
+          new Date(`1970-01-01T${a.startTime}`) -
+          new Date(`1970-01-01T${b.startTime}`)
+        );
       }
       return 0;
     });
@@ -142,176 +164,209 @@ const AdminView = () => {
     <div>
       <Navbar />
       <div className="admin-view">
-          <div className="filters">
-            <TagPicker
-              placeholder="State"
-              data={['Pending', 'Approved', 'Cancelled', 'Rejected'].map(state => ({ label: state, value: state }))}
-              value={filter.state}
-              onChange={(value) => setFilter(prev => ({ ...prev, state: value }))}              
-            />
-            <TagPicker
-              placeholder="Organizer"
-              data={Object.keys(organizers).map(id => ({ label: organizers[id], value: id }))}
-              value={filter.organizer}
-              onChange={(value) => setFilter(prev => ({ ...prev, organizer: value }))}
-            />
-            <TagPicker
-              placeholder="Facility"
-              data={Object.keys(facilities).map(id => ({ label: facilities[id], value: id }))}
-              value={filter.facility}
-              onChange={(value) => setFilter(prev => ({ ...prev, facility: value }))}
-            />
-            <DatePicker
-              placeholder="Start Date"
-              value={filter.startDate ? new Date(filter.startDate) : null}
-              onChange={(date) => setFilter(prev => ({ ...prev, startDate: date ? date.toISOString() : null }))}
-            />
-            <DatePicker
-              placeholder="End Date"
-              value={filter.endDate ? new Date(filter.endDate) : null}
-              onChange={(date) => setFilter(prev => ({ ...prev, endDate: date ? date.toISOString() : null }))}
-            />
-            <TagPicker
-              placeholder="Day"
-              data={['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'].map(day => ({ label: day, value: day }))}
-              value={filter.day}
-              onChange={(value) => setFilter(prev => ({ ...prev, day: value }))}
-            />
-           
-            <SelectPicker
-              placeholder="Sort By"
-              data={[
-                { label: 'Start Date', value: 'startDate' },
-                { label: 'End Date', value: 'endDate' },
-                { label: 'Date', value: 'date' },
-                { label: 'Time', value: 'time' }
-              ]}
-              value={sort}
-              onChange={(value) => setSort(value)}
-            />
-            <SelectPicker
-              placeholder="View"
-              data={[
-                { label: 'Events', value: 'events' },
-                { label: 'Reservations', value: 'reservations' },
-                { label: 'Event&Reservations', value: 'Event&Reservations' }
-              ]}
-              value={viewType}
-              onChange={(value) => setViewType(value)}
-              
-            />
-          </div>
-        <div className="content-container">
-        {viewType !== 'reservations' && (
-          <div className="section events-section">
-            <h2>Events</h2>
-            {filteredEvents.map((event) => (
-              <Panel
-                key={event._id}
-                header={
-                  <div className="event-header">
-                    <h5>
-                      {organizers[event.organizer] || "Unknown Organizer"}
-                    </h5>
-                    <h6>{event.name}</h6>
-                  </div>
-                }
-                className="event-panel"
-                collapsible
-                bordered
-              >
-                <div>
-                  <div className="event-details">
-                    <p>
-                      <strong>Description:</strong> {event.description}
-                    </p>
-                    <p>
-                      <strong>Start Date:</strong>{" "}
-                      {new Date(event.startDate).toLocaleDateString()}
-                    </p>
-                    <p>
-                      <strong>End Date:</strong>{" "}
-                      {new Date(event.endDate).toLocaleDateString()}
-                    </p>
-                    <p className={getStateClass(event.state)}>
-                      <strong>State:</strong> {event.state}
-                    </p>
-                    <p>
-                      <strong>Total Effective:</strong> {event.totalEffective}
-                    </p>
-                    <p>
-                      <strong>Reservations:</strong>
-                    </p>
+        <div className="filters">
+          <TagPicker
+            placeholder="State"
+            data={["Pending", "Approved", "Cancelled", "Rejected"].map(
+              (state) => ({ label: state, value: state })
+            )}
+            value={filter.state}
+            onChange={(value) =>
+              setFilter((prev) => ({ ...prev, state: value }))
+            }
+          />
+          <TagPicker
+            placeholder="Organizer"
+            data={Object.keys(organizers).map((id) => ({
+              label: organizers[id],
+              value: id,
+            }))}
+            value={filter.organizer}
+            onChange={(value) =>
+              setFilter((prev) => ({ ...prev, organizer: value }))
+            }
+          />
+          <TagPicker
+            placeholder="Facility"
+            data={Object.keys(facilities).map((id) => ({
+              label: facilities[id],
+              value: id,
+            }))}
+            value={filter.facility}
+            onChange={(value) =>
+              setFilter((prev) => ({ ...prev, facility: value }))
+            }
+          />
+          <DatePicker
+            placeholder="Start Date"
+            value={filter.startDate ? new Date(filter.startDate) : null}
+            onChange={(date) =>
+              setFilter((prev) => ({
+                ...prev,
+                startDate: date ? date.toISOString() : null,
+              }))
+            }
+          />
+          <DatePicker
+            placeholder="End Date"
+            value={filter.endDate ? new Date(filter.endDate) : null}
+            onChange={(date) =>
+              setFilter((prev) => ({
+                ...prev,
+                endDate: date ? date.toISOString() : null,
+              }))
+            }
+          />
+          <TagPicker
+            placeholder="Day"
+            data={[
+              "Monday",
+              "Tuesday",
+              "Wednesday",
+              "Thursday",
+              "Friday",
+              "Saturday",
+              "Sunday",
+            ].map((day) => ({ label: day, value: day }))}
+            value={filter.day}
+            onChange={(value) => setFilter((prev) => ({ ...prev, day: value }))}
+          />
 
-                    <div className="event-reservations">
-                      {event.reservations.map((reservation) => (
-                        <div
-                          className="event-reservation-item"
-                          key={reservation._id}
-                        >
-                          <p>
-                            <strong>Date:</strong>{" "}
-                            {new Date(reservation.date).toLocaleDateString()}
-                          </p>
-                          <p>
-                            <strong>Time:</strong> {reservation.startTime} -{" "}
-                            {reservation.endTime}
-                          </p>
-                          <p>
-                            <strong>Motive:</strong> {reservation.motive}
-                          </p>
-                          <p>
-                            <strong>Facility:</strong>{" "}
-                            {facilities[reservation.facility] ||
-                              "Unknown Facility"}
-                          </p>
-                          <p>
-                            <strong>Effective:</strong> {reservation.effective}
-                          </p>
-                          <p className={getStateClass(reservation.state)}>
-                            <strong>State:</strong> {reservation.state}
-                          </p>
-                        </div>
-                      ))}
+          <SelectPicker
+            placeholder="Sort By"
+            data={[
+              { label: "Start Date", value: "startDate" },
+              { label: "End Date", value: "endDate" },
+              { label: "Date", value: "date" },
+              { label: "Time", value: "time" },
+            ]}
+            value={sort}
+            onChange={(value) => setSort(value)}
+          />
+          <SelectPicker
+            placeholder="View"
+            data={[
+              { label: "Events", value: "events" },
+              { label: "Reservations", value: "reservations" },
+              { label: "Event&Reservations", value: "Event&Reservations" },
+            ]}
+            value={viewType}
+            onChange={(value) => setViewType(value)}
+          />
+        </div>
+        <div className="content-container">
+          {viewType !== "reservations" && (
+            <div className="section events-section">
+              <h2>Events</h2>
+              {filteredEvents.map((event) => (
+                <Panel
+                  key={event._id}
+                  header={
+                    <div className="event-header">
+                      <h5>
+                        {organizers[event.organizer] || "Unknown Organizer"}
+                      </h5>
+                      <h6>{event.name}</h6>
+                    </div>
+                  }
+                  className="event-panel"
+                  collapsible
+                  bordered
+                >
+                  <div>
+                    <div className="event-details">
+                      <p>
+                        <strong>Description:</strong> {event.description}
+                      </p>
+                      <p>
+                        <strong>Start Date:</strong>{" "}
+                        {new Date(event.startDate).toLocaleDateString()}
+                      </p>
+                      <p>
+                        <strong>End Date:</strong>{" "}
+                        {new Date(event.endDate).toLocaleDateString()}
+                      </p>
+                      <p className={getStateClass(event.state)}>
+                        <strong>State:</strong> {event.state}
+                      </p>
+                      <p>
+                        <strong>Total Effective:</strong> {event.totalEffective}
+                      </p>
+                      <p>
+                        <strong>Reservations:</strong>
+                      </p>
+
+                      <div className="event-reservations">
+                        {event.reservations.map((reservation) => (
+                          <div
+                            className="event-reservation-item"
+                            key={reservation._id}
+                          >
+                            <p>
+                              <strong>Date:</strong>{" "}
+                              {new Date(reservation.date).toLocaleDateString()}
+                            </p>
+                            <p>
+                              <strong>Time:</strong> {reservation.startTime} -{" "}
+                              {reservation.endTime}
+                            </p>
+                            <p>
+                              <strong>Motive:</strong> {reservation.motive}
+                            </p>
+                            <p>
+                              <strong>Facility:</strong>{" "}
+                              {facilities[reservation.facility] ||
+                                "Unknown Facility"}
+                            </p>
+                            <p>
+                              <strong>Effective:</strong>{" "}
+                              {reservation.effective}
+                            </p>
+                            <p className={getStateClass(reservation.state)}>
+                              <strong>State:</strong> {reservation.state}
+                            </p>
+                          </div>
+                        ))}
+                      </div>
                     </div>
                   </div>
+                </Panel>
+              ))}
+            </div>
+          )}
+          {viewType !== "events" && (
+            <div className="section reservations-section">
+              <h2>Reservations</h2>
+              {filteredReservations.map((reservation) => (
+                <div key={reservation._id} className="reservation-item">
+                  <h3>
+                    {organizers[reservation.entity] || "Unknown Organizer"}
+                  </h3>
+                  <p>
+                    <strong>Motive:</strong> {reservation.motive}
+                  </p>
+                  <p>
+                    <strong>Date:</strong>{" "}
+                    {new Date(reservation.date).toLocaleDateString()}
+                  </p>
+                  <p>
+                    <strong>Time:</strong> {reservation.startTime} -{" "}
+                    {reservation.endTime}
+                  </p>
+                  <p>
+                    <strong>Facility:</strong>{" "}
+                    {facilities[reservation.facility] || "Unknown Facility"}
+                  </p>
+                  <p>
+                    <strong>Effective:</strong> {reservation.effective}
+                  </p>
+                  <p className={getStateClass(reservation.state)}>
+                    <strong>State:</strong> {reservation.state}
+                  </p>
                 </div>
-              </Panel>
-            ))}
-          </div>
-        )}
-         {viewType !== 'events' && (
-          <div className="section reservations-section">
-            <h2>Reservations</h2>
-            {filteredReservations.map((reservation) => (
-              <div key={reservation._id} className="reservation-item">
-                <h3>
-                  {organizers[reservation.entity] || "Unknown Organizer"}
-                </h3>
-                <p>
-                  <strong>Motive:</strong> {reservation.motive}
-                </p>
-                <p>
-                  <strong>Date:</strong>{" "}
-                  {new Date(reservation.date).toLocaleDateString()}
-                </p>
-                <p>
-                  <strong>Time:</strong> {reservation.startTime} -{" "}
-                  {reservation.endTime}
-                </p>
-                <p>
-                  <strong>Facility:</strong>{" "}
-                  {facilities[reservation.facility] || "Unknown Facility"}
-                </p>
-                <p>
-                  <strong>Effective:</strong> {reservation.effective}
-                </p>
-                <p className={getStateClass(reservation.state)}>
-                  <strong>State:</strong> {reservation.state}
-                </p>
-              </div>
-            ))}
-          </div>)}
+              ))}
+            </div>
+          )}
         </div>
       </div>
     </div>

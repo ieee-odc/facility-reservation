@@ -30,7 +30,7 @@ const AuthStatus = () => {
 };
 
 const AppRoutes = () => {
-  const { userLoggedIn, currentId, currentRole } = useAuth();
+  const { userLoggedIn, currentId, currentRole, currentUser } = useAuth();
 
   return (
     <Routes>
@@ -57,7 +57,7 @@ const AppRoutes = () => {
           <Route
             exact
             path="/profile"
-            element={<Profile currentId={currentId} />}
+            element={<Profile currentId={currentId} currentUser={currentUser}/>}
           />
           <Route exact path="/navbar" element={<Navbar />} />
           <Route
