@@ -42,7 +42,7 @@ const UploadCSV = () => {
       
       <input className='csv-input' type="file" accept=".csv" onChange={handleFileChange} />
       <button className='user-button '  onClick={handleUpload} disabled={uploading}>
-        {uploading ? 'Uploading...' : 'Upload CSV'} 
+        {uploading ? 'Uploading...' : 'Submit'} 
       </button>
       <p className="or">OR</p>
     </div>
