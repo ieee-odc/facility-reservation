@@ -18,6 +18,8 @@ import bellIcon from "../assets/notifications.png";
 import feedbackIcon from "../assets/feedback.png";
 import lockIcon from "../assets/lock.png";
 import languageIcon from "../assets/language.png";
+import fr_flag from "../assets/FR.png";
+import en_flag from "../assets/EN.png";
 import modeIcon from "../assets/mode.png";
 import historyIcon from "../assets/history.png";
 import eventIcon from "../assets/event.png";
@@ -40,12 +42,14 @@ window.addEventListener("scroll", function () {
 
 const Navbar = () => {
   const { userLoggedIn, currentId, currentRole, currentUser } = useAuth();
-  const { i18n } = useTranslation();
+  const { i18n, t } = useTranslation();
 
   const changeLanguage = (lang) => {
     i18n.changeLanguage(lang);
     localStorage.setItem("language", lang);
   };
+
+
 
   const [nav, setNav] = useState(false);
   const [showProfileCard, setShowProfileCard] = useState(false);
@@ -188,7 +192,7 @@ const Navbar = () => {
           style={{ width: "30px", height: "30px" }}
         />
       ),
-      text: "View reservations",
+      text: t('view_reservations'),
       handleClick: EventsManagement,
     },
 
@@ -210,7 +214,7 @@ const Navbar = () => {
           style={{ width: "30px", height: "30px" }}
         />
       ),
-      text: "Calendar",
+      text: t('calendar'),
       handleClick: calendar,
     },
     {
@@ -221,7 +225,7 @@ const Navbar = () => {
           style={{ width: "30px", height: "30px" }}
         />
       ),
-      text: "Reservation",
+      text: t('reservation'),
       handleClick: reservation,
     },
     {
@@ -232,7 +236,7 @@ const Navbar = () => {
           style={{ width: "30px", height: "30px" }}
         />
       ),
-      text: "Event",
+      text: t('event'),
       handleClick: event,
     },
 
@@ -244,7 +248,7 @@ const Navbar = () => {
           style={{ width: "30px", height: "30px" }}
         />
       ),
-      text: "Profile",
+      text: t('your_profile'),
       handleClick: profile,
     },
     {
@@ -255,7 +259,7 @@ const Navbar = () => {
           style={{ width: "30px", height: "30px" }}
         />
       ),
-      text: "Manage Users",
+      text: t('manage_users'),
       handleClick: userManagement,
     },
     {
@@ -266,7 +270,7 @@ const Navbar = () => {
           style={{ width: "30px", height: "30px" }}
         />
       ),
-      text: "Manage Facilities",
+      text: t('manage_facilities'),
       handleClick: facilityManagement,
     },
 
@@ -278,7 +282,7 @@ const Navbar = () => {
           style={{ width: "30px", height: "30px" }}
         />
       ),
-      text: "Logout",
+      text: t('logout'),
       handleClick: Logout,
     },
     {
@@ -402,17 +406,32 @@ const Navbar = () => {
                 <img src={modeIcon} alt="mode Icon" className="button-icon" />
                 Switch Mode
               </button>
-              <button className="profile-card-button">
+              {/*<button className="profile-card-button">
                 <img
                   src={languageIcon}
                   alt="language Icon"
                   className="button-icon"
                 />
                 Language
+              </button>*/}
+              <button className="profile-card-button" onClick={() => changeLanguage("en")}>
+                <img
+                  src={en_flag}
+                  alt="language Icon"
+                  className="button-icon"
+                />
+                English
+              </button>
+              <button className="profile-card-button" onClick={() => changeLanguage("fr")}>
+                <img
+                  src={fr_flag}
+                  alt="language Icon"
+                  className="button-icon"
+                />
+                Français
               </button>
               
-                <button onClick={() => changeLanguage("en")}>English</button>
-                <button onClick={() => changeLanguage("fr")}>Français</button>
+                
              
             </div>
           </div>

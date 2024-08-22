@@ -12,6 +12,8 @@
     "error": "Une erreur est survenue",
     "search": "Rechercher",
     "user": "Utilisateur",
+    "manage_users": "Gérer les utilisateurs",
+    "manage_facilities": "Gérer les salles",
     "admin": "Administrateur",
     "dashboard": "Tableau de bord",
     "settings": "Paramètres",
@@ -37,6 +39,9 @@
     "state": "État",
     "total_participants": "Nombre total de participants",
     "reservations": "Réservations",
+    "reservation": "Réservation",
+    "view_reservations": "Consulter les réservations",
+
     "date": "Date",
     "time": "Heure",
     "motive": "Motif",
@@ -51,6 +56,8 @@
     "phone_number": "Numéro de téléphone",
     "nature": "Nature",
     "our_representative": "Nos représentant",
-    "events": "Événements"
+    "events": "Événements",
+    "event": "Événement",
+    "calendar": "Calendrier"
   }
   

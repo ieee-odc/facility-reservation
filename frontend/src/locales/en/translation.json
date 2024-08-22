@@ -12,6 +12,8 @@
     "error": "An error occurred",
     "search": "Search",
     "user": "User",
+    "manage_users": "Manager users",
+    "manage_facilities": "Manage facilities",
     "admin": "Admin",
     "dashboard": "Dashboard",
     "settings": "Settings",
@@ -37,6 +39,8 @@
     "state": "State",
     "total_participants": "Total Participants",
     "reservations": "Reservations",
+    "reservation": "Reservation",
+    "view_reservations": "View reservations",
     "date": "Date",
     "time": "Time",
     "motive": "Motive",
@@ -51,7 +55,10 @@
     "phone_number": "Phone Number",
     "nature": "Nature",
     "our_representative": "Our Representatives",
-    "events": "Events"
+    "events": "Events",
+    "event": "Event",
+    "calendar": "Calendar"
+
             
   }
   
