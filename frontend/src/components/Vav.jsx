@@ -8,8 +8,11 @@ import "./Modal.css";
 
 import axios from "axios";
 import deleteIcon from "./../assets/delete.png";
+import { useTranslation } from "react-i18next";
 
 const Vav = () => {
+  const { t } = useTranslation();
+
   const [showModal, setShowModal] = useState(false);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [selectedRep, setSelectedRep] = useState(null);
@@ -62,7 +65,7 @@ const Vav = () => {
 
   return (
     <div className="vis-a-vis">
-      <h3>Our Representatives</h3>
+      <h3>{t('our_representative')}</h3>
       <div className="add-button">
         <button onClick={() => setShowModal(true)}>+ Add a representative</button>
       </div>
