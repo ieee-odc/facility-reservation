@@ -1,8 +1,8 @@
 import { ReservationInitiator } from "../models/reservationInitiatorModel.js";
-import bcrypt from "bcryptjs";
 import admin from "../config/firebase-config.js";
 import { sendSetupEmail } from "../utils/emailService.js";
 import crypto from "crypto";
+import bcrypt from "bcryptjs";
 
 export const createReservationInitiator = async (req, res) => {
   const {
