@@ -97,7 +97,7 @@ router.patch("/:id", updateReservationInitiator);
 router.patch("/pwd/:id", updateReservationInitiatorPwd);
 
 router.get("/get-user-id/:email", getUserIdbyEmail);
--router.delete("/:id", deleteReservationInitiator);
-router.get("/by-email", getReservationInitiatorByEmail);
+router.delete("/:id", deleteReservationInitiator);
+router.get("/by-email/:email", getReservationInitiatorByEmail);
 
 export default router;

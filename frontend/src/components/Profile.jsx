@@ -46,6 +46,7 @@ const dataAttendance = [
 
 const Profile = () => {
   const { currentUser, userLoggedIn, loading } = useAuth();
+console.log(currentUser);
 
   const [activeTab, setActiveTab] = useState("Overview");
   const [editingField, setEditingField] = useState(null);
@@ -71,6 +72,18 @@ const Profile = () => {
       }
     };
 
+    const fetchReservationInitiator = async () => {
+      try {
+        const response = await axios.get(`http://localhost:3000/api/reservationInitiators/by-email/${currentUser.email}`);
+        console.log("user", response.data);
+        setFieldValues({...fieldValues, ...response.data})
+      } catch (error) {
+        console.log("Error fetching the current user", error);
+      }
+
+    }
+
+    fetchReservationInitiator();
     fetchEvents();
   }, []);
 
