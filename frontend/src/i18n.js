@@ -12,11 +12,13 @@ const resources = {
   }
 };
 
+const savedLanguage = localStorage.getItem('language') || 'en';
+
 i18n
   .use(initReactI18next)
   .init({
     resources,
-    lng: 'en', // default language
+    lng: savedLanguage, // default language
     fallbackLng: 'en',
     interpolation: {
       escapeValue: false // React already does escaping

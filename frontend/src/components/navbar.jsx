@@ -44,8 +44,9 @@ const Navbar = () => {
 
   const changeLanguage = (lang) => {
     i18n.changeLanguage(lang);
+    localStorage.setItem("language", lang);
   };
-  
+
   const [nav, setNav] = useState(false);
   const [showProfileCard, setShowProfileCard] = useState(false);
   const [showSettingsCard, setShowSettingsCard] = useState(false);
@@ -130,6 +131,7 @@ const Navbar = () => {
   const Logout = async () => {
     const signedOut = await doSignOut();
     console.log("signed out");
+    localStorage.clear();
     navigate("/login");
   };
 
@@ -409,9 +411,9 @@ const Navbar = () => {
                 Language
               </button>
               <div>
-      <button onClick={() => changeLanguage('en')}>English</button>
-      <button onClick={() => changeLanguage('fr')}>Français</button>
-    </div>
+                <button onClick={() => changeLanguage("en")}>English</button>
+                <button onClick={() => changeLanguage("fr")}>Français</button>
+              </div>
             </div>
           </div>
         )}
