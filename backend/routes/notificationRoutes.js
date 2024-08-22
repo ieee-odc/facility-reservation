@@ -13,7 +13,7 @@ const router = express.Router();
 router.get('/', getAllNotifications);
 
 router.get('/:id', getNotificationById);
-router.get('recipient/:id', getNotificationsByRecipientId);
+router.get('/recipient/:recipientId', getNotificationsByRecipientId);
 
 
 router.post('/', createNotification);

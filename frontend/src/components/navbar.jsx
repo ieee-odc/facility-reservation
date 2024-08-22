@@ -27,6 +27,7 @@ import openDoor from "../assets/OpenDoor.png"
 import GiveFeedback from "./feedback";
 import ChangePasswordModal from './ChangePasswordModal'; 
 import webLogo from "./../assets/logo/Group3.svg";
+import { useAuth } from "../context/authContext/AuthProvider";
 
 window.addEventListener('scroll', function() {
   var navbar = document.querySelector('.navbar-container');
@@ -38,6 +39,8 @@ window.addEventListener('scroll', function() {
 });
 
 const Navbar = () => {
+  const { userLoggedIn, currentId, currentRole, currentUser } = useAuth();
+
   const [nav, setNav] = useState(false);
   const [showProfileCard, setShowProfileCard] = useState(false);
   const [showSettingsCard, setShowSettingsCard] = useState(false);
@@ -47,13 +50,13 @@ const Navbar = () => {
   const [showNotificationsCard, setShowNotificationsCard] = useState(false);
   const [notifications, setNotifications] = useState([]);
   
+  
   const navigate = useNavigate();
   const email = localStorage.getItem('userEmail');
   
   const profileCardRef = useRef(null);
   const settingsCardRef = useRef(null);
   const notificationsCardRef = useRef(null);
-
 
   useEffect(() => {
     const fetchUserDetails = async () => {
@@ -73,7 +76,9 @@ const Navbar = () => {
   useEffect(() => {
     const fetchNotifications = async () => {
       try {
-        const response = await axios.get('http://localhost:3000/api/notifications');
+        console.log('your id',currentId);
+
+        const response = await axios.get(`http://localhost:3000/api/notifications/recipient/${currentId}`);
         console.log('Fetched notifications:', response.data); // Log the response
         setNotifications(Array.isArray(response.data) ? response.data : []);
       } catch (error) {
@@ -83,7 +88,7 @@ const Navbar = () => {
     };
   
     fetchNotifications();
-  }, []);
+  }, [currentId]);
   
   useEffect(() => {
     const handleClickOutside = (event) => {

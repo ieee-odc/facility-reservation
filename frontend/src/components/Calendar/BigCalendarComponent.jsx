@@ -7,6 +7,7 @@ import './style.css';
 import EventModal from './EventModal';
 import ParentComp from './parentComp';
 
+
 const localizer = momentLocalizer(moment);
 
 const BigCalendarComponent = ({ events, requests, viewType, currentId }) => {
