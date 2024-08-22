@@ -410,10 +410,10 @@ const Navbar = () => {
                 />
                 Language
               </button>
-              <div>
+              
                 <button onClick={() => changeLanguage("en")}>English</button>
                 <button onClick={() => changeLanguage("fr")}>Français</button>
-              </div>
+             
             </div>
           </div>
         )}

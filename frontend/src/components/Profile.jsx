@@ -352,14 +352,14 @@ const Profile = ({ currentId, currentUser }) => {
                   className={`tab ${activeTab === "Vis-à-vis" ? "active" : ""}`}
                   onClick={() => setActiveTab("Vis-à-vis")}
                 >
-                  {t('vis_a_vis')}
+                  {t('Vis-à-vis')}
                 </button>
               </div>
               {activeTab === "Overview" && (
                 <div>
                   <div className="overview">
                     <div className="event-list main-profile-card">
-                      <h3>{t('approved_events')}</h3>
+                      <h3>{t('list_approved_events')}</h3>
                       <div className="event-items">
                         {events.map((event) => (
                           <Panel
