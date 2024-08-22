@@ -358,7 +358,7 @@ const Navbar = () => {
                   alt="profile Icon"
                   className="button-icon"
                 />{" "}
-                Your profile
+                {t('your_profile')}
               </button>
               <button
                 className="profile-card-button"
@@ -369,7 +369,7 @@ const Navbar = () => {
                   alt="feedback Icon"
                   className="button-icon"
                 />{" "}
-                Give feedback
+                {t('give_feedback')}
               </button>
 
               <button className="profile-card-button" onClick={Logout}>
@@ -378,7 +378,7 @@ const Navbar = () => {
                   alt="Logout Icon"
                   className="button-icon"
                 />{" "}
-                Logout
+                {t('logout')}
               </button>
             </div>
           </div>
@@ -400,11 +400,11 @@ const Navbar = () => {
                 onClick={handleChangePassword}
               >
                 <img src={lockIcon} alt="lock Icon" className="button-icon" />{" "}
-                Change password
+                {t('change_password')}
               </button>
               <button className="profile-card-button">
                 <img src={modeIcon} alt="mode Icon" className="button-icon" />
-                Switch Mode
+                {t('switch_mode')}
               </button>
               {/*<button className="profile-card-button">
                 <img
