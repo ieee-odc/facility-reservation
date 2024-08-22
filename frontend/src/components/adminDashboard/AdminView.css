@@ -50,7 +50,9 @@
 .event-panel:hover {
   box-shadow: 0 6px 18px rgba(0, 0, 0, 0.1);
 }
-
+h2.rs-panel-header.rs-heading{
+  margin-bottom: 0 !important;
+}
 .rs-panel-collapsible > .rs-panel-header,
 .rs-panel-btn,
 .rs-panel-collapsible > .rs-panel-header:hover,
@@ -62,9 +64,9 @@
 .rs-panel-btn,
 .rs-panel-btn:hover,
 .rs-panel-btn:focus {
-  background-color: rgb(1, 53, 101) !important;
-  color: #ffffff;
-  padding: 10px;
+  background-color: rgba(255, 255, 255, 0) !important;
+  color: #3c3c3c;
+  padding: 8px;
   border-radius: 12px 12px 0 0;
 }
 

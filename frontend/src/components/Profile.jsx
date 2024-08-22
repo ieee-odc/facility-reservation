@@ -28,23 +28,6 @@ import { useAuth } from "../context/authContext/AuthProvider";
 import { getAllFacilities } from "../apiService";
 import { Panel } from "rsuite";
 
-/*const dataFacilities = [
-  { name: "ODC", count: 10 },
-  { name: "239", count: 14 },
-  { name: "243", count: 19 },
-  { name: "A7", count: 8 },
-  { name: "Auditorium", count: 23 },
-];*/
-
-/*const dataAttendance = [
-  { name: "Event 1", attendees: 20 },
-  { name: "Event 2", attendees: 22 },
-  { name: "Event 3", attendees: 30 },
-  { name: "Event 4", attendees: 25 },
-  { name: "Event 5", attendees: 28 },
-  { name: "Event 6", attendees: 32 },
-  { name: "Event 7", attendees: 20 },
-];*/
 
 const Profile = ({ currentId, currentUser }) => {
   const [activeTab, setActiveTab] = useState("Overview");
@@ -65,7 +48,6 @@ const Profile = ({ currentId, currentUser }) => {
   const [dataFacilities, setDataFacilities] = useState([]);
   
   const [reservations, setReservations] = useState([]);
-  const [organizers, setOrganizers] = useState({});
   const [facilities, setFacilities] = useState({});
 
   useEffect(() => {
@@ -83,8 +65,8 @@ const Profile = ({ currentId, currentUser }) => {
         );
         console.log("events filtered", filteredEvents);
         const attendance = filteredEvents.map((event) => ({
-          name: event.name, // Assuming the event object has a 'name' property
-          attendees: event.totalEffective, // Assuming the event object has a 'totalEffective' property
+          name: event.name, 
+          attendees: event.totalEffective, 
         }));
 
         console.log("attendance", attendance);
@@ -382,14 +364,14 @@ const Profile = ({ currentId, currentUser }) => {
                             key={event._id}
                             header={
                               <div className="event-header">
-                                <h5>{event.name}</h5>
-                                <h6>
+                                <p className="profile-event-name">{event.name}</p>
+                                <p>
                                   {new Date(
                                     event.startDate
                                   ).toLocaleDateString()}{" "}
                                   -{" "}
                                   {new Date(event.endDate).toLocaleDateString()}
-                                </h6>
+                                </p>
                               </div>
                             }
                             className="event-panel"
