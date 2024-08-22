@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import axios from 'axios';
+import { BiBarcodeReader } from "react-icons/bi";
 
 const UploadCSV = () => {
   const [file, setFile] = useState(null);
@@ -37,11 +38,13 @@ const UploadCSV = () => {
   };
 
   return (
-    <div className="add-user-button">
-      <input className="user-button" type="file" accept=".csv" onChange={handleFileChange} />
-      <button  onClick={handleUpload} disabled={uploading}>
+    <div className="add-user-button upload-csv">
+      
+      <input className='csv-input' type="file" accept=".csv" onChange={handleFileChange} />
+      <button className='user-button '  onClick={handleUpload} disabled={uploading}>
         {uploading ? 'Uploading...' : 'Upload CSV'} 
       </button>
+      <p className="or">OR</p>
     </div>
   );
 };

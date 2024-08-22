@@ -105,8 +105,8 @@ const ManageUsers = () => {
   };
 
   const handleFormSubmit = async (data) => {
-  console.log("data", data);
-  console.log("selectedInitiator", selectedInitiator);
+    console.log("data", data);
+    console.log("selectedInitiator", selectedInitiator);
 
     try {
       if (data && data._id) {
@@ -131,7 +131,10 @@ const ManageUsers = () => {
     <div>
       <Navbar />
       <div className="manage-users-container">
-      <UploadCSV />
+        <div className="upload-csv-container">
+          <UploadCSV />
+          
+        </div>
         <div className="add-user-button">
           <button className="user-button" onClick={handleAdd}>
             Add New Initiator
