@@ -22,6 +22,7 @@ const CalendarPage = ({ currentId }) => {
   const [selectedFacility, setSelectedFacility] = useState("All");
   const [filterStartTime, setFilterStartTime] = useState("");
   const [filterEndTime, setFilterEndTime] = useState("");
+  
 
   const navigate = useNavigate();
 
@@ -46,6 +47,7 @@ const CalendarPage = ({ currentId }) => {
 
     const fetchReservations = async () => {
       try {
+        
         const response = await axios.get(`http://localhost:3000/api/reservations/pure/${currentId}`);
         const reservations = response.data;
 

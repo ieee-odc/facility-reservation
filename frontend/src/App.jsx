@@ -59,7 +59,7 @@ const AppRoutes = () => {
             path="/profile"
             element={<Profile currentId={currentId} currentUser={currentUser}/>}
           />
-          <Route exact path="/navbar" element={<Navbar />} />
+          <Route exact path="/navbar" element={<Navbar currentId={currentId} currentUser={currentUser}/>} />
           <Route
             exact
             path="/reserver"
