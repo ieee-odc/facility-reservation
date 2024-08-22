@@ -25,6 +25,8 @@ import EditableField from "./EditableField";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCamera } from "@fortawesome/free-solid-svg-icons";
 import { useAuth } from "../context/authContext/AuthProvider";
+import { getAllFacilities } from "../apiService";
+import { Panel } from "rsuite";
 
 const dataFacilities = [
   { name: "ODC", count: 10 },
@@ -44,10 +46,7 @@ const dataAttendance = [
   { name: "Event 7", attendees: 20 },
 ];
 
-const Profile = () => {
-  const { currentUser, userLoggedIn, loading } = useAuth();
-console.log(currentUser);
-
+const Profile = ({ currentId, currentUser }) => {
   const [activeTab, setActiveTab] = useState("Overview");
   const [editingField, setEditingField] = useState(null);
   const [fieldValues, setFieldValues] = useState({
@@ -62,11 +61,24 @@ console.log(currentUser);
   const [bannerImage, setBannerImage] = useState(banner);
   const [events, setEvents] = useState([]);
 
+  const [reservations, setReservations] = useState([]);
+  const [organizers, setOrganizers] = useState({});
+  const [facilities, setFacilities] = useState({});
+
   useEffect(() => {
     const fetchEvents = async () => {
       try {
-        const response = await axios.get("http://localhost:3000/api/events");
-        setEvents(response.data);
+        const response = await axios.get(
+          `http://localhost:3000/api/events/reservation/${currentId}`
+        );
+        console.log("events", response.data);
+        const filteredEvents = response.data.filter(
+          (event) =>
+            event.state === "Approved" || event.state === "PartiallyApproved"
+        );
+        console.log("events filtered", filteredEvents);
+
+        setEvents(filteredEvents);
       } catch (error) {
         console.error("Error fetching events:", error);
       }
@@ -74,14 +86,44 @@ console.log(currentUser);
 
     const fetchReservationInitiator = async () => {
       try {
-        const response = await axios.get(`http://localhost:3000/api/reservationInitiators/by-email/${currentUser.email}`);
+        const response = await axios.get(
+          `http://localhost:3000/api/reservationInitiators/by-email/${currentUser.email}`
+        );
         console.log("user", response.data);
-        setFieldValues({...fieldValues, ...response.data})
+        setFieldValues({ ...fieldValues, ...response.data });
       } catch (error) {
         console.log("Error fetching the current user", error);
       }
-    }
+    };
 
+    const fetchFacilities = async () => {
+      try {
+        const response = await getAllFacilities();
+        const facilitiesData = response.data.data.reduce((acc, facility) => {
+          acc[facility._id] = facility.label;
+          return acc;
+        }, {});
+        setFacilities(facilitiesData);
+      } catch (error) {
+        console.error("Error fetching facilities", error);
+      }
+    };
+
+    const fetchReservations = async () => {
+      try {
+        const response = await axios.get(
+          `http://localhost:3000/api/reservations/pure/${currentId}`
+        );
+        console.log("reservations", response.data);
+
+        setReservations(response.data);
+      } catch (error) {
+        console.error("Error fetching reservations", error);
+      }
+    };
+
+    fetchReservations();
+    fetchFacilities();
     fetchReservationInitiator();
     fetchEvents();
   }, []);
@@ -104,6 +146,21 @@ console.log(currentUser);
 
   const handleApprove = () => {
     setEditingField(null);
+  };
+
+  const getStateClass = (state) => {
+    switch (state) {
+      case "Pending":
+        return `state-pending`;
+      case "Approved":
+        return `state-approved`;
+      case "Cancelled":
+        return `state-cancelled`;
+      case "Rejected":
+        return `state-rejected`;
+      default:
+        return "";
+    }
   };
 
   const handleProfileImageChange = (e) => {
@@ -212,7 +269,6 @@ console.log(currentUser);
                       handleFieldChange={handleFieldChange}
                       handleCancel={handleCancel}
                       handleApprove={handleApprove}
-                      
                     />
                     <EditableField
                       iconSrc={iphone}
@@ -259,13 +315,99 @@ console.log(currentUser);
                 <div>
                   <div className="overview">
                     <div className="event-list main-profile-card">
-                      <h3>Event List</h3>
+                      <h3>List of the approved events</h3>
                       <div className="event-items">
-                        <ul>
-                          {events.map((event) => (
-                            <li key={event._id}>{event.name}</li>
-                          ))}
-                        </ul>
+                        {events.map((event) => (
+                          <Panel
+                            key={event._id}
+                            header={
+                              <div className="event-header">
+                                <h5>{event.name}</h5>
+                                <h6>
+                                  {new Date(
+                                    event.startDate
+                                  ).toLocaleDateString()}{" "}
+                                  -{" "}
+                                  {new Date(event.endDate).toLocaleDateString()}
+                                </h6>
+                              </div>
+                            }
+                            className="event-panel"
+                            collapsible
+                            bordered
+                          >
+                            <div>
+                              <div className="event-details">
+                                <p>
+                                  <strong>Description:</strong>{" "}
+                                  {event.description}
+                                </p>
+                                <p>
+                                  <strong>Start Date:</strong>{" "}
+                                  {new Date(
+                                    event.startDate
+                                  ).toLocaleDateString()}
+                                </p>
+                                <p>
+                                  <strong>End Date:</strong>{" "}
+                                  {new Date(event.endDate).toLocaleDateString()}
+                                </p>
+                                <p className={getStateClass(event.state)}>
+                                  <strong>State:</strong> {event.state}
+                                </p>
+                                <p>
+                                  <strong>Total Effective:</strong>{" "}
+                                  {event.totalEffective}
+                                </p>
+                                <p>
+                                  <strong>Reservations:</strong>
+                                </p>
+
+                                <div className="event-reservations">
+                                  {event.reservations.map((reservation) => (
+                                    <div
+                                      className="event-reservation-item"
+                                      key={reservation._id}
+                                    >
+                                      <p>
+                                        <strong>Date:</strong>{" "}
+                                        {new Date(
+                                          reservation.date
+                                        ).toLocaleDateString()}
+                                      </p>
+                                      <p>
+                                        <strong>Time:</strong>{" "}
+                                        {reservation.startTime} -{" "}
+                                        {reservation.endTime}
+                                      </p>
+                                      <p>
+                                        <strong>Motive:</strong>{" "}
+                                        {reservation.motive}
+                                      </p>
+                                      <p>
+                                        <strong>Facility:</strong>{" "}
+                                        {facilities[reservation.facility] ||
+                                          "Unknown Facility"}
+                                      </p>
+                                      <p>
+                                        <strong>Effective:</strong>{" "}
+                                        {reservation.effective}
+                                      </p>
+                                      <p
+                                        className={getStateClass(
+                                          reservation.state
+                                        )}
+                                      >
+                                        <strong>State:</strong>{" "}
+                                        {reservation.state}
+                                      </p>
+                                    </div>
+                                  ))}
+                                </div>
+                              </div>
+                            </div>
+                          </Panel>
+                        ))}
                       </div>
                     </div>
                     <div className="most-requested-facilities main-profile-card">
