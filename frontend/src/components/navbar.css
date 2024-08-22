@@ -279,4 +279,43 @@
   margin-bottom: 30px;
   margin-top: 0px;
   font-size: smaller;
+}.notifications-card {
+  position: absolute;
+  top: 50px;
+  right: 20px;
+  width: 300px;
+  background-color: #fff;
+  border: 1px solid #ddd;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.notifications-card-header {
+  padding: 10px;
+  background-color: #f1f1f1;
+  border-bottom: 1px solid #ddd;
+}
+
+.notifications-card-body {
+  padding: 10px;
+}
+
+.notification-item {
+  padding: 10px;
+  border-bottom: 1px solid #ddd;
+}
+
+.notification-item:last-child {
+  border-bottom: none;
+}
+
+.notification-item h4 {
+  margin: 0;
+  font-size: 16px;
+}
+
+.notification-item p {
+  margin: 5px 0 0;
+  font-size: 14px;
 }

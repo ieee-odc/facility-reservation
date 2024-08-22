@@ -4,7 +4,8 @@ import {
   getNotificationById,
   createNotification,
   updateNotification,
-  deleteNotification
+  deleteNotification, 
+  getNotificationsByRecipientId,
 } from '../controllers/notificationController.js';
 
 const router = express.Router();
@@ -12,6 +13,8 @@ const router = express.Router();
 router.get('/', getAllNotifications);
 
 router.get('/:id', getNotificationById);
+router.get('recipient/:id', getNotificationsByRecipientId);
+
 
 router.post('/', createNotification);
 
