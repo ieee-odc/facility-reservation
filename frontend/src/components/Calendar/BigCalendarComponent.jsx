@@ -42,14 +42,14 @@ const BigCalendarComponent = ({ events, requests, viewType, currentId }) => {
 
   const handleEventClick = (event) => {
     setSelectedEvent(event);
-    setEventModalShow(true);
+    setEventModalShow((prev) => true);
   };
-
+  
   const handleSlotSelect = ({ start, end }) => {
     setSelectedSlot({ start, end });
-    setSlotModalShow(true);
+    setSlotModalShow((prev) => true);
   };
-
+  
   const handleCancel = (eventId) => {
     setAllEvents((prevEvents) =>
       prevEvents.map((event) =>
@@ -135,23 +135,24 @@ const BigCalendarComponent = ({ events, requests, viewType, currentId }) => {
         }}
         className="the-calendar"
       />
-      {selectedEvent && (
-        <EventModal
-          show={eventModalShow}
-          onHide={() => setEventModalShow(false)}
-          eventDetails={selectedEvent}
-          onCancel={handleCancel}
-          viewType={viewType}
-        />
-      )}
-      {selectedSlot && slotModalShow && (
-        <ParentComp
-          isOpen={slotModalShow}
-          onRequestClose={() => setSlotModalShow(false)}
-          slotDetails={selectedSlot}
-          currentId={currentId}
-        />
-      )}
+{selectedEvent && (
+  <EventModal
+    show={eventModalShow}
+    onHide={() => setEventModalShow(false)}
+    eventDetails={selectedEvent}
+    onCancel={handleCancel}
+    viewType={viewType}
+  />
+)}
+{selectedSlot && slotModalShow && (
+  <ParentComp
+    isOpen={slotModalShow}
+    onRequestClose={() => setSlotModalShow(false)}
+    slotDetails={selectedSlot}
+    currentId={currentId}
+  />
+)}
+
     </div>
   );
   

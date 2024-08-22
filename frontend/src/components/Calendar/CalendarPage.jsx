@@ -5,7 +5,7 @@ import CalendarSidebar from "./CalendarSidebar";
 import "./style.css";
 import BigCalendarComponent from "./BigCalendarComponent";
 import axios from "axios";
-import { Dropdown } from "rsuite";
+import { Dropdown, DatePicker } from "rsuite";
 import "rsuite/dist/rsuite.min.css";
 import { useNavigate } from "react-router-dom";
 import ParentComponent from "./parentComp";
@@ -20,15 +20,15 @@ const CalendarPage = ({ currentId }) => {
   const [isEventModalOpen, setIsEventModalOpen] = useState(false);
   const [filterState, setFilterState] = useState("All");
   const [selectedFacility, setSelectedFacility] = useState("All");
+  const [filterStartTime, setFilterStartTime] = useState("");
+  const [filterEndTime, setFilterEndTime] = useState("");
 
   const navigate = useNavigate();
 
   useEffect(() => {
     const fetchFacilities = async () => {
       try {
-        const response = await axios.get(
-          "http://localhost:3000/api/facilities"
-        );
+        const response = await axios.get("http://localhost:3000/api/facilities");
         const facilitiesArray = response.data.data;
         if (Array.isArray(facilitiesArray)) {
           const facilitiesData = facilitiesArray.reduce((acc, facility) => {
@@ -37,10 +37,7 @@ const CalendarPage = ({ currentId }) => {
           }, {});
           setFacilities(facilitiesData);
         } else {
-          console.error(
-            "Unexpected response format for facilities",
-            response.data
-          );
+          console.error("Unexpected response format for facilities", response.data);
         }
       } catch (error) {
         console.error("Error fetching facilities", error);
@@ -49,19 +46,13 @@ const CalendarPage = ({ currentId }) => {
 
     const fetchReservations = async () => {
       try {
-        const response = await axios.get(
-          `http://localhost:3000/api/reservations/pure/${currentId}`
-        );
+        const response = await axios.get(`http://localhost:3000/api/reservations/pure/${currentId}`);
         const reservations = response.data;
 
         if (Array.isArray(reservations)) {
           const formattedRequests = reservations.map((reservation) => {
-            const start = new Date(
-              `${reservation.date.split("T")[0]} ${reservation.startTime}`
-            );
-            const end = new Date(
-              `${reservation.date.split("T")[0]} ${reservation.endTime}`
-            );
+            const start = new Date(`${reservation.date.split("T")[0]} ${reservation.startTime}`);
+            const end = new Date(`${reservation.date.split("T")[0]} ${reservation.endTime}`);
 
             return {
               id: reservation._id,
@@ -89,18 +80,12 @@ const CalendarPage = ({ currentId }) => {
 
     const fetchEvents = async () => {
       try {
-        const response = await axios.get(
-          `http://localhost:3000/api/events/reservation/${currentId}`
-        );
+        const response = await axios.get(`http://localhost:3000/api/events/reservation/${currentId}`);
         const reservations = response.data;
         if (Array.isArray(reservations)) {
           const formattedEvents = reservations.map((reservation) => {
-            const start = new Date(reservation.startDate)
-              .toISOString()
-              .split("T")[0];
-            const end = new Date(reservation.endDate)
-              .toISOString()
-              .split("T")[0];
+            const start = new Date(reservation.startDate);
+            const end = new Date(reservation.endDate);
 
             return {
               id: reservation._id,
@@ -133,9 +118,11 @@ const CalendarPage = ({ currentId }) => {
   const handleDropdownChange = (key) => {
     setViewType(key);
   };
+
   const handleDropdownChangeState = (key) => {
     setFilterState(key);
   };
+
   const handleFacilityFilterChange = (key) => {
     setSelectedFacility(key);
   };
@@ -156,16 +143,35 @@ const CalendarPage = ({ currentId }) => {
     };
   }, []);
 
-  // Apply the filter before passing the data to BigCalendarComponent
   const filteredRequests = requests.filter((request) => {
-    const facilityMatch =
-      selectedFacility === "All" || request.facility === selectedFacility;
-    return facilityMatch && (filterState === "All" || request.state === filterState);
+    const facilityMatch = selectedFacility === "All" || request.facility === selectedFacility;
+    
+    // Extract time from start and end Date objects
+    const startTime = new Date(request.start).getTime();
+    const endTime = new Date(request.end).getTime();
+  
+    const filterStart = filterStartTime ? filterStartTime.getTime() : null;
+    const filterEnd = filterEndTime ? filterEndTime.getTime() : null;
+  
+    const timeMatch = (!filterStart || startTime >= filterStart) &&
+                      (!filterEnd || endTime <= filterEnd);
+  
+    return facilityMatch && timeMatch && (filterState === "All" || request.state === filterState);
   });
-
+  
   const filteredEvents = events.filter((event) => {
-    return filterState === "All" || event.state === filterState;
+    const startTime = new Date(event.start).getTime();
+    const endTime = new Date(event.end).getTime();
+  
+    const filterStart = filterStartTime ? filterStartTime.getTime() : null;
+    const filterEnd = filterEndTime ? filterEndTime.getTime() : null;
+  
+    const timeMatch = (!filterStart || startTime >= filterStart) &&
+                      (!filterEnd || endTime <= filterEnd);
+  
+    return timeMatch && (filterState === "All" || event.state === filterState);
   });
+  
 
   return (
     <div>
@@ -227,11 +233,33 @@ const CalendarPage = ({ currentId }) => {
                   All Facilities
                 </Dropdown.Item>
                 {Object.keys(facilities).map((facilityId) => (
-                  <Dropdown.Item key={facilityId} className="the-item" eventKey={facilities[facilityId]}>
+                  <Dropdown.Item
+                    key={facilityId}
+                    className="the-item"
+                    eventKey={facilities[facilityId]}
+                  >
                     {facilities[facilityId]}
                   </Dropdown.Item>
                 ))}
               </Dropdown>
+              <DatePicker
+                className="the-button"
+                format="HH:mm"
+                placeholder="Start Time"
+                onChange={(value) => setFilterStartTime(value)}
+                ranges={[]}
+                showMeridian={false}
+                style={{ width: 120, marginRight: 10 }}
+              />
+              <DatePicker
+                className="the-button"
+                format="HH:mm"
+                placeholder="End Time"
+                onChange={(value) => setFilterEndTime(value)}
+                ranges={[]}
+                showMeridian={false}
+                style={{ width: 120, marginRight: 10 }}
+              />
               <div className="add-button">
                 <button type="button" onClick={handleNewReservation}>
                   + Add reservation
