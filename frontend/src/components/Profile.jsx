@@ -80,7 +80,6 @@ console.log(currentUser);
       } catch (error) {
         console.log("Error fetching the current user", error);
       }
-
     }
 
     fetchReservationInitiator();

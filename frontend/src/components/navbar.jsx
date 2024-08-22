@@ -55,7 +55,7 @@ const Navbar = () => {
     const fetchUserDetails = async () => {
       if (email) {
         try {
-          const response = await axios.get('/api/reservationInitiators/by-email', { params: { email } });
+          const response = await axios.get(`http://localhost:3000/api/reservationInitiators/by-email/${currentUser.email}`);
           setUserDetails(response.data);
         } catch (error) {
           console.error('Error fetching user details:', error);
