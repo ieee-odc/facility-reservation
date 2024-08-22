@@ -12,6 +12,7 @@
     "error": "Une erreur est survenue",
     "search": "Rechercher",
     "user": "Utilisateur",
+    "add_a_representative": "Ajouter un représentant",
     "manage_users": "Gérer les utilisateurs",
     "manage_facilities": "Gérer les salles",
     "admin": "Administrateur",
@@ -55,7 +56,7 @@
     "email": "Email",
     "phone_number": "Numéro de téléphone",
     "nature": "Nature",
-    "our_representative": "Nos représentant",
+    "our_representative": "Nos représentants",
     "events": "Événements",
     "event": "Événement",
     "calendar": "Calendrier"
