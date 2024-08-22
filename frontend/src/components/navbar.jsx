@@ -52,12 +52,14 @@ const Navbar = () => {
   
   const profileCardRef = useRef(null);
   const settingsCardRef = useRef(null);
+  const notificationsCardRef = useRef(null);
+
 
   useEffect(() => {
     const fetchUserDetails = async () => {
       if (email) {
         try {
-          const response = await axios.get(`http://localhost:3000/api/reservationInitiators/by-email/${currentUser.email}`);
+          const response = await axios.get('/api/reservationInitiators/by-email', { params: { email } });
           setUserDetails(response.data);
         } catch (error) {
           console.error('Error fetching user details:', error);
@@ -90,6 +92,9 @@ const Navbar = () => {
       }
       if (settingsCardRef.current && !settingsCardRef.current.contains(event.target)) {
         setShowSettingsCard(false);
+      }
+      if (notificationsCardRef.current && !notificationsCardRef.current.contains(event.target)) {
+        setShowNotificationsCard(false);
       }
     };
 
@@ -178,10 +183,9 @@ const Navbar = () => {
         {showNotificationsCard && (
     <div className="notifications-card">
       <div className="notifications-card-header">
-      <img src={bellIcon} alt="notifications"className="button-icon" style={{ width: '70px', height: '70px' }} /> 
-      <h3 className="card-title">Notifications</h3>
+        <h3>Notifications</h3>
       </div>
-      <div className="notifications-card-body">
+      <div ref={notificationsCardRef}className="notifications-card-body">
   {Array.isArray(notifications) && notifications.length > 0 ? (
     notifications.map((notification) => (
       <div key={notification._id} className="notification-item">
@@ -200,7 +204,7 @@ const Navbar = () => {
           <div ref={profileCardRef} className="profile-card">
             <div className="profile-card-header">
               <FaRegUserCircle size={50} />
-              <h3>{userDetails.name}</h3>
+              <h3>{email}</h3>
               <p className="email-card-title">{email}</p>
             </div>
             <div className="profile-card-body">
