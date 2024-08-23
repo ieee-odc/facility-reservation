@@ -39,15 +39,15 @@ const AppRoutes = () => {
       <Route path="/manage-users" element={<ManageUsers />} />
       <Route path="/manage-facilities" element={<ManageFacilities/>} />
       <Route path="/manage-requests" element={<AdminView/>} />
+      <Route
+        exact
+        path="/calendar"
+        element={<CalendarPage currentId={currentId}   currentRole={currentRole}/>}
+      />
 
       {currentId ? (
         <>
           <Route exact path="/feedback" element={<GiveFeedback />} />
-          <Route
-            exact
-            path="/calendar"
-            element={<CalendarPage currentId={currentId}   currentRole={currentRole}/>}
-          />
 
           <Route
             exact
