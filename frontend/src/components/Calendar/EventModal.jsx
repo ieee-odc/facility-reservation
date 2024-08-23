@@ -9,22 +9,20 @@ const EventModal = ({ show, onHide, eventDetails, onCancel, viewType }) => {
   const [editFormOpen, setEditFormOpen] = useState(false);
   const [showCancelConfirmation, setShowCancelConfirmation] = useState(false);
   const { userLoggedIn, currentId, currentRole } = useAuth();
-
-  const handleCancel = async () => {
+  // Assuming the notification API endpoint is /api/notifications
+  
+  const sendNotification = async (recipientId, title, message) => {
     try {
-      const route = viewType === "events" ? "events/state" : "reservations";
-      console.log(`Cancelling ${viewType}:`, eventDetails.id);
-      await axios.patch(
-        `http://localhost:3000/api/${route}/${eventDetails.id}`,
-        { state: "Cancelled" }
-      );
-      onCancel(eventDetails.id);
-      onHide();
+      await axios.post("http://localhost:3000/api/notifications", {
+        title,
+        message,
+        recipient: recipientId,
+      });
     } catch (error) {
-      console.error(`Error cancelling ${viewType}:`, error);
+      console.error("Error sending notification:", error);
     }
   };
-
+  
   const handleApprove = async () => {
     try {
       const route = viewType === "events" ? "events/state" : "reservations";
@@ -33,13 +31,21 @@ const EventModal = ({ show, onHide, eventDetails, onCancel, viewType }) => {
         `http://localhost:3000/api/${route}/${eventDetails.id}`,
         { state: "Approved" }
       );
+      
+      // Send notification
+      await sendNotification(
+        eventDetails.entity, 
+        "Reservation Approved", 
+        `Your reservation titled "${eventDetails.title}" has been approved.`
+      );
+      
       onCancel(eventDetails.id);
       onHide();
     } catch (error) {
       console.error(`Error approving ${viewType}:`, error);
     }
   };
-
+  
   const handleReject = async () => {
     try {
       const route = viewType === "events" ? "events/state" : "reservations";
@@ -48,12 +54,44 @@ const EventModal = ({ show, onHide, eventDetails, onCancel, viewType }) => {
         `http://localhost:3000/api/${route}/${eventDetails.id}`,
         { state: "Rejected" }
       );
+  
+      // Send notification
+      await sendNotification(
+        eventDetails.entity, 
+        "Reservation Rejected", 
+        `Your reservation titled "${eventDetails.title}" has been rejected.`
+      );
+  
       onCancel(eventDetails.id);
       onHide();
     } catch (error) {
       console.error(`Error rejecting ${viewType}:`, error);
     }
   };
+  
+  const handleCancel = async () => {
+    try {
+      const route = viewType === "events" ? "events/state" : "reservations";
+      console.log(`Cancelling ${viewType}:`, eventDetails.id);
+      await axios.patch(
+        `http://localhost:3000/api/${route}/${eventDetails.id}`,
+        { state: "Cancelled" }
+      );
+  
+      // Send notification
+      await sendNotification(
+        eventDetails.entity, 
+        "Reservation Cancelled", 
+        `Your reservation titled "${eventDetails.title}" has been cancelled.`
+      );
+  
+      onCancel(eventDetails.id);
+      onHide();
+    } catch (error) {
+      console.error(`Error cancelling ${viewType}:`, error);
+    }
+  };
+  
 
   const handleEditClick = () => {
     console.log(`Editing ${viewType}:`, eventDetails.id);

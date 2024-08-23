@@ -46,7 +46,7 @@ const AppRoutes = () => {
           <Route
             exact
             path="/calendar"
-            element={<CalendarPage currentId={currentId} />}
+            element={<CalendarPage currentId={currentId}   currentRole={currentRole}/>}
           />
 
           <Route

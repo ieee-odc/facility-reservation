@@ -11,7 +11,8 @@ import { useNavigate } from "react-router-dom";
 import ParentComponent from "./parentComp";
 import EventModal1 from "./EventModal1";
 
-const CalendarPage = ({ currentId }) => {
+const CalendarPage = ({ currentId, currentRole }) => {
+  
   const [events, setEvents] = useState([]);
   const [requests, setRequests] = useState([]);
   const [facilities, setFacilities] = useState({});
@@ -22,7 +23,6 @@ const CalendarPage = ({ currentId }) => {
   const [selectedFacility, setSelectedFacility] = useState("All");
   const [filterStartTime, setFilterStartTime] = useState("");
   const [filterEndTime, setFilterEndTime] = useState("");
-  
 
   const navigate = useNavigate();
 
@@ -47,8 +47,14 @@ const CalendarPage = ({ currentId }) => {
 
     const fetchReservations = async () => {
       try {
+        let url;
         
-        const response = await axios.get(`http://localhost:3000/api/reservations/pure/${currentId}`);
+        
+        if (currentRole === "Admin" )
+          url = "http://localhost:3000/api/reservations/pure";
+        else
+          url = `http://localhost:3000/api/reservations/pure/${currentId}`;
+        const response = await axios.get(url);
         const reservations = response.data;
 
         if (Array.isArray(reservations)) {
@@ -82,8 +88,13 @@ const CalendarPage = ({ currentId }) => {
 
     const fetchEvents = async () => {
       try {
-        const response = await axios.get(`http://localhost:3000/api/events/reservation/${currentId}`);
+        const url = currentRole === "Admin" 
+          ? "http://localhost:3000/api/events/reservation"
+          : `http://localhost:3000/api/events/reservation/${currentId}`;
+
+        const response = await axios.get(url);
         const reservations = response.data;
+
         if (Array.isArray(reservations)) {
           const formattedEvents = reservations.map((reservation) => {
             const start = new Date(reservation.startDate);
@@ -115,7 +126,7 @@ const CalendarPage = ({ currentId }) => {
     fetchFacilities();
     fetchEvents();
     fetchReservations();
-  }, [currentId, facilities]);
+  }, [currentId, currentRole, facilities]);
 
   const handleDropdownChange = (key) => {
     setViewType(key);
@@ -145,7 +156,6 @@ const CalendarPage = ({ currentId }) => {
     };
   }, []);
 
-  // Apply the filter before passing the data to BigCalendarComponent
   const filteredRequests = requests.filter((request) => {
     const facilityMatch = selectedFacility === "All" || request.facility === selectedFacility;
     const timeMatch = (!filterStartTime || new Date(request.start) >= filterStartTime) &&
