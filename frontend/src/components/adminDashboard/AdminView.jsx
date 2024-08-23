@@ -8,8 +8,11 @@ import {
   getAllFacilities,
 } from "../../apiService";
 import Navbar from "../navbar";
+import { useTranslation } from "react-i18next";
 
 const AdminView = () => {
+  const { t } = useTranslation();
+
   const [reservations, setReservations] = useState([]);
   const [events, setEvents] = useState([]);
   const [organizers, setOrganizers] = useState({});
@@ -257,7 +260,7 @@ const AdminView = () => {
         <div className="content-container">
           {viewType !== "reservations" && (
             <div className="section events-section">
-              <h2>Events</h2>
+              <h2>{t('events')}</h2>
               {filteredEvents.map((event) => (
                 <Panel
                   key={event._id}
@@ -276,24 +279,24 @@ const AdminView = () => {
                   <div>
                     <div className="event-details">
                       <p>
-                        <strong>Description:</strong> {event.description}
+                        <strong>{t('description')}:</strong> {event.description}
                       </p>
                       <p>
-                        <strong>Start Date:</strong>{" "}
+                        <strong>{t('start_date')}:</strong>{" "}
                         {new Date(event.startDate).toLocaleDateString()}
                       </p>
                       <p>
-                        <strong>End Date:</strong>{" "}
+                        <strong>{t('end_date')}:</strong>{" "}
                         {new Date(event.endDate).toLocaleDateString()}
                       </p>
                       <p className={getStateClass(event.state)}>
-                        <strong>State:</strong> {event.state}
+                      <strong>{t('state')}:</strong> {event.state}
                       </p>
                       <p>
-                        <strong>Total Effective:</strong> {event.totalEffective}
+                        <strong>{t('total_participants')}:</strong> {event.totalEffective}
                       </p>
                       <p>
-                        <strong>Reservations:</strong>
+                        <strong>{t('reservations')}:</strong>
                       </p>
 
                       <div className="event-reservations">
@@ -303,27 +306,27 @@ const AdminView = () => {
                             key={reservation._id}
                           >
                             <p>
-                              <strong>Date:</strong>{" "}
+                            <strong>{t('date')}:</strong>{" "}
                               {new Date(reservation.date).toLocaleDateString()}
                             </p>
                             <p>
-                              <strong>Time:</strong> {reservation.startTime} -{" "}
+                            <strong>{t('time')}:</strong> {reservation.startTime} -{" "}
                               {reservation.endTime}
                             </p>
                             <p>
-                              <strong>Motive:</strong> {reservation.motive}
+                              <strong>{t('motive')}:</strong> {reservation.motive}
                             </p>
                             <p>
-                              <strong>Facility:</strong>{" "}
+                              <strong>{t('facility')}:</strong>{" "}
                               {facilities[reservation.facility] ||
                                 "Unknown Facility"}
                             </p>
                             <p>
-                              <strong>Effective:</strong>{" "}
+                              <strong>{t('effective')}:</strong>{" "}
                               {reservation.effective}
                             </p>
                             <p className={getStateClass(reservation.state)}>
-                              <strong>State:</strong> {reservation.state}
+                              <strong>{t('state')}:</strong> {reservation.state}
                             </p>
                           </div>
                         ))}
@@ -336,32 +339,32 @@ const AdminView = () => {
           )}
           {viewType !== "events" && (
             <div className="section reservations-section">
-              <h2>Reservations</h2>
+              <h2>{t('reservations')}</h2>
               {filteredReservations.map((reservation) => (
                 <div key={reservation._id} className="reservation-item">
                   <h3>
                     {organizers[reservation.entity] || "Unknown Organizer"}
                   </h3>
                   <p>
-                    <strong>Motive:</strong> {reservation.motive}
+                    <strong>{t('motive')}:</strong> {reservation.motive}
                   </p>
                   <p>
-                    <strong>Date:</strong>{" "}
+                    <strong>{t('date')}:</strong>{" "}
                     {new Date(reservation.date).toLocaleDateString()}
                   </p>
                   <p>
-                    <strong>Time:</strong> {reservation.startTime} -{" "}
+                    <strong>{t('time')}:</strong> {reservation.startTime} -{" "}
                     {reservation.endTime}
                   </p>
                   <p>
-                    <strong>Facility:</strong>{" "}
+                    <strong>{t('facility')}:</strong>{" "}
                     {facilities[reservation.facility] || "Unknown Facility"}
                   </p>
                   <p>
-                    <strong>Effective:</strong> {reservation.effective}
+                    <strong>{t('effective')}:</strong> {reservation.effective}
                   </p>
                   <p className={getStateClass(reservation.state)}>
-                    <strong>State:</strong> {reservation.state}
+                    <strong>{t('state')}:</strong> {reservation.state}
                   </p>
                 </div>
               ))}

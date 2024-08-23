@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { useTranslation } from 'react-i18next';
 import axios from "axios";
 import {
   BarChart,
@@ -28,25 +29,9 @@ import { useAuth } from "../context/authContext/AuthProvider";
 import { getAllFacilities } from "../apiService";
 import { Panel } from "rsuite";
 
-/*const dataFacilities = [
-  { name: "ODC", count: 10 },
-  { name: "239", count: 14 },
-  { name: "243", count: 19 },
-  { name: "A7", count: 8 },
-  { name: "Auditorium", count: 23 },
-];*/
-
-/*const dataAttendance = [
-  { name: "Event 1", attendees: 20 },
-  { name: "Event 2", attendees: 22 },
-  { name: "Event 3", attendees: 30 },
-  { name: "Event 4", attendees: 25 },
-  { name: "Event 5", attendees: 28 },
-  { name: "Event 6", attendees: 32 },
-  { name: "Event 7", attendees: 20 },
-];*/
 
 const Profile = ({ currentId, currentUser }) => {
+  const { t } = useTranslation();
   const [activeTab, setActiveTab] = useState("Overview");
   const [editingField, setEditingField] = useState(null);
   const [fieldValues, setFieldValues] = useState({
@@ -65,7 +50,6 @@ const Profile = ({ currentId, currentUser }) => {
   const [dataFacilities, setDataFacilities] = useState([]);
   
   const [reservations, setReservations] = useState([]);
-  const [organizers, setOrganizers] = useState({});
   const [facilities, setFacilities] = useState({});
 
   useEffect(() => {
@@ -83,8 +67,8 @@ const Profile = ({ currentId, currentUser }) => {
         );
         console.log("events filtered", filteredEvents);
         const attendance = filteredEvents.map((event) => ({
-          name: event.name, // Assuming the event object has a 'name' property
-          attendees: event.totalEffective, // Assuming the event object has a 'totalEffective' property
+          name: event.name, 
+          attendees: event.totalEffective, 
         }));
 
         console.log("attendance", attendance);
@@ -181,8 +165,7 @@ const Profile = ({ currentId, currentUser }) => {
         })
       );
 
-      console.log("facilitycountarray", facilityCountArray);
-      
+      console.log("facilitycountarray", facilityCountArray);      
       setDataFacilities(facilityCountArray)
       return facilityCountArray;
     };
@@ -280,11 +263,11 @@ const Profile = ({ currentId, currentUser }) => {
             <div className="sidebar">
               <div className="sidebar-content main-profile-card">
                 <div className="about">
-                  <h3>About</h3>
+                  <h3>{t('about')}</h3>
                   <div className="about-content">
                     <EditableField
                       iconSrc={mallette}
-                      placeholder="Nature"
+                      placeholder={t('nature')}
                       name="nature"
                       value={fieldValues.nature}
                       editingField={editingField}
@@ -295,7 +278,7 @@ const Profile = ({ currentId, currentUser }) => {
                     />
                     <EditableField
                       iconSrc={organisation}
-                      placeholder="Service"
+                      placeholder={t('service')}
                       name="service"
                       value={fieldValues.service}
                       editingField={editingField}
@@ -306,7 +289,7 @@ const Profile = ({ currentId, currentUser }) => {
                     />
                     <EditableField
                       iconSrc={batiment}
-                      placeholder="Organisation"
+                      placeholder={t('organisation')}
                       name="organisation"
                       value={fieldValues.organisation}
                       editingField={editingField}
@@ -318,7 +301,7 @@ const Profile = ({ currentId, currentUser }) => {
                   </div>
                 </div>
                 <div className="contact">
-                  <h3>Contact</h3>
+                  <h3>{t('contact')}</h3>
                   <div className="contact-content">
                     <EditableField
                       iconSrc={email}
@@ -333,7 +316,7 @@ const Profile = ({ currentId, currentUser }) => {
                     />
                     <EditableField
                       iconSrc={iphone}
-                      placeholder="123-456-7890"
+                      placeholder={t('phone_number')}
                       name="phoneNumber"
                       value={fieldValues.phoneNumber}
                       editingField={editingField}
@@ -344,7 +327,7 @@ const Profile = ({ currentId, currentUser }) => {
                     />
                     <EditableField
                       iconSrc={utilisateur}
-                      placeholder="Manager Name"
+                      placeholder={t('manager_name')}
                       name="manager"
                       value={fieldValues.manager}
                       editingField={editingField}
@@ -363,34 +346,34 @@ const Profile = ({ currentId, currentUser }) => {
                   className={`tab ${activeTab === "Overview" ? "active" : ""}`}
                   onClick={() => setActiveTab("Overview")}
                 >
-                  Overview
+                  {t('overview')}
                 </button>
                 <button
                   className={`tab ${activeTab === "Vis-à-vis" ? "active" : ""}`}
                   onClick={() => setActiveTab("Vis-à-vis")}
                 >
-                  Vis-à-vis
+                  {t('Vis-à-vis')}
                 </button>
               </div>
               {activeTab === "Overview" && (
                 <div>
                   <div className="overview">
                     <div className="event-list main-profile-card">
-                      <h3>List of the approved events</h3>
+                      <h3>{t('list_approved_events')}</h3>
                       <div className="event-items">
                         {events.map((event) => (
                           <Panel
                             key={event._id}
                             header={
                               <div className="event-header">
-                                <h5>{event.name}</h5>
-                                <h6>
+                                <p className="profile-event-name">{event.name}</p>
+                                <p>
                                   {new Date(
                                     event.startDate
                                   ).toLocaleDateString()}{" "}
                                   -{" "}
                                   {new Date(event.endDate).toLocaleDateString()}
-                                </h6>
+                                </p>
                               </div>
                             }
                             className="event-panel"
@@ -400,28 +383,28 @@ const Profile = ({ currentId, currentUser }) => {
                             <div>
                               <div className="event-details">
                                 <p>
-                                  <strong>Description:</strong>{" "}
+                                  <strong>{t('description')}:</strong>{" "}
                                   {event.description}
                                 </p>
                                 <p>
-                                  <strong>Start Date:</strong>{" "}
+                                  <strong>{t('start_date')}:</strong>{" "}
                                   {new Date(
                                     event.startDate
                                   ).toLocaleDateString()}
                                 </p>
                                 <p>
-                                  <strong>End Date:</strong>{" "}
+                                  <strong>{t('end_date')}:</strong>{" "}
                                   {new Date(event.endDate).toLocaleDateString()}
                                 </p>
                                 <p className={getStateClass(event.state)}>
-                                  <strong>State:</strong> {event.state}
+                                  <strong>{t('state')}:</strong> {event.state}
                                 </p>
                                 <p>
-                                  <strong>Total Effective:</strong>{" "}
+                                  <strong>{t('total_participants')}:</strong>{" "}
                                   {event.totalEffective}
                                 </p>
                                 <p>
-                                  <strong>Reservations:</strong>
+                                  <strong>{t('reservations')}:</strong>
                                 </p>
 
                                 <div className="event-reservations">
@@ -431,27 +414,27 @@ const Profile = ({ currentId, currentUser }) => {
                                       key={reservation._id}
                                     >
                                       <p>
-                                        <strong>Date:</strong>{" "}
+                                        <strong>{t('date')}:</strong>{" "}
                                         {new Date(
                                           reservation.date
                                         ).toLocaleDateString()}
                                       </p>
                                       <p>
-                                        <strong>Time:</strong>{" "}
+                                        <strong>{t('time')}:</strong>{" "}
                                         {reservation.startTime} -{" "}
                                         {reservation.endTime}
                                       </p>
                                       <p>
-                                        <strong>Motive:</strong>{" "}
+                                        <strong>{t('motive')}:</strong>{" "}
                                         {reservation.motive}
                                       </p>
                                       <p>
-                                        <strong>Facility:</strong>{" "}
+                                        <strong>{t('facility')}:</strong>{" "}
                                         {facilities[reservation.facility] ||
                                           "Unknown Facility"}
                                       </p>
                                       <p>
-                                        <strong>Effective:</strong>{" "}
+                                        <strong>{t('effective')}:</strong>{" "}
                                         {reservation.effective}
                                       </p>
                                       <p
@@ -459,7 +442,7 @@ const Profile = ({ currentId, currentUser }) => {
                                           reservation.state
                                         )}
                                       >
-                                        <strong>State:</strong>{" "}
+                                        <strong>{t('state')}:</strong>{" "}
                                         {reservation.state}
                                       </p>
                                     </div>
@@ -472,7 +455,7 @@ const Profile = ({ currentId, currentUser }) => {
                       </div>
                     </div>
                     <div className="most-requested-facilities main-profile-card">
-                      <h3>Most Requested Facilities</h3>
+                      <h3>{t('most_requested_facilities')}</h3>
                       <div className="chart">
                         <ResponsiveContainer width="95%" height={200}>
                           <BarChart data={dataFacilities}>
@@ -499,7 +482,7 @@ const Profile = ({ currentId, currentUser }) => {
                     </div>
                   </div>
                   <div className="attendance-per-event main-profile-card">
-                    <h3>Attendance per event</h3>
+                    <h3>{t('attendance_per_event')}</h3>
                     <div className="chart">
                       <ResponsiveContainer width="95%" height={200}>
                         <LineChart className="line-chart" data={dataAttendance}>
