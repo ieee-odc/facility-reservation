@@ -11,31 +11,39 @@ body {
   overflow: auto;
   max-height: calc(100vh - 100px);
 }
-
+.notifications-card::-webkit-scrollbar{
+  height: 0;
+  width: 0px;
+  background: #ed0e0e00;
+}
 body::-webkit-scrollbar {
   height: 0;
   width: 10px;
-  background: #ffffffc4;
+  background: #ed0e0e00;
 }
 
+.notifications-card::-webkit-scrollbar-track ,
 body::-webkit-scrollbar-track {
   border-radius: 10px;
   background: #2e2ec400;
   position: relative;
   margin-top: 70px;
 }
-
+.notifications-card::-webkit-scrollbar-thumb,
 body::-webkit-scrollbar-thumb {
   background: #dbdada;
   border-radius: 10px;
   cursor: grab;
   max-height: 20px;
 }
+.notifications-card::-webkit-scrollbar-thumb:active ,
+
 body::-webkit-scrollbar-thumb:active {
   background: #dbdada;
   border-radius: 10px;
   cursor: grabbing;
 }
+.notifications-card::-webkit-scrollbar-thumb:hover ,
 
 body::-webkit-scrollbar-thumb:hover {
   background: #bcbcbc;

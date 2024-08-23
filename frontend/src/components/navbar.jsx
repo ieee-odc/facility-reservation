@@ -325,25 +325,29 @@ const Navbar = () => {
           style={{ width: "26px", height: "26px" }}
           onClick={toggleProfileCard}
         />
-        {showNotificationsCard && (
-          <div className="notifications-card">
-            <div className="notifications-card-header">
-              <h3>Notifications</h3>
+{showNotificationsCard && (
+  <div className="notifications-card">
+    <div className="notifications-card-header">
+      <h3>Notifications</h3>
+    </div>
+    <div ref={notificationsCardRef} className="notifications-card-body">
+      {Array.isArray(notifications) && notifications.length > 0 ? (
+        notifications
+          .slice() 
+          .sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp)) 
+          .map((notification) => (
+            <div key={notification._id} className="notification-item">
+              <h4>{notification.title}</h4>
+              <p>{notification.message}</p>
             </div>
-            <div ref={notificationsCardRef} className="notifications-card-body">
-              {Array.isArray(notifications) && notifications.length > 0 ? (
-                notifications.map((notification) => (
-                  <div key={notification._id} className="notification-item">
-                    <h4>{notification.title}</h4>
-                    <p>{notification.message}</p>
-                  </div>
-                ))
-              ) : (
-                <p>No notifications</p>
-              )}
-            </div>
-          </div>
-        )}
+          ))
+      ) : (
+        <p>No notifications</p>
+      )}
+    </div>
+  </div>
+)}
+
         {showProfileCard && (
           <div ref={profileCardRef} className="profile-card">
             <div className="profile-card-header">
