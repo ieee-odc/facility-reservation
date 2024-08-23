@@ -110,14 +110,14 @@ const ReservationDetails = ({
       console.log("Data sent to MongoDB:", response.data);
       showNotification("Reservation successfully submitted!", "success");
 
-      // Send notification to admin
+
       await sendNotification(
         adminId, 
         "New Reservation Created", 
         `A new reservation has been created for the facility "${facilityLabel}" on ${date}.`
       );
   
-      // Close the modal after successful submission
+ 
       onQuit(); 
   
       navigate("/calendar");
