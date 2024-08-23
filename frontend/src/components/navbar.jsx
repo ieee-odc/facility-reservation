@@ -31,6 +31,7 @@ import ChangePasswordModal from "./ChangePasswordModal";
 import webLogo from "./../assets/logo/Group3.svg";
 import { useAuth } from "../context/authContext/AuthProvider";
 import { useTranslation } from "react-i18next";
+import { Badge } from "rsuite";
 window.addEventListener("scroll", function () {
   var navbar = document.querySelector(".navbar-container");
   if (window.scrollY > 0) {
@@ -313,12 +314,13 @@ const Navbar = () => {
           style={{ width: "26px", height: "26px" }}
           onClick={toggleSettingsCard}
         />
+        <Badge>
         <img
           src={bellIcon}
           alt="notifications"
           style={{ width: "26px", height: "26px" }}
           onClick={toggleNotificationsCard}
-        />
+        /></Badge>
         <img
           src={profileIcon}
           alt="User"

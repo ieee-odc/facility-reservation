@@ -100,7 +100,7 @@
   justify-content: flex-end;
 }
 
-.user-button {
+.user-button , .csv-input{
   margin-top: 1em;
   background-color: rgb(0, 70, 135);
   border: none;
@@ -276,11 +276,11 @@
   border: 2px solid #007bff00;
   border-radius: 5px;
   cursor: pointer;
-  width: 100%; /* Make the input take up full width */
-  max-width: 400px; /* Limit the maximum width to 400px */
-  box-sizing: border-box; /* Ensure padding doesn't increase width */
+  width: 100%; 
+  max-width: 400px; 
+  box-sizing: border-box;
   overflow: hidden;
-  text-overflow: ellipsis; /* Truncate long file names */
+  text-overflow: ellipsis;
   display: flex !important;
   flex-direction: row !important;
   justify-content: flex-start;
