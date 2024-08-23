@@ -20,7 +20,8 @@
   position: relative;
   margin: 0 auto;
   margin-top: 0%;
-  bottom: 0%;
+  /*top: 55px !important;
+  bottom: -10px !important;*/
 
 }
 
@@ -34,21 +35,22 @@
 
 .calendar-page__sidebar {
   height: 100%;
-  min-width: 300px;
+  max-height: 100%;
+  width: 100%;
+  min-width: 20vw;
   overflow-y: auto; 
-  bottom: 0;
   flex: 1
 }
 
+
 .calendar-page_calendar {
   height: 100%;
+  max-height: 100%;
   width: 100%;
   overflow-y: auto;
   /*max-height: calc(100vh - 2vh);*/
-  max-height: 100%;
-  flex: 8;
+  flex: 7;
   background-color: #fff;
-  max-height: 100%;
 }
 
 .main-calendar {
@@ -63,26 +65,31 @@
   height: 100%;
 }
 
+.calendar-page__sidebar::-webkit-scrollbar, 
 .calendar-page_calendar::-webkit-scrollbar {
   width: 12px;
 }
 
+.calendar-page__sidebar::-webkit-scrollbar-track,
 .calendar-page_calendar::-webkit-scrollbar-track {
   border-radius: 10px;
   background: #a2a2a600;
 }
 
+.calendar-page__sidebar::-webkit-scrollbar-thumb,
 .calendar-page_calendar::-webkit-scrollbar-thumb {
   background: #dbdada;
   border-radius: 10px;
   cursor: grab;
 }
+.calendar-page__sidebar::-webkit-scrollbar-thumb:active,
 .calendar-page_calendar::-webkit-scrollbar-thumb:active {
   background: #dbdada;
   border-radius: 10px;
   cursor: grabbing;
 }
 
+.calendar-page__sidebar::-webkit-scrollbar-thumb:hover,
 .calendar-page_calendar::-webkit-scrollbar-thumb:hover {
   background: #bcbcbc;
   transition: cursor 4s ease-in-out;
@@ -420,3 +427,14 @@
 
 
 
+/*.calendar-page__sidebar {
+  height: 100%;
+  max-height: 100%;
+  width: 100%;
+  min-width: 20vw;
+  overflow-y: auto; 
+  flex: 1
+}
+  
+responsive
+*/
