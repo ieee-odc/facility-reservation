@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import Modal from 'react-modal';
 import './styles.css';
+import {Divider} from 'rsuite';
 
 // Ensure that the app element is set for accessibility
 Modal.setAppElement('#root');
@@ -54,11 +55,7 @@ const UploadCSV = ({ isOpen, onRequestClose }) => {
         <button className="user-button" onClick={() => alert('Add New Initiator')}>
           Add manually
         </button> 
-        <div className="or-separator">
-        
-                <span>OR</span>
-                
-        </div>
+   <Divider>OR</Divider>
         <input className='csv-input' type="file" accept=".csv" onChange={handleFileChange} />
         <button className='user-button' onClick={handleUpload} disabled={uploading}>
           {uploading ? 'Uploading...' : 'Submit CSV file'}
