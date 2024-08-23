@@ -348,7 +348,6 @@ const Navbar = () => {
           <div ref={profileCardRef} className="profile-card">
             <div className="profile-card-header">
               <FaRegUserCircle size={50} />
-              <h3>{email}</h3>
               <p className="email-card-title">{email}</p>
             </div>
             <div className="profile-card-body">

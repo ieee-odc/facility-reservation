@@ -9,7 +9,6 @@ const EventModal = ({ show, onHide, eventDetails, onCancel, viewType }) => {
   const [editFormOpen, setEditFormOpen] = useState(false);
   const [showCancelConfirmation, setShowCancelConfirmation] = useState(false);
   const { userLoggedIn, currentId, currentRole } = useAuth();
-  // Assuming the notification API endpoint is /api/notifications
   
   const sendNotification = async (recipientId, title, message) => {
     try {
@@ -32,7 +31,7 @@ const EventModal = ({ show, onHide, eventDetails, onCancel, viewType }) => {
         { state: "Approved" }
       );
       
-      // Send notification
+    
       await sendNotification(
         eventDetails.entity, 
         "Reservation Approved", 

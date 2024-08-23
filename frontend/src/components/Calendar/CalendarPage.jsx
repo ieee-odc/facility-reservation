@@ -69,6 +69,7 @@ const CalendarPage = ({ currentId, currentRole }) => {
               participants: reservation.effective,
               start,
               end,
+              entity: reservation.entity,
               allDay: false,
               state: reservation.state,
               facility: facilities[reservation.facility] || "Unknown Facility",
@@ -88,9 +89,13 @@ const CalendarPage = ({ currentId, currentRole }) => {
 
     const fetchEvents = async () => {
       try {
-        const url = currentRole === "Admin" 
-          ? "http://localhost:3000/api/events/reservation"
-          : `http://localhost:3000/api/events/reservation/${currentId}`;
+        let url;
+        
+        
+        if (currentRole === "Admin" )
+          url = "http://localhost:3000/api/events/reservations";
+        else
+          url = `http://localhost:3000/api/events/reservations/${currentId}`;
 
         const response = await axios.get(url);
         const reservations = response.data;
@@ -108,6 +113,8 @@ const CalendarPage = ({ currentId, currentRole }) => {
               end,
               totalEffective: reservation.totalEffective,
               organizer: reservation.organizer,
+              entity: reservation.organizer,
+
               state: reservation.state,
               facility: facilities[reservation.facility] || "Unknown Facility",
               motive: reservation.name,

@@ -21,6 +21,8 @@ const ReservationDetails = ({
   const navigate = useNavigate();
   const showNotification = useNotification();
 
+  const adminId = "66a761ae4cd22c469d649d8f"; 
+
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -44,6 +46,18 @@ const ReservationDetails = ({
 
     fetchData();
   }, [showNotification]);
+
+  const sendNotification = async (recipientId, title, message) => {
+    try {
+      await axios.post("http://localhost:3000/api/notifications", {
+        title,
+        message,
+        recipient: recipientId,
+      });
+    } catch (error) {
+      console.error("Error sending notification:", error);
+    }
+  };
 
   const handleCancel = async () => {
     onQuit();
@@ -95,6 +109,13 @@ const ReservationDetails = ({
   
       console.log("Data sent to MongoDB:", response.data);
       showNotification("Reservation successfully submitted!", "success");
+
+      // Send notification to admin
+      await sendNotification(
+        adminId, 
+        "New Reservation Created", 
+        `A new reservation has been created for the facility "${facilityLabel}" on ${date}.`
+      );
   
       // Close the modal after successful submission
       onQuit(); 
