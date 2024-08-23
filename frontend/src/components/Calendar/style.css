@@ -68,6 +68,8 @@
 .calendar-page__sidebar::-webkit-scrollbar, 
 .calendar-page_calendar::-webkit-scrollbar {
   width: 12px;
+  background: #a2a2a600;
+
 }
 
 .calendar-page__sidebar::-webkit-scrollbar-track,
@@ -138,14 +140,14 @@
 }
 
 .rbc-toolbar .rbc-btn-group .rbc-active {
-  background-color: #3498FF !important; /* Active button background color */
-  color: #fff !important; /* Active button text color */
-  border-color: #3498FF !important; /* Active button border color */
+  background-color: #3498FF !important; 
+  color: #fff !important; 
+  border-color: #3498FF !important; 
 }
 
 .rbc-btn-group > button:focus,
 .rbc-btn-group > button:active {
-  color: #fff !important; /* Active button text color */
+  color: #fff !important; 
   background-color: #3498FF !important;
   border-radius: 50px !important;
 }
@@ -205,22 +207,22 @@
   padding: 5px 5px;         
   max-width: 80%;           
   margin: 0 auto;     
-  border-radius: 3px;       /* Keep rounded corners */
-  text-align: center;       /* Center text within the event */
-  overflow: hidden;         /* Prevent overflow of content */
-  white-space: nowrap;      /* Prevent text wrapping */
-  text-overflow: ellipsis;  /* Add ellipsis for overflow text */
-  margin-left: 20px;      /* Center the event within the cell */
+  border-radius: 3px;       
+  text-align: center;       
+  overflow: hidden;         
+  white-space: nowrap;      
+  text-overflow: ellipsis;  
+  margin-left: 20px;      
 }
 
 .rbc-event-content {
-  white-space: nowrap; /* Prevent text wrapping */
+  white-space: nowrap; 
   overflow: hidden;
-  text-overflow: ellipsis; /* Add ellipsis for overflow text */
+  text-overflow: ellipsis; 
 }
 
 .rbc-day-slot .rbc-time-slot {
-  min-height: 20px;  /* Set a minimum height for each time slot */
+  min-height: 20px;  
 }
 
 .rbc-row-segment {
@@ -350,8 +352,8 @@
   left: 0;
   right: 0;
   bottom: 0;
-  background-color: rgba(0, 0, 0, 0.75); /* Dark background for overlay */
-  z-index: 1000; /* Ensure it's above other elements */
+  background-color: rgba(0, 0, 0, 0.75); 
+  z-index: 1000; 
 }
 
 .custom-modal-content {
@@ -364,7 +366,7 @@
   border-radius: 8px;
   max-width: 500px;
   width: 90%;
-  z-index: 1001; /* Ensure it's above the overlay */
+  z-index: 1001; 
 }
 
 
@@ -381,19 +383,19 @@
 }
 
 .custom-dropdown .rs-dropdown-toggle {
-  padding: 10px 16px; /* Adjust padding for a more compact look */
-  font-size: 0.875rem; /* Match RSuite font size */
-  background-color: #fff; /* Background color for dropdown toggle */
-  border: 1px solid #dcdcdc; /* Border to match RSuite filter look */
-  border-radius: 4px; /* Rounded corners for dropdown toggle */
-  color: #333; /* Text color for dropdown toggle */
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
-  cursor: pointer; /* Pointer cursor for better UX */
-  transition: background-color 0.2s ease, box-shadow 0.2s ease; /* Smooth transition for hover effects */
+  padding: 10px 16px; 
+  font-size: 0.875rem;
+  background-color: #fff; 
+  border: 1px solid #dcdcdc; 
+  border-radius: 4px; 
+  color: #333; 
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); 
+  cursor: pointer; 
+  transition: background-color 0.2s ease, box-shadow 0.2s ease; 
 }
 
 .custom-dropdown .rs-dropdown-toggle:hover {
-  background-color: #f5f5f5; /* Light hover background color */
+  background-color: #f5f5f5; 
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15); /* Enhanced shadow on hover */
 }
 
