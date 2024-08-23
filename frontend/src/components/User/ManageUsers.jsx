@@ -8,7 +8,7 @@ import {
 import InitiatorCard from "./InitiatorCard";
 import InitiatorForm from "./InitiatorForm";
 import InitiatorModal from "./InitiatorModal";
-import UploadCSV from "./UploadCSV";
+import UploadCSV from "./UploadCSV";  // Import UploadCSV component
 import { FaTimes } from "react-icons/fa";
 import "./styles.css";
 import Navbar from "../navbar";
@@ -18,6 +18,7 @@ const ManageUsers = () => {
   const [selectedInitiator, setSelectedInitiator] = useState(null);
   const [modalIsOpen, setModalIsOpen] = useState(false);
   const [confirmationModalOpen, setConfirmationModalOpen] = useState(false);
+  const [uploadCSVModalOpen, setUploadCSVModalOpen] = useState(false); // State for UploadCSV modal
   const [modalContent, setModalContent] = useState(null);
 
   useEffect(() => {
@@ -53,9 +54,12 @@ const ManageUsers = () => {
     setConfirmationModalOpen(false);
   };
 
-  const handleAdd = () => {
-    setSelectedInitiator(null);
-    openModal(<InitiatorForm onSubmit={handleFormSubmit} />);
+  const openUploadCSVModal = () => {
+    setUploadCSVModalOpen(true);
+  };
+
+  const closeUploadCSVModal = () => {
+    setUploadCSVModalOpen(false);
   };
 
   const handleEdit = (initiator) => {
@@ -131,12 +135,8 @@ const ManageUsers = () => {
     <div>
       <Navbar />
       <div className="manage-users-container">
-        <div className="upload-csv-container">
-          <UploadCSV />
-          
-        </div>
         <div className="add-user-button">
-          <button className="user-button" onClick={handleAdd}>
+          <button className="user-button" onClick={openUploadCSVModal}>
             Add New Initiator
           </button>
         </div>
@@ -183,6 +183,10 @@ const ManageUsers = () => {
             </button>
           </div>
         </InitiatorModal>
+        <UploadCSV
+          isOpen={uploadCSVModalOpen}
+          onRequestClose={closeUploadCSVModal}
+        />
       </div>
     </div>
   );
