@@ -18,12 +18,13 @@
 
 .calendar-sidebar::-webkit-scrollbar {
   width: 12px;
+  background: #a2a2a6;
 }
 
 /* Track */
 .calendar-sidebar::-webkit-scrollbar-track {
   border-radius: 10px;
-  background: #a2a2a6;
+  background: #a2a2a600;
 }
 
 /* Handle */
