@@ -50,18 +50,16 @@ const UploadCSV = ({ isOpen, onRequestClose }) => {
     >
       <button onClick={onRequestClose} className="modal-close-button">x</button>
       <div className="upload-csv-content">
-        <h3 className="modal-title">Add New Initiator</h3>
+        <h3 className="modal-title">Add New Initiator</h3><br />
         <button className="user-button" onClick={() => alert('Add New Initiator')}>
           Add manually
-        </button>
-        <div className="or">
-                <hr />
+        </button> 
+        <div className="or-separator">
+        
                 <span>OR</span>
-                <hr />
-              </div>
-              <div>
-              
-        <input className='csv-input' type="file" accept=".csv" onChange={handleFileChange} /></div>
+                
+        </div>
+        <input className='csv-input' type="file" accept=".csv" onChange={handleFileChange} />
         <button className='user-button' onClick={handleUpload} disabled={uploading}>
           {uploading ? 'Uploading...' : 'Submit CSV file'}
         </button>
