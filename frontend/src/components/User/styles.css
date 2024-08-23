@@ -311,3 +311,122 @@
 .csv-input::-ms-browse {
   visibility: hidden;
 }
+
+/* Overlay style to cover the entire screen with a semi-transparent background */
+.upload-csv-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent background */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Modal container style */
+.upload-csv-modal {
+  background: #fff;
+  padding: 20px;
+  border-radius: 8px;
+  width: 500px; /* Adjust width as needed */
+  height:300px;
+  max-width: 100%;
+  position: relative; /* Position relative to place the close button correctly */
+}
+
+/* Close button style */
+.modal-close-button {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background: none;
+  border: none;
+  font-size: 20px;
+  cursor: pointer;
+  color: #333; /* Color for the close button */
+}
+
+.modal-close-button:hover {
+  color: #ff0000; /* Change color on hover */
+}
+
+/* Styles for content within the modal */
+.upload-csv-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.csv-input {
+  margin-bottom: 20px;
+}
+
+.user-button {
+  margin-top: 10px;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 4px;
+  background-color: #007bff; /* Primary button color */
+  color: #fff;
+  cursor: pointer;
+}
+
+.user-button:disabled {
+  background-color: #ccc; /* Color when button is disabled */
+}
+
+.or {
+  margin: 20px 0;
+  font-size: 16px;
+  color: #666;
+}
+
+.add-user-button {
+  margin-top: 20px;
+}
+
+.user-button.user-delete-button {
+  background-color: #dc3545; /* Color for delete button */
+}
+
+.user-button.user-cancel-delete-button {
+  background-color: #6c757d; /* Color for cancel button */
+}
+.or {
+  display: flex;
+  align-items: center;
+  margin: 10px 0;
+  
+}
+
+
+.or span {
+  font-size: 16px;
+  font-weight: 400;
+  color: #666;
+}
+.upload-csv-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.or-separator {
+  margin: 10px 0; /* Adjust spacing as needed */
+  font-size: 16px;
+  color: #555; /* Adjust color as needed */
+  text-align: center;
+}
+.or-separator hr{
+  flex: 1;
+  margin: 0 10px;
+  border: none;
+  border-top: #666;
+
+}
+
+.csv-input {
+  margin: 10px 0; /* Adjust spacing as needed */
+}

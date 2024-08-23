@@ -1,8 +1,12 @@
 import React, { useState } from 'react';
 import axios from 'axios';
-import { BiBarcodeReader } from "react-icons/bi";
+import Modal from 'react-modal';
+import './styles.css';
 
-const UploadCSV = () => {
+// Ensure that the app element is set for accessibility
+Modal.setAppElement('#root');
+
+const UploadCSV = ({ isOpen, onRequestClose }) => {
   const [file, setFile] = useState(null);
   const [uploading, setUploading] = useState(false);
 
@@ -28,7 +32,6 @@ const UploadCSV = () => {
       });
       alert(response.data.message);
       console.log(response);
-      
     } catch (error) {
       console.error('Error uploading file:', error);
       alert('Error uploading file');
@@ -38,14 +41,30 @@ const UploadCSV = () => {
   };
 
   return (
-    <div className="add-user-button upload-csv">
-      
-      <input className='csv-input' type="file" accept=".csv" onChange={handleFileChange} />
-      <button className='user-button '  onClick={handleUpload} disabled={uploading}>
-        {uploading ? 'Uploading...' : 'Submit'} 
-      </button>
-      <p className="or">OR</p>
-    </div>
+    <Modal
+      isOpen={isOpen}
+      onRequestClose={onRequestClose}
+      contentLabel="Upload CSV Modal"
+      className="upload-csv-modal"
+      overlayClassName="upload-csv-overlay"
+    >
+      <button onClick={onRequestClose} className="modal-close-button">x</button>
+      <div className="upload-csv-content">
+        <h3 className="modal-title">Add New Initiator</h3><br />
+        <button className="user-button" onClick={() => alert('Add New Initiator')}>
+          Add manually
+        </button> 
+        <div className="or-separator">
+        
+                <span>OR</span>
+                
+        </div>
+        <input className='csv-input' type="file" accept=".csv" onChange={handleFileChange} />
+        <button className='user-button' onClick={handleUpload} disabled={uploading}>
+          {uploading ? 'Uploading...' : 'Submit CSV file'}
+        </button>
+      </div>
+    </Modal>
   );
 };
 
