@@ -1,0 +1,25 @@
+.splitter-container {
+    display: flex;
+    height: 100vh; /* Full height */
+    overflow: hidden;
+    user-select: none;
+}
+
+.splitter-panel {
+    overflow: auto;
+}
+
+.left-panel {
+    background-color: #f0f0f0; /* Example background color */
+}
+
+.right-panel {
+    background-color: #fff; /* Example background color */
+}
+
+.splitter-divider {
+    width: 5px;
+    background-color: #ccc; /* Divider color */
+    cursor: ew-resize; /* Cursor change to indicate resizing */
+    position: relative;
+}
