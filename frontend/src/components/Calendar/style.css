@@ -20,9 +20,6 @@
   position: relative;
   margin: 0 auto;
   margin-top: 0%;
-  /*top: 55px !important;
-  bottom: -10px !important;*/
-
 }
 
 .calendar-page__content {
@@ -31,6 +28,8 @@
   column-gap: 0;
   flex-grow: 1;
   max-height: 100%;
+  position: relative;
+  top: 69px;
 }
 
 .calendar-page__sidebar {
