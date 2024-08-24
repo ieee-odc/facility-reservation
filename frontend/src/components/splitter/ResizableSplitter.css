@@ -10,8 +10,8 @@
 }
 
 .splitter-divider {
-    width: 10px;
-    background-color: #e3e3e3; 
+    width: 20px;
+    background-color: #e3e3e3a7; 
     cursor: col-resize; 
     position: relative;
     display: flex;
