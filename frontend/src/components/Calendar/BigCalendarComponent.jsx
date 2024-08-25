@@ -112,17 +112,17 @@ const BigCalendarComponent = ({ events, requests, viewType, currentId }) => {
   
   const eventComponent = ({ event, viewtype }) => (
     <div>
-      {viewtype === "events" ? (
+      {viewtype === "requests" ? (
         <>
-          <strong>{event.motive}</strong>
+          <strong>{event.facility}</strong>
           <br />
           <span style={{ fontSize: '0.75em' }}>{event.facility}</span>
         </>
       ) : (
         <>
-          <strong>{event.facility}</strong>
+          <strong>{event.motive}</strong>
           <br />
-          <span style={{ fontSize: '0.75em' }}>{event.motive}</span>
+          <span style={{ fontSize: '0.75em' }}>{event.facility}</span>
         </>
       )}
     </div>
