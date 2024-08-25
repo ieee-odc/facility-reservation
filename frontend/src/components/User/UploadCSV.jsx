@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import Modal from 'react-modal';
 import './styles.css';
-import {Divider} from 'rsuite';
+import { Divider } from 'rsuite';
 
 // Ensure that the app element is set for accessibility
 Modal.setAppElement('#root');
@@ -55,11 +55,30 @@ const UploadCSV = ({ isOpen, onRequestClose }) => {
         <button className="user-button" onClick={() => alert('Add New Initiator')}>
           Add manually
         </button> 
-   <Divider>OR</Divider>
-        <input className='csv-input' type="file" accept=".csv" onChange={handleFileChange} />
-        <button className='user-button' onClick={handleUpload} disabled={uploading}>
-          {uploading ? 'Uploading...' : 'Submit CSV file'}
+        <Divider>OR</Divider>
+        <input 
+          className='csv-input' 
+          type="file" 
+          accept=".csv"  
+          style={{ display: "none" }} 
+          onChange={handleFileChange} 
+        />
+        
+        <button 
+          className='user-button' 
+          onClick={handleUpload} 
+          disabled={!file || uploading}
+        >
+          {file ? 'CSV file selected' : 'Submit CSV file'}
         </button>
+        <br /><br />
+        <a 
+          href="/src/assets/Feuille de calcul sans titre.xlsx" 
+          download="CSV_Template.xlsx" 
+          className="download-link"
+        >
+          Download CSV template here
+        </a>
       </div>
     </Modal>
   );

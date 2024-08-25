@@ -107,7 +107,7 @@ const CalendarPage = ({ currentId, currentRole }) => {
 
             return {
               id: reservation._id,
-              title: `${facilities[reservation.facility] || "Unknown Facility"} - ${reservation.name}`,
+              title: `${reservation.name}`,
               description: reservation.description,
               start,
               end,

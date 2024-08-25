@@ -126,6 +126,7 @@ const EventModal = ({ show, onHide, eventDetails, onCancel, viewType }) => {
                 <p><strong>End Date:</strong> {new Date(eventDetails.end).toLocaleString()}</p>
                 <p><strong>Total Participants:</strong> {eventDetails.totalEffective}</p>
                 <p><strong>Organizer:</strong> {eventDetails.organizer}</p>
+                
               </>
             ) : (
               <>
