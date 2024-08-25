@@ -1,0 +1,30 @@
+.splitter-container {
+    display: flex;
+    height: 100vh;
+    overflow: hidden;
+    user-select: none;
+}
+
+.splitter-panel {
+    overflow: auto;
+}
+
+.splitter-divider {
+    width: 20px;
+    background-color: #e3e3e3a7; 
+    cursor: col-resize; 
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.splitter-divider::before {
+    content: '';
+    width: 3px;
+    height: 40px;
+    background-image: radial-gradient(circle, #777 1px, transparent 1px);
+    background-size: 4px 4px;
+    background-repeat: repeat-y;
+    display: block;
+}
