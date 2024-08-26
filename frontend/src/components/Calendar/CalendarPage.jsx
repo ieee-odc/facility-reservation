@@ -5,7 +5,7 @@ import CalendarSidebar from "./CalendarSidebar";
 import "./style.css";
 import BigCalendarComponent from "./BigCalendarComponent";
 import axios from "axios";
-import { Dropdown, DatePicker } from "rsuite";
+import { Dropdown, DatePicker, TagPicker } from "rsuite";
 import "rsuite/dist/rsuite.min.css";
 import { useNavigate } from "react-router-dom";
 import ParentComponent from "./parentComp";
@@ -24,12 +24,26 @@ const CalendarPage = ({ currentId, currentRole }) => {
   const [filterStartTime, setFilterStartTime] = useState("");
   const [filterEndTime, setFilterEndTime] = useState("");
 
+  const [filter, setFilter] = useState({
+    state: [],
+    organizer: [],
+    facility: [],
+    startDate: null,
+    endDate: null,
+    day: [],
+    motive: "",
+  });
+  const [sort, setSort] = useState("startDate");
+
+
   const navigate = useNavigate();
 
   useEffect(() => {
     const fetchFacilities = async () => {
       try {
-        const response = await axios.get("http://localhost:3000/api/facilities");
+        const response = await axios.get(
+          "http://localhost:3000/api/facilities"
+        );
         const facilitiesArray = response.data.data;
         if (Array.isArray(facilitiesArray)) {
           const facilitiesData = facilitiesArray.reduce((acc, facility) => {
@@ -38,7 +52,10 @@ const CalendarPage = ({ currentId, currentRole }) => {
           }, {});
           setFacilities(facilitiesData);
         } else {
-          console.error("Unexpected response format for facilities", response.data);
+          console.error(
+            "Unexpected response format for facilities",
+            response.data
+          );
         }
       } catch (error) {
         console.error("Error fetching facilities", error);
@@ -56,12 +73,18 @@ const CalendarPage = ({ currentId, currentRole }) => {
 
         if (Array.isArray(reservations)) {
           const formattedRequests = reservations.map((reservation) => {
-            const start = new Date(`${reservation.date.split("T")[0]} ${reservation.startTime}`);
-            const end = new Date(`${reservation.date.split("T")[0]} ${reservation.endTime}`);
+            const start = new Date(
+              `${reservation.date.split("T")[0]} ${reservation.startTime}`
+            );
+            const end = new Date(
+              `${reservation.date.split("T")[0]} ${reservation.endTime}`
+            );
 
             return {
               id: reservation._id,
-              title: `${facilities[reservation.facility] || "Unknown Facility"} - ${reservation.motive}`,
+              title: `${
+                facilities[reservation.facility] || "Unknown Facility"
+              } - ${reservation.motive}`,
               date: reservation.date,
               participants: reservation.effective,
               start,
@@ -86,10 +109,15 @@ const CalendarPage = ({ currentId, currentRole }) => {
 
     const fetchOrganizerName = async (organizerId) => {
       try {
-        const response = await axios.get(`http://localhost:3000/api/reservationInitiators/${organizerId}`);
-        return response.data.name; 
+        const response = await axios.get(
+          `http://localhost:3000/api/reservationInitiators/${organizerId}`
+        );
+        return response.data.name;
       } catch (error) {
-        console.error(`Error fetching organizer name for ID ${organizerId}`, error);
+        console.error(
+          `Error fetching organizer name for ID ${organizerId}`,
+          error
+        );
         return "Unknown Organizer";
       }
     };
@@ -105,25 +133,27 @@ const CalendarPage = ({ currentId, currentRole }) => {
         const eventsData = response.data;
 
         if (Array.isArray(eventsData)) {
-          const formattedEvents = await Promise.all(eventsData.map(async (event) => {
-            const start = new Date(event.startDate);
-            const end = new Date(event.endDate);
-            const organizerName = await fetchOrganizerName(event.organizer);
+          const formattedEvents = await Promise.all(
+            eventsData.map(async (event) => {
+              const start = new Date(event.startDate);
+              const end = new Date(event.endDate);
+              const organizerName = await fetchOrganizerName(event.organizer);
 
-            return {
-              id: event._id,
-              title: `${event.name}`,
-              description: event.description,
-              start,
-              end,
-              totalEffective: event.totalEffective,
-              organizer: organizerName,
-              entity: organizerName, 
-              state: event.state,
-              facility: facilities[event.facility] ,
-              motive: event.name,
-            };
-          }));
+              return {
+                id: event._id,
+                title: `${event.name}`,
+                description: event.description,
+                start,
+                end,
+                totalEffective: event.totalEffective,
+                organizer: organizerName,
+                entity: organizerName,
+                state: event.state,
+                facility: facilities[event.facility],
+                motive: event.name,
+              };
+            })
+          );
 
           setEvents(formattedEvents);
         } else {
@@ -138,15 +168,6 @@ const CalendarPage = ({ currentId, currentRole }) => {
     fetchEvents();
     fetchReservations();
   }, [currentId, currentRole, facilities]);
-
-
- 
-
- 
-
-
-
-
 
   const handleDropdownChange = (key) => {
     setViewType(key);
@@ -176,7 +197,7 @@ const CalendarPage = ({ currentId, currentRole }) => {
     };
   }, []);
 
-  const filteredRequests = requests.filter((request) => {
+  /*const filteredRequests = requests.filter((request) => {
     const facilityMatch =
       selectedFacility === "All" || request.facility === selectedFacility;
     const timeMatch =
@@ -196,6 +217,59 @@ const CalendarPage = ({ currentId, currentRole }) => {
       (!filterEndTime || new Date(event.end) <= filterEndTime);
 
     return timeMatch && (filterState === "All" || event.state === filterState);
+  });*/
+
+  const filteredEvents = events
+  .filter(
+    (event) =>
+      (filter.state.length === 0 || filter.state.includes(event.state)) &&
+      (filter.organizer.length === 0 ||
+        filter.organizer.includes(event.organizer)) &&
+      (filter.startDate === null ||
+        new Date(event.startDate) >= new Date(filter.startDate)) &&
+      (filter.endDate === null ||
+        new Date(event.endDate) <= new Date(filter.endDate)) &&
+      (filter.motive === "" ||
+        event.reservations.some((r) => r.motive.includes(filter.motive)))
+  )
+  .sort((a, b) => {
+    if (sort === "startDate") {
+      return new Date(a.startDate) - new Date(b.startDate);
+    }
+    if (sort === "endDate") {
+      return new Date(a.endDate) - new Date(b.endDate);
+    }
+    return 0;
+  });
+
+const filteredRequests = requests
+  .filter(
+    (reservation) =>
+      (filter.state.length === 0 ||
+        filter.state.includes(reservation.state)) &&
+      (filter.organizer.length === 0 ||
+        filter.organizer.includes(reservation.entity)) &&
+      (filter.facility.length === 0 ||
+        filter.facility.includes(reservation.facility)) &&
+      (filter.startDate === null ||
+        new Date(reservation.date) >= new Date(filter.startDate)) &&
+      (filter.endDate === null ||
+        new Date(reservation.date) <= new Date(filter.endDate)) &&
+      (filter.day.length === 0 ||
+        filter.day.includes(getWeekdayFromDate(reservation.date))) &&
+      (filter.motive === "" || reservation.motive.includes(filter.motive))
+  )
+  .sort((a, b) => {
+    if (sort === "date") {
+      return new Date(a.date) - new Date(b.date);
+    }
+    if (sort === "time") {
+      return (
+        new Date(`1970-01-01T${a.startTime}`) -
+        new Date(`1970-01-01T${b.startTime}`)
+      );
+    }
+    return 0;
   });
 
   return (
@@ -229,7 +303,7 @@ const CalendarPage = ({ currentId, currentRole }) => {
                       Events
                     </Dropdown.Item>
                   </Dropdown>
-                  <Dropdown
+                  {/*<Dropdown
                     className="the-button"
                     title="Filter by State"
                     activeKey={filterState}
@@ -250,7 +324,17 @@ const CalendarPage = ({ currentId, currentRole }) => {
                     <Dropdown.Item className="the-item" eventKey="Cancelled">
                       Cancelled
                     </Dropdown.Item>
-                  </Dropdown>
+                  </Dropdown>*/}
+                  <TagPicker
+                    placeholder="State"
+                    data={["Pending", "Approved", "Cancelled", "Rejected"].map(
+                      (state) => ({ label: state, value: state })
+                    )}
+                    value={filter.state}
+                    onChange={(value) =>
+                      setFilter((prev) => ({ ...prev, state: value }))
+                    }
+                  />
                   <Dropdown
                     className="the-button"
                     title="Filter by Facility"
