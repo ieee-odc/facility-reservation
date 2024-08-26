@@ -454,35 +454,7 @@ p.about-content-element-two:hover {
   column-gap: 5px;
 }
 
-.add-button {
-  display: flex;
-  align-items: flex-end;
-}
 
-.add-button button {
-  position: relative;
-  right: 0;
-  color: #367bf5;
-  background-color: #e5efff;
-  border: none;
-  border-radius: 4px;
-  padding: 8px 16px;
-  cursor: pointer;
-  font-size: 16px;
-  display: flex;
-  gap: 8px;
-  margin-left: auto;
-}
-
-.add-button button:hover {
-  background-color: #d8defa;
-  color: #2657d4;
-}
-
-.add-button button:active {
-  background-color: #d8defa;
-  color: #1f4fa3;
-}
 
 @media (min-width: 100%) {
   .overview {
@@ -603,10 +575,11 @@ p.about-content-element-two:hover {
 .add-button {
   display: flex;
   align-items: flex-end;
+  flex-direction: row-reverse;
   background-color: transparent !important;
 }
 
-.add-button button {
+.add-button button{
   position: relative;
   right: 0;
   color: #367bf5;
@@ -618,7 +591,7 @@ p.about-content-element-two:hover {
   font-size: 16px;
   display: flex;
   gap: 8px;
-  margin-left: auto;
+  margin-left: 0;
 }
 
 .add-button button:hover {

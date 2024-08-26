@@ -10,8 +10,8 @@
 }
 
 .splitter-divider {
-    width: 20px;
-    background-color: #e3e3e3a7; 
+    width: 8px;
+    background-color: #f9fafb; 
     cursor: col-resize; 
     position: relative;
     display: flex;
@@ -23,8 +23,9 @@
     content: '';
     width: 3px;
     height: 40px;
-    background-image: radial-gradient(circle, #777 1px, transparent 1px);
-    background-size: 4px 4px;
+    background-color:#e5e7eb ;
+    /*background-image: radial-gradient(circle, #e5e7eb 2px, transparent 2px);
+    background-size: 4px 4px;*/
     background-repeat: repeat-y;
     display: block;
 }

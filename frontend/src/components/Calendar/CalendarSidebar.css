@@ -1,33 +1,28 @@
 .calendar-sidebar {
   width: 100%;
-  padding: 30px;
+  padding: 3%;
+  padding-bottom: 80px;
   display: grid;
   background: rgb(1, 63, 121);
   background: rgb(1, 53, 101);
   color: white;
   overflow-y: auto;
-  /*max-height: 100vh;*/
-  height: 100%;
-  max-height: 100%;
-  position: relative;
-  height: 100%;
-  max-height: 100%;
+  height: 100dvh;
   width: 100%;
-  overflow: auto;
+  justify-content: center;
 }
+
 
 .calendar-sidebar::-webkit-scrollbar {
-  width: 12px;
+  width: 0px;
   background: #a2a2a6;
 }
-
-/* Track */
+/*
 .calendar-sidebar::-webkit-scrollbar-track {
   border-radius: 10px;
   background: #a2a2a600;
 }
 
-/* Handle */
 .calendar-sidebar::-webkit-scrollbar-thumb {
   background: #dbdada;
   border-radius: 10px;
@@ -39,24 +34,22 @@
   cursor: grabbing;
 }
 
-/* Handle on hover */
 .calendar-sidebar::-webkit-scrollbar-thumb:hover {
   background: #bcbcbc;
   transition: cursor 4s ease-in-out;
-}
+}*/
 
 .calendar-sidebar__calendar-container {
   width: 100%;
-  max-width: 300px;
   margin-bottom: 0px;
 }
 
 .calendar-sidebar__events,
 .calendar-sidebar__holidays,
-.calendar-sidebar__upcoming-holidays {
+.calendar-sidebar__upcoming-holidays,
+.calendar-sidebar__checkboxes {
   margin-bottom: 0px;
   width: 100%;
-  max-width: 300px;
 }
 
 .calendar-sidebar__events ul,

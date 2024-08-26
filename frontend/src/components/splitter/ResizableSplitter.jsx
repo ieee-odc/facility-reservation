@@ -3,7 +3,7 @@ import './ResizableSplitter.css';
 
 const ResizableSplitter = ({ leftComponent, rightComponent }) => {
     const [dragging, setDragging] = useState(false);
-    const [dividerPosition, setDividerPosition] = useState(50); // Start with 50% width for both sides
+    const [dividerPosition, setDividerPosition] = useState(25);
     const containerRef = useRef(null);
 
     const handleDragStart = () => {
