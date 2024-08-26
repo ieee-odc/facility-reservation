@@ -25,12 +25,11 @@ const CalendarPage = ({ currentId, currentRole }) => {
   const [filterEndTime, setFilterEndTime] = useState("");
 
   const navigate = useNavigate();
+
   useEffect(() => {
     const fetchFacilities = async () => {
       try {
-        const response = await axios.get(
-          "http://localhost:3000/api/facilities"
-        );
+        const response = await axios.get("http://localhost:3000/api/facilities");
         const facilitiesArray = response.data.data;
         if (Array.isArray(facilitiesArray)) {
           const facilitiesData = facilitiesArray.reduce((acc, facility) => {
@@ -39,16 +38,13 @@ const CalendarPage = ({ currentId, currentRole }) => {
           }, {});
           setFacilities(facilitiesData);
         } else {
-          console.error(
-            "Unexpected response format for facilities",
-            response.data
-          );
+          console.error("Unexpected response format for facilities", response.data);
         }
       } catch (error) {
         console.error("Error fetching facilities", error);
       }
     };
-  
+
     const fetchReservations = async () => {
       try {
         let url;
@@ -57,16 +53,12 @@ const CalendarPage = ({ currentId, currentRole }) => {
         else url = `http://localhost:3000/api/reservations/pure/${currentId}`;
         const response = await axios.get(url);
         const reservations = response.data;
-  
+
         if (Array.isArray(reservations)) {
           const formattedRequests = reservations.map((reservation) => {
-            const start = new Date(
-              `${reservation.date.split("T")[0]} ${reservation.startTime}`
-            );
-            const end = new Date(
-              `${reservation.date.split("T")[0]} ${reservation.endTime}`
-            );
-  
+            const start = new Date(`${reservation.date.split("T")[0]} ${reservation.startTime}`);
+            const end = new Date(`${reservation.date.split("T")[0]} ${reservation.endTime}`);
+
             return {
               id: reservation._id,
               title: `${facilities[reservation.facility] || "Unknown Facility"} - ${reservation.motive}`,
@@ -82,7 +74,7 @@ const CalendarPage = ({ currentId, currentRole }) => {
               equipment: reservation.equipment || [],
             };
           });
-  
+
           setRequests(formattedRequests);
         } else {
           console.error("Unexpected response format", reservations);
@@ -91,16 +83,17 @@ const CalendarPage = ({ currentId, currentRole }) => {
         console.error("Error fetching reservations from calendar page", error);
       }
     };
+
     const fetchOrganizerName = async (organizerId) => {
       try {
         const response = await axios.get(`http://localhost:3000/api/reservationInitiators/${organizerId}`);
-        return response.data.name; // Assuming the API response has a `name` field
+        return response.data.name; 
       } catch (error) {
         console.error(`Error fetching organizer name for ID ${organizerId}`, error);
         return "Unknown Organizer";
       }
     };
-  
+
     const fetchEvents = async () => {
       try {
         let url;
@@ -109,32 +102,32 @@ const CalendarPage = ({ currentId, currentRole }) => {
         else url = `http://localhost:3000/api/events/reservations/${currentId}`;
 
         const response = await axios.get(url);
-        const reservations = response.data;
+        const eventsData = response.data;
 
-        if (Array.isArray(reservations)) {
-          const formattedEvents = await Promise.all(reservations.map(async (reservation) => {
-            const start = new Date(reservation.startDate);
-            const end = new Date(reservation.endDate);
-            const organizerName = await fetchOrganizerName(reservation.organizer);
+        if (Array.isArray(eventsData)) {
+          const formattedEvents = await Promise.all(eventsData.map(async (event) => {
+            const start = new Date(event.startDate);
+            const end = new Date(event.endDate);
+            const organizerName = await fetchOrganizerName(event.organizer);
 
             return {
-              id: reservation._id,
-              title: `${reservation.name}`,
-              description: reservation.description,
+              id: event._id,
+              title: `${event.name}`,
+              description: event.description,
               start,
               end,
-              totalEffective: reservation.totalEffective,
+              totalEffective: event.totalEffective,
               organizer: organizerName,
-              entity: organizerName, // assuming you want to display the name here too
-              state: reservation.state,
-              facility: facilities[reservation.facility] || "Unknown Facility",
-              motive: reservation.name,
+              entity: organizerName, 
+              state: event.state,
+              facility: facilities[event.facility] ,
+              motive: event.name,
             };
           }));
 
           setEvents(formattedEvents);
         } else {
-          console.error("Unexpected response format", reservations);
+          console.error("Unexpected response format", eventsData);
         }
       } catch (error) {
         console.error("Error fetching events from calendar page", error);
@@ -145,7 +138,15 @@ const CalendarPage = ({ currentId, currentRole }) => {
     fetchEvents();
     fetchReservations();
   }, [currentId, currentRole, facilities]);
-  
+
+
+ 
+
+ 
+
+
+
+
 
   const handleDropdownChange = (key) => {
     setViewType(key);

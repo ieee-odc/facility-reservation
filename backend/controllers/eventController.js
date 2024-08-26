@@ -248,7 +248,7 @@ export const findEventWithReservations = async (req, res) => {
     }
 
     const reservations = await Reservation.find({ event: id })
-      .populate("facility", "name") // Fetch facility details (e.g., name)
+      .populate("facility", "label") // Fetch facility details (e.g., name)
       .exec();
 
     const eventWithReservations = {
