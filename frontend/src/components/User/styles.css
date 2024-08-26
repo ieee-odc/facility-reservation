@@ -271,11 +271,9 @@
 }
 .csv-input {
   font-size: 14px;
-  color: #131313;
+  color: #2c2c2c;
   background-color: #007bff00;
-  border-radius: 20px;
   cursor: pointer;
-  width:  30%; 
   overflow: hidden;
   display: flex !important;
   flex-direction: row !important;
@@ -283,11 +281,13 @@
 
 .csv-input::before {
   content: 'Upload CSV';
-  margin-top: 1em;
+  margin-left: 75px;
   background-color: rgb(0, 70, 135);
+  padding: 10px 20px;
   border: none;
+  border-radius: 4px;
+  width:30%;
   color: #ffffff;
-  padding: 0.75em 1.5em;
   cursor: pointer;
   transition: background-color 0.3s;
 }
@@ -422,9 +422,4 @@
 
 .csv-input {
   margin: 10px 0; /* Adjust spacing as needed */
-}
-.small-submit-button {
-  margin-top: 10px;
-  padding: 5px 10px;
-  font-size: 0.9em;
 }
