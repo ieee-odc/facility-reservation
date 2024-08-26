@@ -5,6 +5,7 @@ import {
   findAllEventstWithReservations,
   updateEvent,
   findEventById,
+  deleteEvent,
   findAllEvents,
   updateEventState,
   findAllRelatedEventstWithReservations,
@@ -13,7 +14,7 @@ import {
 const eventRouter = express.Router();
 
 eventRouter.post("/", createEvent);
-eventRouter.delete("/:id", createEvent);
+eventRouter.delete("/:id", deleteEvent);
 eventRouter.get("/reservations/:id", findEventWithReservations);
 eventRouter.get("/reservations", findAllEventstWithReservations);
 eventRouter.get("/reservation/:id", findAllRelatedEventstWithReservations);

@@ -54,7 +54,7 @@ const EventModal = ({ show, onHide, eventDetails, onCancel, viewType }) => {
         { state: "Rejected" }
       );
   
-      // Send notification
+
       await sendNotification(
         eventDetails.entity, 
         "Reservation Rejected", 
@@ -77,7 +77,7 @@ const EventModal = ({ show, onHide, eventDetails, onCancel, viewType }) => {
         { state: "Cancelled" }
       );
   
-      // Send notification
+
       await sendNotification(
         eventDetails.entity, 
         "Reservation Cancelled", 
