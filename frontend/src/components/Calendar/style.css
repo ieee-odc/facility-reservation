@@ -75,7 +75,7 @@
 
 .calendar-page__sidebar::-webkit-scrollbar-track,
 .calendar-page_calendar::-webkit-scrollbar-track {
-  border-radius: 50%;
+  border-radius: 20px;
   background: #0808dd00;
 }
 
@@ -88,7 +88,7 @@
 .calendar-page__sidebar::-webkit-scrollbar-thumb:active,
 .calendar-page_calendar::-webkit-scrollbar-thumb:active {
   background: #dbdada;
-  border-radius: 50%;
+  border-radius: 20px;
   cursor: grabbing;
 }
 

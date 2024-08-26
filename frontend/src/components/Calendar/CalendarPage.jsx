@@ -99,7 +99,7 @@ const CalendarPage = ({ currentId, currentRole }) => {
         let url;
         if (currentRole === "Admin")
           url = "http://localhost:3000/api/events/reservations";
-        else url = `http://localhost:3000/api/events/reservations/${currentId}`;
+        else url = `http://localhost:3000/api/events/reservation/${currentId}`;
 
         const response = await axios.get(url);
         const eventsData = response.data;
