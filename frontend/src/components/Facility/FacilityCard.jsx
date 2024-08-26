@@ -6,11 +6,8 @@ import { FiInfo } from "react-icons/fi";
 const FacilityCard = ({ initiator, onEdit, onDelete, onConsult }) => {
   return (
     <div className="initiator-card">
-      <h2>{initiator.name}</h2>
-      <p>
-        {" "}
-        <b> Label:</b> {initiator.label}
-      </p>
+      <h2>{initiator.label}</h2>
+    
       <p>
         <b> Capacity:</b> {initiator.capacity}
       </p>

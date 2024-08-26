@@ -1,5 +1,5 @@
 .manage-users-container {
-  padding: 2em;
+  padding: 4em !important;
   background-color: #f9f9f9;
   min-height: 100vh;
   display: flex;
@@ -267,36 +267,29 @@
   bottom: -20px !important;
   right: 50% !important;
   background: #aeafb000;
-  z-index: 100;
+  z-index: 200;
 }
 .csv-input {
-  font-size: 16px;
+  font-size: 14px;
   color: #131313;
   background-color: #007bff00;
-  border: 2px solid #007bff00;
-  border-radius: 5px;
+  border-radius: 20px;
   cursor: pointer;
-  width: 100%; 
-  max-width: 400px; 
-  box-sizing: border-box;
+  width:  30%; 
   overflow: hidden;
-  text-overflow: ellipsis;
   display: flex !important;
   flex-direction: row !important;
-  justify-content: flex-start;
 }
 
 .csv-input::before {
   content: 'Upload CSV';
-  background-color: #02254c2c;
-  color: white;
+  margin-top: 1em;
+  background-color: rgb(0, 70, 135);
   border: none;
-  padding: 2px 7px;
-  outline: none;
-  white-space: nowrap;
+  color: #ffffff;
+  padding: 0.75em 1.5em;
   cursor: pointer;
-  font-size: 16px;
-  position: absolute;
+  transition: background-color 0.3s;
 }
 
 /*.csv-input:hover::before {
@@ -331,7 +324,7 @@
   padding: 20px;
   border-radius: 8px;
   width: 500px; /* Adjust width as needed */
-  height:350px;
+  height:400px;
   max-width: 100%;
   position: relative; /* Position relative to place the close button correctly */
 }
