@@ -215,7 +215,7 @@ const CalendarPage = ({ currentId, currentRole }) => {
             }
             rightComponent={
               <div className="calendar-page_calendar">
-                <div className="calendar-header custom-dropdown">
+                <div className="filters">
                   <Dropdown
                     className="the-button"
                     title="Select View"
