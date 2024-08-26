@@ -25,7 +25,6 @@ const CalendarPage = ({ currentId, currentRole }) => {
   const [filterEndTime, setFilterEndTime] = useState("");
 
   const navigate = useNavigate();
-
   useEffect(() => {
     const fetchFacilities = async () => {
       try {
@@ -49,17 +48,16 @@ const CalendarPage = ({ currentId, currentRole }) => {
         console.error("Error fetching facilities", error);
       }
     };
-
+  
     const fetchReservations = async () => {
       try {
         let url;
-
         if (currentRole === "Admin")
           url = "http://localhost:3000/api/reservations/pure";
         else url = `http://localhost:3000/api/reservations/pure/${currentId}`;
         const response = await axios.get(url);
         const reservations = response.data;
-
+  
         if (Array.isArray(reservations)) {
           const formattedRequests = reservations.map((reservation) => {
             const start = new Date(
@@ -68,12 +66,10 @@ const CalendarPage = ({ currentId, currentRole }) => {
             const end = new Date(
               `${reservation.date.split("T")[0]} ${reservation.endTime}`
             );
-
+  
             return {
               id: reservation._id,
-              title: `${
-                facilities[reservation.facility] || "Unknown Facility"
-              } - ${reservation.motive}`,
+              title: `${facilities[reservation.facility] || "Unknown Facility"} - ${reservation.motive}`,
               date: reservation.date,
               participants: reservation.effective,
               start,
@@ -86,7 +82,7 @@ const CalendarPage = ({ currentId, currentRole }) => {
               equipment: reservation.equipment || [],
             };
           });
-
+  
           setRequests(formattedRequests);
         } else {
           console.error("Unexpected response format", reservations);
@@ -95,11 +91,19 @@ const CalendarPage = ({ currentId, currentRole }) => {
         console.error("Error fetching reservations from calendar page", error);
       }
     };
-
+    const fetchOrganizerName = async (organizerId) => {
+      try {
+        const response = await axios.get(`http://localhost:3000/api/reservationInitiators/${organizerId}`);
+        return response.data.name; // Assuming the API response has a `name` field
+      } catch (error) {
+        console.error(`Error fetching organizer name for ID ${organizerId}`, error);
+        return "Unknown Organizer";
+      }
+    };
+  
     const fetchEvents = async () => {
       try {
         let url;
-
         if (currentRole === "Admin")
           url = "http://localhost:3000/api/events/reservations";
         else url = `http://localhost:3000/api/events/reservations/${currentId}`;
@@ -108,32 +112,32 @@ const CalendarPage = ({ currentId, currentRole }) => {
         const reservations = response.data;
 
         if (Array.isArray(reservations)) {
-          const formattedEvents = reservations.map((reservation) => {
+          const formattedEvents = await Promise.all(reservations.map(async (reservation) => {
             const start = new Date(reservation.startDate);
             const end = new Date(reservation.endDate);
+            const organizerName = await fetchOrganizerName(reservation.organizer);
 
             return {
               id: reservation._id,
-              title:  `${reservation.name}`,
+              title: `${reservation.name}`,
               description: reservation.description,
               start,
               end,
               totalEffective: reservation.totalEffective,
-              organizer: reservation.organizer,
-              entity: reservation.organizer,
-
+              organizer: organizerName,
+              entity: organizerName, // assuming you want to display the name here too
               state: reservation.state,
               facility: facilities[reservation.facility] || "Unknown Facility",
               motive: reservation.name,
             };
-          });
+          }));
 
           setEvents(formattedEvents);
         } else {
           console.error("Unexpected response format", reservations);
         }
       } catch (error) {
-        console.error("Error fetching reservations from calendar page", error);
+        console.error("Error fetching events from calendar page", error);
       }
     };
 
@@ -141,6 +145,7 @@ const CalendarPage = ({ currentId, currentRole }) => {
     fetchEvents();
     fetchReservations();
   }, [currentId, currentRole, facilities]);
+  
 
   const handleDropdownChange = (key) => {
     setViewType(key);

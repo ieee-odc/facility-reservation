@@ -247,7 +247,9 @@ export const findEventWithReservations = async (req, res) => {
       return res.status(404).json({ message: "Event not found" });
     }
 
-    const reservations = await Reservation.find({ event: id }).exec();
+    const reservations = await Reservation.find({ event: id })
+      .populate("facility", "name") // Fetch facility details (e.g., name)
+      .exec();
 
     const eventWithReservations = {
       ...event.toObject(),
@@ -261,17 +263,19 @@ export const findEventWithReservations = async (req, res) => {
   }
 };
 
+/**
+ * Finds all events related to a specific organizer and includes their reservations with facility data.
+ */
 export const findAllRelatedEventstWithReservations = async (req, res) => {
   try {
-
-    const {id} = req.params;
-    const events = await Event.find({organizer: id}).exec();    
+    const { id } = req.params;
+    const events = await Event.find({ organizer: id }).exec();
 
     const eventsWithReservations = await Promise.all(
       events.map(async (event) => {
-        const reservations = await Reservation.find({
-          event: event._id,
-        }).exec();
+        const reservations = await Reservation.find({ event: event._id })
+          .populate("facility", "name") // Fetch facility details (e.g., name)
+          .exec();
         return { ...event.toObject(), reservations: reservations };
       })
     );
@@ -282,15 +286,19 @@ export const findAllRelatedEventstWithReservations = async (req, res) => {
     res.status(500).json({ message: "Server error" });
   }
 };
+
+/**
+ * Finds all events and includes their reservations with facility data.
+ */
 export const findAllEventstWithReservations = async (req, res) => {
   try {
     const events = await Event.find().exec();
 
     const eventsWithReservations = await Promise.all(
       events.map(async (event) => {
-        const reservations = await Reservation.find({
-          event: event._id,
-        }).exec();
+        const reservations = await Reservation.find({ event: event._id })
+          .populate("facility", "name") // Fetch facility details (e.g., name)
+          .exec();
         return { ...event.toObject(), reservations: reservations };
       })
     );
