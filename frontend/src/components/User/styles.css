@@ -423,3 +423,34 @@
 .csv-input {
   margin: 10px 0; /* Adjust spacing as needed */
 }
+.add-button {
+  display: flex;
+  align-items: flex-end;
+  flex-direction: row-reverse;
+  background-color: transparent !important;
+}
+
+.add-user-button button{
+  position: relative;
+  right: 0;
+  color: #367bf5;
+  background-color: #e5efff;
+  border: none;
+  border-radius: 4px;
+  padding: 8px 16px;
+  cursor: pointer;
+  font-size: 16px;
+  display: flex;
+  gap: 8px;
+  margin-left: 0;
+}
+
+.add-user-button button:hover {
+  background-color: #d8defa;
+  color: #2657d4;
+}
+
+.add-user-button button:active {
+  background-color: #d8defa;
+  color: #1f4fa3;
+}
