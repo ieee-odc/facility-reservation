@@ -136,8 +136,8 @@ const ManageUsers = () => {
       <Navbar />
       <div className="manage-users-container">
         <div className="add-user-button">
-          <button className="user-button" onClick={openUploadCSVModal}>
-            Add New Initiator
+          <button  onClick={openUploadCSVModal}>
+            + Add New Initiator
           </button>
         </div>
         <div className="initiator-cards">

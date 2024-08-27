@@ -136,8 +136,8 @@ const ManageFacilities = () => {
       <Navbar />
       <div className="manage-users-container">
         <div className="add-user-button">
-          <button className="user-button" onClick={handleAdd}>
-            Add New Facility
+          <button  onClick={handleAdd}>
+            + Add New Facility
           </button>
         </div>
         <div className="initiator-cards">
