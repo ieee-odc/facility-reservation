@@ -86,6 +86,10 @@
   font-size: 0.8em;
 }
 
+.rs-calendar {
+  padding-top: 0px !important;
+}
+
 .calendar-sidebar__calendar-container .rs-calendar-header,
 .calendar-sidebar__calendar-container .rs-calendar-table {
   width: 100%;
