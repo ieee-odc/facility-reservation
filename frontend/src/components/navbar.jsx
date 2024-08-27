@@ -181,8 +181,9 @@ const Navbar = () => {
     setShowProfileCard(!showProfileCard);
   };
   const toggleNotificationsCard = () => {
-    setShowNotificationsCard(!showNotificationsCard);
+    setShowNotificationsCard((prev) => !prev);
   };
+  
 
   const menuItems = [
     {
