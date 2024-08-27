@@ -11,7 +11,7 @@
 
 .splitter-divider {
     width: 8px;
-    background-color: #f9fafb; 
+    background-color: #e5e5e5; 
     cursor: col-resize; 
     position: relative;
     display: flex;
@@ -23,9 +23,7 @@
     content: '';
     width: 3px;
     height: 40px;
-    background-color:#e5e7eb ;
-    /*background-image: radial-gradient(circle, #e5e7eb 2px, transparent 2px);
-    background-size: 4px 4px;*/
+    background-color:#9e9e9e ;
     background-repeat: repeat-y;
     display: block;
 }

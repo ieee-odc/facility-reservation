@@ -1,6 +1,7 @@
 .calendar-sidebar {
   width: 100%;
   padding: 3%;
+  padding-top: 20px;
   padding-bottom: 80px;
   display: grid;
   background: rgb(1, 63, 121);
@@ -15,7 +16,7 @@
 
 .calendar-sidebar::-webkit-scrollbar {
   width: 0px;
-  background: #a2a2a6;
+  background: #a2a2a600;
 }
 /*
 .calendar-sidebar::-webkit-scrollbar-track {
@@ -40,7 +41,7 @@
 }*/
 
 .calendar-sidebar__calendar-container {
-  width: 100%;
+  width: 90%;
   margin-bottom: 0px;
 }
 
@@ -49,7 +50,7 @@
 .calendar-sidebar__upcoming-holidays,
 .calendar-sidebar__checkboxes {
   margin-bottom: 0px;
-  width: 100%;
+  width: 90%;
 }
 
 .calendar-sidebar__events ul,
@@ -57,6 +58,7 @@
 .calendar-sidebar__upcoming-holidays ul {
   list-style: none;
   padding: 0;
+  padding-left: 5%;
 }
 
 .calendar-sidebar__events li,
@@ -144,6 +146,11 @@
   .rs-calendar-table-header-cell-content:hover {
   color: #8f8f91;
 }
+
+.rs-calendar-body {
+  padding: 0px;
+}
+
 
 .radio-button {
   -webkit-box-sizing: border-box !important;

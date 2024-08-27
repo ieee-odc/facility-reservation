@@ -66,33 +66,69 @@
   height: 100%;
 }
 
-.calendar-page__sidebar::-webkit-scrollbar, 
+.calendar-page__sidebar::-webkit-scrollbar {
+  width: 0px;
+  background: rgb(1, 53, 101);
+
+}
+
+.calendar-page__sidebar::-webkit-scrollbar-track{
+  border-radius: 20px;
+  background: rgb(1, 53, 101);
+}
+
+.calendar-page__sidebar::-webkit-scrollbar-thumb{
+  background: rgb(1, 53, 101);
+  border-radius: 10px;
+  cursor: grab;
+}
+.calendar-page__sidebar::-webkit-scrollbar-thumb:active{
+  background: rgb(1, 53, 101);
+  border-radius: 20px;
+  cursor: grabbing;
+}
+
+.calendar-page__sidebar::-webkit-scrollbar-thumb:hover{
+  background: rgb(1, 53, 101);
+  transition: cursor 4s ease-in-out;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 .calendar-page_calendar::-webkit-scrollbar {
   width: 12px;
   background: #0b0be000;
 
 }
 
-.calendar-page__sidebar::-webkit-scrollbar-track,
 .calendar-page_calendar::-webkit-scrollbar-track {
   border-radius: 20px;
   background: #0808dd00;
 }
 
-.calendar-page__sidebar::-webkit-scrollbar-thumb,
 .calendar-page_calendar::-webkit-scrollbar-thumb {
   background: #e3e3e3;
   border-radius: 10px;
   cursor: grab;
 }
-.calendar-page__sidebar::-webkit-scrollbar-thumb:active,
 .calendar-page_calendar::-webkit-scrollbar-thumb:active {
   background: #dbdada;
   border-radius: 20px;
   cursor: grabbing;
 }
 
-.calendar-page__sidebar::-webkit-scrollbar-thumb:hover,
 .calendar-page_calendar::-webkit-scrollbar-thumb:hover {
   background: #bcbcbc;
   transition: cursor 4s ease-in-out;
@@ -100,7 +136,9 @@
 
 
 
-
+.calendar-filters {
+  padding-top: 10px;
+}
 
 
 .rs-calendar-header-has-month:not(.rs-calendar-header-has-time) {
