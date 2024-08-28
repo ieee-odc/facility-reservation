@@ -189,28 +189,27 @@ const Navbar = () => {
     setShowProfileCard(!showProfileCard);
   };
   const toggleNotificationsCard = async () => {
-    if (!showNotificationsCard && !hasBeenOpened) {
-      // If the card is being opened and it hasn't been opened before
-      setHasBeenOpened(true);
-    } else if (showNotificationsCard && hasBeenOpened) {
-      // If the card is being closed and it has been opened before
+    setShowNotificationsCard(!showNotificationsCard);
+    
+    setHasBeenOpened(true);
+if (!showNotificationsCard && hasBeenOpened) {
+     
       try {
-        // Mark all notifications as read on the server
+       
         await axios.patch(`http://localhost:3000/api/notifications/mark-as-read/${currentId}`);
-        
-        // Update notifications state
+       
         setNotifications((prevNotifications) =>
           prevNotifications.map((notification) => ({
             ...notification,
             read: true,
           }))
         );
-        setUnreadCount(0); // Reset unread count
+        setUnreadCount(0);
       } catch (error) {
         console.error("Error marking notifications as read:", error);
       }
     }
-    setShowNotificationsCard((prev) => !prev);
+   
   };
   
   
@@ -343,7 +342,7 @@ const Navbar = () => {
     style={{ width: "26px", height: "26px" }}
     onClick={toggleNotificationsCard}
   />
-  {unreadCount > 0 && (
+  {unreadCount > 0 && !hasBeenOpened && (
     <div className="notification-badge">
       {unreadCount}
     </div>
