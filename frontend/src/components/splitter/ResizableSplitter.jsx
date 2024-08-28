@@ -3,7 +3,7 @@ import './ResizableSplitter.css';
 
 const ResizableSplitter = ({ leftComponent, rightComponent }) => {
     const [dragging, setDragging] = useState(false);
-    const [dividerPosition, setDividerPosition] = useState(22);
+    const [dividerPosition, setDividerPosition] = useState(20);
     const containerRef = useRef(null);
 
     const handleDragStart = () => {
@@ -24,7 +24,6 @@ const ResizableSplitter = ({ leftComponent, rightComponent }) => {
         setDividerPosition(newDividerPosition);
     };
 
-    // Mouse event handlers
     const onMouseDown = (e) => {
         e.preventDefault();
         handleDragStart();
