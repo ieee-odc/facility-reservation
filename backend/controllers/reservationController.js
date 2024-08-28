@@ -1,5 +1,9 @@
 import { Reservation } from "../models/reservationModel.js";
 import { Facility } from "../models/facilityModel.js";
+import ReservationInitiator from "../models/reservationInitiatorModel.js";
+import { getAllAdmins } from "./riController.js";
+import { findAllFacilities } from "./facilityController.js";
+import { sendSetupEmail } from "../utils/emailService.js";
 
 export const findAllReservations = async (req, res) => {
   try {
@@ -65,23 +69,32 @@ export const addReservation = async (req, res) => {
       effective,
       materials,
       files,
-      entity
+      entity,
     } = req.body["0"];
-console.log("req body,", req.body["0"]);
 
-console.log("hello",{
-  facility,
-  motive,
-  date,
-  startTime,
-  endTime,
-  state,
-  event,
-  effective,
-  materials,
-  files
-});
+    console.log("facility", facility);
 
+
+    let admins;
+
+    try {
+      admins = await ReservationInitiator.find({ role: "Admin" }).select(
+        "-password"
+      );
+    } catch (error) {
+      console.log("error fron fetch admin", error);
+    }
+
+    let entityName;
+    try {
+      entityName = await ReservationInitiator.find({ _id: entity }).select(
+        "-password"
+      );
+    } catch (error) {
+      console.log("error fron fetch admin", error);
+    }
+
+    console.log("admins", admins);
 
     const reservation = await Reservation.create({
       facility,
@@ -94,11 +107,25 @@ console.log("hello",{
       effective,
       materials,
       files,
-      entity
+      entity,
     });
+
+    const facilityLabel = await Facility.find({ _id: facility });
+
+    console.log("facilityLabel", facilityLabel);
+
+    for (const admin of admins) {
+      await sendSetupEmail(
+        admin.email,
+        "New Reservation Submitted",
+        `A new reservation has been created for the facility "${facilityLabel[0].label}" on ${date} by ${entityName[0].name}.`
+      );
+    }
 
     return res.status(201).json(reservation);
   } catch (error) {
+    console.log("error", error);
+
     return res.status(500).json({ message: error.message });
   }
 };
@@ -160,7 +187,7 @@ export const getAvailableFacilities = async (req, res) => {
       .filter((reservation) => reservation.state === "Pending")
       .map((reservation) => reservation.facility);
 
-    const allFacilities = await Facility.find({state: "Bookable"});
+    const allFacilities = await Facility.find({ state: "Bookable" });
     const availableFacilities = allFacilities.filter(
       (facility) => !occupiedFacilities.includes(facility._id.toString())
     );

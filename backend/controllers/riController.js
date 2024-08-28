@@ -68,6 +68,8 @@ export const getAllAdmins= async (req, res) => {
     const initiators = await ReservationInitiator.find({role: "Admin"}).select("-password");
     res.status(200).json(initiators);
   } catch (error) {
+    console.log("error fron fetch admin", error);
+    
     res.status(500).json({ message: "Error fetching users", error });
   }
 };

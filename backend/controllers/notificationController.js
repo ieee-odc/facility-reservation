@@ -24,8 +24,6 @@ export const getNotificationById = async (req, res) => {
 export const createNotification = async (req, res) => {
   const { title, message, recipient } = req.body;
 
-  console.log("req.body noti", req.body);
-
   try {
     const notifications = recipient.map(({ value }) => ({
       title,
@@ -39,7 +37,6 @@ export const createNotification = async (req, res) => {
     res.status(400).json({ message: error.message });
   }
 };
-
 
 export const updateNotification = async (req, res) => {
   try {
