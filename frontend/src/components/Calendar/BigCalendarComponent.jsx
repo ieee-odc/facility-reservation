@@ -6,17 +6,20 @@ import 'react-big-calendar/lib/css/react-big-calendar.css';
 import './style.css';
 import EventModal from './EventModal';
 import ParentComp from './parentComp';
+import ReservationsModal1 from './ReservationsModal1';
+import EventModal1 from "./EventModal1";
 
 
 const localizer = momentLocalizer(moment);
 
-const BigCalendarComponent = ({ events, requests, viewType, currentId }) => {
+const BigCalendarComponent = ({ events, requests, viewType, currentId }) => {  
   const [allEvents, setAllEvents] = useState([]);
   const [selectedEvent, setSelectedEvent] = useState(null);
   const [eventModalShow, setEventModalShow] = useState(false);
-  const [slotModalShow, setSlotModalShow] = useState(false);
+  const [isReservationModalOpen, setIsReservationModalOpen] = useState(false);
   const [selectedSlot, setSelectedSlot] = useState(null);
   const [filterState, setFilterState] = useState("All");
+  const [isEventModalOpen, setIsEventModalOpen] = useState(false);
 
 
   useEffect(() => {
@@ -48,7 +51,7 @@ const BigCalendarComponent = ({ events, requests, viewType, currentId }) => {
   
   const handleSlotSelect = ({ start, end }) => {
     setSelectedSlot({ start, end });
-    setSlotModalShow((prev) => true);
+    viewType === "requests" ?setIsReservationModalOpen((prev) => true):setIsEventModalOpen((prev) => true);
   };
   
   const handleCancel = (eventId) => {
@@ -129,6 +132,7 @@ const BigCalendarComponent = ({ events, requests, viewType, currentId }) => {
   );
   
   return (
+    <>
     <div className="big-calendar">
       <Calendar
         localizer={localizer}
@@ -146,6 +150,8 @@ const BigCalendarComponent = ({ events, requests, viewType, currentId }) => {
         }}
         className="the-calendar"
       />
+    </div>
+
 {selectedEvent && (
   <EventModal
     show={eventModalShow}
@@ -155,17 +161,24 @@ const BigCalendarComponent = ({ events, requests, viewType, currentId }) => {
     viewType={viewType}
   />
 )}
-{selectedSlot && slotModalShow && (
-  <ParentComp
-    isOpen={slotModalShow}
-    onRequestClose={() => setSlotModalShow(false)}
+{selectedSlot && isReservationModalOpen && viewType==="requests"  && (
+  <ReservationsModal1
+    open={isReservationModalOpen}
+    onClose={() => setIsReservationModalOpen(false)}
+    slotDetails={selectedSlot}
+    numberOfFacilities={1}
+    currentId={currentId}
+  />
+)}
+{selectedSlot && isEventModalOpen && viewType==="events"  && (
+  <EventModal1
+    open={isEventModalOpen}
+    onClose={() => setIsEventModalOpen(false)}
     slotDetails={selectedSlot}
     currentId={currentId}
   />
 )}
-
-    </div>
-  );
+  </>);
   
 
 

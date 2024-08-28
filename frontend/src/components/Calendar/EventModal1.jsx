@@ -4,13 +4,14 @@ import axios from "axios";
 import "../event/event.css";
 import { useAuth } from "../../context/authContext/AuthProvider";
 import FacilitiesForm from "./FacilitiesModal.jsx"; // Adjust the path as needed
+import moment from "moment";
 
-const EventForm = ({ open, onClose, onSubmit }) => {
+const EventForm = ({ open, onClose, onSubmit, slotDetails }) => {
   const { currentUser } = useAuth();
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
-  const [startDate, setStartDate] = useState(new Date().toISOString().split("T")[0]);
-  const [endDate, setEndDate] = useState(new Date().toISOString().split("T")[0]);
+  const [startDate, setStartDate] = useState(moment(slotDetails?.start)?.format("YYYY-MM-DD"));
+  const [endDate, setEndDate] = useState(moment(slotDetails?.end)?.subtract(1, 'days')?.format("YYYY-MM-DD"));
   const [numberOfFacilities, setNumberOfFacilities] = useState(1);
   const [organizer, setOrganizer] = useState("");
   const [facilitiesModalOpen, setFacilitiesModalOpen] = useState(false);
