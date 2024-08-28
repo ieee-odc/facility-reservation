@@ -4,6 +4,7 @@ import axios from "axios";
 import "../event/event.css";
 import { useAuth } from "../../context/authContext/AuthProvider";
 import FacilitiesForm from "./FacilitiesModal.jsx"; // Adjust the path as needed
+import EventModal1 from "./EventModal1";
 
 const formatDateForInput = (dateString) => {
   // Convert date string from 'M/D/YYYY, H:mm:ss AM/PM' to 'YYYY-MM-DD'
