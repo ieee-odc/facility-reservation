@@ -8,9 +8,9 @@ import axios from "axios";
 import { Dropdown, DatePicker, TagPicker } from "rsuite";
 import "rsuite/dist/rsuite.min.css";
 import { useNavigate } from "react-router-dom";
-import ParentComponent from "./parentComp";
 import EventModal1 from "./EventModal1";
 import ResizableSplitter from "../splitter/ResizableSplitter";
+import ReservationsModal1 from "./ReservationsModal1";
 
 const CalendarPage = ({ currentId, currentRole }) => {
   const [events, setEvents] = useState([]);
@@ -18,8 +18,8 @@ const CalendarPage = ({ currentId, currentRole }) => {
   const [requests, setRequests] = useState([]);
   const [facilities, setFacilities] = useState({});
   const [viewType, setViewType] = useState("requests");
-  const [isParentModalOpen, setIsParentModalOpen] = useState(false);
   const [isEventModalOpen, setIsEventModalOpen] = useState(false);
+  const [isReservationModalOpen, setIsReservationModalOpen] = useState(false);
 
   const [filterState, setFilterState] = useState("All");
   const [selectedFacility, setSelectedFacility] = useState("All");
@@ -101,21 +101,7 @@ const CalendarPage = ({ currentId, currentRole }) => {
       }
     };
 
-    const fetchOrganizerName = async (organizerId) => {
-      try {
-        const response = await axios.get(
-          `http://localhost:3000/api/reservationInitiators/${organizerId}`
-        );
-        return response.data.name;
-      } catch (error) {
-        console.error(
-          `Error fetching organizer name for ID ${organizerId}`,
-          error
-        );
-        return "Unknown Organizer";
-      }
-    };
-
+    
     const fetchEvents = async () => {
       try {
         let url;
@@ -150,7 +136,7 @@ const CalendarPage = ({ currentId, currentRole }) => {
           );
 
           setEvents(formattedEvents);
-          setEventData(eventsData)
+          setEventData(eventsData);
         } else {
           console.error("Unexpected response format", eventsData);
         }
@@ -164,6 +150,24 @@ const CalendarPage = ({ currentId, currentRole }) => {
     fetchReservations();
   }, [currentId, currentRole, facilities]);
 
+
+  const fetchOrganizerName = async (organizerId) => {
+    axios
+      .get(`http://localhost:3000/api/reservationInitiators/${organizerId}`)
+      .then((response) => {
+
+        return response.data.name;
+      })
+      .catch((error) => {
+        console.error(
+          `Error fetching organizer name for ID ${organizerId}`,
+          error
+        );
+        return "Unknown Organizer";
+      });
+  };
+
+
   const handleDropdownChange = (key) => {
     setViewType(key);
   };
@@ -176,12 +180,12 @@ const CalendarPage = ({ currentId, currentRole }) => {
     setSelectedFacility(key);
   };
 
-  const handleNewReservation = () => {
-    setIsParentModalOpen(true);
-  };
-
   const handleNewEvent = () => {
     setIsEventModalOpen(true);
+  };
+
+  const handleNewRes = () => {
+    setIsReservationModalOpen(true);
   };
 
   useEffect(() => {
@@ -262,7 +266,7 @@ const CalendarPage = ({ currentId, currentRole }) => {
                   setViewType={setViewType}
                   events={eventData}
                   requests={requests}
-                  currentId={currentId} 
+                  currentId={currentId}
                   currentRole={currentRole}
                 />
               </div>
@@ -295,7 +299,6 @@ const CalendarPage = ({ currentId, currentRole }) => {
                     value={filterStates}
                     onChange={setFilterStates}
                     placeholder="Filter by State"
-                    
                   />
 
                   <TagPicker
@@ -309,10 +312,8 @@ const CalendarPage = ({ currentId, currentRole }) => {
                     value={selectedFacilities}
                     onChange={setSelectedFacilities}
                     placeholder="Filter by Facility"
-                    
                   />
 
-                  
                   <DatePicker
                     className="the-button"
                     format="HH:mm"
@@ -332,11 +333,11 @@ const CalendarPage = ({ currentId, currentRole }) => {
                     style={{ width: 120, marginRight: 10 }}
                   />
                   <div className="add-button">
-                    <button type="button" onClick={handleNewReservation}>
-                      + Add reservation
-                    </button>
                     <button type="button" onClick={handleNewEvent}>
                       + Add event
+                    </button>
+                    <button type="button" onClick={handleNewRes}>
+                      + Add res
                     </button>
                   </div>
                 </div>
@@ -354,11 +355,14 @@ const CalendarPage = ({ currentId, currentRole }) => {
           />
         </div>
       </div>
-      <ParentComponent
-        isOpen={isParentModalOpen}
-        onRequestClose={() => setIsParentModalOpen(false)}
+
+      <ReservationsModal1
+        open={isReservationModalOpen}
+        onClose={() => setIsReservationModalOpen(false)}
         currentId={currentId}
+        numberOfFacilities={1}
       />
+
       <EventModal1
         open={isEventModalOpen}
         onClose={() => setIsEventModalOpen(false)}

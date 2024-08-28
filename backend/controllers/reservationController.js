@@ -65,9 +65,23 @@ export const addReservation = async (req, res) => {
       effective,
       materials,
       files,
-      currentId
-    } = req.body;
-console.log("req body,", req.body);
+      entity
+    } = req.body["0"];
+console.log("req body,", req.body["0"]);
+
+console.log("hello",{
+  facility,
+  motive,
+  date,
+  startTime,
+  endTime,
+  state,
+  event,
+  effective,
+  materials,
+  files
+});
+
 
     const reservation = await Reservation.create({
       facility,
@@ -80,7 +94,7 @@ console.log("req body,", req.body);
       effective,
       materials,
       files,
-      entity: currentId
+      entity
     });
 
     return res.status(201).json(reservation);
