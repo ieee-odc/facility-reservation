@@ -9,7 +9,13 @@ import "./style.css";
 
 Modal.setAppElement("#root");
 
-function ParentComp({ isOpen, onRequestClose, slotDetails, currentView, currentId }) {
+function ParentComp({
+  isOpen,
+  onRequestClose,
+  slotDetails,
+  currentView,
+  currentId,
+}) {
   const [reserverTimeDateSubmitted, setReserverTimeDateSubmitted] =
     useState(false);
   const [reserverSalleFormSubmitted, setReserverSalleFormSubmitted] =
@@ -90,11 +96,12 @@ function ParentComp({ isOpen, onRequestClose, slotDetails, currentView, currentI
   return (
     <div>
       <Modal
+        size="md"
         isOpen={isOpen && !reserverTimeDateSubmitted}
         onRequestClose={handleClose}
         contentLabel="Reserver Time Date Modal"
         overlayClassName="custom-modal-overlay"
-        className="custom-modal-content"
+        
         shouldCloseOnOverlayClick={true}
       >
         <ReserverTimeDate
@@ -105,6 +112,7 @@ function ParentComp({ isOpen, onRequestClose, slotDetails, currentView, currentI
       </Modal>
 
       <Modal
+        size="md"
         isOpen={
           isOpen &&
           reserverTimeDateSubmitted &&
@@ -114,7 +122,7 @@ function ParentComp({ isOpen, onRequestClose, slotDetails, currentView, currentI
         onRequestClose={handleBackToTimeDate}
         contentLabel="Reserver Salle Form Modal"
         overlayClassName="custom-modal-overlay"
-        className="custom-modal-content"
+        
         shouldCloseOnOverlayClick={true}
       >
         <ReserverSalleform
@@ -126,10 +134,11 @@ function ParentComp({ isOpen, onRequestClose, slotDetails, currentView, currentI
       </Modal>
 
       <Modal
+        size="md"
         isOpen={isOpen && reserverSalleFormSubmitted && !equipmentFormSubmitted}
         contentLabel="Equipment Reservation Form Modal"
         overlayClassName="custom-modal-overlay"
-        className="custom-modal-content"
+        
         shouldCloseOnOverlayClick={true}
       >
         <EquipmentReservationForm
@@ -140,10 +149,11 @@ function ParentComp({ isOpen, onRequestClose, slotDetails, currentView, currentI
       </Modal>
 
       <Modal
+        size="md"
         isOpen={isOpen && equipmentFormSubmitted}
         contentLabel="Reservation Details Modal"
         overlayClassName="custom-modal-overlay"
-        className="custom-modal-content"
+        
         shouldCloseOnOverlayClick={true}
       >
         <ReservationDetails

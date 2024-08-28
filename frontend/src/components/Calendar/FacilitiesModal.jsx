@@ -18,6 +18,10 @@ const FacilitiesForm = ({ open, onClose, numberOfFacilities, form1 }) => {
     materials: [],
     entity: form1.organizer,
   }));
+  const start = new Date(form1.startDate).toISOString().split("T")[0];
+  const end = new Date(form1.endDate).toISOString().split("T")[0];
+
+
   const [facilities, setFacilities] = useState(initialFacilities);
   const [errorMessages, setErrorMessages] = useState(
     Array(numberOfFacilities).fill("")
@@ -32,25 +36,32 @@ const FacilitiesForm = ({ open, onClose, numberOfFacilities, form1 }) => {
   useEffect(() => {
     const fetchAvailableFacilities = async () => {
       try {
-        const response = await axios.get('http://localhost:3000/api/reservations/available-facilities', {
-          params: {
-            date: facilities[0]?.date,
-            startTime: facilities[0]?.startTime,
-            endTime: facilities[0]?.endTime
+        const response = await axios.get(
+          "http://localhost:3000/api/reservations/available-facilities",
+          {
+            params: {
+              date: facilities[0]?.date,
+              startTime: facilities[0]?.startTime,
+              endTime: facilities[0]?.endTime,
+            },
           }
-        });
+        );
         console.log(response);
-  
+
         setAvailableFacilities(response.data.availableFacilities);
-        setPendingFacilities(response.data.pendingFacilities.map(facility => facility?.label));
+        setPendingFacilities(
+          response.data.pendingFacilities.map((facility) => facility?.label)
+        );
       } catch (error) {
         console.error("Error fetching available facilities:", error);
       }
     };
-  
+
     const fetchAvailableEquipments = async () => {
       try {
-        const response = await axios.get("http://localhost:3000/api/equipments");
+        const response = await axios.get(
+          "http://localhost:3000/api/equipments"
+        );
         const data = response.data.data.map((item) => ({
           label: item.label,
           value: item._id,
@@ -60,11 +71,10 @@ const FacilitiesForm = ({ open, onClose, numberOfFacilities, form1 }) => {
         console.error("Error fetching available equipments:", error);
       }
     };
-  
+
     fetchAvailableFacilities();
     fetchAvailableEquipments();
   }, [facilities]);
-  
 
   const handleChange = (index, field, value) => {
     const updatedFacilities = [...facilities];
@@ -109,137 +119,166 @@ const FacilitiesForm = ({ open, onClose, numberOfFacilities, form1 }) => {
       navigate("/calendar");
       onClose();
     } catch (error) {
-      showNotification("Failed to submit the event. Please try again.", "error");
+      showNotification(
+        "Failed to submit the event. Please try again.",
+        "error"
+      );
     }
   };
 
   return (
-    <Modal open={open} onClose={onClose} size="lg">
+    <Modal open={open} onClose={onClose} size="md">
       <Modal.Header>
         <Modal.Title>Facilities Form</Modal.Title>
       </Modal.Header>
       <Modal.Body>
-        <PanelGroup accordion bordered>
+      <div>
+        <div className="form-title-container">
+          <h2 className="form-title">Facilities Form</h2>
+        </div><PanelGroup accordion bordered>
+        <form className="form form-facilities" onSubmit={handleSubmit}>
           {facilities.map((facility, index) => (
-            <Panel header={`Facility n° ${index + 1}`} defaultExpanded={index === 0} key={index}>
-              <div className="facility-row">
-                {/* Date */}
-                <div className="facility-form-group">
-                  <label>Date</label>
+            <Panel header={`Facility n° ${index+1}`} defaultExpanded={index===0}>
+            <div key={index} className="facility-row">
+              <div className="facility-form-group">
+                <label>Date</label>
+                <div className="facility-input-container">
                   <input
                     type="date"
                     value={facility.date}
-                    onChange={(e) => handleChange(index, "date", e.target.value)}
-                    min={form1.startDate}
-                    max={form1.endDate}
+                    onChange={(e) =>
+                      handleChange(index, "date", e.target.value)
+                    }
+                    min={start}
+                    max={end}
                     required
                   />
                 </div>
-                {/* Start Time */}
-                <div className="facility-form-group">
-                  <label>Start Time</label>
+              </div>
+
+              <div className="facility-form-group">
+                <label>Start Time</label>
+                <div className="facility-input-container">
                   <input
                     type="time"
                     value={facility.startTime}
-                    onChange={(e) => handleChange(index, "startTime",
-                        e.target.value)}
-                        required
-                      />
-                    </div>
-                    {/* End Time */}
-                    <div className="facility-form-group">
-                      <label>End Time</label>
-                      <input
-                        type="time"
-                        value={facility.endTime}
-                        onChange={(e) => handleChange(index, "endTime", e.target.value)}
-                        required
-                      />
-                      {errorMessages[index] && (
-                        <span className="error-message">{errorMessages[index]}</span>
-                      )}
-                    </div>
-                  </div>
-                  <div className="facility-row">
-                    {/* Facility */}
-                    <div className="facility-form-group">
-                      <label>Facility</label>
-                      <select
-                        value={facility.facility}
-                        onChange={(e) => handleChange(index, "facility", e.target.value)}
-                        required
-                      >
-                        <option value="">Select a facility</option>
-                        {availableFacilities.map((facility) => (
-                          <option key={facility._id} value={facility._id}>
-                            {facility.name}
-                          </option>
-                        ))}
-                      </select>
-                    </div>
-                    {/* Effective */}
-                    <div className="facility-form-group">
-                      <label>Effective</label>
-                      <input
-                        type="number"
-                        value={facility.effective}
-                        onChange={(e) => handleChange(index, "effective", e.target.value)}
-                        required
-                      />
-                    </div>
-                  </div>
-                  {/* Materials */}
-                  <div className="facility-form-group">
-                    <label>Materials</label>
-                    <TagPicker
-                      block
-                      data={availableEquipments}
-                      value={facility.materials}
-                      onChange={(value) => handleChange(index, "materials", value)}
-                      placeholder="Select materials"
-                    />
-                  </div>
-                  {/* Motive */}
-                  <div className="facility-form-group">
-                    <label htmlFor="motif" className="required-label">
-                      Reasons for reservation
-                    </label>
-                    <div className="facility-input-container">
-                      <select
-                        id="motif"
-                        className="event-input"
-                        value={facility.motive}
-                        onChange={(e) =>
-                          handleChange(index, "motive", e.target.value)
-                        }
-                      >
-                        <option value="">Select a reason</option>
-                        <option value="Club meeting">Club meeting</option>
-                        <option value="Workshop">Workshop</option>
-                        <option value="Conference">Conference</option>
-                        <option value="Special event">Special event</option>
-                      </select>
-                    </div>
-                  </div>
+                    onChange={(e) =>
+                      handleChange(index, "startTime", e.target.value)
+                    }
+                    required
+                  />
+                  {errorMessages[index] && (
+                    <span className="error-message">
+                      {errorMessages[index]}
+                    </span>
+                  )}
+                </div>
+              </div>
 
-                  <div className="facility-form-group">
-                    <label>Other reasons (optional)</label>
-                    <div className="facility-input-container">
-                      <textarea
-                        id="otherMotif"
-                        type="text"
-                        className="event-input"
-                        value={facility.motive}
-                        onChange={(e) =>
-                          handleChange(index, "motive", e.target.value)
-                        }
-                        required
-                      />
-                    </div>
-                  </div>
-          
-                  {/* Files */}
-                  <div className="facility-form-group">
+              <div className="facility-form-group">
+                <label>End Time</label>
+                <div className="facility-input-container">
+                  <input
+                    type="time"
+                    value={facility.endTime}
+                    onChange={(e) =>
+                      handleChange(index, "endTime", e.target.value)
+                    }
+                    required
+                  />
+                  {errorMessages[index] && (
+                    <span className="error-message">
+                      {errorMessages[index]}
+                    </span>
+                  )}
+                </div>
+              </div>
+
+              <div className="facility-form-group">
+                <label>Facility</label>
+                <div className="facility-input-container">
+                  <select
+                    id="facility"
+                    className="input"
+                    value={facility.facility}
+                    onChange={(e) =>
+                      handleChange(index, "facility", e.target.value)
+                    }
+                  >
+                    <option value="">Select a facility</option>
+                    {Array.isArray(availableFacilities) &&
+                      availableFacilities.map((fac) => (
+                        <option key={fac._id} value={fac._id}>
+                          {fac.label}
+                        </option>
+                      ))}
+                  </select>
+                </div>
+              </div>
+
+              <div className="facility-form-group">
+                <label>Effective</label>
+                <div className="facility-input-container">
+                  <input
+                    type="number"
+                    value={facility.effective}
+                    onChange={(e) =>
+                      handleChange(index, "effective", e.target.value)
+                    }
+                    required
+                  />
+                </div>
+              </div>
+
+              <div className="facility-form-group">
+                <label htmlFor="motif" className="required-label">
+                  Reasons for reservation
+                </label>
+                <div className="facility-input-container">
+                  <select
+                    id="motif"
+                    className="event-input"
+                    value={facility.motive}
+                    onChange={(e) =>
+                      handleChange(index, "motive", e.target.value)
+                    }
+                  >
+                    <option value="">Select a reason</option>
+                    <option value="Club meeting">Club meeting</option>
+                    <option value="Workshop">Workshop</option>
+                    <option value="Conference">Conference</option>
+                    <option value="Special event">Special event</option>
+                  </select>
+                </div>
+              </div>
+
+              <div className="facility-form-group">
+                <label>Other reasons (optional)</label>
+                <div className="facility-input-container">
+                  <textarea
+                    id="otherMotif"
+                    type="text"
+                    className="event-input"
+                    value={facility.motive}
+                    onChange={(e) =>
+                      handleChange(index, "motive", e.target.value)
+                    }
+                    required
+                  />
+                </div>
+              </div>
+
+              <div className="facility-form-group">
+                <label>Materials</label>
+                <TagPicker
+                  className="facility-input-container"
+                  data={availableEquipments}
+                  style={{ width: 300 }}
+                  onChange={(value) => handleChange(index, "materials", value)}
+                />
+              </div>
+
+              <div className="facility-form-group">
                 <label htmlFor={`file-input-${index}`}>Files</label>
                 <div className="file-upload-container">
                   <input
@@ -273,21 +312,24 @@ const FacilitiesForm = ({ open, onClose, numberOfFacilities, form1 }) => {
                   </div>
                 </div>
               </div>
-                </Panel>
-              ))}
-            </PanelGroup>
-          </Modal.Body>
-          <Modal.Footer>
-            <Button onClick={handleSubmit} appearance="primary">
-              Submit
-            </Button>
-            <Button onClick={onClose} appearance="subtle">
-              Cancel
-            </Button>
-          </Modal.Footer>
-        </Modal>
-      );
-    };
-    
-    export default FacilitiesForm;
-    
+            </div>
+            </Panel>
+          ))}
+          
+        </form>
+        </PanelGroup>
+      </div>
+      </Modal.Body>
+      <Modal.Footer>
+        <Button onClick={handleSubmit} appearance="primary">
+          Submit
+        </Button>
+        <Button onClick={onClose} appearance="subtle">
+          Cancel
+        </Button>
+      </Modal.Footer>
+    </Modal>
+  );
+};
+
+export default FacilitiesForm;

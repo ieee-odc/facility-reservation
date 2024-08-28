@@ -14,7 +14,17 @@ const EventForm = ({ open, onClose, onSubmit }) => {
   const [numberOfFacilities, setNumberOfFacilities] = useState(1);
   const [organizer, setOrganizer] = useState("");
   const [facilitiesModalOpen, setFacilitiesModalOpen] = useState(false);
+  const today = new Date().toISOString().split("T")[0]; 
+  const handleStartDateChange = (e) => {
+    setStartDate(e.target.value);
+    if (endDate && e.target.value > endDate) {
+      setEndDate(e.target.value);
+    }
+  };
 
+  const handleEndDateChange = (e) => {
+    setEndDate(e.target.value);
+  };
   useEffect(() => {
     const fetchUser = async () => {
       try {
@@ -30,12 +40,7 @@ const EventForm = ({ open, onClose, onSubmit }) => {
     fetchUser();
   }, [currentUser]);
 
-  const handleStartDateChange = (e) => {
-    setStartDate(e.target.value);
-    if (endDate && e.target.value > endDate) {
-      setEndDate(e.target.value);
-    }
-  };
+  
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -50,21 +55,24 @@ const EventForm = ({ open, onClose, onSubmit }) => {
   };
 
   const handleNext = () => {
-    // Open the FacilitiesForm modal
     setFacilitiesModalOpen(true);
   };
 
   return (
     <>
-      <Modal open={open} onClose={onClose} size="md">
-        <Modal.Header>
-          <Modal.Title>Event Form</Modal.Title>
-        </Modal.Header>
+      <Modal open={open} onClose={onClose} size="md"
+      className="custom-modal-overlay"
+      >
+        
         <Modal.Body>
-          <form className="event-form" onSubmit={handleSubmit}>
-            {/* Event Name */}
-            <div className="event-form-group">
-              <label htmlFor="event-name">Event Name</label>
+        <div >
+        <div className="event-form-title-container">
+          <h2 className="event-form-title">Event Form</h2>
+        </div>
+        <form className="event-form" onSubmit={handleSubmit}>
+          <div className="event-form-group">
+            <label htmlFor="event-name">Event Name</label>
+            <div className="event-input-container">
               <input
                 type="text"
                 id="event-name"
@@ -74,9 +82,10 @@ const EventForm = ({ open, onClose, onSubmit }) => {
                 required
               />
             </div>
-            {/* Event Description */}
-            <div className="event-form-group">
-              <label htmlFor="event-description">Event Description</label>
+          </div>
+          <div className="event-form-group">
+            <label htmlFor="event-description">Event Description</label>
+            <div className="event-input-container">
               <input
                 type="text"
                 id="event-description"
@@ -86,35 +95,40 @@ const EventForm = ({ open, onClose, onSubmit }) => {
                 required
               />
             </div>
-            {/* Start Date */}
-            <div className="event-form-group">
-              <label htmlFor="start-date">Start Date</label>
+          </div>
+          <div className="event-form-group">
+            <label htmlFor="start-date">Start Date</label>
+            <div className="event-input-container">
               <input
                 type="date"
                 id="start-date"
                 className="event-input"
                 value={startDate}
                 onChange={handleStartDateChange}
-                min={new Date().toISOString().split("T")[0]}
+                min={today}
                 required
               />
             </div>
-            {/* End Date */}
-            <div className="event-form-group">
-              <label htmlFor="end-date">End Date</label>
+          </div>
+          <div className="event-form-group">
+            <label htmlFor="end-date">End Date</label>
+            <div className="event-input-container">
               <input
                 type="date"
                 id="end-date"
                 className="event-input"
                 value={endDate}
-                onChange={(e) => setEndDate(e.target.value)}
-                min={startDate}
+                onChange={handleEndDateChange}
+                min={startDate || today}
                 required
               />
             </div>
-            {/* Number of Facilities */}
-            <div className="event-form-group">
-              <label htmlFor="number-of-facilities">Number of Facilities Required</label>
+          </div>
+          <div className="event-form-group">
+            <label htmlFor="number-of-facilities">
+              Number of Facilities Required
+            </label>
+            <div className="event-input-container">
               <input
                 type="number"
                 id="number-of-facilities"
@@ -124,7 +138,10 @@ const EventForm = ({ open, onClose, onSubmit }) => {
                 required
               />
             </div>
-          </form>
+          </div>
+          
+        </form>
+      </div>
         </Modal.Body>
         <Modal.Footer>
           <Button onClick={handleNext} appearance="primary">Next</Button>

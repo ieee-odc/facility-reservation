@@ -385,13 +385,14 @@
 .no-scroll {
   overflow: hidden !important;
 }
+
 .custom-modal-overlay {
-  position: fixed;
+  position: relative;
   top: 0;
   left: 0;
   right: 0;
   bottom: 0;
-  background-color: rgba(0, 0, 0, 0.75); 
+  background-color: rgba(208, 208, 208, 0.312); 
   z-index: 1000; 
 }
 
