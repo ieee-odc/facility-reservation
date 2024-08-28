@@ -337,7 +337,7 @@ const CalendarPage = ({ currentId, currentRole }) => {
                       + Add event
                     </button>
                     <button type="button" onClick={handleNewRes}>
-                      + Add res
+                      + Add reservation
                     </button>
                   </div>
                 </div>
