@@ -8,8 +8,8 @@ import axios from "axios";
 import { Dropdown, DatePicker, TagPicker } from "rsuite";
 import "rsuite/dist/rsuite.min.css";
 import { useNavigate } from "react-router-dom";
-import EventModal1 from "./EventModal1";
 import ResizableSplitter from "../splitter/ResizableSplitter";
+import EventModal1 from "./EventModal1";
 import ReservationsModal1 from "./ReservationsModal1";
 
 const CalendarPage = ({ currentId, currentRole }) => {

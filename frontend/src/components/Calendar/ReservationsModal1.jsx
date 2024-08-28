@@ -5,11 +5,13 @@ import "../event/event.css";
 import { useNavigate } from "react-router-dom";
 import { GrAttachment } from "react-icons/gr";
 import { useNotification } from "../../context/NotificationContext";
+import moment from "moment";
+import { format } from "date-fns";
 
-const ReservationsModal1 = ({ open, onClose, currentId, numberOfFacilities }) => {
-    
+const ReservationsModal1 = ({ open, onClose, currentId, numberOfFacilities, slotDetails }) => {
+
   const initialFacilities = Array.from({ length: numberOfFacilities }, () => ({
-    date: "",
+    date: moment(slotDetails?.start)?.format("YYYY-MM-DD"),
     startTime: "",
     endTime: "",
     facility: "",
@@ -19,7 +21,7 @@ const ReservationsModal1 = ({ open, onClose, currentId, numberOfFacilities }) =>
     materials: [],
     entity: currentId,
   }));
-  const start = new Date().toISOString().split("T")[0];
+  const start = new Date(moment(slotDetails?.start)).toISOString().split("T")[0];
   const end = new Date().toISOString().split("T")[0];
 
   const [facilities, setFacilities] = useState(initialFacilities);
