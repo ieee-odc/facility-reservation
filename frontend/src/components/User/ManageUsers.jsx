@@ -8,8 +8,10 @@ import {
 import InitiatorCard from "./InitiatorCard";
 import InitiatorForm from "./InitiatorForm";
 import InitiatorModal from "./InitiatorModal";
-import UploadCSV from "./UploadCSV";  // Import UploadCSV component
+import UploadCSV from "./UploadCSV"; 
 import { FaTimes } from "react-icons/fa";
+import { TagPicker } from "rsuite";
+
 import "./styles.css";
 import Navbar from "../navbar";
 
@@ -18,8 +20,13 @@ const ManageUsers = () => {
   const [selectedInitiator, setSelectedInitiator] = useState(null);
   const [modalIsOpen, setModalIsOpen] = useState(false);
   const [confirmationModalOpen, setConfirmationModalOpen] = useState(false);
-  const [uploadCSVModalOpen, setUploadCSVModalOpen] = useState(false); // State for UploadCSV modal
+  const [uploadCSVModalOpen, setUploadCSVModalOpen] = useState(false); 
   const [modalContent, setModalContent] = useState(null);
+  const [selectedRoles, setSelectedRoles] = useState([]); 
+
+  const [filter, setFilter] = useState({
+    role: []
+  })
 
   useEffect(() => {
     fetchInitiators();
@@ -134,17 +141,35 @@ const ManageUsers = () => {
     }
   };
 
+  const filteredInitiators = initiators.filter((initiator) => (filter.role.length === 0 || filter.role.includes(initiator.role)) )
+   
+
   return (
     <div>
       <Navbar />
       <div className="manage-users-container">
+      
         <div className="add-user-button">
           <button  onClick={openUploadCSVModal}>
             + Add New Initiator
           </button>
         </div>
+
+        <div className="filters">
+          <TagPicker
+            data={["Admin", "SuperAdmin", "User"].map(
+              (role) => ({ label: role, value: role })
+            )}
+            onChange={(value) =>
+              setFilter((prev) => ({ ...prev, role: value }))
+            }
+            placeholder="Filter by Role"
+            
+          />
+        </div>
+            
         <div className="initiator-cards">
-          {initiators.map((initiator) => (
+          {filteredInitiators.map((initiator) => (
             <InitiatorCard
               key={initiator._id}
               initiator={initiator}
