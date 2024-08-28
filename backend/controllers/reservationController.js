@@ -143,7 +143,7 @@ try {
   await sendSetupEmail(
     entityName.email,
     `A Reservation has been ${state}`,
-    `Your reservation for the facility : ${facilityLabel.label}, motive : ${reservation.motive}, on ${reservation.date} from ${reservation.startTime} to ${reservation.endTime} has been${state}.`
+    `Your reservation for the facility : ${facilityLabel.label}, motive : ${reservation.motive}, on ${reservation.date} from ${reservation.startTime} to ${reservation.endTime} has been ${state}.`
   );
   
   

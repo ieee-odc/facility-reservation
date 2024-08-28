@@ -23,6 +23,7 @@ export const getNotificationById = async (req, res) => {
 
 export const createNotification = async (req, res) => {
   const { title, message, recipient } = req.body;
+console.log("req.body notif", req.body);
 
   try {
     const notifications = recipient.map(({ value }) => ({
@@ -31,6 +32,8 @@ export const createNotification = async (req, res) => {
       recipient: value, 
     }));
 
+    console.log("notifications", notifications);
+    
     const savedNotifications = await Notification.insertMany(notifications);
     res.status(201).json(savedNotifications);
   } catch (error) {

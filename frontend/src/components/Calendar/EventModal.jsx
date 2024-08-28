@@ -11,6 +11,8 @@ const EventModal = ({ show, onHide, eventDetails, onCancel, viewType }) => {
   const { userLoggedIn, currentId, currentRole } = useAuth();
   
   const sendNotification = async (recipientId, title, message) => {
+    console.log("recipient ids", recipientId);
+    
     try {
       await axios.post("http://localhost:3000/api/notifications", {
         title,
@@ -32,7 +34,7 @@ const EventModal = ({ show, onHide, eventDetails, onCancel, viewType }) => {
       );
       
       await sendNotification(
-        eventDetails.entity, 
+        [{label :eventDetails.entity, value: eventDetails.entity}], 
         "Reservation Approved", 
         `Your reservation titled "${eventDetails.title}" has been approved.`
       );
@@ -55,7 +57,7 @@ const EventModal = ({ show, onHide, eventDetails, onCancel, viewType }) => {
   console.log("hello there");
 
       await sendNotification(
-        eventDetails.entity, 
+        [{label :eventDetails.entity, value: eventDetails.entity}], 
         "Reservation Rejected", 
         `Your reservation titled "${eventDetails.title}" has been rejected.`
       );
@@ -75,13 +77,7 @@ const EventModal = ({ show, onHide, eventDetails, onCancel, viewType }) => {
         `http://localhost:3000/api/${route}/${eventDetails.id}`,
         { state: "Cancelled" }
       );
-  
 
-      await sendNotification(
-        eventDetails.entity, 
-        "Reservation Cancelled", 
-        `Your reservation titled "${eventDetails.title}" has been cancelled.`
-      );
   
       onCancel(eventDetails.id);
       onHide();
