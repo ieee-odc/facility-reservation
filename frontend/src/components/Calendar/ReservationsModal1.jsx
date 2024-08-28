@@ -7,6 +7,8 @@ import { GrAttachment } from "react-icons/gr";
 import { useNotification } from "../../context/NotificationContext";
 import moment from "moment";
 import { format } from "date-fns";
+import { MdOutlineReduceCapacity } from "react-icons/md";
+
 
 const ReservationsModal1 = ({
   open,
@@ -243,27 +245,29 @@ try {
                       </div>
                     </div>
 
-                    <div className="facility-form-group">
-                      <label>Facility</label>
-                      <div className="facility-input-container">
-                        <select
-                          id="facility"
-                          className="input"
-                          value={facility.facility}
-                          onChange={(e) =>
-                            handleChange(index, "facility", e.target.value)
-                          }
-                        >
-                          <option value="">Select a facility</option>
-                          {Array.isArray(availableFacilities) &&
-                            availableFacilities.map((fac) => (
-                              <option key={fac._id} value={fac._id}>
-                                {fac.label}
-                              </option>
-                            ))}
-                        </select>
-                      </div>
-                    </div>
+              <div className="facility-form-group">
+                <label>Facility</label>
+                <div className="facility-input-container">
+                  <select
+                    id="facility"
+                    className="input"
+                    value={facility.facility}
+                    onChange={(e) =>
+                      handleChange(index, "facility", e.target.value)
+                    }
+                  >
+                    <option value="">Select a facility</option>
+                    {Array.isArray(availableFacilities) &&
+                      availableFacilities.map((fac) => (
+                        <option key={fac._id} value={fac._id}>
+                          {fac.label} - {fac.capacity} 👥
+
+
+                        </option>
+                      ))}
+                  </select>
+                </div>
+              </div>
 
                     <div className="facility-form-group">
                       <label>Effective</label>
