@@ -18,7 +18,7 @@ const ReservationsModal1 = ({
   slotDetails,
 }) => {
   const initialFacilities = Array.from({ length: numberOfFacilities }, () => ({
-    date: moment(slotDetails?.end)?.format("YYYY-MM-DD"),
+    date: slotDetails ? moment(slotDetails?.end)?.subtract(1, 'days')?.format("YYYY-MM-DD"): "",
     startTime: "",
     endTime: "",
     facility: "",
@@ -139,7 +139,15 @@ const ReservationsModal1 = ({
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    console.log("available facilities", availableFacilities);
     console.log("facilities", facilities);
+
+    const facilityLabel = availableFacilities.find(facility => facility._id === facilities[0].facility
+    );
+
+    console.log("label", facilityLabel);
+    console.log("date", facilities[0].date);
+    
 
     try {
       await axios.post("http://localhost:3000/api/reservations", {
@@ -156,7 +164,7 @@ try {
         await sendNotification(
           adminId,
           "New Reservation Created",
-          `A new reservation has been created for the facility "${facilityLabel}" on ${date}.`
+          `A new reservation has been created for the facility "${facilityLabel.label}" on ${facilities[0].date}.`
         );
   
 } catch (error) {
