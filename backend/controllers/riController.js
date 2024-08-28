@@ -63,6 +63,17 @@ export const getAllReservationInitiators = async (req, res) => {
   }
 };
 
+export const getAllAdmins= async (req, res) => {
+  try {
+    const initiators = await ReservationInitiator.find({role: "Admin"}).select("-password");
+    res.status(200).json(initiators);
+  } catch (error) {
+    console.log("error fron fetch admin", error);
+    
+    res.status(500).json({ message: "Error fetching users", error });
+  }
+};
+
 export const getReservationInitiatorById = async (req, res) => {
   const { id } = req.params;
 

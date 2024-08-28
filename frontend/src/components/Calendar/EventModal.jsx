@@ -31,7 +31,6 @@ const EventModal = ({ show, onHide, eventDetails, onCancel, viewType }) => {
         { state: "Approved" }
       );
       
-    
       await sendNotification(
         eventDetails.entity, 
         "Reservation Approved", 

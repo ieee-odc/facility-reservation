@@ -1,5 +1,9 @@
 import { Reservation } from "../models/reservationModel.js";
 import { Facility } from "../models/facilityModel.js";
+import ReservationInitiator from "../models/reservationInitiatorModel.js";
+import { getAllAdmins } from "./riController.js";
+import { findAllFacilities } from "./facilityController.js";
+import { sendSetupEmail } from "../utils/emailService.js";
 
 export const findAllReservations = async (req, res) => {
   try {
@@ -52,6 +56,7 @@ export const findReservationById = async (req, res) => {
   }
 };
 
+
 export const addReservation = async (req, res) => {
   try {
     const {
@@ -65,23 +70,14 @@ export const addReservation = async (req, res) => {
       effective,
       materials,
       files,
-      entity
+      entity,
     } = req.body["0"];
-console.log("req body,", req.body["0"]);
 
-console.log("hello",{
-  facility,
-  motive,
-  date,
-  startTime,
-  endTime,
-  state,
-  event,
-  effective,
-  materials,
-  files
-});
-
+    const [admins, entityName, facilityLabel] = await Promise.all([
+      ReservationInitiator.find({ role: "Admin" }).select("-password"),
+      ReservationInitiator.findOne({ _id: entity }).select("-password"),
+      Facility.findOne({ _id: facility })
+    ]);
 
     const reservation = await Reservation.create({
       facility,
@@ -94,26 +90,54 @@ console.log("hello",{
       effective,
       materials,
       files,
-      entity
+      entity,
     });
+
+    for (const admin of admins) {
+      await sendSetupEmail(
+        admin.email,
+        "New Reservation Submitted",
+        `A new reservation has been created for the facility "${facilityLabel.label}" on ${date} by ${entityName.name}.`
+      );
+    }
 
     return res.status(201).json(reservation);
   } catch (error) {
+    console.error("Error creating reservation:", error);
     return res.status(500).json({ message: error.message });
   }
 };
+
 
 export const updateReservation = async (req, res) => {
   try {
     const { id } = req.params;
     const updateFields = req.body;
+    const {state} = req.body;
 
+    const oldReservation = await Reservation.findById(id);
+    
     const reservation = await Reservation.findByIdAndUpdate(id, updateFields, {
       new: true,
       runValidators: true,
     });
 
     if (reservation) {
+      const [entityName, facilityLabel] = await Promise.all([
+        ReservationInitiator.findOne({ _id: reservation[0].entity }).select(
+          "-password"
+        ),
+        Facility.findOne({ _id: reservation[0].facility }),
+      ]);
+
+      if (state!==oldReservation.state) {
+        await sendSetupEmail(
+          entityName.email,
+          `A Reservation has been ${state}`,
+          `Your reservation for the facility : ${facilityLabel.label}, motive : ${reservation.motive}, on ${reservation.date} from ${reservation.startTime} to ${reservation.endTime} has been${state}.`
+        );
+      }
+
       return res.status(200).json(reservation);
     } else {
       return res.status(404).json({ message: "Reservation not found" });
@@ -122,6 +146,42 @@ export const updateReservation = async (req, res) => {
     return res.status(500).json({ message: error.message });
   }
 };
+
+/*export const updateReservationState = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const {state} = req.body;
+
+    const reservation = await Reservation.findByIdAndUpdate(id, updateFields, {
+      new: true,
+      runValidators: true,
+    });
+
+    if (reservation) {
+      const [entityName, facilityLabel] = await Promise.all([
+        ReservationInitiator.findOne({ _id: reservation[0].entity }).select(
+          "-password"
+        ),
+        Facility.findOne({ _id: reservation[0].facility }),
+      ]);
+
+
+      await sendSetupEmail(
+        entityName.email,
+        `A Reservation has been ${updateFields}`,
+        `A new reservation has been created for the facility "${facilityLabel.label}" on ${date} by ${entityName.name}.`
+      );
+
+      return res.status(200).json(reservation);
+    } else {
+      return res.status(404).json({ message: "Reservation not found" });
+    }
+  } catch (error) {
+    return res.status(500).json({ message: error.message });
+  }
+};*/
+
+
 
 export const deleteReservation = async (req, res) => {
   try {
@@ -160,7 +220,7 @@ export const getAvailableFacilities = async (req, res) => {
       .filter((reservation) => reservation.state === "Pending")
       .map((reservation) => reservation.facility);
 
-    const allFacilities = await Facility.find({state: "Bookable"});
+    const allFacilities = await Facility.find({ state: "Bookable" });
     const availableFacilities = allFacilities.filter(
       (facility) => !occupiedFacilities.includes(facility._id.toString())
     );
