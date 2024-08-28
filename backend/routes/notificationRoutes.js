@@ -6,6 +6,7 @@ import {
   updateNotification,
   deleteNotification, 
   getNotificationsByRecipientId,
+  markNotificationsAsRead,
 } from '../controllers/notificationController.js';
 
 const router = express.Router();
@@ -21,5 +22,7 @@ router.post('/', createNotification);
 router.put('/:id', updateNotification);
 
 router.delete('/:id', deleteNotification);
+router.patch('/mark-as-read/:recipientId', markNotificationsAsRead);
+
 
 export default router;

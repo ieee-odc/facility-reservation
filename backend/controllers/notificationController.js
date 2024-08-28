@@ -73,3 +73,21 @@ export const deleteNotification = async (req, res) => {
     res.status(500).json({ message: error.message });
   }
 };
+export const markNotificationsAsRead = async (req, res) => {
+  try {
+    const recipientId = req.params.recipientId;
+    
+    const result = await Notification.updateMany(
+      { recipient: recipientId, read: false },  // Find all unread notifications for the recipient
+      { $set: { read: true } }  // Mark them as read
+    );
+
+    if (result.nModified === 0) {
+      return res.status(404).json({ message: 'No unread notifications found for this recipient' });
+    }
+
+    res.status(200).json({ message: 'Notifications marked as read successfully' });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};

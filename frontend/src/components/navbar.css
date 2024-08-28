@@ -319,14 +319,53 @@
   border-bottom: none;
 }
 
-.notification-item h4 {
-  margin: 0;
-  font-size: 16px;
-  color: black;
-}
+
 
 .notification-item p {
   margin: 5px 0 0;
   font-size: 14px;
   color: black;
+}
+.notifications-card-body {
+  padding: 10px;
+}
+
+.notification-item {
+
+  padding: 10px;
+  margin-bottom: 10px;
+  border-radius: 5px;
+}
+
+.notification-unread {
+  background-color: rgb(174, 172, 172);
+}
+
+.notification-read {
+  background-color: white; 
+}
+
+.title-unread {
+  font-size: medium;
+  color: rgb(185, 11, 11);
+}
+
+.title-read {
+  font-size: medium;
+
+  color: black; 
+}
+.notification-badge {
+  position: absolute;
+  top: -5px;
+  right: -5px;
+  background-color: red;
+  color: white;
+  border-radius: 50%;
+  width: 20px;
+  height: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
 }

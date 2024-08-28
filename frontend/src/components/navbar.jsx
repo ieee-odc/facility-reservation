@@ -60,6 +60,8 @@ const Navbar = () => {
   const [showFeedbackModal, setShowFeedbackModal] = useState(false);
   const [showNotificationsCard, setShowNotificationsCard] = useState(false);
   const [notifications, setNotifications] = useState([]);
+  const [unreadCount, setUnreadCount] = useState(0);
+
 
   const navigate = useNavigate();
   const email = localStorage.getItem("userEmail");
@@ -89,19 +91,22 @@ const Navbar = () => {
   useEffect(() => {
     const fetchNotifications = async () => {
       try {
-        console.log("your id", currentId);
-
         const response = await axios.get(
           `http://localhost:3000/api/notifications/recipient/${currentId}`
         );
-        console.log("Fetched notifications:", response.data); // Log the response
-        setNotifications(Array.isArray(response.data) ? response.data : []);
+        const notificationsData = Array.isArray(response.data) ? response.data : [];
+        setNotifications(notificationsData);
+  
+        // Calculate unread notifications
+        const unreadNotifications = notificationsData.filter((notification) => !notification.read);
+        setUnreadCount(unreadNotifications.length);
       } catch (error) {
         console.error("Error fetching notifications:", error);
-        setNotifications([]); // Ensure notifications is always an array
+        setNotifications([]);
+        setUnreadCount(0);
       }
     };
-
+  
     fetchNotifications();
   }, [currentId]);
 
@@ -169,6 +174,7 @@ const Navbar = () => {
   const handleChangePassword = () => {
     setShowChangePasswordModal(true);
   };
+  
 
   const toggleSettingsCard = () => {
     setShowSettingsCard(!showSettingsCard);
@@ -180,9 +186,27 @@ const Navbar = () => {
   const toggleProfileCard = () => {
     setShowProfileCard(!showProfileCard);
   };
-  const toggleNotificationsCard = () => {
+  const toggleNotificationsCard = async () => {
+    if (!showNotificationsCard) {
+      try {
+        // Mark all notifications as read on the server
+        await axios.patch(`http://localhost:3000/api/notifications/mark-as-read/${currentId}`);
+        
+        // Update notifications state
+        setNotifications((prevNotifications) =>
+          prevNotifications.map((notification) => ({
+            ...notification,
+            read: true,
+          }))
+        );
+        setUnreadCount(0); // Reset unread count
+      } catch (error) {
+        console.error("Error marking notifications as read:", error);
+      }
+    }
     setShowNotificationsCard((prev) => !prev);
   };
+  
   
 
   const menuItems = [
@@ -198,16 +222,7 @@ const Navbar = () => {
       handleClick: EventsManagement,
     },
 
-    {
-      icon: (
-        <img
-          src={homeIcon}
-          alt="home Icon"
-          style={{ width: "30px", height: "30px" }}
-        />
-      ),
-      text: "Dashboard",
-    },
+
     {
       icon: (
         <img
@@ -315,13 +330,21 @@ const Navbar = () => {
           style={{ width: "26px", height: "26px" }}
           onClick={toggleSettingsCard}
         />
-        <Badge>
-        <img
-          src={bellIcon}
-          alt="notifications"
-          style={{ width: "26px", height: "26px" }}
-          onClick={toggleNotificationsCard}
-        /></Badge>
+<div style={{ position: 'relative' }}>
+  <img
+    src={bellIcon}
+    alt="notifications"
+    style={{ width: "26px", height: "26px" }}
+    onClick={toggleNotificationsCard}
+  />
+  {unreadCount > 0 && (
+    <div className="notification-badge">
+      {unreadCount}
+    </div>
+  )}
+</div>
+
+     
         <img
           src={profileIcon}
           alt="User"
@@ -336,11 +359,23 @@ const Navbar = () => {
     <div ref={notificationsCardRef} className="notifications-card-body">
       {Array.isArray(notifications) && notifications.length > 0 ? (
         notifications
-          .slice() 
-          .sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp)) 
+          .slice()
+          .sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp))
+          .reverse() 
           .map((notification) => (
-            <div key={notification._id} className="notification-item">
-              <h4>{notification.title}</h4>
+            <div
+              key={notification._id}
+              className={`notification-item ${
+                notification.read ? "notification-read" : "notification-unread"
+              }`}
+            >
+              <h4
+                className={`notification-title ${
+                  notification.read ? "title-read" : "title-unread"
+                }`}
+              >
+                {notification.title}
+              </h4>
               <p>{notification.message}</p>
             </div>
           ))
@@ -350,6 +385,8 @@ const Navbar = () => {
     </div>
   </div>
 )}
+
+
 
         {showProfileCard && (
           <div ref={profileCardRef} className="profile-card">
