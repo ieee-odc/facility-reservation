@@ -24,19 +24,22 @@ export const getNotificationById = async (req, res) => {
 export const createNotification = async (req, res) => {
   const { title, message, recipient } = req.body;
 
-  const newNotification = new Notification({
-    title,
-    message,
-    recipient
-  });
+  console.log("req.body noti", req.body);
 
   try {
-    const savedNotification = await newNotification.save();
-    res.status(201).json(savedNotification);
+    const notifications = recipient.map(({ value }) => ({
+      title,
+      message,
+      recipient: value, 
+    }));
+
+    const savedNotifications = await Notification.insertMany(notifications);
+    res.status(201).json(savedNotifications);
   } catch (error) {
     res.status(400).json({ message: error.message });
   }
 };
+
 
 export const updateNotification = async (req, res) => {
   try {
@@ -62,6 +65,7 @@ export const getNotificationsByRecipientId = async (req, res) => {
     res.status(500).json({ message: error.message });
   }
 };
+
 export const deleteNotification = async (req, res) => {
   try {
     const deletedNotification = await Notification.findByIdAndDelete(req.params.id);
@@ -73,6 +77,7 @@ export const deleteNotification = async (req, res) => {
     res.status(500).json({ message: error.message });
   }
 };
+
 export const markNotificationsAsRead = async (req, res) => {
   try {
     const recipientId = req.params.recipientId;

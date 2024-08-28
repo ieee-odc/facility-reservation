@@ -8,6 +8,7 @@ import {
   getReservationInitiatorByEmail,
   updateReservationInitiatorPwd,
   getUserIdbyEmail,
+  getAllAdmins,
 } from "./../controllers/riController.js";
 
 import authUser, { verifyUser } from "../controllers/authController.js";
@@ -90,6 +91,7 @@ router.post('/upload-csv', upload.single('file'), async (req, res) => {
 router.post("/verify-user", verifyUser);
 
 router.get("/", getAllReservationInitiators);
+router.get("/admins", getAllAdmins);
 
 router.get("/:id", getReservationInitiatorById);
 

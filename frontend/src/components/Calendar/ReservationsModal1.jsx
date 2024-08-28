@@ -9,7 +9,6 @@ import moment from "moment";
 import { format } from "date-fns";
 import { MdOutlineReduceCapacity } from "react-icons/md";
 
-
 const ReservationsModal1 = ({
   open,
   onClose,
@@ -18,7 +17,9 @@ const ReservationsModal1 = ({
   slotDetails,
 }) => {
   const initialFacilities = Array.from({ length: numberOfFacilities }, () => ({
-    date: slotDetails ? moment(slotDetails?.end)?.subtract(1, 'days')?.format("YYYY-MM-DD"): "",
+    date: slotDetails
+      ? moment(slotDetails?.end)?.subtract(1, "days")?.format("YYYY-MM-DD")
+      : "",
     startTime: "",
     endTime: "",
     facility: "",
@@ -42,7 +43,7 @@ const ReservationsModal1 = ({
   );
   const [availableFacilities, setAvailableFacilities] = useState([]);
   const [pendingFacilities, setPendingFacilities] = useState([]);
-
+  const [admins, setAdmins] = useState([]);
   const [availableEquipments, setAvailableEquipments] = useState([]);
   const navigate = useNavigate();
   const showNotification = useNotification();
@@ -93,9 +94,24 @@ const ReservationsModal1 = ({
         console.error("Error fetching available equipments:", error);
       }
     };
-
+    const fetchAdmins= async () => {
+      try {
+        const response = await axios.get(
+          "http://localhost:3000/api/reservationInitiators/admins"
+        );
+        
+        const data = response.data.map((item) => ({
+          label: item.name,
+          value: item._id,
+        }));
+        setAdmins(data);
+      } catch (error) {
+        console.error("Error fetching available equipments:", error);
+      }
+    };
+    fetchAdmins();
     fetchAvailableEquipments();
-  }, []);
+  }, [availableEquipments, admins]);
 
   const handleChange = (index, field, value) => {
     const updatedFacilities = [...facilities];
@@ -125,12 +141,12 @@ const ReservationsModal1 = ({
     setErrorMessages(updatedErrors);
   };
 
-  const sendNotification = async (recipientId, title, message) => {
+  const sendNotification = async (recipientIds, title, message) => {
     try {
       await axios.post("http://localhost:3000/api/notifications", {
         title,
         message,
-        recipient: recipientId,
+        recipient: recipientIds,
       });
     } catch (error) {
       console.error("Error sending notification:", error);
@@ -142,12 +158,12 @@ const ReservationsModal1 = ({
     console.log("available facilities", availableFacilities);
     console.log("facilities", facilities);
 
-    const facilityLabel = availableFacilities.find(facility => facility._id === facilities[0].facility
+    const facilityLabel = availableFacilities.find(
+      (facility) => facility._id === facilities[0].facility
     );
 
     console.log("label", facilityLabel);
     console.log("date", facilities[0].date);
-    
 
     try {
       await axios.post("http://localhost:3000/api/reservations", {
@@ -158,25 +174,22 @@ const ReservationsModal1 = ({
         "The reservation has been submitted successfully!",
         "success"
       );
-
-try {
-  
+      
+      try {
         await sendNotification(
-          adminId,
+          admins,
           "New Reservation Created",
           `A new reservation has been created for the facility "${facilityLabel.label}" on ${facilities[0].date}.`
         );
-  
-} catch (error) {
-  console.log("error from notifications", error);
-  
-}
+      } catch (error) {
+        console.log("error from notifications", error);
+      }
 
       navigate("/calendar");
       onClose();
     } catch (error) {
       console.log("error here", error);
-      
+
       showNotification(
         "Failed to submit the reservation. Please try again.",
         "error"
@@ -253,29 +266,27 @@ try {
                       </div>
                     </div>
 
-              <div className="facility-form-group">
-                <label>Facility</label>
-                <div className="facility-input-container">
-                  <select
-                    id="facility"
-                    className="input"
-                    value={facility.facility}
-                    onChange={(e) =>
-                      handleChange(index, "facility", e.target.value)
-                    }
-                  >
-                    <option value="">Select a facility</option>
-                    {Array.isArray(availableFacilities) &&
-                      availableFacilities.map((fac) => (
-                        <option key={fac._id} value={fac._id}>
-                          {fac.label} - {fac.capacity} 👥
-
-
-                        </option>
-                      ))}
-                  </select>
-                </div>
-              </div>
+                    <div className="facility-form-group">
+                      <label>Facility</label>
+                      <div className="facility-input-container">
+                        <select
+                          id="facility"
+                          className="input"
+                          value={facility.facility}
+                          onChange={(e) =>
+                            handleChange(index, "facility", e.target.value)
+                          }
+                        >
+                          <option value="">Select a facility</option>
+                          {Array.isArray(availableFacilities) &&
+                            availableFacilities.map((fac) => (
+                              <option key={fac._id} value={fac._id}>
+                                {fac.label} - {fac.capacity} 👥
+                              </option>
+                            ))}
+                        </select>
+                      </div>
+                    </div>
 
                     <div className="facility-form-group">
                       <label>Effective</label>
