@@ -52,7 +52,7 @@ const EventModal = ({ show, onHide, eventDetails, onCancel, viewType }) => {
         `http://localhost:3000/api/${route}/${eventDetails.id}`,
         { state: "Rejected" }
       );
-  
+  console.log("hello there");
 
       await sendNotification(
         eventDetails.entity, 

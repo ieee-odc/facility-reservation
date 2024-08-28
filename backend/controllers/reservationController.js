@@ -115,28 +115,45 @@ export const updateReservation = async (req, res) => {
     const updateFields = req.body;
     const {state} = req.body;
 
-    const oldReservation = await Reservation.findById(id);
     
-    const reservation = await Reservation.findByIdAndUpdate(id, updateFields, {
-      new: true,
-      runValidators: true,
-    });
+    
+    const reservation = await Reservation.findById(id);
 
     if (reservation) {
+      await Reservation.updateOne({ _id: id }, updateFields, { runValidators: true });
+      const updatedReservation = await Reservation.findById(id);
+      console.log('Updated Reservation:', updatedReservation);
+ 
+    
+    console.log("state",state);
+    console.log("old res", reservation);
+
       const [entityName, facilityLabel] = await Promise.all([
-        ReservationInitiator.findOne({ _id: reservation[0].entity }).select(
+        ReservationInitiator.findOne({ _id: reservation.entity }).select(
           "-password"
         ),
-        Facility.findOne({ _id: reservation[0].facility }),
+        Facility.findOne({ _id: reservation.facility }),
       ]);
+    
 
-      if (state!==oldReservation.state) {
-        await sendSetupEmail(
-          entityName.email,
-          `A Reservation has been ${state}`,
-          `Your reservation for the facility : ${facilityLabel.label}, motive : ${reservation.motive}, on ${reservation.date} from ${reservation.startTime} to ${reservation.endTime} has been${state}.`
-        );
+      if (state!==reservation.state) {
+        console.log("entity name",entityName);
+
+try {
+  await sendSetupEmail(
+    entityName.email,
+    `A Reservation has been ${state}`,
+    `Your reservation for the facility : ${facilityLabel.label}, motive : ${reservation.motive}, on ${reservation.date} from ${reservation.startTime} to ${reservation.endTime} has been${state}.`
+  );
+  
+  
+} catch (error) {
+  console.log("error here",error);
+  
+}
+       
       }
+
 
       return res.status(200).json(reservation);
     } else {
