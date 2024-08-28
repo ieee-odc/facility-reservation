@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useTranslation } from 'react-i18next';
+import { useTranslation } from "react-i18next";
 import axios from "axios";
 import {
   BarChart,
@@ -29,7 +29,6 @@ import { useAuth } from "../context/authContext/AuthProvider";
 import { getAllFacilities } from "../apiService";
 import { Panel } from "rsuite";
 
-
 const Profile = ({ currentId, currentUser }) => {
   const { t } = useTranslation();
   const [activeTab, setActiveTab] = useState("Overview");
@@ -41,6 +40,7 @@ const Profile = ({ currentId, currentUser }) => {
     email: currentUser.email,
     phoneNumber: "",
     manager: "",
+    profileImage: "",
   });
   const [profileImage, setProfileImage] = useState(logo);
   const [bannerImage, setBannerImage] = useState(banner);
@@ -48,27 +48,26 @@ const Profile = ({ currentId, currentUser }) => {
   const [allEvents, setAllEvents] = useState([]);
   const [dataAttendance, setDataAttendance] = useState([]);
   const [dataFacilities, setDataFacilities] = useState([]);
-  
+
   const [reservations, setReservations] = useState([]);
   const [facilities, setFacilities] = useState({});
 
   useEffect(() => {
-    
     const fetchEvents = async () => {
       try {
         const response = await axios.get(
           `http://localhost:3000/api/events/reservation/${currentId}`
         );
         console.log("events", response.data);
-        setAllEvents(response.data)
+        setAllEvents(response.data);
         const filteredEvents = response.data.filter(
           (event) =>
             event.state === "Approved" || event.state === "PartiallyApproved"
         );
         console.log("events filtered", filteredEvents);
         const attendance = filteredEvents.map((event) => ({
-          name: event.name, 
-          attendees: event.totalEffective, 
+          name: event.name,
+          attendees: event.totalEffective,
         }));
 
         console.log("attendance", attendance);
@@ -155,22 +154,21 @@ const Profile = ({ currentId, currentUser }) => {
       });
 
       console.log("facilitycountmap", facilityCountMap);
-      
 
       const facilityCountArray = Array.from(
         facilityCountMap,
         ([facilityId, count]) => ({
-          name:facilities[facilityId],
+          name: facilities[facilityId],
           count,
         })
       );
 
-      console.log("facilitycountarray", facilityCountArray);      
-      setDataFacilities(facilityCountArray)
+      console.log("facilitycountarray", facilityCountArray);
+      setDataFacilities(facilityCountArray);
       return facilityCountArray;
     };
     combineFacilityCounts(allEvents, reservations);
-  }, [allEvents,reservations]);
+  }, [allEvents, reservations]);
 
   const handleEdit = (field) => {
     setEditingField(field);
@@ -207,11 +205,43 @@ const Profile = ({ currentId, currentUser }) => {
     }
   };
 
-  const handleProfileImageChange = (e) => {
+  const handleProfileImageChange = async (e) => {
     if (e.target.files && e.target.files[0]) {
       const reader = new FileReader();
       reader.onload = (e) => setProfileImage(e.target.result);
       reader.readAsDataURL(e.target.files[0]);
+      console.log("e.target.files", e.target.files[0]);
+      console.log("e.target.result", profileImage);
+
+      const formData = new FormData();
+      formData.append("file", e.target.files[0]);
+      formData.append("currentId", currentId);
+
+      try {
+        const response = await axios.post(
+          "http://localhost:3000/api/reservationInitiators/upload-profile-image",
+          formData,
+          {
+            headers: {
+              "Content-Type": "multipart/form-data",
+            },
+          }
+        );
+
+        console.log("response profile", response);
+
+        if (response.status === 200) {
+          const reader = new FileReader();
+          reader.onload = (e) => setProfileImage(e.target.result);
+          reader.readAsDataURL(e.target.files[0]);
+  
+          console.log('Profile image uploaded successfully:', response.data.message);
+          window.location.reload();
+
+        }
+      } catch (error) {
+        console.log("error uploading profile picture", error);
+      }
     }
   };
 
@@ -244,7 +274,20 @@ const Profile = ({ currentId, currentUser }) => {
         </div>
         <div className="profile-main">
           <div className="profile-img">
-            <img src={profileImage} alt="Profile" className="profile-picture" />
+            {fieldValues.profileImage ? (
+              <img
+                src={`http://localhost:3000/${fieldValues.profileImage}`}
+                alt="Profile"
+                className="profile-picture"
+              />
+            ) : (
+              <img
+                src={profileImage}
+                alt="Profile"
+                className="profile-picture"
+              />
+            )}
+
             <div className="overlay">
               <label htmlFor="profile-upload">
                 <FontAwesomeIcon icon={faCamera} className="icon" />
@@ -263,11 +306,11 @@ const Profile = ({ currentId, currentUser }) => {
             <div className="sidebar">
               <div className="sidebar-content main-profile-card">
                 <div className="about">
-                  <h3>{t('about')}</h3>
+                  <h3>{t("about")}</h3>
                   <div className="about-content">
                     <EditableField
                       iconSrc={mallette}
-                      placeholder={t('nature')}
+                      placeholder={t("nature")}
                       name="nature"
                       value={fieldValues.nature}
                       editingField={editingField}
@@ -278,7 +321,7 @@ const Profile = ({ currentId, currentUser }) => {
                     />
                     <EditableField
                       iconSrc={organisation}
-                      placeholder={t('service')}
+                      placeholder={t("service")}
                       name="service"
                       value={fieldValues.service}
                       editingField={editingField}
@@ -289,7 +332,7 @@ const Profile = ({ currentId, currentUser }) => {
                     />
                     <EditableField
                       iconSrc={batiment}
-                      placeholder={t('organisation')}
+                      placeholder={t("organisation")}
                       name="organisation"
                       value={fieldValues.organisation}
                       editingField={editingField}
@@ -301,7 +344,7 @@ const Profile = ({ currentId, currentUser }) => {
                   </div>
                 </div>
                 <div className="contact">
-                  <h3>{t('contact')}</h3>
+                  <h3>{t("contact")}</h3>
                   <div className="contact-content">
                     <EditableField
                       iconSrc={email}
@@ -316,7 +359,7 @@ const Profile = ({ currentId, currentUser }) => {
                     />
                     <EditableField
                       iconSrc={iphone}
-                      placeholder={t('phone_number')}
+                      placeholder={t("phone_number")}
                       name="phoneNumber"
                       value={fieldValues.phoneNumber}
                       editingField={editingField}
@@ -327,7 +370,7 @@ const Profile = ({ currentId, currentUser }) => {
                     />
                     <EditableField
                       iconSrc={utilisateur}
-                      placeholder={t('manager_name')}
+                      placeholder={t("manager_name")}
                       name="manager"
                       value={fieldValues.manager}
                       editingField={editingField}
@@ -346,27 +389,29 @@ const Profile = ({ currentId, currentUser }) => {
                   className={`tab ${activeTab === "Overview" ? "active" : ""}`}
                   onClick={() => setActiveTab("Overview")}
                 >
-                  {t('overview')}
+                  {t("overview")}
                 </button>
                 <button
                   className={`tab ${activeTab === "Vis-à-vis" ? "active" : ""}`}
                   onClick={() => setActiveTab("Vis-à-vis")}
                 >
-                  {t('Vis-à-vis')}
+                  {t("Vis-à-vis")}
                 </button>
               </div>
               {activeTab === "Overview" && (
                 <div>
                   <div className="overview">
                     <div className="event-list main-profile-card">
-                      <h3>{t('list_approved_events')}</h3>
+                      <h3>{t("list_approved_events")}</h3>
                       <div className="event-items">
                         {events.map((event) => (
                           <Panel
                             key={event._id}
                             header={
                               <div className="event-header">
-                                <p className="profile-event-name">{event.name}</p>
+                                <p className="profile-event-name">
+                                  {event.name}
+                                </p>
                                 <p>
                                   {new Date(
                                     event.startDate
@@ -383,28 +428,28 @@ const Profile = ({ currentId, currentUser }) => {
                             <div>
                               <div className="event-details">
                                 <p>
-                                  <strong>{t('description')}:</strong>{" "}
+                                  <strong>{t("description")}:</strong>{" "}
                                   {event.description}
                                 </p>
                                 <p>
-                                  <strong>{t('start_date')}:</strong>{" "}
+                                  <strong>{t("start_date")}:</strong>{" "}
                                   {new Date(
                                     event.startDate
                                   ).toLocaleDateString()}
                                 </p>
                                 <p>
-                                  <strong>{t('end_date')}:</strong>{" "}
+                                  <strong>{t("end_date")}:</strong>{" "}
                                   {new Date(event.endDate).toLocaleDateString()}
                                 </p>
                                 <p className={getStateClass(event.state)}>
-                                  <strong>{t('state')}:</strong> {event.state}
+                                  <strong>{t("state")}:</strong> {event.state}
                                 </p>
                                 <p>
-                                  <strong>{t('total_participants')}:</strong>{" "}
+                                  <strong>{t("total_participants")}:</strong>{" "}
                                   {event.totalEffective}
                                 </p>
                                 <p>
-                                  <strong>{t('reservations')}:</strong>
+                                  <strong>{t("reservations")}:</strong>
                                 </p>
 
                                 <div className="event-reservations">
@@ -414,27 +459,27 @@ const Profile = ({ currentId, currentUser }) => {
                                       key={reservation._id}
                                     >
                                       <p>
-                                        <strong>{t('date')}:</strong>{" "}
+                                        <strong>{t("date")}:</strong>{" "}
                                         {new Date(
                                           reservation.date
                                         ).toLocaleDateString()}
                                       </p>
                                       <p>
-                                        <strong>{t('time')}:</strong>{" "}
+                                        <strong>{t("time")}:</strong>{" "}
                                         {reservation.startTime} -{" "}
                                         {reservation.endTime}
                                       </p>
                                       <p>
-                                        <strong>{t('motive')}:</strong>{" "}
+                                        <strong>{t("motive")}:</strong>{" "}
                                         {reservation.motive}
                                       </p>
                                       <p>
-                                        <strong>{t('facility')}:</strong>{" "}
+                                        <strong>{t("facility")}:</strong>{" "}
                                         {facilities[reservation.facility] ||
                                           "Unknown Facility"}
                                       </p>
                                       <p>
-                                        <strong>{t('effective')}:</strong>{" "}
+                                        <strong>{t("effective")}:</strong>{" "}
                                         {reservation.effective}
                                       </p>
                                       <p
@@ -442,7 +487,7 @@ const Profile = ({ currentId, currentUser }) => {
                                           reservation.state
                                         )}
                                       >
-                                        <strong>{t('state')}:</strong>{" "}
+                                        <strong>{t("state")}:</strong>{" "}
                                         {reservation.state}
                                       </p>
                                     </div>
@@ -455,7 +500,7 @@ const Profile = ({ currentId, currentUser }) => {
                       </div>
                     </div>
                     <div className="most-requested-facilities main-profile-card">
-                      <h3>{t('most_requested_facilities')}</h3>
+                      <h3>{t("most_requested_facilities")}</h3>
                       <div className="chart">
                         <ResponsiveContainer width="95%" height={200}>
                           <BarChart data={dataFacilities}>
@@ -482,7 +527,7 @@ const Profile = ({ currentId, currentUser }) => {
                     </div>
                   </div>
                   <div className="attendance-per-event main-profile-card">
-                    <h3>{t('attendance_per_event')}</h3>
+                    <h3>{t("attendance_per_event")}</h3>
                     <div className="chart">
                       <ResponsiveContainer width="95%" height={200}>
                         <LineChart className="line-chart" data={dataAttendance}>
