@@ -102,6 +102,9 @@ const ManageUsers = () => {
           <p>
             <b>Organization: </b> {initiator.organisation}
           </p>
+          <p>
+            <b>Role: </b> {initiator.role}
+          </p>
         </div>
       </div>
     );

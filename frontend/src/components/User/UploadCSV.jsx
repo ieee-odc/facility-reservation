@@ -15,17 +15,21 @@ import {
   deleteInitiator,
 } from "../../apiService";
 import { FaTimes } from "react-icons/fa";
-// Ensure that the app element is set for accessibility
+import { useNavigate } from "react-router-dom";
+
 Modal.setAppElement("#root");
 
 const UploadCSV = ({ isOpen, onRequestClose }) => {
   const [file, setFile] = useState(null);
   const [uploading, setUploading] = useState(false);
-
+  const [initiators, setInitiators] = useState([]);
   const [selectedInitiator, setSelectedInitiator] = useState(null);
   const [modalIsOpen, setModalIsOpen] = useState(false);
   const [confirmationModalOpen, setConfirmationModalOpen] = useState(false);
   const [modalContent, setModalContent] = useState(null);
+
+  const navigate = useNavigate();
+
   const openModal = (content) => {
     setModalContent(content);
     setModalIsOpen(true);
@@ -34,6 +38,15 @@ const UploadCSV = ({ isOpen, onRequestClose }) => {
   const closeModal = () => {
     setModalContent(null);
     setModalIsOpen(false);
+  };
+
+  const fetchInitiators = async () => {
+    try {
+      const response = await getAllInitiators();
+      setInitiators(response.data);
+    } catch (error) {
+      console.error("Error fetching initiators:", error);
+    }
   };
 
   const openConfirmationModal = (initiator) => {
@@ -58,17 +71,23 @@ const UploadCSV = ({ isOpen, onRequestClose }) => {
     try {
       if (data && data._id) {
         await updateInitiator(data._id, data);
+        navigate('/manage-users')
+        window.location.reload();
+
       } else {
         createInitiator(data)
           .then((resp) => {
             console.log("done --------", resp);
+            navigate('/manage-users')
+            window.location.reload();
+
           })
           .catch((error) => {
             console.log("here", error);
           });
       }
-      fetchInitiators();
-      closeModal();
+      //fetchInitiators();
+      //closeModal();
     } catch (error) {
       console.error("Error saving initiator:", error);
     }
@@ -100,6 +119,7 @@ const UploadCSV = ({ isOpen, onRequestClose }) => {
       );
       alert(response.data.message);
       console.log(response);
+      navigate('/manage-users')
     } catch (error) {
       console.error("Error uploading file:", error);
       alert("Error uploading file");

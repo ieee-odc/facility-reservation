@@ -179,7 +179,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  z-index: 1000;
+  z-index: 998;
 }
 
 .user-modal {
@@ -234,6 +234,12 @@
   border-bottom: none;
 }
 
+
+.event-input-select{
+  width: 96%;
+  z-index: 9999 !important;
+}
+
 .upload-csv-container{
   
    position: relative;
@@ -267,7 +273,7 @@
   bottom: -20px !important;
   right: 50% !important;
   background: #aeafb000;
-  z-index: 200;
+  z-index: 1006;
 }
 .csv-input {
   font-size: 14px;

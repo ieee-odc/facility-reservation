@@ -9,6 +9,7 @@ const InitiatorForm = ({ initiator, onSubmit }) => {
     nature: "",
     service: "",
     organisation: "",
+    role: "",
   });
 
   useEffect(() => {
@@ -69,7 +70,6 @@ const InitiatorForm = ({ initiator, onSubmit }) => {
         </div>
       </div>
 
-      
       <div className="event-form-group">
         <label htmlFor="event-name">Backup email</label>
 
@@ -124,6 +124,27 @@ const InitiatorForm = ({ initiator, onSubmit }) => {
             onChange={handleChange}
             placeholder="Organisation"
           />
+        </div>
+      </div>
+
+      <div className="facility-form-group">
+        <label htmlFor="motif" className="required-label">
+          Role
+        </label>
+        <div className="facility-input-container">
+          <select
+            id="motif"
+            name="role"
+            className="event-input"
+            value={formData.role}
+            onChange={handleChange}
+            placeholder="Role"
+          >
+            <option value="">Select a role</option>
+            <option value="Admin">Admin</option>
+            <option value="SuperAdmin">SuperAdmin</option>
+            <option value="User">User</option>
+          </select>
         </div>
       </div>
 
