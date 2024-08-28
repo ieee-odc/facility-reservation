@@ -113,13 +113,31 @@ export const updateReservation = async (req, res) => {
   try {
     const { id } = req.params;
     const updateFields = req.body;
+    const {state} = req.body;
 
+    const oldReservation = await Reservation.findById(id);
+    
     const reservation = await Reservation.findByIdAndUpdate(id, updateFields, {
       new: true,
       runValidators: true,
     });
 
     if (reservation) {
+      const [entityName, facilityLabel] = await Promise.all([
+        ReservationInitiator.findOne({ _id: reservation[0].entity }).select(
+          "-password"
+        ),
+        Facility.findOne({ _id: reservation[0].facility }),
+      ]);
+
+      if (state!==oldReservation.state) {
+        await sendSetupEmail(
+          entityName.email,
+          `A Reservation has been ${state}`,
+          `Your reservation for the facility : ${facilityLabel.label}, motive : ${reservation.motive}, on ${reservation.date} from ${reservation.startTime} to ${reservation.endTime} has been${state}.`
+        );
+      }
+
       return res.status(200).json(reservation);
     } else {
       return res.status(404).json({ message: "Reservation not found" });
@@ -128,6 +146,42 @@ export const updateReservation = async (req, res) => {
     return res.status(500).json({ message: error.message });
   }
 };
+
+/*export const updateReservationState = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const {state} = req.body;
+
+    const reservation = await Reservation.findByIdAndUpdate(id, updateFields, {
+      new: true,
+      runValidators: true,
+    });
+
+    if (reservation) {
+      const [entityName, facilityLabel] = await Promise.all([
+        ReservationInitiator.findOne({ _id: reservation[0].entity }).select(
+          "-password"
+        ),
+        Facility.findOne({ _id: reservation[0].facility }),
+      ]);
+
+
+      await sendSetupEmail(
+        entityName.email,
+        `A Reservation has been ${updateFields}`,
+        `A new reservation has been created for the facility "${facilityLabel.label}" on ${date} by ${entityName.name}.`
+      );
+
+      return res.status(200).json(reservation);
+    } else {
+      return res.status(404).json({ message: "Reservation not found" });
+    }
+  } catch (error) {
+    return res.status(500).json({ message: error.message });
+  }
+};*/
+
+
 
 export const deleteReservation = async (req, res) => {
   try {
