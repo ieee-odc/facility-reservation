@@ -16,10 +16,10 @@ const FacilitiesForm = ({ open, onClose, numberOfFacilities, form1 }) => {
     motive: "",
     files: [],
     materials: [],
-    entity: form1.organizer,
+    entity: form1?.organizer,
   }));
-  const start = new Date(form1.startDate).toISOString().split("T")[0];
-  const end = new Date(form1.endDate).toISOString().split("T")[0];
+  const start = new Date(form1?.startDate).toISOString().split("T")[0];
+  const end = new Date(form1?.endDate).toISOString().split("T")[0];
 
   const [facilities, setFacilities] = useState(initialFacilities);
   const [errorMessages, setErrorMessages] = useState(
