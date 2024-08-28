@@ -99,7 +99,7 @@ const Navbar = () => {
         const notificationsData = Array.isArray(response.data) ? response.data : [];
         setNotifications(notificationsData);
   
-        // Calculate unread notifications
+        
         const unreadNotifications = notificationsData.filter((notification) => !notification.read);
         setUnreadCount(unreadNotifications.length);
       } catch (error) {
