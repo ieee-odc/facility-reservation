@@ -18,6 +18,11 @@
 
 }
 
+.event-panel-header{
+  display: flex;
+  justify-content: space-between;
+}
+
 
 .content-container {
   display: flex;
@@ -144,4 +149,20 @@ p.state-cancelled {
 
 p.state-rejected {
   color: #f44336;
+}
+
+.badge-state-pending {
+  background: #ff9800;
+}
+
+.badge-state-approved {
+  background: #4caf50;
+}
+
+.badge-state-cancelled {
+  background: #9e9e9e;
+}
+
+.badge-state-rejected {
+  background: #f44336;
 }
