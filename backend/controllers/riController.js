@@ -129,6 +129,14 @@ export const deleteReservationInitiator = async (req, res) => {
       // If no initiator is found, return a 404 error
       return res.status(404).json({ message: 'Initiator not found' });
     }
+
+
+    // Fetch the Firebase user by email
+    const userRecord = await admin.auth().getUserByEmail(deletedInitiator.email);
+
+    // Delete the user from Firebase using the UID
+    await admin.auth().deleteUser(userRecord.uid);
+
     res.status(200).json({ message: "User deleted successfully" });
   } catch (error) {
     res.status(500).json({ message: "Error deleting user", error });
