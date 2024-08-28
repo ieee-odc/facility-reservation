@@ -7,6 +7,8 @@ import { GrAttachment } from "react-icons/gr";
 import { useNotification } from "../../context/NotificationContext";
 import moment from "moment";
 import { format } from "date-fns";
+import { MdOutlineReduceCapacity } from "react-icons/md";
+
 
 const ReservationsModal1 = ({ open, onClose, currentId, numberOfFacilities, slotDetails }) => {
 
@@ -214,7 +216,9 @@ const ReservationsModal1 = ({ open, onClose, currentId, numberOfFacilities, slot
                     {Array.isArray(availableFacilities) &&
                       availableFacilities.map((fac) => (
                         <option key={fac._id} value={fac._id}>
-                          {fac.label}
+                          {fac.label} - {fac.capacity} 👥
+
+
                         </option>
                       ))}
                   </select>
