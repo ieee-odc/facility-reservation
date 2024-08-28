@@ -61,6 +61,8 @@ const Navbar = () => {
   const [showNotificationsCard, setShowNotificationsCard] = useState(false);
   const [notifications, setNotifications] = useState([]);
   const [unreadCount, setUnreadCount] = useState(0);
+  const [hasBeenOpened, setHasBeenOpened] = useState(false);
+
 
 
   const navigate = useNavigate();
@@ -187,7 +189,11 @@ const Navbar = () => {
     setShowProfileCard(!showProfileCard);
   };
   const toggleNotificationsCard = async () => {
-    if (!showNotificationsCard) {
+    if (!showNotificationsCard && !hasBeenOpened) {
+      // If the card is being opened and it hasn't been opened before
+      setHasBeenOpened(true);
+    } else if (showNotificationsCard && hasBeenOpened) {
+      // If the card is being closed and it has been opened before
       try {
         // Mark all notifications as read on the server
         await axios.patch(`http://localhost:3000/api/notifications/mark-as-read/${currentId}`);
@@ -375,6 +381,7 @@ const Navbar = () => {
                 }`}
               >
                 {notification.title}
+                {!notification.read && <span className="notification-new-tag">NEW</span>}
               </h4>
               <p>{notification.message}</p>
             </div>
