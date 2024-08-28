@@ -11,7 +11,7 @@ const EventForm = ({ open, onClose, onSubmit, slotDetails }) => {
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
   const [startDate, setStartDate] = useState(moment(slotDetails?.start)?.format("YYYY-MM-DD"));
-  const [endDate, setEndDate] = useState(moment(slotDetails?.end)?.format("YYYY-MM-DD"));
+  const [endDate, setEndDate] = useState(moment(slotDetails?.end)?.subtract(1, 'days')?.format("YYYY-MM-DD"));
   const [numberOfFacilities, setNumberOfFacilities] = useState(1);
   const [organizer, setOrganizer] = useState("");
   const [facilitiesModalOpen, setFacilitiesModalOpen] = useState(false);
