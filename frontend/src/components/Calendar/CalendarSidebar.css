@@ -82,6 +82,13 @@
   height: 10px;
   border-radius: 50%;
 }
+.calendar-todo-item-badge-event {
+  background-color: rgb(4, 186, 242);
+  display: inline-block;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+}
 
 
 .calendar-sidebar__calendar-container .rs-calendar {

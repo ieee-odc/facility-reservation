@@ -14,6 +14,7 @@ import ResizableSplitter from "../splitter/ResizableSplitter";
 
 const CalendarPage = ({ currentId, currentRole }) => {
   const [events, setEvents] = useState([]);
+  const [eventData, setEventData] = useState([]);
   const [requests, setRequests] = useState([]);
   const [facilities, setFacilities] = useState({});
   const [viewType, setViewType] = useState("requests");
@@ -149,6 +150,7 @@ const CalendarPage = ({ currentId, currentRole }) => {
           );
 
           setEvents(formattedEvents);
+          setEventData(eventsData)
         } else {
           console.error("Unexpected response format", eventsData);
         }
@@ -258,8 +260,10 @@ const CalendarPage = ({ currentId, currentRole }) => {
               <div className="calendar-page__sidebar">
                 <CalendarSidebar
                   setViewType={setViewType}
-                  events={filteredEvents}
-                  requests={filteredRequests}
+                  events={eventData}
+                  requests={requests}
+                  currentId={currentId} 
+                  currentRole={currentRole}
                 />
               </div>
             }

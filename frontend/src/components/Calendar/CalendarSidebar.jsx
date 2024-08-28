@@ -5,13 +5,15 @@ import { fetchHolidays } from "./holidayService"; // Import holiday service
 import "rsuite/dist/rsuite.min.css"; // Import RSuite's CSS
 import "./CalendarSidebar.css"; // Import the stylesheet for the sidebar
 
-const CalendarSidebar = ({ setViewType, events, requests }) => {
+const CalendarSidebar = ({ setViewType, currentRole, currentId }) => {
+  
   const [selectedDate, setSelectedDate] = useState(new Date());
   const [dailyEvents, setDailyEvents] = useState([]);
   const [holidays, setHolidays] = useState([]);
   const [upcomingHolidays, setUpcomingHolidays] = useState([]);
   const [showRequests, setShowRequests] = useState(true); // State for checkbox
   const [reservations, setReservations] = useState([]); // State for reservations
+  const [events, setEvents] = useState([]); // State for reservations
 
   const countryCode = "TN"; // Tunisia country code
   const currentYear = new Date().getFullYear();
@@ -30,10 +32,25 @@ const CalendarSidebar = ({ setViewType, events, requests }) => {
     // Fetch reservations from API
     const fetchReservations = async () => {
       try {
-        const response = await axios.get(
-          "http://localhost:3000/api/reservations/pure"
-        );
+        let url;
+        if (currentRole === "Admin")
+          url = "http://localhost:3000/api/reservations/pure";
+        else url = `http://localhost:3000/api/reservations/pure/${currentId}`;
+        const response = await axios.get(url);
         setReservations(response.data);
+      } catch (error) {
+        console.error("Error fetching reservations:", error);
+      }
+    };
+
+    const fetchEvents = async () => {
+      try {
+        let url;
+        if (currentRole === "Admin")
+          url = "http://localhost:3000/api/events/reservations";
+        else url = `http://localhost:3000/api/events/reservation/${currentId}`;
+        const response = await axios.get(url);
+        setEvents(response.data);
       } catch (error) {
         console.error("Error fetching reservations:", error);
       }
@@ -41,22 +58,22 @@ const CalendarSidebar = ({ setViewType, events, requests }) => {
 
     fetchHolidaysData();
     fetchReservations();
+    fetchEvents();
   }, []);
 
   useEffect(() => {
-    if (reservations.length > 0) {
+    if (reservations.length > 0 || events.length) {
       handleDateSelect(new Date());
     }
-  }, [reservations]);
+  }, [reservations, events]);
 
   const handleDateSelect = (date) => {
-
     const selected = new Date(date);
     selected.setHours(0, 0, 0, 0);
 
     setSelectedDate(selected);
-     
-    const filteredEvents = reservations
+
+    const filteredReservations = reservations
       .filter(
         (reservation) =>
           new Date(reservation.date).toDateString() === date.toDateString()
@@ -67,7 +84,22 @@ const CalendarSidebar = ({ setViewType, events, requests }) => {
         state: reservation.state,
       }));
 
-    setDailyEvents(filteredEvents);
+    const filteredEvents = events
+      .filter((event) => {
+        const eventStartDate = new Date(event.startDate).setHours(0, 0, 0, 0);
+        const eventEndDate = new Date(event.endDate).setHours(0, 0, 0, 0);
+        const currentDate = new Date(date).setHours(0, 0, 0, 0);
+        return currentDate >= eventStartDate && currentDate <= eventEndDate;
+      })
+      .map((event) => ({
+        time: "All day", // Assuming the event has a start time
+        title: event.name,
+        state: event.state,
+      }));
+
+    const combinedEvents = [...filteredReservations, ...filteredEvents];
+
+    setDailyEvents(combinedEvents);
   };
 
   const renderCell = (date) => {
@@ -79,10 +111,19 @@ const CalendarSidebar = ({ setViewType, events, requests }) => {
       (holiday) => new Date(holiday.date).toDateString() === date.toDateString()
     );
 
+    const eventList = events.filter((event) => {
+      const eventStartDate = new Date(event.startDate).setHours(0, 0, 0, 0);
+      const eventEndDate = new Date(event.endDate).setHours(0, 0, 0, 0);
+      const currentDate = new Date(date).setHours(0, 0, 0, 0);
+      
+      return currentDate >= eventStartDate && currentDate <= eventEndDate;
+    }); 
+
     return (
       <>
         {holiday && <Badge className="calendar-holiday-badge" />}
         {list.length > 0 && <Badge className="calendar-todo-item-badge" />}
+        {eventList.length > 0 && <Badge className="calendar-todo-item-badge-event" />}
       </>
     );
   };
