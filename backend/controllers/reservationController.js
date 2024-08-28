@@ -56,6 +56,7 @@ export const findReservationById = async (req, res) => {
   }
 };
 
+
 export const addReservation = async (req, res) => {
   try {
     const {
@@ -72,29 +73,11 @@ export const addReservation = async (req, res) => {
       entity,
     } = req.body["0"];
 
-    console.log("facility", facility);
-
-
-    let admins;
-
-    try {
-      admins = await ReservationInitiator.find({ role: "Admin" }).select(
-        "-password"
-      );
-    } catch (error) {
-      console.log("error fron fetch admin", error);
-    }
-
-    let entityName;
-    try {
-      entityName = await ReservationInitiator.find({ _id: entity }).select(
-        "-password"
-      );
-    } catch (error) {
-      console.log("error fron fetch admin", error);
-    }
-
-    console.log("admins", admins);
+    const [admins, entityName, facilityLabel] = await Promise.all([
+      ReservationInitiator.find({ role: "Admin" }).select("-password"),
+      ReservationInitiator.findOne({ _id: entity }).select("-password"),
+      Facility.findOne({ _id: facility })
+    ]);
 
     const reservation = await Reservation.create({
       facility,
@@ -110,25 +93,21 @@ export const addReservation = async (req, res) => {
       entity,
     });
 
-    const facilityLabel = await Facility.find({ _id: facility });
-
-    console.log("facilityLabel", facilityLabel);
-
     for (const admin of admins) {
       await sendSetupEmail(
         admin.email,
         "New Reservation Submitted",
-        `A new reservation has been created for the facility "${facilityLabel[0].label}" on ${date} by ${entityName[0].name}.`
+        `A new reservation has been created for the facility "${facilityLabel.label}" on ${date} by ${entityName.name}.`
       );
     }
 
     return res.status(201).json(reservation);
   } catch (error) {
-    console.log("error", error);
-
+    console.error("Error creating reservation:", error);
     return res.status(500).json({ message: error.message });
   }
 };
+
 
 export const updateReservation = async (req, res) => {
   try {
