@@ -71,16 +71,14 @@ const UploadCSV = ({ isOpen, onRequestClose }) => {
     try {
       if (data && data._id) {
         await updateInitiator(data._id, data);
-        navigate('/manage-users')
+        navigate("/manage-users");
         window.location.reload();
-
       } else {
         createInitiator(data)
           .then((resp) => {
             console.log("done --------", resp);
-            navigate('/manage-users')
+            navigate("/manage-users");
             window.location.reload();
-
           })
           .catch((error) => {
             console.log("here", error);
@@ -119,7 +117,7 @@ const UploadCSV = ({ isOpen, onRequestClose }) => {
       );
       alert(response.data.message);
       console.log(response);
-      navigate('/manage-users')
+      window.location.reload();
     } catch (error) {
       console.error("Error uploading file:", error);
       alert("Error uploading file");
