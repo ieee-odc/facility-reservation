@@ -35,6 +35,7 @@ const EditableField = ({
               value={value}
               onChange={handleFieldChange}
               className="input"
+              readOnly={name === "email" && true || false}
             />
             <div className="interaction-buttons">
               <div className="buttons">
@@ -48,14 +49,20 @@ const EditableField = ({
             </div>
           </div>
         ) : (
-          <p
+
+          name === "email"&& (<p
+            className="about-content-element-two about-content-element-two-email"
+          >
+            {value || placeholder}
+          </p>) ||
+          (<p
             className="about-content-element-two"
             onClick={() => handleEdit(name)}
           >
             {value || placeholder}
-          </p>
+          </p>)
         )}
-        {(isTooltipVisible && editingField!==name) && <div className="tooltip">{tooltipText}</div>}
+        {(isTooltipVisible && editingField!==name && name !=="email") && <div className="tooltip">{tooltipText}</div>}
       </div>
     </>
   );

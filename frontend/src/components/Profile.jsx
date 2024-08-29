@@ -387,6 +387,7 @@ const Profile = ({ currentId, currentUser }) => {
                       handleFieldChange={handleFieldChange}
                       handleCancel={handleCancel}
                       handleApprove={handleApprove}
+                      
                     />
                     <EditableField
                       iconSrc={iphone}
