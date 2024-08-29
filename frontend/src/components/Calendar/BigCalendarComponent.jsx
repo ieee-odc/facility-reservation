@@ -113,10 +113,7 @@ const BigCalendarComponent = ({ events, requests, viewType, currentId }) => {
         { state: "Approved" }
       );
 
-      showNotification(
-        "Successfully approved",
-        "success"
-      );
+      showNotification("Successfully approved", "success");
 
       await sendNotification(
         [{ label: selectedEvent.entity, value: selectedEvent.entity }],
@@ -139,10 +136,7 @@ const BigCalendarComponent = ({ events, requests, viewType, currentId }) => {
         { state: "Rejected" }
       );
       console.log("hello there");
-      showNotification(
-        "Successfully rejected",
-        "success"
-      );
+      showNotification("Successfully rejected", "success");
       await sendNotification(
         [{ label: selectedEvent.entity, value: selectedEvent.entity }],
         "Reservation Rejected",
@@ -164,10 +158,7 @@ const BigCalendarComponent = ({ events, requests, viewType, currentId }) => {
         { state: "Cancelled" }
       );
 
-      showNotification(
-        "Reservation cancelled successfully",
-        "success"
-      );
+      showNotification("Reservation cancelled successfully", "success");
       closeModal();
       setShowCancelConfirmation(false);
     } catch (error) {
@@ -331,18 +322,18 @@ const BigCalendarComponent = ({ events, requests, viewType, currentId }) => {
     const eventData = {};
     const reservations = {};
     try {
-      const response = await axios.patch(`http://localhost:3000/api/events/cancel/${id}`, eventData, reservations);
-      console.log("response", response);
-      showNotification(
-        "Event cancelled successfully",
-        "success"
+      const response = await axios.patch(
+        `http://localhost:3000/api/events/cancel/${id}`,
+        eventData,
+        reservations
       );
+      console.log("response", response);
+      showNotification("Event cancelled successfully", "success");
       closeModal();
     } catch (error) {
-      console.log("error",error);
-      
+      console.log("error", error);
     }
-  }
+  };
 
   return (
     <>
@@ -605,15 +596,27 @@ const BigCalendarComponent = ({ events, requests, viewType, currentId }) => {
                 </div>
               </Panel>
 
-              {currentRole === "User" && (selectedEvent.state === "Pending" || selectedEvent.state === "Approved"|| selectedEvent.state === "PartiallyApproved") && (
-                <button
-                  className="cancel-button"
-                  onClick={() => onCancelEvent(selectedEvent.id)}
-                  
-                >
-                  Cancel
-                </button>
-              )}
+              {currentRole === "User" &&
+                (selectedEvent.state === "Pending" ||
+                  selectedEvent.state === "Approved" ||
+                  selectedEvent.state === "PartiallyApproved") && (
+                  <div className="button-group">
+                    <button
+                      className="cancel-button"
+                      onClick={() => onCancelEvent(selectedEvent.id)}
+                    >
+                      Cancel
+                    </button>
+                    {selectedEvent.state === "Pending" && (
+                      <button
+                        className="edit-button"
+                        onClick={() => onCancelEvent(selectedEvent.id)}
+                      >
+                        Edit
+                      </button>
+                    )}
+                  </div>
+                )}
 
               {currentRole === "Admin" && (
                 <button
