@@ -21,19 +21,23 @@ const FacilitiesForm = ({ open, onClose, numberOfFacilities, form1 }) => {
   const start = new Date(form1?.startDate).toISOString().split("T")[0];
   const end = new Date(form1?.endDate).toISOString().split("T")[0];
 
-  const [facilities, setFacilities] = useState(initialFacilities);
+  const [facilities, setFacilities] = useState([]);
   const [errorMessages, setErrorMessages] = useState(
     Array(numberOfFacilities).fill("")
   );
   const [availableFacilities, setAvailableFacilities] = useState([]);
   const [pendingFacilities, setPendingFacilities] = useState([]);
   const [availableEquipments, setAvailableEquipments] = useState([]);
+  const [warningMessage, setWarningMessage] = useState("");
+
   const navigate = useNavigate();
   const showNotification = useNotification();
 
+
+
   useEffect(() => {
     const fetchAvailableFacilities = async () => {
-      const { date, startTime, endTime } = facilities[0];
+      const { date, startTime, endTime } = facilities[0] || {date:'',startTime:'',endTime:''};
       if (date && startTime && endTime) {
         try {
           const response = await axios.get(
@@ -44,7 +48,7 @@ const FacilitiesForm = ({ open, onClose, numberOfFacilities, form1 }) => {
           );
           setAvailableFacilities(response.data.availableFacilities);
           setPendingFacilities(
-            response.data.pendingFacilities.map((facility) => facility?.label)
+            response.data.pendingFacilities.map((facility) => facility?._id)
           );
         } catch (error) {
           console.error("Error fetching available facilities:", error);
@@ -69,9 +73,10 @@ const FacilitiesForm = ({ open, onClose, numberOfFacilities, form1 }) => {
       }
     };
 
+    setFacilities(initialFacilities);
     fetchAvailableFacilities();
     fetchAvailableEquipments();
-  }, [facilities]);
+  }, []);
 
   const handleChange = (index, field, value) => {
     const updatedFacilities = [...facilities];
@@ -97,11 +102,27 @@ const FacilitiesForm = ({ open, onClose, numberOfFacilities, form1 }) => {
       updatedFacilities[index][field] = value;
     }
 
-    if (!updatedFacilities[index].date || !updatedFacilities[index].startTime || !updatedFacilities[index].endTime) {
+    if (
+      !updatedFacilities[index].date ||
+      !updatedFacilities[index].startTime ||
+      !updatedFacilities[index].endTime
+    ) {
       setAvailableFacilities([]);
     }
 
+    if (field === "facility") {
+      if (pendingFacilities.includes(updatedFacilities[index][field])) {
+        setWarningMessage(
+          "Warning: This room is likely already reserved for this time slot."
+        );
+      } else {
+        setWarningMessage("");
+      }
+    }
+
     setFacilities(updatedFacilities);
+    console.log("facilities", facilities);
+
     setErrorMessages(updatedErrors);
   };
 
@@ -155,7 +176,11 @@ const FacilitiesForm = ({ open, onClose, numberOfFacilities, form1 }) => {
           <PanelGroup accordion bordered>
             <form className="form form-facilities" onSubmit={handleSubmit}>
               {facilities.map((facility, index) => (
-                <Panel header={`Facility n° ${index + 1}`} defaultExpanded={index === 0} key={index}>
+                <Panel
+                  header={`Facility n° ${index + 1}`}
+                  defaultExpanded={index === 0}
+                  key={index}
+                >
                   <div className="facility-row">
                     <div className="facility-form-group">
                       <label>Date</label>
@@ -231,6 +256,12 @@ const FacilitiesForm = ({ open, onClose, numberOfFacilities, form1 }) => {
                             ))}
                         </select>
                       </div>
+                    </div>
+
+                    <div className="facility-form-group">
+                      {warningMessage && (
+                        <p className="warning-message">{warningMessage}</p>
+                      )}
                     </div>
 
                     <div className="facility-form-group">
