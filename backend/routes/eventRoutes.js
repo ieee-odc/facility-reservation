@@ -9,6 +9,7 @@ import {
   findAllEvents,
   updateEventState,
   findAllRelatedEventstWithReservations,
+  updateEventCancel,
 } from "../controllers/eventController.js";
 
 const eventRouter = express.Router();
@@ -22,5 +23,6 @@ eventRouter.get("/", findAllEvents);
 eventRouter.get("/:id", findEventById);
 eventRouter.patch("/:id", updateEvent);
 eventRouter.patch("/state/:id", updateEventState);
+eventRouter.patch("/cancel/:id", updateEventCancel);
 
 export default eventRouter;

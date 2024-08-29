@@ -4,6 +4,7 @@ import { Facility } from "../models/facilityModel.js";
 import ReservationInitiator from "../models/reservationInitiatorModel.js";
 import { Reservation } from "../models/reservationModel.js";
 import { sendSetupEmail } from "../utils/emailService.js";
+import moment from "moment";
 
 /*
 name 
@@ -163,40 +164,50 @@ export const createEvent = async (req, res) => {
             <p><strong>Event Name:</strong> ${name}</p>
             <p><strong>Description:</strong> ${description}</p>
             <p><strong>Organizer:</strong> ${entityName.name}</p>
-            <p><strong>Start Date:</strong> ${new Date(startDate).toLocaleDateString()}</p>
-            <p><strong>End Date:</strong> ${new Date(endDate).toLocaleDateString()}</p>
+            <p><strong>Start Date:</strong> ${new Date(
+              startDate
+            ).toLocaleDateString()}</p>
+            <p><strong>End Date:</strong> ${new Date(
+              endDate
+            ).toLocaleDateString()}</p>
             <p><strong>Total Effective:</strong> ${totalEffective} people</p>
           </div>
           <h2 style="color: #007bff;">Reservations Details:</h2>
           <ul style="padding-left: 20px;">
-            ${reservations.map((reservation, index) => {
-              const facility = facilities.find(
-                (f) => f._id.toString() === reservation.facility.toString()
-              );
-              return `
+            ${reservations
+              .map((reservation, index) => {
+                const facility = facilities.find(
+                  (f) => f._id.toString() === reservation.facility.toString()
+                );
+                return `
               <li style="margin-bottom: 15px;">
                 <h3 style="margin-bottom: 5px;">Reservation ${index + 1}</h3>
                 <div style="margin-left: 15px;">
                   <p><strong>Facility:</strong> ${
-                    facility ? `${facility.label} (Capacity: ${facility.capacity})` : "Unknown"
+                    facility
+                      ? `${facility.label} (Capacity: ${facility.capacity})`
+                      : "Unknown"
                   }</p>
                   <p><strong>Motive:</strong> ${reservation.motive}</p>
-                  <p><strong>Date:</strong> ${new Date(reservation.date).toLocaleDateString()}</p>
+                  <p><strong>Date:</strong> ${new Date(
+                    reservation.date
+                  ).toLocaleDateString()}</p>
                   <p><strong>Start Time:</strong> ${reservation.startTime}</p>
                   <p><strong>End Time:</strong> ${reservation.endTime}</p>
                   <p><strong>Effective:</strong> ${reservation.effective}</p>
-                  <p><strong>Materials:</strong> ${
-                    reservation.materials
-                      .map((materialId) => equipmentMap[materialId.toString()] || "Unknown")
-                      .join(", ")
-                  }</p>
+                  <p><strong>Materials:</strong> ${reservation.materials
+                    .map(
+                      (materialId) =>
+                        equipmentMap[materialId.toString()] || "Unknown"
+                    )
+                    .join(", ")}</p>
                 </div>
               </li>`;
-            }).join("")}
+              })
+              .join("")}
           </ul>
         </div>
       `;
-      
 
         for (const admin of admins) {
           await sendSetupEmail(admin.email, emailSubject, emailBody);
@@ -272,11 +283,15 @@ export const updateEventState = async (req, res) => {
 export const updateEvent = async (req, res) => {
   try {
     const { id } = req.params;
+    console.log("id event", id);
+
     const { eventData, reservations } = req.body;
+    console.log("req.body", req.body);
 
     const event = await Event.findByIdAndUpdate(id, eventData, {
       new: true,
     });
+
     if (!event) {
       return res.status(404).json({ message: "Event not found" });
     }
@@ -305,6 +320,143 @@ export const updateEvent = async (req, res) => {
     res.status(200).json({ event });
   } catch (error) {
     res.status(500).json({ message: error.message });
+  }
+};
+
+/*export const updateEventCancel = async (req, res) => {
+  try {
+    const { id } = req.params;
+    console.log("id event", id);
+    
+    //const reservations = await Reservation.find({event: id});
+    console.log("req.body", req.body);
+
+
+    
+
+    const event = await Event.findByIdAndUpdate(id, {state: "Cancelled"}, {
+      new: true,
+    });
+
+    if (!event) {
+      return res.status(404).json({ message: "Event not found" });
+    }
+    const [entityName, reservations] = await Promise.all([
+      ReservationInitiator.findOne({ _id: event.organizer }).select(
+        "-password"
+      ),
+      Reservation.find({event: id})
+    ]);
+    
+
+    let updatedReservations;
+    if (reservations) {
+      updatedReservations = await Promise.all(
+        reservations.map(async (reservationData) => {
+          const { _id } = reservationData;
+          if (_id) {
+            return await Reservation.findByIdAndUpdate(_id, {state: "Cancelled"}, {
+              new: true,
+            });
+          }
+        })
+      );
+    }
+
+    try {
+      await sendSetupEmail(
+        entityName.email,
+        `An Event has been Cancelled`,
+        `You have cancelled your event named ${event.name} planned from ${event.startDate} to ${event.endDate}
+         description : ${event.description}.`
+      );
+    } catch (error) {
+      console.log("error here", error);
+    }
+
+    return res.status(200).json({ event,updatedReservations });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+*/
+
+export const updateEventCancel = async (req, res) => {
+  try {
+    const { id } = req.params;
+    console.log("id event", id);
+
+    // const reservations = await Reservation.find({ event: id });
+    console.log("req.body", req.body);
+
+    const event = await Event.findByIdAndUpdate(
+      id,
+      { state: "Cancelled" },
+      {
+        new: true,
+      }
+    );
+
+    if (!event) {
+      return res.status(404).json({ message: "Event not found" });
+    }
+
+    const [entityName, reservations] = await Promise.all([
+      ReservationInitiator.findOne({ _id: event.organizer }).select(
+        "-password"
+      ),
+      Reservation.find({ event: id }),
+    ]);
+
+    let updatedReservations = [];
+    if (reservations.length > 0) {
+      updatedReservations = await Promise.all(
+        reservations.map(async (reservationData) => {
+          const { _id } = reservationData;
+          if (_id) {
+            return await Reservation.findByIdAndUpdate(
+              _id,
+              { state: "Cancelled" },
+              {
+                new: true,
+              }
+            );
+          }
+        })
+      );
+    }
+
+    if (entityName && entityName.email) {
+      try {
+        const formattedStartDate = moment(event.startDate).format(
+          "dddd, MMMM D YYYY, h:mm A"
+        );
+        const formattedEndDate = moment(event.endDate).format(
+          "dddd, MMMM D YYYY, h:mm A"
+        );
+
+        const emailBody = `<div style="font-family: Arial, sans-serif; color: #333; line-height: 1.6;">
+          <h2 style="color: #007bff;">An Event has been Cancelled</h2>
+          <div style="margin-bottom: 20px;">
+            <p>You have cancelled your event named <strong>${event.name}</strong> planned from <strong>${formattedStartDate}</strong> to <strong>${formattedEndDate}</strong>.</p>
+            <p><strong>Description:</strong> ${event.description}</p>
+          </div>
+        </div>
+      `;
+
+        await sendSetupEmail(
+          entityName.email,
+          "An Event has been Cancelled",
+          emailBody
+        );
+      } catch (error) {
+        console.log("Error sending email:", error);
+      }
+    }
+
+    return res.status(200).json({ event, updatedReservations });
+  } catch (error) {
+    return res.status(500).json({ message: error.message });
   }
 };
 
