@@ -126,6 +126,11 @@
   color: #555555;
 }
 
+.rep-email{
+  cursor: no-drop;
+  background-color: #4747473a;
+}
+
 
 @keyframes fadeIn {
   from {

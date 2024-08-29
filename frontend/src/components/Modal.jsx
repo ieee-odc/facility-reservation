@@ -55,13 +55,27 @@ const Modal = ({ rep, onSave, onClose }) => {
     }
 
     try {
-      const response = await axios.post(
-        "http://localhost:3000/api/responsibles/add-responsible",
-        formDataToSend,
-        {
-          headers: { "Content-Type": "multipart/form-data" },
-        }
-      );
+      let response;
+      if (!rep) {
+        response = await axios.post(
+          "http://localhost:3000/api/responsibles/add-responsible",
+          formDataToSend,
+          {
+            headers: { "Content-Type": "multipart/form-data" },
+          }
+        );
+        
+      }else {
+        response = await axios.patch(
+          "http://localhost:3000/api/responsibles/edit-responsible",
+          formDataToSend,
+          {
+            headers: { "Content-Type": "multipart/form-data" },
+          }
+        );
+      }
+
+
       setFormData({
         id: null,
         firstName: "",
@@ -122,6 +136,8 @@ const Modal = ({ rep, onSave, onClose }) => {
               value={formData.contactEmail}
               onChange={handleChange}
               required
+              readOnly={rep ? true : false}
+              className={rep?`rep-email`:''}
             />
           </div>
           <div className="form-group">
@@ -137,7 +153,7 @@ const Modal = ({ rep, onSave, onClose }) => {
           <div className="form-group">
             <label>Picture:</label>
             <CustomUploader
-              existingPath={`http://localhost:3000/${formData.profileImage}`}
+              existingPath={formData.profileImage}
               onFileSelect={handleFileSelect}
               onFileRemove={handleFileRemove}
             />
