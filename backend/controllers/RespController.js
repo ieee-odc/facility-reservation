@@ -87,14 +87,10 @@ export const updateResponsible = async (req, res) => {
 
 export const deleteResponsible = async (req, res) => {
   const { id } = req.params;
+console.log("id from delete", id);
 
   try {
-    const responsible = await Responsible.findById(id);
-    if (!responsible) {
-      return res.status(404).json({ message: 'Responsible not found' });
-    }
-
-    await responsible.remove();
+    const responsible = await Responsible.findByIdAndDelete(id);
     res.status(200).json({ message: 'Responsible deleted successfully' });
   } catch (error) {
     res.status(500).json({ message: 'Error deleting responsible', error });

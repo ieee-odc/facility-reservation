@@ -12,8 +12,7 @@ import { useTranslation } from "react-i18next";
 import { useAuth } from "../context/authContext/AuthProvider";
 
 const Vav = () => {
-
-  const {currentId} = useAuth();
+  const { currentId } = useAuth();
 
   const { t } = useTranslation();
 
@@ -49,7 +48,7 @@ const Vav = () => {
       .then((response) => {
         console.log("reponse", response.data);
         //setemployees(response.data.data);
-        setRepresentatives(response.data)
+        setRepresentatives(response.data);
       })
       .catch((error) => {
         console.log(error);
@@ -61,32 +60,46 @@ const Vav = () => {
     setShowDeleteModal(true);
   };
 
-  const handleDeleteConfirm = () => {
-    setRepresentatives(
-      representatives.filter((rep) => rep.id !== selectedRep.id)
-    );
-    setShowDeleteModal(false);
+  const handleDeleteConfirm = async () => {
+    try {
+      console.log("id", selectedRep._id);
+      
+      const response = await axios.delete(`http://localhost:3000/api/responsibles/${selectedRep._id}`)
+      setRepresentatives(
+        representatives.filter((rep) => rep._id !== selectedRep._id)
+      );
+      setShowDeleteModal(false);
+
+    } catch (error) {
+      console.log("error deleting the responsible", error);
+      
+    }
   };
 
   return (
     <div className="vis-a-vis">
-      <h3>{t('our_representative')}</h3>
+      <h3>{t("our_representative")}</h3>
       <div className="add-button">
-        <button onClick={() => setShowModal(true)}>+ {t('add_a_representative')}</button>
+        <button onClick={() => setShowModal(true)}>
+          + {t("add_a_representative")}
+        </button>
       </div>
       <div className="vav-content">
         {representatives.map((rep, index) => (
-          <div key={index} className="vav-person main-profile-card" >
-            {rep.profileImage ? 
-             ( <img
-              src={`http://localhost:3000/${rep.profileImage}`}
-              alt={rep.firstName}
-              className="person-picture"
-            />):( <img
-              src={manager1}
-              alt={rep.firstName}
-              className="person-picture"
-            />)}
+          <div key={index} className="vav-person main-profile-card">
+            {rep.profileImage ? (
+              <img
+                src={`http://localhost:3000/${rep.profileImage}`}
+                alt={rep.firstName}
+                className="person-picture"
+              />
+            ) : (
+              <img
+                src={manager1}
+                alt={rep.firstName}
+                className="person-picture"
+              />
+            )}
             <div className="basic-info">
               <p className="info-names">
                 {rep.firstName} {rep.lastName}
@@ -124,9 +137,12 @@ const Vav = () => {
           onSave={(data) => {
             console.log("Saved:", data);
             setShowModal(false);
-            setSelectedRep(null)
+            setSelectedRep(null);
           }}
-          onClose={() => {setShowModal(false); setSelectedRep(null)}}
+          onClose={() => {
+            setShowModal(false);
+            setSelectedRep(null);
+          }}
         />
       )}
 
