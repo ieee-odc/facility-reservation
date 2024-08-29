@@ -4,7 +4,7 @@ import { Calendar, momentLocalizer } from 'react-big-calendar';
 import moment from 'moment';
 import 'react-big-calendar/lib/css/react-big-calendar.css';
 import './style.css';
-import EventModal from './EventModal';
+//import EventModal from './EventModal';
 import ParentComp from './parentComp';
 import ReservationsModal1 from './ReservationsModal1';
 import EventModal1 from "./EventModal1";
@@ -154,7 +154,7 @@ const BigCalendarComponent = ({ events, requests, viewType, currentId }) => {
       />
     </div>
 
-{selectedEvent && (
+{/*selectedEvent && (
   <EventModal
     show={eventModalShow}
     onHide={() => setEventModalShow(false)}
@@ -162,7 +162,7 @@ const BigCalendarComponent = ({ events, requests, viewType, currentId }) => {
     onCancel={handleCancel}
     viewType={viewType}
   />
-)}
+)*/}
 
 {selectedSlot && isReservationModalOpen && viewType==="requests"  && (
   <ReservationsModal1

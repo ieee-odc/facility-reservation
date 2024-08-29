@@ -75,7 +75,8 @@ export const getAllAdmins= async (req, res) => {
 };
 
 export const getReservationInitiatorById = async (req, res) => {
-  const { id } = req.params;
+  const { id } = req.params;  
+console.log("id", id);
 
   try {
     const initiator = await ReservationInitiator.findById(id).select(

@@ -14,6 +14,7 @@ import ReservationsModal1 from "./ReservationsModal1";
 
 const CalendarPage = ({ currentId, currentRole }) => {
   const [events, setEvents] = useState([]);
+  const [organizers, setOrganizers] = useState([]);
   const [eventData, setEventData] = useState([]);
   const [requests, setRequests] = useState([]);
   const [facilities, setFacilities] = useState({});
@@ -101,7 +102,6 @@ const CalendarPage = ({ currentId, currentRole }) => {
       }
     };
 
-    
     const fetchEvents = async () => {
       try {
         let url;
@@ -117,7 +117,9 @@ const CalendarPage = ({ currentId, currentRole }) => {
             eventsData.map(async (event) => {
               const start = new Date(event.startDate);
               const end = new Date(event.endDate);
-              const organizerName = await fetchOrganizerName(event.organizer);
+              const organizerName = organizers.find(
+                (organizer) => organizer._id === event.organizer
+              )?.name;
 
               return {
                 id: event._id,
@@ -131,7 +133,7 @@ const CalendarPage = ({ currentId, currentRole }) => {
                 state: event.state,
                 facility: facilities[event.facility],
                 motive: event.name,
-                reservations: event.reservations
+                reservations: event.reservations,
               };
             })
           );
@@ -146,28 +148,22 @@ const CalendarPage = ({ currentId, currentRole }) => {
       }
     };
 
+    const fetchOrganizers = async () => {
+      axios
+        .get(`http://localhost:3000/api/reservationInitiators`)
+        .then((response) => {
+          setOrganizers(response.data);
+        })
+        .catch((error) => {
+          console.error(`Error fetching organizers`, error);
+        });
+    };
+
+    fetchOrganizers();
     fetchFacilities();
     fetchEvents();
     fetchReservations();
-  }, [currentId, currentRole, facilities]);
-
-
-  const fetchOrganizerName = async (organizerId) => {
-    axios
-      .get(`http://localhost:3000/api/reservationInitiators/${organizerId}`)
-      .then((response) => {
-
-        return response.data.name;
-      })
-      .catch((error) => {
-        console.error(
-          `Error fetching organizer name for ID ${organizerId}`,
-          error
-        );
-        return "Unknown Organizer";
-      });
-  };
-
+  }, [currentId, currentId, facilities]);
 
   const handleDropdownChange = (key) => {
     setViewType(key);
@@ -238,13 +234,15 @@ const CalendarPage = ({ currentId, currentRole }) => {
   });
 
   const filteredEvents = events.filter((event) => {
-    const facilityMatch =(selectedFacilities.length === 0 ||
+    const facilityMatch =
+      selectedFacilities.length === 0 ||
       selectedFacilities.includes("All") ||
-      selectedFacilities.includes(event.facility));
+      selectedFacilities.includes(event.facility);
 
-    const stateMatch =(filterStates.length === 0 ||
+    const stateMatch =
+      filterStates.length === 0 ||
       filterStates.includes("All") ||
-      filterStates.includes(event.state));
+      filterStates.includes(event.state);
 
     const timeMatch =
       (!filterStartTime || new Date(event.start) >= filterStartTime) &&

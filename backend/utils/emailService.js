@@ -13,7 +13,11 @@ export const sendSetupEmail = async (to, subject, text) => {
       from: process.env.EMAIL_USER,
       to,
       subject,
-      text,
+      html: text,
+      headers: {
+        'X-Priority': '1',
+        'Importance': 'High',
+      },
     });
   } catch (error) {
     console.error("Error sending email:", error);

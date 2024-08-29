@@ -1,5 +1,9 @@
+import { Equipment } from "../models/equipmentModel.js";
 import { Event } from "../models/eventModel.js";
+import { Facility } from "../models/facilityModel.js";
+import ReservationInitiator from "../models/reservationInitiatorModel.js";
 import { Reservation } from "../models/reservationModel.js";
+import { sendSetupEmail } from "../utils/emailService.js";
 
 /*
 name 
@@ -108,8 +112,28 @@ export const createEvent = async (req, res) => {
       totalEffective,
       reservations,
     } = req.body;
-
     console.log("req body", req.body);
+
+    const facilityIds = reservations.map((reservation) => reservation.facility);
+
+    const materialIds = reservations.flatMap(
+      (reservation) => reservation.materials
+    );
+
+    const [admins, entityName, facilities, equipments] = await Promise.all([
+      ReservationInitiator.find({ role: "Admin" }).select("-password"),
+      ReservationInitiator.findOne({ _id: organizer }).select("-password"),
+      Facility.find({ _id: { $in: facilityIds } }),
+      Equipment.find({ _id: { $in: materialIds } }),
+    ]);
+
+    console.log("facilities", facilities);
+    console.log("equipments", equipments);
+
+    const equipmentMap = equipments.reduce((acc, equipment) => {
+      acc[equipment._id.toString()] = equipment.label;
+      return acc;
+    }, {});
 
     Event.create({
       name,
@@ -130,6 +154,53 @@ export const createEvent = async (req, res) => {
             return reservation._id;
           })
         );
+
+        const emailSubject = `New Event Created by ${entityName.name.toUpperCase()}`;
+        const emailBody = `
+        <div style="font-family: Arial, sans-serif; color: #333; line-height: 1.6;">
+          <h2 style="color: #007bff;">Event Details:</h2>
+          <div style="margin-bottom: 20px;">
+            <p><strong>Event Name:</strong> ${name}</p>
+            <p><strong>Description:</strong> ${description}</p>
+            <p><strong>Organizer:</strong> ${entityName.name}</p>
+            <p><strong>Start Date:</strong> ${new Date(startDate).toLocaleDateString()}</p>
+            <p><strong>End Date:</strong> ${new Date(endDate).toLocaleDateString()}</p>
+            <p><strong>Total Effective:</strong> ${totalEffective} people</p>
+          </div>
+          <h2 style="color: #007bff;">Reservations Details:</h2>
+          <ul style="padding-left: 20px;">
+            ${reservations.map((reservation, index) => {
+              const facility = facilities.find(
+                (f) => f._id.toString() === reservation.facility.toString()
+              );
+              return `
+              <li style="margin-bottom: 15px;">
+                <h3 style="margin-bottom: 5px;">Reservation ${index + 1}</h3>
+                <div style="margin-left: 15px;">
+                  <p><strong>Facility:</strong> ${
+                    facility ? `${facility.label} (Capacity: ${facility.capacity})` : "Unknown"
+                  }</p>
+                  <p><strong>Motive:</strong> ${reservation.motive}</p>
+                  <p><strong>Date:</strong> ${new Date(reservation.date).toLocaleDateString()}</p>
+                  <p><strong>Start Time:</strong> ${reservation.startTime}</p>
+                  <p><strong>End Time:</strong> ${reservation.endTime}</p>
+                  <p><strong>Effective:</strong> ${reservation.effective}</p>
+                  <p><strong>Materials:</strong> ${
+                    reservation.materials
+                      .map((materialId) => equipmentMap[materialId.toString()] || "Unknown")
+                      .join(", ")
+                  }</p>
+                </div>
+              </li>`;
+            }).join("")}
+          </ul>
+        </div>
+      `;
+      
+
+        for (const admin of admins) {
+          await sendSetupEmail(admin.email, emailSubject, emailBody);
+        }
 
         return res
           .status(201)
@@ -231,8 +302,7 @@ export const updateEvent = async (req, res) => {
       res.status(200).json({ event, reservations: updatedReservations });
     }
 
-
-    res.status(200).json({event});
+    res.status(200).json({ event });
   } catch (error) {
     res.status(500).json({ message: error.message });
   }

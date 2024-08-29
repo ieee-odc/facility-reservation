@@ -12,11 +12,14 @@ import Modal from "react-modal";
 import { Panel } from "rsuite";
 import { useTranslation } from "react-i18next";
 import { getAllFacilities, getAllOrganizers } from "../../apiService";
+import { useAuth } from "../../context/authContext/AuthProvider";
+import axios from "axios";
 
 const localizer = momentLocalizer(moment);
 
 const BigCalendarComponent = ({ events, requests, viewType, currentId }) => {
   //console.log("events",events);
+  const { currentRole } = useAuth();
 
   const { t } = useTranslation();
   const [allEvents, setAllEvents] = useState([]);
@@ -29,6 +32,7 @@ const BigCalendarComponent = ({ events, requests, viewType, currentId }) => {
   const [modalIsOpen, setModalIsOpen] = useState(false);
   const [facilities, setFacilities] = useState({});
   const [organizers, setOrganizers] = useState({});
+  const [showCancelConfirmation, setShowCancelConfirmation] = useState(false);
 
   useEffect(() => {
     const filterEventsByState = (events) => {
@@ -84,6 +88,79 @@ const BigCalendarComponent = ({ events, requests, viewType, currentId }) => {
     fetchFacilities();
   }, [facilities]);
 
+  const sendNotification = async (recipientId, title, message) => {
+    console.log("recipient ids", recipientId);
+    
+    try {
+      await axios.post("http://localhost:3000/api/notifications", {
+        title,
+        message,
+        recipient: recipientId,
+      });
+    } catch (error) {
+      console.error("Error sending notification:", error);
+    }
+  };
+
+  const handleApprove = async () => {
+    try {
+      const route = viewType === "events" ? "events/state" : "reservations";
+      console.log(`Approving ${viewType}:`, selectedEvent.id);
+      await axios.patch(
+        `http://localhost:3000/api/${route}/${selectedEvent.id}`,
+        { state: "Approved" }
+      );
+      
+      await sendNotification(
+        [{label :selectedEvent.entity, value: selectedEvent.entity}], 
+        "Reservation Approved", 
+        `Your reservation titled "${selectedEvent.title}" has been approved.`
+      );
+      
+      window.location.reload();
+      
+    } catch (error) {
+      console.error(`Error approving ${viewType}:`, error);
+    }
+  };
+  
+  const handleReject = async () => {
+    try {
+      const route = viewType === "events" ? "events/state" : "reservations";
+      console.log(`Rejecting ${viewType}:`, selectedEvent.id);
+      await axios.patch(
+        `http://localhost:3000/api/${route}/${selectedEvent.id}`,
+        { state: "Rejected" }
+      );
+  console.log("hello there");
+
+      await sendNotification(
+        [{label :selectedEvent.entity, value: selectedEvent.entity}], 
+        "Reservation Rejected", 
+        `Your reservation titled "${selectedEvent.title}" has been rejected.`
+      );
+  
+      window.location.reload();
+      
+    } catch (error) {
+      console.error(`Error rejecting ${viewType}:`, error);
+    }
+  };
+
+  const handleCancel = async () => {
+    try {
+      const route = viewType === "events" ? "events/state" : "reservations";
+      console.log(`Cancelling ${viewType}:`, selectedEvent);
+      await axios.patch(
+        `http://localhost:3000/api/${route}/${selectedEvent.id}`,
+        { state: "Cancelled" }
+      );
+      setShowCancelConfirmation(false);
+    } catch (error) {
+      console.error(`Error cancelling ${viewType}:`, error);
+    }
+  };
+
   const handleEventClick = (event) => {
     console.log("i am here");
 
@@ -92,18 +169,34 @@ const BigCalendarComponent = ({ events, requests, viewType, currentId }) => {
   };
 
   const handleSlotSelect = ({ start, end }) => {
+    console.log("start", start, "end", end);
+    
     setSelectedSlot({ start, end });
     viewType === "requests"
       ? setIsReservationModalOpen((prev) => true)
       : setIsEventModalOpen((prev) => true);
   };
 
-  const handleCancel = (eventId) => {
+  /*const handleCancel = (eventId) => {
     setAllEvents((prevEvents) =>
       prevEvents.map((event) =>
         event.id === eventId ? { ...event, state: "Cancelled" } : event
       )
     );
+  };*/
+
+  const handleShowCancelConfirmation = () => {
+    setShowCancelConfirmation(true);
+  };
+
+  const handleCloseCancelConfirmation = () => {
+    setShowCancelConfirmation(false);
+  };
+
+  const handleConfirmCancel = () => {
+    handleCancel();
+    closeModal();
+    setShowCancelConfirmation(false);
   };
 
   const handleSelectEvent = (event) => {
@@ -244,7 +337,7 @@ const BigCalendarComponent = ({ events, requests, viewType, currentId }) => {
           <button className="unique-modal-close-button" onClick={closeModal}>
             X
           </button>
-          <h2 className="unique-modal-header">Event Details</h2>
+          <h2 className="unique-modal-header">Reservation Details</h2>
           {viewType === "requests" ? (
             <div className="unique-modal-details">
               <p>
@@ -288,6 +381,64 @@ const BigCalendarComponent = ({ events, requests, viewType, currentId }) => {
                   <strong>{t("state")}:</strong> {selectedEvent.state}
                 </p>
               </div>
+              {(selectedEvent.state === "Pending" || selectedEvent.state==="Approved") && (
+                <div className="button-group">
+                  {(currentRole === "Admin" && selectedEvent.state === "Pending" )? (
+                    <>
+                      <button
+                        className="approve-button"
+                        onClick={handleApprove}
+                      >
+                        Approve
+                      </button>
+                      <button className="reject-button" onClick={handleReject}>
+                        Reject
+                      </button>
+                    </>
+                  ) : (
+                    currentRole === "User" && (
+                      <>
+                        <button
+                          className="cancel-button"
+                          onClick={handleShowCancelConfirmation}
+                        >
+                          Cancel
+                        </button>
+                        {selectedEvent.state === "Pending" && (<button
+                          className="edit-button"
+                          //onClick={handleEditClick}
+                        >
+                          {viewType === "events"
+                            ? "Edit Event"
+                            : "Edit Reservation"}
+                        </button>)}
+                      </>
+                    )
+                  )}
+                </div>
+              )}
+              {showCancelConfirmation && (
+                <div className="confirmation-popup">
+                  <p>
+                    Are you sure you want to cancel this{" "}
+                    {viewType === "events" ? "event" : "reservation"}?
+                  </p>
+                  <div className="confirmation-buttons">
+                    <button
+                      className="yes-button"
+                      onClick={handleConfirmCancel}
+                    >
+                      Yes
+                    </button>
+                    <button
+                      className="no-button"
+                      onClick={handleCloseCancelConfirmation}
+                    >
+                      No
+                    </button>
+                  </div>
+                </div>
+              )}
             </div>
           ) : (
             <div className="unique-modal-details">
@@ -376,7 +527,6 @@ const BigCalendarComponent = ({ events, requests, viewType, currentId }) => {
               {/* Additional event-specific details */}
             </div>
           )}
-          
         </Modal>
       )}
 
