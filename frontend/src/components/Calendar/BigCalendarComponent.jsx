@@ -241,6 +241,9 @@ const BigCalendarComponent = ({ events, requests, viewType, currentId }) => {
           className="unique-modal-content" // Content style
           overlayClassName="unique-modal-overlay" // Overlay style
         >
+          <button className="unique-modal-close-button" onClick={closeModal}>
+            X
+          </button>
           <h2 className="unique-modal-header">Event Details</h2>
           {viewType === "requests" ? (
             <div className="unique-modal-details">
@@ -373,9 +376,7 @@ const BigCalendarComponent = ({ events, requests, viewType, currentId }) => {
               {/* Additional event-specific details */}
             </div>
           )}
-          <button className="unique-modal-close-button" onClick={closeModal}>
-            Close
-          </button>
+          
         </Modal>
       )}
 
