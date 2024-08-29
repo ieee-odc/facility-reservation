@@ -145,6 +145,44 @@ router.post(
   }
 );
 
+router.post(
+  "/upload-profile-banner",
+  uploader.single("file"),
+  async (req, res) => {
+    try {
+      if (!req.file) {
+        return res.status(400).json({ message: "No file uploaded" });
+      }
+      const file = req.file;
+      const id = req.body.currentId;
+      console.log("file", file);
+      const profileImagePath = req.file.path;
+      console.log("currentId", id);
+
+      const user = await ReservationInitiator.findById(id);
+
+      if (!user) {
+        return res.status(404).json({ message: "User not found" });
+      }
+
+      if (user.profileBanner) {
+        const oldImagePath = path.resolve(user.profileBanner);
+        fs.unlink(oldImagePath, (err) => {
+          if (err) {
+            console.error("Error deleting old profile image:", err);
+          }
+        });
+      }
+
+      user.profileBanner = profileImagePath;
+      await user.save();
+      res.status(200).json({ message: "Profile image uploaded successfully!" });
+    } catch (error) {
+      res.status(500).json({ message: "Error uploading profile image", error });
+    }
+  }
+);
+
 router.post("/verify-user", verifyUser);
 
 router.get("/", getAllReservationInitiators);

@@ -43,6 +43,10 @@ const reservationInitiatorSchema = mongoose.Schema(
       type: String,
       default: '', 
     },
+    profileBanner: {
+      type: String,
+      default: '', 
+    },
     role: {
       type: String,
       enum: ['Admin', 'SuperAdmin', 'User'],

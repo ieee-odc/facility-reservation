@@ -41,6 +41,7 @@ const Profile = ({ currentId, currentUser }) => {
     phoneNumber: "",
     manager: "",
     profileImage: "",
+    profileBanner: "",
   });
   const [profileImage, setProfileImage] = useState(logo);
   const [bannerImage, setBannerImage] = useState(banner);
@@ -234,10 +235,12 @@ const Profile = ({ currentId, currentUser }) => {
           const reader = new FileReader();
           reader.onload = (e) => setProfileImage(e.target.result);
           reader.readAsDataURL(e.target.files[0]);
-  
-          console.log('Profile image uploaded successfully:', response.data.message);
-          window.location.reload();
 
+          console.log(
+            "Profile image uploaded successfully:",
+            response.data.message
+          );
+          window.location.reload();
         }
       } catch (error) {
         console.log("error uploading profile picture", error);
@@ -245,11 +248,39 @@ const Profile = ({ currentId, currentUser }) => {
     }
   };
 
-  const handleBannerImageChange = (e) => {
+  const handleBannerImageChange = async (e) => {
     if (e.target.files && e.target.files[0]) {
       const reader = new FileReader();
       reader.onload = (e) => setBannerImage(e.target.result);
       reader.readAsDataURL(e.target.files[0]);
+
+      const formData = new FormData();
+      formData.append("file", e.target.files[0]);
+      formData.append("currentId", currentId);
+
+      try {
+        const response = await axios.post(
+          "http://localhost:3000/api/reservationInitiators/upload-profile-banner",
+          formData,
+          {
+            headers: {
+              "Content-Type": "multipart/form-data",
+            },
+          }
+        );
+
+        if (response.status === 200) {
+          const reader = new FileReader();
+          reader.onload = (e) => setBannerImage(e.target.result);
+          reader.readAsDataURL(e.target.files[0]);
+
+          console.log(
+            "Profile banner uploaded successfully:",
+            response.data.message
+          );
+          window.location.reload();
+        }
+      } catch (error) {}
     }
   };
 
@@ -258,7 +289,7 @@ const Profile = ({ currentId, currentUser }) => {
       <Navbar />
       <div className="profile-container">
         <div className="profile-banner">
-          <img src={bannerImage} alt="Profile Banner" />
+          {fieldValues.profileBanner ?(<img src={`http://localhost:3000/${fieldValues.profileBanner}`} alt="Profile Banner" />):(<img src={bannerImage} alt="Profile Banner" />)}
           <div className="overlay">
             <label htmlFor="banner-upload">
               <FontAwesomeIcon icon={faCamera} className="icon" />
