@@ -18,8 +18,17 @@ const responsibleSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+  profileImage: {
+    type: String,
+    default: '', 
+  },
   position: {
     type: String
+  },
+  entity: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "ReservationInitiator",
+    required: true,
   }
 },
 {

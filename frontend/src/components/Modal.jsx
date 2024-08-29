@@ -1,21 +1,27 @@
-import React, { useState, useEffect } from 'react';
-import CustomUploader from './utils/CustomUploader';
-import axios from 'axios';
-import './Modal.css';
+import React, { useState, useEffect } from "react";
+import CustomUploader from "./utils/CustomUploader";
+import axios from "axios";
+import "./Modal.css";
+import { useAuth } from "../context/authContext/AuthProvider";
 
 const Modal = ({ rep, onSave, onClose }) => {
+  console.log("rep", rep);
+
+  const { currentId } = useAuth();
   const [formData, setFormData] = useState({
     id: null,
     firstName: "",
     lastName: "",
     position: "",
-    email: "",
-    phone: "",
-    picture: "",
+    contactEmail: "",
+    contactPhoneNumber: "",
+    profileImage: "",
   });
 
   useEffect(() => {
     if (rep) {
+      console.log("rep", rep);
+
       setFormData(rep);
     }
   }, [rep]);
@@ -26,32 +32,48 @@ const Modal = ({ rep, onSave, onClose }) => {
   };
 
   const handleFileSelect = (file) => {
-    setFormData({ ...formData, picture: file });
+    setFormData({ ...formData, profileImage: file });
   };
 
   const handleFileRemove = () => {
-    setFormData({ ...formData, picture: null });
+    setFormData({ ...formData, profileImage: null });
   };
 
-  const handleSubmit = async(e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
     const formDataToSend = new FormData();
-    formDataToSend.append('firstName', formData.firstName);
-    formDataToSend.append('lastName', formData.lastName);
-    formDataToSend.append('position', formData.position);
-    formDataToSend.append('email', formData.email);
-    formDataToSend.append('phone', formData.phone);
-    if (formData.picture) {
-      formDataToSend.append('file', formData.picture);
+    formDataToSend.append("firstName", formData.firstName);
+    formDataToSend.append("lastName", formData.lastName);
+    formDataToSend.append("position", formData.position);
+    formDataToSend.append("contactEmail", formData.contactEmail);
+    formDataToSend.append("contactPhoneNumber", formData.contactPhoneNumber);
+    formDataToSend.append("currentId", currentId);
+    if (formData.profileImage) {
+      formDataToSend.append("file", formData.profileImage);
+      console.log("formData", formData.profileImage);
     }
 
     try {
-      const response = await axios.post("http://localhost:3000/api/upload", formDataToSend, {
-        headers: { 'Content-Type': 'multipart/form-data' },
+      const response = await axios.post(
+        "http://localhost:3000/api/responsibles/add-responsible",
+        formDataToSend,
+        {
+          headers: { "Content-Type": "multipart/form-data" },
+        }
+      );
+      setFormData({
+        id: null,
+        firstName: "",
+        lastName: "",
+        position: "",
+        contactEmail: "",
+        contactPhoneNumber: "",
+        profileImage: "",
       });
       console.log(response.data);
       onSave(response.data.representative);
+      window.location.reload();
     } catch (error) {
       console.error(error);
     }
@@ -96,8 +118,8 @@ const Modal = ({ rep, onSave, onClose }) => {
             <label>Email:</label>
             <input
               type="email"
-              name="email"
-              value={formData.email}
+              name="contactEmail"
+              value={formData.contactEmail}
               onChange={handleChange}
               required
             />
@@ -106,8 +128,8 @@ const Modal = ({ rep, onSave, onClose }) => {
             <label>Phone:</label>
             <input
               type="tel"
-              name="phone"
-              value={formData.phone}
+              name="contactPhoneNumber"
+              value={formData.contactPhoneNumber}
               onChange={handleChange}
               required
             />
@@ -115,12 +137,15 @@ const Modal = ({ rep, onSave, onClose }) => {
           <div className="form-group">
             <label>Picture:</label>
             <CustomUploader
+              existingPath={`http://localhost:3000/${formData.profileImage}`}
               onFileSelect={handleFileSelect}
               onFileRemove={handleFileRemove}
             />
           </div>
           <div className="modal-buttons">
-            <button type="button" onClick={onClose}>Cancel</button>
+            <button type="button" onClick={onClose}>
+              Cancel
+            </button>
             <button type="submit">Save</button>
           </div>
         </form>

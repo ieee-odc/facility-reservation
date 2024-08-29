@@ -1,11 +1,12 @@
 import React, { useState } from 'react';
-import './CustomUploader.css'; // Custom styles for the uploader
+import './CustomUploader.css'; 
 
 const CustomUploader = ({ onFileSelect, onFileRemove }) => {
-  const [selectedFile, setSelectedFile] = useState(null);
+  
+  const [selectedFile, setSelectedFile] = useState();
 
-  const handleFileChange = (event) => {
-    const file = event.target.files[0];
+  const handleFileChange = (e) => {
+    const file = e.target.files[0];
     if (file) {
       setSelectedFile(URL.createObjectURL(file));
       onFileSelect(file);
@@ -14,7 +15,7 @@ const CustomUploader = ({ onFileSelect, onFileRemove }) => {
 
   const handleRemoveFile = () => {
     setSelectedFile(null);
-    onFileRemove(); // Notify parent component
+    onFileRemove(); 
   };
 
   return (
@@ -28,6 +29,7 @@ const CustomUploader = ({ onFileSelect, onFileRemove }) => {
       <label htmlFor="file-upload" className="upload-button">
         <span className="camera-icon">📷</span> Upload Picture
       </label>
+      
       {selectedFile && (
         <div className="file-preview-container">
           <img

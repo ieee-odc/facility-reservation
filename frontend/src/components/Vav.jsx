@@ -9,8 +9,12 @@ import "./Modal.css";
 import axios from "axios";
 import deleteIcon from "./../assets/delete.png";
 import { useTranslation } from "react-i18next";
+import { useAuth } from "../context/authContext/AuthProvider";
 
 const Vav = () => {
+
+  const {currentId} = useAuth();
+
   const { t } = useTranslation();
 
   const [showModal, setShowModal] = useState(false);
@@ -41,10 +45,11 @@ const Vav = () => {
 
   useEffect(() => {
     axios
-      .get("http://localhost:3000/api/responsibles")
+      .get(`http://localhost:3000/api/responsibles/related/${currentId}`)
       .then((response) => {
         console.log("reponse", response.data);
         //setemployees(response.data.data);
+        setRepresentatives(response.data)
       })
       .catch((error) => {
         console.log(error);
@@ -70,13 +75,18 @@ const Vav = () => {
         <button onClick={() => setShowModal(true)}>+ {t('add_a_representative')}</button>
       </div>
       <div className="vav-content">
-        {representatives.map((rep) => (
-          <div className="vav-person main-profile-card" key={rep.id}>
-            <img
-              src={rep.picture}
+        {representatives.map((rep, index) => (
+          <div key={index} className="vav-person main-profile-card" >
+            {rep.profileImage ? 
+             ( <img
+              src={`http://localhost:3000/${rep.profileImage}`}
               alt={rep.firstName}
               className="person-picture"
-            />
+            />):( <img
+              src={manager1}
+              alt={rep.firstName}
+              className="person-picture"
+            />)}
             <div className="basic-info">
               <p className="info-names">
                 {rep.firstName} {rep.lastName}
@@ -84,8 +94,8 @@ const Vav = () => {
               <p className="info-position">{rep.position}</p>
             </div>
             <div className="more-info">
-              <p className="info-email">{rep.email}</p>
-              <p className="info-phone">{rep.phone}</p>
+              <p className="info-email">{rep.contactEmail}</p>
+              <p className="info-phone">{rep.contactPhoneNumber}</p>
             </div>
             <div className="person-interaction">
               <img
@@ -114,8 +124,9 @@ const Vav = () => {
           onSave={(data) => {
             console.log("Saved:", data);
             setShowModal(false);
+            setSelectedRep(null)
           }}
-          onClose={() => setShowModal(false)}
+          onClose={() => {setShowModal(false); setSelectedRep(null)}}
         />
       )}
 

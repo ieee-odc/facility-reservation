@@ -35,6 +35,18 @@ export const getAllResponsibles = async (req, res) => {
   }
 };
 
+export const getAllRelatedResponsibles = async (req, res) => {
+  try {
+    const { id } = req.params;
+    console.log("current id resp", id);
+    
+    const responsibles = await Responsible.find({entity: id});
+    res.status(200).json(responsibles);
+  } catch (error) {
+    res.status(500).json({ message: 'Error fetching responsibles', error });
+  }
+};
+
 
 export const getResponsibleById = async (req, res) => {
   const { id } = req.params;

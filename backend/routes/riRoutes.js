@@ -16,11 +16,11 @@ import authUser, { verifyUser } from "../controllers/authController.js";
 import csv from "csv-parser";
 import multer from "multer";
 import fs from "fs";
+import path from "path";
 import crypto from "crypto";
 import { ReservationInitiator } from "../models/reservationInitiatorModel.js";
 import admin from "../config/firebase-config.js";
 import { sendSetupEmail } from "../utils/emailService.js";
-import path from "path";
 
 const upload = multer({ dest: "uploads/" });
 
