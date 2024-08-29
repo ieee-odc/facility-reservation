@@ -218,9 +218,28 @@ export const deleteReservation = async (req, res) => {
   }
 };
 
+function timeStringToMinutes(timeString) {
+  const [time, modifier] = timeString.split(' ');
+  let [hours, minutes] = time.split(':');
+  if (hours === '12') {
+    hours = '00';
+  }
+  if (modifier === 'PM') {
+    hours = parseInt(hours, 10) + 12;
+  }
+  return parseInt(hours, 10) * 60 + parseInt(minutes, 10);
+}
+
 export const getAvailableFacilities = async (req, res) => {
   try {
     const { date, startTime, endTime } = req.query;
+
+    console.log("startTime", startTime);
+    console.log("endTime", endTime);
+    
+    const start = timeStringToMinutes(startTime);
+    console.log("start", start);
+    
 
     const reservationDate = new Date(date);
 
@@ -228,6 +247,9 @@ export const getAvailableFacilities = async (req, res) => {
       date: reservationDate,
       $or: [{ startTime: { $lt: endTime }, endTime: { $gt: startTime } }],
     }).populate("facility");
+
+    console.log(overlappingReservations);
+    
 
     const occupiedFacilities = overlappingReservations
       .filter((reservation) => reservation.state === "Approved")
@@ -237,10 +259,17 @@ export const getAvailableFacilities = async (req, res) => {
       .filter((reservation) => reservation.state === "Pending")
       .map((reservation) => reservation.facility);
 
+    console.log("pending", pendingFacilities);
+      
+
     const allFacilities = await Facility.find({ state: "Bookable" });
     const availableFacilities = allFacilities.filter(
       (facility) => !occupiedFacilities.includes(facility._id.toString())
     );
+
+    console.log("available", availableFacilities);
+    console.log("occupied", occupiedFacilities);
+    
 
     res.status(200).json({
       availableFacilities,

@@ -400,7 +400,6 @@ const BigCalendarComponent = ({ events, requests, viewType, currentId }) => {
                           className="cancel-button"
                           onClick={handleShowCancelConfirmation}
                         >
-                          Cancel{" "}
                           {viewType === "events" ? "Event" : "Reservation"}
                         </button>
                         {selectedEvent.state === "Pending" && (<button

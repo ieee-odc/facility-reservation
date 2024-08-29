@@ -30,7 +30,6 @@ const ReservationsModal1 = ({
     entity: currentId,
   }));
 
-  const adminId = "66a761ae4cd22c469d649d8f";
 
   const start = new Date(moment(slotDetails?.start))
     .toISOString()
@@ -45,6 +44,9 @@ const ReservationsModal1 = ({
   const [pendingFacilities, setPendingFacilities] = useState([]);
   const [admins, setAdmins] = useState([]);
   const [availableEquipments, setAvailableEquipments] = useState([]);
+  const [errors, setErrors] = useState({});
+  const [warningMessage, setWarningMessage] = useState("");
+
   const navigate = useNavigate();
   const showNotification = useNotification();
 
@@ -52,6 +54,8 @@ const ReservationsModal1 = ({
     const facility = facilities[0];
     if (facility?.date && facility?.startTime && facility?.endTime) {
       const fetchAvailableFacilities = async () => {
+        console.log("date", facility.date, "start time", facility.startTime, "end", facility.endTime);
+        
         try {
           const response = await axios.get(
             "http://localhost:3000/api/reservations/available-facilities",
@@ -66,7 +70,7 @@ const ReservationsModal1 = ({
           console.log(response);
           setAvailableFacilities(response.data.availableFacilities);
           setPendingFacilities(
-            response.data.pendingFacilities.map((facility) => facility?.label)
+            response.data.pendingFacilities.map((facility) => facility?._id)
           );
         } catch (error) {
           console.error("Error fetching available facilities:", error);
@@ -74,10 +78,10 @@ const ReservationsModal1 = ({
       };
       fetchAvailableFacilities();
     } else {
-      setAvailableFacilities([]); // Clear the available facilities if any input is empty
+      setAvailableFacilities([]); 
       setPendingFacilities([]);
     }
-  }, [facilities]);
+  }, [facilities[0].date, facilities[0].startTime, facilities[0].endTime]);
 
   useEffect(() => {
     const fetchAvailableEquipments = async () => {
@@ -94,12 +98,12 @@ const ReservationsModal1 = ({
         console.error("Error fetching available equipments:", error);
       }
     };
-    const fetchAdmins= async () => {
+    const fetchAdmins = async () => {
       try {
         const response = await axios.get(
           "http://localhost:3000/api/reservationInitiators/admins"
         );
-        
+
         const data = response.data.map((item) => ({
           label: item.name,
           value: item._id,
@@ -135,6 +139,20 @@ const ReservationsModal1 = ({
       }
     } else {
       updatedFacilities[index][field] = value;
+    }
+
+    console.log("pending facilities", pendingFacilities);
+    console.log("up facilities", updatedFacilities[index][field]);
+    
+
+    if (field === "facility") {
+      if (pendingFacilities.includes(updatedFacilities[index][field])) {
+        setWarningMessage(
+          "Warning: This room is likely already reserved for this time slot."
+        );
+      } else {
+        setWarningMessage("");
+      }
     }
 
     setFacilities(updatedFacilities);
@@ -174,7 +192,7 @@ const ReservationsModal1 = ({
         "The reservation has been submitted successfully!",
         "success"
       );
-      
+
       try {
         await sendNotification(
           admins,
@@ -286,6 +304,13 @@ const ReservationsModal1 = ({
                             ))}
                         </select>
                       </div>
+                    </div>
+
+                    <div className="facility-form-group">
+                      
+                      {warningMessage && (
+                        <p className="warning-message">{warningMessage}</p>
+                      )}
                     </div>
 
                     <div className="facility-form-group">
