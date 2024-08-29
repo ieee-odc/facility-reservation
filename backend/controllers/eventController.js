@@ -1,5 +1,8 @@
 import { Event } from "../models/eventModel.js";
+import { Facility } from "../models/facilityModel.js";
+import ReservationInitiator from "../models/reservationInitiatorModel.js";
 import { Reservation } from "../models/reservationModel.js";
+import { sendSetupEmail } from "../utils/emailService.js";
 
 /*
 name 
@@ -108,8 +111,17 @@ export const createEvent = async (req, res) => {
       totalEffective,
       reservations,
     } = req.body;
-
     console.log("req body", req.body);
+
+    const facilityIds = reservations.map(reservation => reservation.facility);
+    
+    const [admins, entityName, facilities] = await Promise.all([
+      ReservationInitiator.find({ role: "Admin" }).select("-password"),
+      ReservationInitiator.findOne({ _id: organizer }).select("-password"),
+      Facility.find({ _id: { $in: facilityIds } }),,
+    ]);
+
+    console.log("facilities", facilities);
 
     Event.create({
       name,
@@ -130,6 +142,39 @@ export const createEvent = async (req, res) => {
             return reservation._id;
           })
         );
+
+        const emailSubject = "New Event Created";
+        const emailBody = `
+          <h1>New Event Created by ${entityName.name}</h1>
+          <p><strong>Event Name:</strong> ${name}</p>
+          <p><strong>Description:</strong> ${description}</p>
+          <p><strong>Organizer:</strong> ${entityName.name}</p>
+          <p><strong>Start Date:</strong> ${new Date(startDate).toLocaleDateString()}</p>
+          <p><strong>End Date:</strong> ${new Date(endDate).toLocaleDateString()}</p>
+          <p><strong>Total Effective:</strong> ${totalEffective} people</p>
+          <h2>Reservations Details:</h2>
+          <ul>
+            ${reservations.map((reservation, index) => {
+              const facility = facilities.find(f => f._id.toString() === reservation.facility.toString());
+              return `
+                <li>
+                  <h3>Reservation ${index + 1}</h3>
+                  <p><strong>Facility:</strong> ${facility ? facility.label + " capacity : "+facility.capacity : 'Unknown'}</p>
+                  <p><strong>Motive:</strong> ${reservation.motive}</p>
+                  <p><strong>Date:</strong> ${new Date(reservation.date).toLocaleDateString()}</p>
+                  <p><strong>Start Time:</strong> ${reservation.startTime}</p>
+                  <p><strong>End Time:</strong> ${reservation.endTime}</p>
+                  <p><strong>Effective:</strong> ${reservation.effective}</p>
+                  <p><strong>Materials:</strong> ${reservation.materials.join(', ')}</p>
+                </li>
+              `;
+            }).join('')}
+          </ul>
+        `;
+
+        for (const admin of admins) {
+          await sendSetupEmail(admin.email, emailSubject, emailBody);
+        }
 
         return res
           .status(201)
@@ -231,8 +276,7 @@ export const updateEvent = async (req, res) => {
       res.status(200).json({ event, reservations: updatedReservations });
     }
 
-
-    res.status(200).json({event});
+    res.status(200).json({ event });
   } catch (error) {
     res.status(500).json({ message: error.message });
   }

@@ -13,7 +13,7 @@ export const sendSetupEmail = async (to, subject, text) => {
       from: process.env.EMAIL_USER,
       to,
       subject,
-      text,
+      html: text,
     });
   } catch (error) {
     console.error("Error sending email:", error);
