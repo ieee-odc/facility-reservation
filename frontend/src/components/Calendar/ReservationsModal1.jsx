@@ -97,6 +97,7 @@ const ReservationsModal1 = ({
         const response = await axios.get(
           "http://localhost:3000/api/equipments"
         );
+        
         const data = response.data.data.map((item) => ({
           label: item.label,
           value: item._id,
@@ -123,7 +124,7 @@ const ReservationsModal1 = ({
     };
     fetchAdmins();
     fetchAvailableEquipments();
-  }, [availableEquipments, admins]);
+  }, []);
 
   const handleChange = (index, field, value) => {
     const updatedFacilities = [...facilities];

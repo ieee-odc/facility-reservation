@@ -337,7 +337,7 @@ const BigCalendarComponent = ({ events, requests, viewType, currentId }) => {
           <button className="unique-modal-close-button" onClick={closeModal}>
             X
           </button>
-          <h2 className="unique-modal-header">Event Details</h2>
+          <h2 className="unique-modal-header">Reservation Details</h2>
           {viewType === "requests" ? (
             <div className="unique-modal-details">
               <p>
