@@ -73,7 +73,7 @@ const EventForm = ({ open, onClose, onSubmit, slotDetails }) => {
 
 
   const handleNext = () => {
-    setSubmitted(true)
+    setSubmitted(true);
     setFacilitiesModalOpen(true);
   };
 

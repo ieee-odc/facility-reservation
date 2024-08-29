@@ -157,53 +157,46 @@ export const createEvent = async (req, res) => {
 
         const emailSubject = "New Event Created";
         const emailBody = `
-          <h1>New Event Created by ${entityName.name}</h1>
-          <p><strong>Event Name:</strong> ${name}</p>
-          <p><strong>Description:</strong> ${description}</p>
-          <p><strong>Organizer:</strong> ${entityName.name}</p>
-          <p><strong>Start Date:</strong> ${new Date(
-            startDate
-          ).toLocaleDateString()}</p>
-          <p><strong>End Date:</strong> ${new Date(
-            endDate
-          ).toLocaleDateString()}</p>
-          <p><strong>Total Effective:</strong> ${totalEffective} people</p>
-          <h2>Reservations Details:</h2>
-          <ul>
-            ${reservations
-              .map((reservation, index) => {
-                const facility = facilities.find(
-                  (f) => f._id.toString() === reservation.facility.toString()
-                );
-                return `
-                <li>
-                  <h3>Reservation ${index + 1}</h3>
+        <div style="font-family: Arial, sans-serif; color: #333; line-height: 1.6;">
+          <h1 style="color: #007bff;">New Event Created by ${entityName.name}</h1>
+          <div style="margin-bottom: 20px;">
+            <p><strong>Event Name:</strong> ${name}</p>
+            <p><strong>Description:</strong> ${description}</p>
+            <p><strong>Organizer:</strong> ${entityName.name}</p>
+            <p><strong>Start Date:</strong> ${new Date(startDate).toLocaleDateString()}</p>
+            <p><strong>End Date:</strong> ${new Date(endDate).toLocaleDateString()}</p>
+            <p><strong>Total Effective:</strong> ${totalEffective} people</p>
+          </div>
+          <h2 style="color: #007bff;">Reservations Details:</h2>
+          <ul style="padding-left: 20px;">
+            ${reservations.map((reservation, index) => {
+              const facility = facilities.find(
+                (f) => f._id.toString() === reservation.facility.toString()
+              );
+              return `
+              <li style="margin-bottom: 15px;">
+                <h3 style="margin-bottom: 5px;">Reservation ${index + 1}</h3>
+                <div style="margin-left: 15px;">
                   <p><strong>Facility:</strong> ${
-                    facility
-                      ? facility.label + " capacity : " + facility.capacity
-                      : "Unknown"
+                    facility ? `${facility.label} (Capacity: ${facility.capacity})` : "Unknown"
                   }</p>
                   <p><strong>Motive:</strong> ${reservation.motive}</p>
-                  <p><strong>Date:</strong> ${new Date(
-                    reservation.date
-                  ).toLocaleDateString()}</p>
+                  <p><strong>Date:</strong> ${new Date(reservation.date).toLocaleDateString()}</p>
                   <p><strong>Start Time:</strong> ${reservation.startTime}</p>
                   <p><strong>End Time:</strong> ${reservation.endTime}</p>
                   <p><strong>Effective:</strong> ${reservation.effective}</p>
-                                <p><strong>Materials:</strong> ${reservation.materials
-                                  .map(
-                                    (materialId) =>
-                                      equipmentMap[materialId.toString()] ||
-                                      "Unknown"
-                                  )
-                                  .join(", ")}</p>
-
-                </li>
-              `;
-              })
-              .join("")}
+                  <p><strong>Materials:</strong> ${
+                    reservation.materials
+                      .map((materialId) => equipmentMap[materialId.toString()] || "Unknown")
+                      .join(", ")
+                  }</p>
+                </div>
+              </li>`;
+            }).join("")}
           </ul>
-        `;
+        </div>
+      `;
+      
 
         for (const admin of admins) {
           await sendSetupEmail(admin.email, emailSubject, emailBody);
