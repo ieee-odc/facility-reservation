@@ -155,7 +155,6 @@ const BigCalendarComponent = ({ events, requests, viewType, currentId }) => {
         `http://localhost:3000/api/${route}/${selectedEvent.id}`,
         { state: "Cancelled" }
       );
-      window.location.reload();
       setShowCancelConfirmation(false);
     } catch (error) {
       console.error(`Error cancelling ${viewType}:`, error);
@@ -196,6 +195,7 @@ const BigCalendarComponent = ({ events, requests, viewType, currentId }) => {
 
   const handleConfirmCancel = () => {
     handleCancel();
+    closeModal();
     setShowCancelConfirmation(false);
   };
 
@@ -402,7 +402,7 @@ const BigCalendarComponent = ({ events, requests, viewType, currentId }) => {
                           className="cancel-button"
                           onClick={handleShowCancelConfirmation}
                         >
-                          {viewType === "events" ? "Event" : "Reservation"}
+                          Cancel
                         </button>
                         {selectedEvent.state === "Pending" && (<button
                           className="edit-button"
