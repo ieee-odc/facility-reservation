@@ -1,3 +1,4 @@
+import { Equipment } from "../models/equipmentModel.js";
 import { Event } from "../models/eventModel.js";
 import { Facility } from "../models/facilityModel.js";
 import ReservationInitiator from "../models/reservationInitiatorModel.js";
@@ -113,15 +114,26 @@ export const createEvent = async (req, res) => {
     } = req.body;
     console.log("req body", req.body);
 
-    const facilityIds = reservations.map(reservation => reservation.facility);
-    
-    const [admins, entityName, facilities] = await Promise.all([
+    const facilityIds = reservations.map((reservation) => reservation.facility);
+
+    const materialIds = reservations.flatMap(
+      (reservation) => reservation.materials
+    );
+
+    const [admins, entityName, facilities, equipments] = await Promise.all([
       ReservationInitiator.find({ role: "Admin" }).select("-password"),
       ReservationInitiator.findOne({ _id: organizer }).select("-password"),
-      Facility.find({ _id: { $in: facilityIds } }),,
+      Facility.find({ _id: { $in: facilityIds } }),
+      Equipment.find({ _id: { $in: materialIds } }),
     ]);
 
     console.log("facilities", facilities);
+    console.log("equipments", equipments);
+
+    const equipmentMap = equipments.reduce((acc, equipment) => {
+      acc[equipment._id.toString()] = equipment.label;
+      return acc;
+    }, {});
 
     Event.create({
       name,
@@ -149,26 +161,47 @@ export const createEvent = async (req, res) => {
           <p><strong>Event Name:</strong> ${name}</p>
           <p><strong>Description:</strong> ${description}</p>
           <p><strong>Organizer:</strong> ${entityName.name}</p>
-          <p><strong>Start Date:</strong> ${new Date(startDate).toLocaleDateString()}</p>
-          <p><strong>End Date:</strong> ${new Date(endDate).toLocaleDateString()}</p>
+          <p><strong>Start Date:</strong> ${new Date(
+            startDate
+          ).toLocaleDateString()}</p>
+          <p><strong>End Date:</strong> ${new Date(
+            endDate
+          ).toLocaleDateString()}</p>
           <p><strong>Total Effective:</strong> ${totalEffective} people</p>
           <h2>Reservations Details:</h2>
           <ul>
-            ${reservations.map((reservation, index) => {
-              const facility = facilities.find(f => f._id.toString() === reservation.facility.toString());
-              return `
+            ${reservations
+              .map((reservation, index) => {
+                const facility = facilities.find(
+                  (f) => f._id.toString() === reservation.facility.toString()
+                );
+                return `
                 <li>
                   <h3>Reservation ${index + 1}</h3>
-                  <p><strong>Facility:</strong> ${facility ? facility.label + " capacity : "+facility.capacity : 'Unknown'}</p>
+                  <p><strong>Facility:</strong> ${
+                    facility
+                      ? facility.label + " capacity : " + facility.capacity
+                      : "Unknown"
+                  }</p>
                   <p><strong>Motive:</strong> ${reservation.motive}</p>
-                  <p><strong>Date:</strong> ${new Date(reservation.date).toLocaleDateString()}</p>
+                  <p><strong>Date:</strong> ${new Date(
+                    reservation.date
+                  ).toLocaleDateString()}</p>
                   <p><strong>Start Time:</strong> ${reservation.startTime}</p>
                   <p><strong>End Time:</strong> ${reservation.endTime}</p>
                   <p><strong>Effective:</strong> ${reservation.effective}</p>
-                  <p><strong>Materials:</strong> ${reservation.materials.join(', ')}</p>
+                                <p><strong>Materials:</strong> ${reservation.materials
+                                  .map(
+                                    (materialId) =>
+                                      equipmentMap[materialId.toString()] ||
+                                      "Unknown"
+                                  )
+                                  .join(", ")}</p>
+
                 </li>
               `;
-            }).join('')}
+              })
+              .join("")}
           </ul>
         `;
 
