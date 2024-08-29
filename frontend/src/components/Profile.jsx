@@ -187,7 +187,39 @@ const Profile = ({ currentId, currentUser }) => {
     setEditingField(null);
   };
 
-  const handleApprove = () => {
+  const handleApprove = async() => {
+    /*const formDataToSend = new FormData();
+    formDataToSend.append("nature", fieldValues.nature);
+    formDataToSend.append("organisation", fieldValues.organisation);
+    formDataToSend.append("service", fieldValues.service);
+    formDataToSend.append("phoneNumber", fieldValues.phoneNumber);
+    formDataToSend.append("manager", fieldValues.manager);
+    console.log("formDataToSend",formDataToSend);*/
+    console.log("editing field", fieldValues);
+
+    const formDataToSend = {
+      "nature":fieldValues.nature,
+      "organisation": fieldValues.organisation,
+      "service": fieldValues.service,
+      "phoneNumber": fieldValues.phoneNumber,
+      "manager": fieldValues.manager
+    }
+    console.log("formDataToSend",formDataToSend);
+    try {
+
+      const response = await axios.patch(
+        `http://localhost:3000/api/reservationInitiators/${currentId}`,
+        formDataToSend
+      );
+
+      console.log("response", response);
+      
+      
+    } catch (error) {
+      console.log("error updating the reservation initiator", error);
+      
+    }
+
     setEditingField(null);
   };
 

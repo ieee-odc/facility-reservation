@@ -92,6 +92,8 @@ export const getReservationInitiatorById = async (req, res) => {
 
 export const updateReservationInitiator = async (req, res) => {
   const { id } = req.params;
+  console.log("id", id);
+  
   const {
     name,
     email,
@@ -103,6 +105,16 @@ export const updateReservationInitiator = async (req, res) => {
     organisation,
     role,
   } = req.body;
+  console.log("name, email,password,phoneNumber,backupEmail,nature,service,organisation,role,", name,
+    email,
+    password,
+    phoneNumber,
+    backupEmail,
+    nature,
+    service,
+    organisation,
+    role,);
+  
 
   try {
     const initiator = await ReservationInitiator.findById(id);

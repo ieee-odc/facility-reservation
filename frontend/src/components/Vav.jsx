@@ -47,7 +47,6 @@ const Vav = () => {
       .get(`http://localhost:3000/api/responsibles/related/${currentId}`)
       .then((response) => {
         console.log("reponse", response.data);
-        //setemployees(response.data.data);
         setRepresentatives(response.data);
       })
       .catch((error) => {
