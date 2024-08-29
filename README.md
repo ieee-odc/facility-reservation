@@ -1,7 +1,10 @@
 🚀 Facility Reservation System
+
+
 This project is a MERN stack application for managing facility reservations, including user authentication, event management, and notifications.
 
 🔧 Installation
+
 1️⃣ Clone the Repository
 
 git clone https://github.com/ieee-odc/facility-reservation.git
@@ -35,10 +38,10 @@ touch backend/.env
 
 Fill in the .env file with the following details:
 
-MONGODB_URL=<your MongoDB connection URL>
-PORT=<the port you want your backend server to run on>
-EMAIL_USER=<email address used for sending notifications>
-EMAIL_PASS=<email password for the sender>
+MONGODB_URL=<your MongoDB connection URL
+PORT=<the port you want your backend server to run on
+EMAIL_USER=<email address used for sending notifications
+EMAIL_PASS=<email password for the sender 
 Frontend:
 
 Create a .env file in the frontend directory and fill in the required environment variables:
@@ -47,13 +50,13 @@ touch frontend/.env
 
 Fill in the .env file with the following details:
 
-REACT_APP_API_KEY=<your Firebase API key>
-REACT_APP_AUTH_DOMAIN=<your Firebase Auth domain>
-REACT_APP_PROJECT_ID=<your Firebase project ID>
-REACT_APP_STORAGE_BUCKET=<your Firebase storage bucket>
-REACT_APP_MESSAGING_SENDER_ID=<your Firebase messaging sender ID>
-REACT_APP_FIREBASE_APP_ID=<your Firebase app ID>
-REACT_APP_MEASUREMENT_ID=<your Firebase measurement ID>
+REACT_APP_API_KEY=<your Firebase API key
+REACT_APP_AUTH_DOMAIN=<your Firebase Auth domain
+REACT_APP_PROJECT_ID=<your Firebase project ID
+REACT_APP_STORAGE_BUCKET=<your Firebase storage bucket
+REACT_APP_MESSAGING_SENDER_ID=<your Firebase messaging sender ID
+REACT_APP_FIREBASE_APP_ID=<your Firebase app ID
+REACT_APP_MEASUREMENT_ID=<your Firebase measurement ID
 
 5️⃣ Firebase Configuration
 Create a firebase.json file in the root directory if needed for Firebase configuration:
@@ -72,8 +75,8 @@ touch backend/.env.test
 
 This file is specifically used to configure environment variables for running tests. It typically contains the following variables:
 
-MONGODB_URL="<your test MongoDB connection URL>"
-PORT=<a different port to avoid conflicts>
+MONGODB_URL="<your test MongoDB connection URL
+PORT=<a different port to avoid conflicts
 NODE_ENV=test
 When running tests using the command:
 
