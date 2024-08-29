@@ -11,7 +11,7 @@ import EventModal1 from "./EventModal1";
 import Modal from "react-modal";
 import { Panel } from "rsuite";
 import { useTranslation } from "react-i18next";
-import { getAllFacilities } from "../../apiService";
+import { getAllFacilities, getAllOrganizers } from "../../apiService";
 
 const localizer = momentLocalizer(moment);
 
@@ -28,6 +28,7 @@ const BigCalendarComponent = ({ events, requests, viewType, currentId }) => {
   const [selectedEvent, setSelectedEvent] = useState(null); // Track selected event
   const [modalIsOpen, setModalIsOpen] = useState(false);
   const [facilities, setFacilities] = useState({});
+  const [organizers, setOrganizers] = useState({});
 
   useEffect(() => {
     const filterEventsByState = (events) => {
@@ -67,6 +68,19 @@ const BigCalendarComponent = ({ events, requests, viewType, currentId }) => {
         console.error("Error fetching facilities", error);
       }
     };
+    const fetchOrganizers = async () => {
+      try {
+        const response = await getAllOrganizers();
+        const organizersData = response.data.reduce((acc, organizer) => {
+          acc[organizer._id] = organizer.name;
+          return acc;
+        }, {});
+        setOrganizers(organizersData);
+      } catch (error) {
+        console.error("Error fetching organizers", error);
+      }
+    };
+    fetchOrganizers();
     fetchFacilities();
   }, [facilities]);
 
@@ -93,7 +107,7 @@ const BigCalendarComponent = ({ events, requests, viewType, currentId }) => {
   };
 
   const handleSelectEvent = (event) => {
-    console.log("event", event);
+    console.log("selected event", event);
 
     setSelectedEvent(event);
     setModalIsOpen(true); // Open modal when event is selected
@@ -237,7 +251,40 @@ const BigCalendarComponent = ({ events, requests, viewType, currentId }) => {
                 <strong>Request Date:</strong>{" "}
                 {selectedEvent.start.toDateString()}
               </p>
-              {/* Additional request-specific details */}
+              <div key={selectedEvent._id} className="reservation-item">
+                <h3>
+                  {organizers[selectedEvent.entity] || "Unknown Organizer"}
+                </h3>
+                <p>
+                  <strong>{t("motive")}:</strong> {selectedEvent.motive}
+                </p>
+                <p>
+                  <strong>{t("date")}:</strong>{" "}
+                  {new Date(selectedEvent.date).toLocaleDateString()}
+                </p>
+                <p>
+                  <strong>{t("time")}:</strong>{" "}
+                  {new Date(selectedEvent.start).toLocaleTimeString([], {
+                    hour: "2-digit",
+                    minute: "2-digit",
+                  })}{" "}
+                  -
+                  {new Date(selectedEvent.end).toLocaleTimeString([], {
+                    hour: "2-digit",
+                    minute: "2-digit",
+                  })}
+                </p>
+                <p>
+                  <strong>{t("facility")}:</strong>{" "}
+                  {selectedEvent.facility || "Unknown Facility"}
+                </p>
+                <p>
+                  <strong>{t("effective")}:</strong> {selectedEvent.effective}
+                </p>
+                <p className={getStateClass(selectedEvent.state)}>
+                  <strong>{t("state")}:</strong> {selectedEvent.state}
+                </p>
+              </div>
             </div>
           ) : (
             <div className="unique-modal-details">
