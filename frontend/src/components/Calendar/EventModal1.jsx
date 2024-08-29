@@ -56,7 +56,6 @@ const EventForm = ({ open, onClose, onSubmit, slotDetails }) => {
     setEndDate(e.target.value);
   };
 
-
   const handleSubmit = (e) => {
     e.preventDefault();
     setSubmitted(true);
@@ -68,9 +67,8 @@ const EventForm = ({ open, onClose, onSubmit, slotDetails }) => {
       numberOfFacilities,
       organizer,
     });*/
-    setFacilitiesModalOpen(true)
+    setFacilitiesModalOpen(true);
   };
-
 
   const handleNext = () => {
     setSubmitted(true);
@@ -175,17 +173,24 @@ const EventForm = ({ open, onClose, onSubmit, slotDetails }) => {
         </Modal.Footer>
       </Modal>
 
-      {submitted&& (<FacilitiesForm
-        open={facilitiesModalOpen}
-        onClose={() => {setFacilitiesModalOpen(false); onClose()}}
-        numberOfFacilities={numberOfFacilities}
-        form1={{ name,
-          description,
-          startDate,
-          endDate,
-          numberOfFacilities,
-          organizer,}}
-      />)}
+      {submitted && (
+        <FacilitiesForm
+          open={facilitiesModalOpen}
+          onClose={() => {
+            setFacilitiesModalOpen(false);
+            onClose();
+          }}
+          numberOfFacilities={numberOfFacilities}
+          form1={{
+            name,
+            description,
+            startDate,
+            endDate,
+            numberOfFacilities,
+            organizer,
+          }}
+        />
+      )}
     </>
   );
 };

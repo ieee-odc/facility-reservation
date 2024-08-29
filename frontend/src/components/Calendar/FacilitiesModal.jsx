@@ -6,7 +6,6 @@ import { useNavigate } from "react-router-dom";
 import { GrAttachment } from "react-icons/gr";
 import { useNotification } from "../../context/NotificationContext";
 
-
 const FacilitiesForm = ({ open, onClose, numberOfFacilities, form1 }) => {
   const initialFacilities = Array.from({ length: numberOfFacilities }, () => ({
     date: "",
@@ -27,18 +26,41 @@ const FacilitiesForm = ({ open, onClose, numberOfFacilities, form1 }) => {
     Array(numberOfFacilities).fill("")
   );
   const [availableFacilities, setAvailableFacilities] = useState([]);
+  const [user, setUser] = useState({});
   const [pendingFacilities, setPendingFacilities] = useState([]);
   const [availableEquipments, setAvailableEquipments] = useState([]);
   const [warningMessage, setWarningMessage] = useState("");
+  const [admins, setAdmins] = useState([]);
 
   const navigate = useNavigate();
   const showNotification = useNotification();
 
-
+  useEffect(() => {
+    console.log("org", form1.organizer);
+  
+    const fetchUser = async () => {
+      try {
+        const response = await axios.get(
+          `http://localhost:3000/api/reservationInitiators/${form1.organizer}`
+        );
+        console.log("user:", response);
+        setUser(response.data);
+      } catch (error) {
+        console.error("Error fetching user:", error);
+      }
+    };
+  
+    fetchUser();
+  }, [form1.organizer]);
+  
 
   useEffect(() => {
     const fetchAvailableFacilities = async () => {
-      const { date, startTime, endTime } = facilities[0] || {date:'',startTime:'',endTime:''};
+      const { date, startTime, endTime } = facilities[0] || {
+        date: "",
+        startTime: "",
+        endTime: "",
+      };
       if (date && startTime && endTime) {
         try {
           const response = await axios.get(
@@ -74,6 +96,22 @@ const FacilitiesForm = ({ open, onClose, numberOfFacilities, form1 }) => {
       }
     };
 
+    const fetchAdmins = async () => {
+      try {
+        const response = await axios.get(
+          "http://localhost:3000/api/reservationInitiators/admins"
+        );
+
+        const data = response.data.map((item) => ({
+          label: item.name,
+          value: item._id,
+        }));
+        setAdmins(data);
+      } catch (error) {
+        console.error("Error fetching available equipments:", error);
+      }
+    };
+    fetchAdmins();
     fetchAvailableFacilities();
     fetchAvailableEquipments();
   }, [facilities]);
@@ -140,6 +178,18 @@ const FacilitiesForm = ({ open, onClose, numberOfFacilities, form1 }) => {
     setFacilities(updatedFacilities);
   };
 
+  const sendNotification = async (recipientIds, title, message) => {
+    try {
+      await axios.post("http://localhost:3000/api/notifications", {
+        title,
+        message,
+        recipient: recipientIds,
+      });
+    } catch (error) {
+      console.error("Error sending notification:", error);
+    }
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     const totalEffective = facilities.reduce((total, item) => {
@@ -152,6 +202,17 @@ const FacilitiesForm = ({ open, onClose, numberOfFacilities, form1 }) => {
         totalEffective,
       });
       showNotification("Event has been submitted successfully!", "success");
+
+      try {
+        await sendNotification(
+          admins,
+          "New Event Created",
+          `A new Event named ${form1.name} has been submitted by ${user.name.toUpperCase()}. Please check your email`
+        );
+      } catch (error) {
+        console.log("error from notifications", error);
+      }
+
       navigate("/calendar");
       onClose();
     } catch (error) {
@@ -159,10 +220,11 @@ const FacilitiesForm = ({ open, onClose, numberOfFacilities, form1 }) => {
         "Failed to submit the event. Please try again.",
         "error"
       );
+      console.log("error", error);
+      
     }
   };
 
-  
   return (
     <Modal open={open} onClose={onClose} size="md">
       <Modal.Header>

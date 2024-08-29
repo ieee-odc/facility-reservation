@@ -203,8 +203,8 @@ const ReservationsModal1 = ({
       try {
         await sendNotification(
           admins,
-          "New Reservation Created",
-          `A new reservation has been created for the facility "${facilityLabel.label}" on ${facilities[0].date}.`
+          `New Reservation Created`,
+          `A new reservation has been created for the facility "${facilityLabel.label}" on ${facilities[0].date}. Please check your email.`
         );
       } catch (error) {
         console.log("error from notifications", error);
