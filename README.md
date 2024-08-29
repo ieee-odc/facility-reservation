@@ -3,6 +3,7 @@
 This project is a MERN stack application for managing facility reservations, including user authentication, event management, and notifications.
 
 🔧 Installation
+
 1️⃣ Clone the Repository
 
 git clone https://github.com/ieee-odc/facility-reservation.git
