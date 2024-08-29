@@ -18,7 +18,9 @@ const ReservationsModal1 = ({
 }) => {
   const initialFacilities = Array.from({ length: numberOfFacilities }, () => ({
     date: slotDetails
-      ? moment(slotDetails?.end)?.subtract(1, "days")?.format("YYYY-MM-DD")
+      ? moment(slotDetails?.end)
+          ?.subtract(moment(slotDetails?.end).format("YYYY-MM-DD") == moment(slotDetails?.start).format("YYYY-MM-DD") ? 0 : 1, "days")
+          ?.format("YYYY-MM-DD")
       : "",
     startTime: "",
     endTime: "",
@@ -29,7 +31,6 @@ const ReservationsModal1 = ({
     materials: [],
     entity: currentId,
   }));
-
 
   const start = new Date(moment(slotDetails?.start))
     .toISOString()
@@ -54,8 +55,15 @@ const ReservationsModal1 = ({
     const facility = facilities[0];
     if (facility?.date && facility?.startTime && facility?.endTime) {
       const fetchAvailableFacilities = async () => {
-        console.log("date", facility.date, "start time", facility.startTime, "end", facility.endTime);
-        
+        console.log(
+          "date",
+          facility.date,
+          "start time",
+          facility.startTime,
+          "end",
+          facility.endTime
+        );
+
         try {
           const response = await axios.get(
             "http://localhost:3000/api/reservations/available-facilities",
@@ -78,7 +86,7 @@ const ReservationsModal1 = ({
       };
       fetchAvailableFacilities();
     } else {
-      setAvailableFacilities([]); 
+      setAvailableFacilities([]);
       setPendingFacilities([]);
     }
   }, [facilities[0].date, facilities[0].startTime, facilities[0].endTime]);
@@ -143,7 +151,6 @@ const ReservationsModal1 = ({
 
     console.log("pending facilities", pendingFacilities);
     console.log("up facilities", updatedFacilities[index][field]);
-    
 
     if (field === "facility") {
       if (pendingFacilities.includes(updatedFacilities[index][field])) {
@@ -307,7 +314,6 @@ const ReservationsModal1 = ({
                     </div>
 
                     <div className="facility-form-group">
-                      
                       {warningMessage && (
                         <p className="warning-message">{warningMessage}</p>
                       )}

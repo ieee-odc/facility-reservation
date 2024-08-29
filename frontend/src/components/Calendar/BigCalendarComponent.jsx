@@ -170,6 +170,8 @@ const BigCalendarComponent = ({ events, requests, viewType, currentId }) => {
   };
 
   const handleSlotSelect = ({ start, end }) => {
+    console.log("start", start, "end", end);
+    
     setSelectedSlot({ start, end });
     viewType === "requests"
       ? setIsReservationModalOpen((prev) => true)
