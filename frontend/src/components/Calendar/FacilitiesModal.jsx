@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from "react";
+import "../event/event.css";
 import { Modal, Button, PanelGroup, Panel, TagPicker } from "rsuite";
 import axios from "axios";
-import "../event/event.css";
 import { useNavigate } from "react-router-dom";
 import { GrAttachment } from "react-icons/gr";
 import { useNotification } from "../../context/NotificationContext";
+
 
 const FacilitiesForm = ({ open, onClose, numberOfFacilities, form1 }) => {
   const initialFacilities = Array.from({ length: numberOfFacilities }, () => ({
@@ -16,12 +17,12 @@ const FacilitiesForm = ({ open, onClose, numberOfFacilities, form1 }) => {
     motive: "",
     files: [],
     materials: [],
-    entity: form1?.organizer,
+    entity: form1.organizer,
   }));
   const start = new Date(form1?.startDate).toISOString().split("T")[0];
   const end = new Date(form1?.endDate).toISOString().split("T")[0];
 
-  const [facilities, setFacilities] = useState([]);
+  const [facilities, setFacilities] = useState(initialFacilities);
   const [errorMessages, setErrorMessages] = useState(
     Array(numberOfFacilities).fill("")
   );
@@ -73,10 +74,9 @@ const FacilitiesForm = ({ open, onClose, numberOfFacilities, form1 }) => {
       }
     };
 
-    setFacilities(initialFacilities);
     fetchAvailableFacilities();
     fetchAvailableEquipments();
-  }, []);
+  }, [facilities]);
 
   const handleChange = (index, field, value) => {
     const updatedFacilities = [...facilities];
@@ -121,7 +121,6 @@ const FacilitiesForm = ({ open, onClose, numberOfFacilities, form1 }) => {
     }
 
     setFacilities(updatedFacilities);
-    console.log("facilities", facilities);
 
     setErrorMessages(updatedErrors);
   };
@@ -163,6 +162,7 @@ const FacilitiesForm = ({ open, onClose, numberOfFacilities, form1 }) => {
     }
   };
 
+  
   return (
     <Modal open={open} onClose={onClose} size="md">
       <Modal.Header>

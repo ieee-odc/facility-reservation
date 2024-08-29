@@ -190,7 +190,8 @@ const EventModal = ({ show, onHide, eventDetails, onCancel, viewType }) => {
               }}
             />
           ) : (
-            <EventForm
+            <></>
+            /*<EventForm
               open={editFormOpen}
               onClose={() => setEditFormOpen(false)}
               eventData={{
@@ -206,7 +207,7 @@ const EventModal = ({ show, onHide, eventDetails, onCancel, viewType }) => {
               onUpdate={(updatedEvent) => {
                 // Handle the update
               }}
-            />
+            />*/
           )}
         </div>
       )}
