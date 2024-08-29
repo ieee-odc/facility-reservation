@@ -131,6 +131,7 @@ const CalendarPage = ({ currentId, currentRole }) => {
                 state: event.state,
                 facility: facilities[event.facility],
                 motive: event.name,
+                reservations: event.reservations
               };
             })
           );
@@ -237,15 +238,13 @@ const CalendarPage = ({ currentId, currentRole }) => {
   });
 
   const filteredEvents = events.filter((event) => {
-    const facilityMatch =
-      selectedFacilities.length === 0 ||
+    const facilityMatch =(selectedFacilities.length === 0 ||
       selectedFacilities.includes("All") ||
-      selectedFacilities.includes(event.facility);
+      selectedFacilities.includes(event.facility));
 
-    const stateMatch =
-      filterStates.length === 0 ||
+    const stateMatch =(filterStates.length === 0 ||
       filterStates.includes("All") ||
-      filterStates.includes(event.state);
+      filterStates.includes(event.state));
 
     const timeMatch =
       (!filterStartTime || new Date(event.start) >= filterStartTime) &&

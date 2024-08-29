@@ -103,7 +103,6 @@ const AdminView = () => {
     }
   };
 
-
   const getWeekdayFromDate = (dateString) => {
     const date = new Date(dateString);
     const daysOfWeek = [
@@ -140,7 +139,9 @@ const AdminView = () => {
       }
       return 0;
     });
-
+  useEffect(() => {
+    console.log("filtered events", filteredEvents);
+  }, [filteredEvents]);
   const filteredReservations = reservations
     .filter(
       (reservation) =>
@@ -171,22 +172,20 @@ const AdminView = () => {
       return 0;
     });
 
-
-
-    const getStateClassBadge = (state) => {
-      switch (state) {
-        case "Pending":
-          return "orange";
-        case "Approved":
-          return "green";
-        case "Cancelled":
-          return "violet";
-        case "Rejected":
-          return "red";
-        default:
-          return "";
-      }
-    };
+  const getStateClassBadge = (state) => {
+    switch (state) {
+      case "Pending":
+        return "orange";
+      case "Approved":
+        return "green";
+      case "Cancelled":
+        return "violet";
+      case "Rejected":
+        return "red";
+      default:
+        return "";
+    }
+  };
 
   return (
     <div>
@@ -298,7 +297,11 @@ const AdminView = () => {
                         <h6>{event.name}</h6>
                       </div>
                       <Badge color={getStateClassBadge(event.state)}>
-                        <Button style={{color:getStateClassBadge(event.state)}}>{event.state}</Button>
+                        <Button
+                          style={{ color: getStateClassBadge(event.state) }}
+                        >
+                          {event.state}
+                        </Button>
                       </Badge>
                     </div>
                   }
@@ -350,7 +353,7 @@ const AdminView = () => {
                             </p>
                             <p>
                               <strong>{t("facility")}:</strong>{" "}
-                              {facilities[reservation.facility] ||
+                              {facilities[reservation.facility._id] ||
                                 "Unknown Facility"}
                             </p>
                             <p>
