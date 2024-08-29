@@ -177,7 +177,7 @@ const EventForm = ({ open, onClose, onSubmit, slotDetails }) => {
 
       {submitted&& (<FacilitiesForm
         open={facilitiesModalOpen}
-        onClose={() => setFacilitiesModalOpen(false)}
+        onClose={() => {setFacilitiesModalOpen(false); onClose()}}
         numberOfFacilities={numberOfFacilities}
         form1={{ name,
           description,

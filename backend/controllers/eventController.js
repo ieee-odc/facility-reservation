@@ -155,10 +155,10 @@ export const createEvent = async (req, res) => {
           })
         );
 
-        const emailSubject = "New Event Created";
+        const emailSubject = `New Event Created by ${entityName.name.toUpperCase()}`;
         const emailBody = `
         <div style="font-family: Arial, sans-serif; color: #333; line-height: 1.6;">
-          <h1 style="color: #007bff;">New Event Created by ${entityName.name}</h1>
+          <h2 style="color: #007bff;">Event Details:</h2>
           <div style="margin-bottom: 20px;">
             <p><strong>Event Name:</strong> ${name}</p>
             <p><strong>Description:</strong> ${description}</p>
