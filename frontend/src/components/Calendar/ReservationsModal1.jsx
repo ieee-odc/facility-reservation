@@ -15,20 +15,39 @@ const ReservationsModal1 = ({
   currentId,
   numberOfFacilities,
   slotDetails,
+  selectedEvent,
 }) => {
+  const [facility, setFacility] = useState('');
+
   const initialFacilities = Array.from({ length: numberOfFacilities }, () => ({
     date: slotDetails
       ? moment(slotDetails?.end)
-          ?.subtract(moment(slotDetails?.end).format("YYYY-MM-DD") == moment(slotDetails?.start).format("YYYY-MM-DD") ? 0 : 1, "days")
+          ?.subtract(
+            moment(slotDetails?.end).format("YYYY-MM-DD") ==
+              moment(slotDetails?.start).format("YYYY-MM-DD")
+              ? 0
+              : 1,
+            "days"
+          )
+          ?.format("YYYY-MM-DD")
+      : selectedEvent
+      ? moment(selectedEvent?.end)
+          ?.subtract(
+            moment(selectedEvent?.end).format("YYYY-MM-DD") ==
+              moment(selectedEvent?.start).format("YYYY-MM-DD")
+              ? 0
+              : 1,
+            "days"
+          )
           ?.format("YYYY-MM-DD")
       : "",
-    startTime: "",
-    endTime: "",
-    facility: "",
-    effective: 0,
-    motive: "",
+    startTime:selectedEvent ? moment(selectedEvent?.start).format("HH:mm"):"",
+    endTime: selectedEvent ? moment(selectedEvent?.end).format("HH:mm"):"",
+    facility: facility ? facility:"",
+    effective: selectedEvent?selectedEvent.participants:0,
+    motive: selectedEvent?selectedEvent.motive:"",
     files: [],
-    materials: [],
+    materials: selectedEvent?selectedEvent.equipment:[],
     entity: currentId,
   }));
 
@@ -36,7 +55,6 @@ const ReservationsModal1 = ({
     .toISOString()
     .split("T")[0];
   const end = new Date().toISOString().split("T")[0];
-
   const [facilities, setFacilities] = useState(initialFacilities);
   const [errorMessages, setErrorMessages] = useState(
     Array(numberOfFacilities).fill("")
@@ -45,13 +63,16 @@ const ReservationsModal1 = ({
   const [pendingFacilities, setPendingFacilities] = useState([]);
   const [admins, setAdmins] = useState([]);
   const [availableEquipments, setAvailableEquipments] = useState([]);
-  const [errors, setErrors] = useState({});
   const [warningMessage, setWarningMessage] = useState("");
+  const [errors, setErrors] = useState({});
 
   const navigate = useNavigate();
   const showNotification = useNotification();
 
   useEffect(() => {
+    console.log("open", open);
+    console.log("selected", selectedEvent);
+
     const facility = facilities[0];
     if (facility?.date && facility?.startTime && facility?.endTime) {
       const fetchAvailableFacilities = async () => {
@@ -75,11 +96,20 @@ const ReservationsModal1 = ({
               },
             }
           );
+          if (selectedEvent) {
+            const fac = response.data.availableFacilities.find((facility) => facility.label === selectedEvent.facility);
+            setFacilities([{...facilities[0], facility:fac?._id}])
+            
+          }
           console.log(response);
           setAvailableFacilities(response.data.availableFacilities);
+          
           setPendingFacilities(
             response.data.pendingFacilities.map((facility) => facility?._id)
           );
+
+         
+          
         } catch (error) {
           console.error("Error fetching available facilities:", error);
         }
@@ -97,7 +127,7 @@ const ReservationsModal1 = ({
         const response = await axios.get(
           "http://localhost:3000/api/equipments"
         );
-        
+
         const data = response.data.data.map((item) => ({
           label: item.label,
           value: item._id,
@@ -127,6 +157,10 @@ const ReservationsModal1 = ({
   }, []);
 
   const handleChange = (index, field, value) => {
+    console.log("index, field, value",index, field, value);
+    //selectedEvent ? selectedEvent.facility:""
+    console.log("selectedEvent.facility",selectedEvent?.facility);
+    
     const updatedFacilities = [...facilities];
     const updatedErrors = [...errorMessages];
 
@@ -162,7 +196,7 @@ const ReservationsModal1 = ({
         setWarningMessage("");
       }
     }
-
+    console.log("updatedFacilities",updatedFacilities);
     setFacilities(updatedFacilities);
     setErrorMessages(updatedErrors);
   };
@@ -192,10 +226,22 @@ const ReservationsModal1 = ({
     console.log("date", facilities[0].date);
 
     try {
-      await axios.post("http://localhost:3000/api/reservations", {
-        ...facilities,
-        currentId,
-      });
+      if (selectedEvent) {
+        const response = await axios.patch(`http://localhost:3000/api/reservations/update-res/${selectedEvent.id}`, {
+          ...facilities,
+          currentId,
+        });
+
+        console.log("---------", response);
+        
+
+      } else {
+        
+        await axios.post("http://localhost:3000/api/reservations", {
+          ...facilities,
+          currentId,
+        });
+      }
       showNotification(
         "The reservation has been submitted successfully!",
         "success"

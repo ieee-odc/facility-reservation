@@ -9,6 +9,7 @@ import {
   findAllPureReservations,
   getAvailableFacilities,
   findAllPureRelatedReservations,
+  updateAllReservation,
 } from "../controllers/reservationController.js";
 
 const router = express.Router();
@@ -21,6 +22,7 @@ router.get('/pure/:entityId', findAllPureRelatedReservations);
 router.get('/:id', findReservationById);
 router.post('/', addReservation);
 router.patch('/:id', updateReservation);
+router.patch('/update-res/:id', updateAllReservation);
 router.delete('/:id', deleteReservation);
 
 export default router;

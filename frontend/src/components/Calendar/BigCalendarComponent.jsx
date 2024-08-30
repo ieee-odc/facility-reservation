@@ -34,6 +34,7 @@ const BigCalendarComponent = ({ events, requests, viewType, currentId }) => {
   const [facilities, setFacilities] = useState({});
   const [organizers, setOrganizers] = useState({});
   const [showCancelConfirmation, setShowCancelConfirmation] = useState(false);
+  const [reservation, setReservation] = useState({});
   const showNotification = useNotification();
 
   useEffect(() => {
@@ -173,7 +174,7 @@ const BigCalendarComponent = ({ events, requests, viewType, currentId }) => {
     setEventModalShow(true);
   };
 
-  const handleSlotSelect = ({ start, end }) => {
+  const handleSlotSelect = ({ start, end }) => {    
     console.log("start", start, "end", end);
 
     setSelectedSlot({ start, end });
@@ -208,7 +209,7 @@ const BigCalendarComponent = ({ events, requests, viewType, currentId }) => {
     console.log("selected event", event);
 
     setSelectedEvent(event);
-    setModalIsOpen(true); // Open modal when event is selected
+    setModalIsOpen(true); 
   };
 
   const closeModal = () => {
@@ -335,6 +336,14 @@ const BigCalendarComponent = ({ events, requests, viewType, currentId }) => {
     }
   };
 
+  const handleEditReservation = (selectedEvent) =>{
+    console.log("selectedEvent --", selectedEvent);
+    
+    setReservation(selectedEvent)
+    setIsReservationModalOpen(true);
+    closeModal();
+  }
+
   return (
     <>
       <div className="big-calendar">
@@ -449,7 +458,7 @@ const BigCalendarComponent = ({ events, requests, viewType, currentId }) => {
                         {selectedEvent.state === "Pending" && (
                           <button
                             className="edit-button"
-                            //onClick={handleEditClick}
+                            onClick={()=>handleEditReservation(selectedEvent)}
                           >
                             {viewType === "events"
                               ? "Edit Event"
@@ -631,13 +640,14 @@ const BigCalendarComponent = ({ events, requests, viewType, currentId }) => {
         </Modal>
       )}
 
-      {selectedSlot && isReservationModalOpen && viewType === "requests" && (
+      {(selectedSlot || isReservationModalOpen) && viewType === "requests" && (
         <ReservationsModal1
           open={isReservationModalOpen}
-          onClose={() => setIsReservationModalOpen(false)}
+          onClose={() => {setIsReservationModalOpen(false); setReservation("");window.location.reload();}}
           slotDetails={selectedSlot}
           numberOfFacilities={1}
           currentId={currentId}
+          selectedEvent={selectedEvent || reservation}
         />
       )}
       {selectedSlot && isEventModalOpen && viewType === "events" && (
@@ -646,6 +656,7 @@ const BigCalendarComponent = ({ events, requests, viewType, currentId }) => {
           onClose={() => setIsEventModalOpen(false)}
           slotDetails={selectedSlot}
           currentId={currentId}
+          selectedEvent={selectedEvent}
         />
       )}
     </>

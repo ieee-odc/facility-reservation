@@ -74,11 +74,8 @@ export const addReservation = async (req, res) => {
     } = req.body["0"];
 
     console.log("materials", materials);
-    
 
-    const materialIds = materials.flat(
-      (material) => material._id
-    );
+    const materialIds = materials.flat((material) => material._id);
 
     const [admins, entityName, facilityLabel, equipments] = await Promise.all([
       ReservationInitiator.find({ role: "Admin" }).select("-password"),
@@ -156,6 +153,49 @@ export const addReservation = async (req, res) => {
     return res.status(500).json({ message: error.message });
   }
 };
+
+export const updateAllReservation = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const {
+      facility,
+      motive,
+      date,
+      startTime,
+      endTime,
+      effective,
+      materials,
+      files,
+      entity,
+    } = req.body[0];
+    console.log("req.body", req.body);
+
+    const reservation = await Reservation.findById(id);
+    if (reservation) {
+      const updatedReservation = await Reservation.updateOne(
+        { _id: id },
+        {
+          facility,
+          motive,
+          date,
+          startTime,
+          endTime,
+          effective,
+          materials,
+          files,
+          entity,
+        }
+      );
+      return res.status(200).json(updatedReservation);
+    } else {
+      return res.status(404).json({ message: "Reservation not found" });
+    }
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({ message: error.message });
+  }
+};
+
 
 export const updateReservation = async (req, res) => {
   try {
